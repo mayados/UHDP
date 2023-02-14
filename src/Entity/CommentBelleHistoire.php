@@ -20,6 +20,14 @@ class CommentBelleHistoire
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateCreation = null;
 
+    #[ORM\ManyToOne(inversedBy: 'commentaires')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $auteur = null;
+
+    #[ORM\ManyToOne(inversedBy: 'commentaires')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?BelleHistoire $belleHistoire = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,6 +53,30 @@ class CommentBelleHistoire
     public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
         $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+
+    public function getAuteur(): ?User
+    {
+        return $this->auteur;
+    }
+
+    public function setAuteur(?User $auteur): self
+    {
+        $this->auteur = $auteur;
+
+        return $this;
+    }
+
+    public function getBelleHistoire(): ?BelleHistoire
+    {
+        return $this->belleHistoire;
+    }
+
+    public function setBelleHistoire(?BelleHistoire $belleHistoire): self
+    {
+        $this->belleHistoire = $belleHistoire;
 
         return $this;
     }

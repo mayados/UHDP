@@ -16,6 +16,10 @@ class Photo
     #[ORM\Column(length: 255)]
     private ?string $photo = null;
 
+    #[ORM\ManyToOne(inversedBy: 'photos')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?AnimalMemorial $memorial = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -29,6 +33,18 @@ class Photo
     public function setPhoto(string $photo): self
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    public function getMemorial(): ?AnimalMemorial
+    {
+        return $this->memorial;
+    }
+
+    public function setMemorial(?AnimalMemorial $memorial): self
+    {
+        $this->memorial = $memorial;
 
         return $this;
     }

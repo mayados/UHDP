@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BelleHistoireRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -22,6 +24,18 @@ class BelleHistoire
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photo = null;
+
+    #[ORM\ManyToOne(inversedBy: 'bellesHistoires')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $auteur = null;
+
+    #[ORM\OneToMany(mappedBy: 'belleHistoire', targetEntity: CommentBelleHistoire::class, orphanRemoval: true)]
+    private Collection $commentaires;
+
+    public function __construct()
+    {
+        $this->commentaires = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -60,6 +74,48 @@ class BelleHistoire
     public function setPhoto(?string $photo): self
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    public function getAuteur(): ?User
+    {
+        return $this->auteur;
+    }
+
+    public function setAuteur(?User $auteur): self
+    {
+        $this->auteur = $auteur;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CommentBelleHistoire>
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(CommentBelleHistoire $commentaire): self
+    {
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires->add($commentaire);
+            $commentaire->setBelleHistoire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(CommentBelleHistoire $commentaire): self
+    {
+        if ($this->commentaires->removeElement($commentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getBelleHistoire() === $this) {
+                $commentaire->setBelleHistoire(null);
+            }
+        }
 
         return $this;
     }

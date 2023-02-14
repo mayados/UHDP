@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AnimalMemorialRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -43,6 +45,22 @@ class AnimalMemorial
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $histoire = null;
+
+    #[ORM\OneToMany(mappedBy: 'memorial', targetEntity: Photo::class, orphanRemoval: true)]
+    private Collection $photos;
+
+    #[ORM\ManyToOne(inversedBy: 'animaux')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?CategorieAnimal $categorieAnimal = null;
+
+    #[ORM\ManyToOne(inversedBy: 'memoriaux')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $auteur = null;
+
+    public function __construct()
+    {
+        $this->photos = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -165,6 +183,60 @@ class AnimalMemorial
     public function setHistoire(string $histoire): self
     {
         $this->histoire = $histoire;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Photo>
+     */
+    public function getPhotos(): Collection
+    {
+        return $this->photos;
+    }
+
+    public function addPhoto(Photo $photo): self
+    {
+        if (!$this->photos->contains($photo)) {
+            $this->photos->add($photo);
+            $photo->setMemorial($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhoto(Photo $photo): self
+    {
+        if ($this->photos->removeElement($photo)) {
+            // set the owning side to null (unless already changed)
+            if ($photo->getMemorial() === $this) {
+                $photo->setMemorial(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCategorieAnimal(): ?CategorieAnimal
+    {
+        return $this->categorieAnimal;
+    }
+
+    public function setCategorieAnimal(?CategorieAnimal $categorieAnimal): self
+    {
+        $this->categorieAnimal = $categorieAnimal;
+
+        return $this;
+    }
+
+    public function getAuteur(): ?User
+    {
+        return $this->auteur;
+    }
+
+    public function setAuteur(?User $auteur): self
+    {
+        $this->auteur = $auteur;
 
         return $this;
     }
