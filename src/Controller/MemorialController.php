@@ -52,8 +52,18 @@ class MemorialController extends AbstractController
     }
 
     #[Route('/memoriaux/add', name: 'add_memorial')]
+    #[Route('/memoriaux/edit/{id}', name: 'edit_memorial')]
     public function add(ManagerRegistry $doctrine, AnimalMemorial $memorial = null, SluggerInterface $slugger, Request $request): Response
     {
+
+        $edit = false;
+        if($memorial){
+            $edit = true;
+        }
+
+        if(!$memorial){
+            $memorial = new AnimalMemorial();
+        }
 
         $form = $this->createForm(MemorialType::class, $memorial);
         $form->handleRequest($request);
