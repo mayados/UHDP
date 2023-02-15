@@ -1,20 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MemorialController!{% endblock %}
+{% block title %}Mémoriaux{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<div class="container-page">
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/laragon/www/UneHistoireDePattes/src/Controller/MemorialController.php'|file_link(0) }}">src/Controller/MemorialController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/laragon/www/UneHistoireDePattes/templates/memorial/index.html.twig'|file_link(0) }}">templates/memorial/index.html.twig</a></code></li>
-    </ul>
+    <div id="categories">
+        {% for categorie in categories %}
+        <div class="categorie">
+            <a href="{{path('app_categorie', {'id' : categorie.id}) }}">{{ categorie.nom }}</a>
+        </div>
+    {% endfor %}
+    </div>
+
+    {% for memorial in listeMemoriaux %}
+        <div class="memorial">
+            <p>{{ memorial.nom }}</p>
+            {% if memorial.photo == null %}
+                <p>Pas de photo</p>
+            {% else %}
+                <p>{{ memorial.photo }}</p>
+            {% endif %}
+            {# le filtre slice permet d'afficher un certain nombre de caractères => Ici, on prend du caractère 0 à 20 #}
+            <p>{{ memorial.presentation|slice(0, 20) }}...</p>
+            <a href="#">Voir le profil</a>
+        </div>
+    {% endfor %}
+
 </div>
+
 {% endblock %}
