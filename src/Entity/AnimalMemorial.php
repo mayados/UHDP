@@ -132,6 +132,7 @@ class AnimalMemorial
         return $this->photo;
     }
 
+    // Il s'agit d'une string, car on stocke le nom du fichier et non son contenu
     public function setPhoto(?string $photo): self
     {
         $this->photo = $photo;
