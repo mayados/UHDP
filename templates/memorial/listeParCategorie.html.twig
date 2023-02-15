@@ -15,7 +15,7 @@
                 {% if memorial.photo == null %}
                     <p>Pas de photo</p>
                 {% else %}
-                    <p>{{ memorial.photo }}</p>
+                    <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">
                 {% endif %}
                 {# le filtre slice permet d'afficher un certain nombre de caractères => Ici, on prend du caractère 0 à 20 #}
                 <p>{{ memorial.presentation|slice(0, 20) }}...</p>

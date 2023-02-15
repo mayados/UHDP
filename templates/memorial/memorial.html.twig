@@ -6,6 +6,8 @@
 
 <div class="container-page">
 
+    <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">
+
     {{ memorial.nom }}
 
     {{ memorial.dateNaissance | date('m-d-Y') }}
