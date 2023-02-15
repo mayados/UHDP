@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\AnimalMemorial;
 use App\Entity\CategorieAnimal;
 use App\Repository\AnimalMemorialRepository;
 use App\Repository\CategorieAnimalRepository;
@@ -12,9 +13,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class MemorialController extends AbstractController
 {
     #[Route('/memoriaux', name: 'app_memoriaux')]
-    public function index(AnimalMemorialRepository $anr, CategorieAnimalRepository $car): Response
+    public function index(AnimalMemorialRepository $amr, CategorieAnimalRepository $car): Response
     {
-        $listeMemoriaux = $anr->findAll();
+        $listeMemoriaux = $amr->findAll();
 
         $categories = $car->findAll();
 
@@ -25,13 +26,29 @@ class MemorialController extends AbstractController
     }
 
     #[Route('/categorie/{id}', name: 'app_categorie')]
-    public function memoriauxParCategorie(AnimalMemorialRepository $anr, CategorieAnimalRepository $car, CategorieAnimal $categorie): Response
+    public function memoriauxParCategorie(CategorieAnimalRepository $car, CategorieAnimal $categorie): Response
     {
         $categorie = $car->find($categorie->getId());
 
         return $this->render('memorial/listeParCategorie.html.twig', [
             'categorie' => $categorie,
         ]);
+    }
+
+    #[Route('/memorial/{id}', name: 'show_memorial')]
+    public function showMemorial(AnimalMemorialRepository $amr, AnimalMemorial $memorial): Response
+    {
+        $memorial = $amr->find($memorial->getId());
+
+        return $this->render('memorial/memorial.html.twig', [
+            'memorial' => $memorial,
+        ]);
+    }
+
+    #[Route('/memorial/add', name: 'add_memorial')]
+    public function add(): Response
+    {
+
     }
 
 }
