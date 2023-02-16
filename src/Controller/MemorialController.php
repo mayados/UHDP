@@ -2,19 +2,22 @@
 
 namespace App\Controller;
 
+use App\Entity\Photo;
 use App\Form\MemorialType;
 use App\Entity\AnimalMemorial;
+use App\Form\GaleriePhotoType;
 use App\Entity\CategorieAnimal;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\AnimalMemorialRepository;
 use App\Repository\CategorieAnimalRepository;
+use App\Service\UploaderService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 class MemorialController extends AbstractController
 {
@@ -42,18 +45,45 @@ class MemorialController extends AbstractController
     }
 
     #[Route('/memorial/{id}', name: 'show_memorial')]
-    public function showMemorial(AnimalMemorialRepository $amr, AnimalMemorial $memorial): Response
+    public function showMemorial(ManagerRegistry $doctrine, AnimalMemorialRepository $amr,UploadedFile $image, AnimalMemorial $memorial, Request $request, SluggerInterface $slugger): Response
     {
         $memorial = $amr->find($memorial->getId());
 
+        // On souhaite insérer le formulaire d'ajout d'image à la galerie photo directement dans la page du mémorial
+        // Dans un premier temps on persist dans la bdd de Photos le nom des fichiers
+        // Puis on add chaque image grâce à la méthode de l'entity AnimalMemorial (qui contient un collectionType)
+        $galerie = new Photo();
+        $form = $this->createForm(GaleriePhotoType::class, $galerie);
+        $form->handleRequest($request); 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $galerie = $form->getData();  
+            $galerie->setMemorial($memorial);
+            $images = $form->get('images')->getData();
+
+
+
+            $memorial->addPhoto($galerie);
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($galerie);
+            $entityManager->flush();    
+
+
+            return $this->redirectToRoute(
+                'show_memorial',
+                ['id' => $memorial->getId()]
+            );
+        }
+
+
         return $this->render('memorial/memorial.html.twig', [
             'memorial' => $memorial,
+            'formAddPhotoGalerie' => $form->createView(),
         ]);
     }
 
     #[Route('/memoriaux/add', name: 'add_memorial')]
     #[Route('/memoriaux/edit/{id}', name: 'edit_memorial')]
-    public function add(ManagerRegistry $doctrine, AnimalMemorial $memorial = null, SluggerInterface $slugger, Request $request): Response
+    public function add(ManagerRegistry $doctrine, AnimalMemorial $memorial = null, UploaderService $uploaderService, Request $request): Response
     {
 
         $edit = false;
@@ -76,32 +106,18 @@ class MemorialController extends AbstractController
                 if($memorial->getPhoto() != null){
                     // On cherche la photo stockée pour le mémorial correspondant
                     $previousPhoto = $memorial->getPhoto();
-                    // On cherche le path du dossier où sont stockées les images du mémorial
-                    $path = $this->getParameter('imgMemorial_directory');
-                    // On indique le chemin complet vers le fichier de la photo à remplacer
-                    $fichierPreviousPhoto = $path ."/". $previousPhoto;
-                    //  On supprime le fichier de l'ancienne photo car on ne s'en sert plus, le garder ferait perdre de l'espace
-                    if(file_exists($fichierPreviousPhoto)){
-                        unlink($fichierPreviousPhoto);
-                    }                    
-                }
 
-                $originalFileName = pathinfo($imgMemorial->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFileName);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$imgMemorial->guessExtension();
-
-                try{
-                    $imgMemorial->move(
-                        $this->getParameter('imgMemorial_directory'),
-                        $newFilename
-                    );
-
-                }   catch (FileException $e){
-
-                }
-
-                $memorial->setPhoto($newFilename);
+                    $folder = 'imgMemorial';
+                    $uploaderService->delete($previousPhoto,$folder);
+                }                    
             }
+
+                $folder = 'imgMemorial';
+
+                $image = $uploaderService->add($imgMemorial,$folder);
+
+                $memorial->setPhoto($image);
+            
 
 
             $entityManager = $doctrine->getManager();
