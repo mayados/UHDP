@@ -6,19 +6,36 @@
 
 <div class="container-page">
 
-    <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">
+    <section id="memorial-infos">
+        <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">
 
-    {{ memorial.nom }}
+        {{ memorial.nom }}
 
-    {{ memorial.dateNaissance | date('m-d-Y') }}
+        {{ memorial.dateNaissance | date('m-d-Y') }}
 
-    {{ memorial.presentation }}
+        {{ memorial.presentation }}
 
-    {{ memorial.chosesAimees }}
+        {{ memorial.chosesAimees }}
 
-    {{ memorial.chosesDetestees }}
+        {{ memorial.chosesDetestees }}
 
-    {{ memorial.histoire }}
+        {{ memorial.histoire }}        
+    </section>
+    <section id='galerie-photo'>
+
+        <h3>Ajouter une photo à la galerie</h3>
+        {{ form_start(formAddPhotoGalerie) }}    
+        {{ form_end(formAddPhotoGalerie) }}
+
+        {% for image in memorial.photos %}
+            <div class="image-galerie">
+                    <img src="{{ asset('uploads/imgGalerie/'~ image.photo) }}" alt="photo de l'animal">
+            </div>
+        {% endfor %}
+
+
+    </section>
+
 
 </div>
 {% endblock %}
