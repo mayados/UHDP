@@ -72,6 +72,20 @@ class MemorialController extends AbstractController
             $memorial = $form->getData();            
             $imgMemorial = $form->get('imgMemorial')->getData();
             if($imgMemorial){
+                // Si on est dans le cas d'un edit et qu'une nouvelle image est uploadée (car lors d'un ajout on ne va pas supprimer le fichier qu'ion crée..)
+                if($memorial->getPhoto() != null){
+                    // On cherche la photo stockée pour le mémorial correspondant
+                    $previousPhoto = $memorial->getPhoto();
+                    // On cherche le path du dossier où sont stockées les images du mémorial
+                    $path = $this->getParameter('imgMemorial_directory');
+                    // On indique le chemin complet vers le fichier de la photo à remplacer
+                    $fichierPreviousPhoto = $path ."/". $previousPhoto;
+                    //  On supprime le fichier de l'ancienne photo car on ne s'en sert plus, le garder ferait perdre de l'espace
+                    if(file_exists($fichierPreviousPhoto)){
+                        unlink($fichierPreviousPhoto);
+                    }                    
+                }
+
                 $originalFileName = pathinfo($imgMemorial->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFileName);
                 $newFilename = $safeFilename.'-'.uniqid().'.'.$imgMemorial->guessExtension();
@@ -81,6 +95,7 @@ class MemorialController extends AbstractController
                         $this->getParameter('imgMemorial_directory'),
                         $newFilename
                     );
+
                 }   catch (FileException $e){
 
                 }
