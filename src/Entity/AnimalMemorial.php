@@ -46,7 +46,8 @@ class AnimalMemorial
     #[ORM\Column(type: Types::TEXT)]
     private ?string $histoire = null;
 
-    #[ORM\OneToMany(mappedBy: 'memorial', targetEntity: Photo::class, orphanRemoval: true)]
+    // On doit indiquer que le persist doit se faire également sur cette collection, même s'il n'y a pas de champs dans la database de AnimalMemorial pour les photos de la galerie
+    #[ORM\OneToMany(mappedBy: 'memorial', targetEntity: Photo::class, orphanRemoval: true, cascade:['persist'])]
     private Collection $photos;
 
     #[ORM\ManyToOne(inversedBy: 'animaux')]
