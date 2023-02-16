@@ -45,7 +45,7 @@ class MemorialController extends AbstractController
     }
 
     #[Route('/memorial/{id}', name: 'show_memorial')]
-    public function showMemorial(ManagerRegistry $doctrine, AnimalMemorialRepository $amr,UploadedFile $image, AnimalMemorial $memorial, Request $request, SluggerInterface $slugger): Response
+    public function showMemorial(ManagerRegistry $doctrine, AnimalMemorialRepository $amr, UploaderService $uploaderService, AnimalMemorial $memorial, Request $request, SluggerInterface $slugger): Response
     {
         $memorial = $amr->find($memorial->getId());
 
@@ -60,12 +60,16 @@ class MemorialController extends AbstractController
             $galerie->setMemorial($memorial);
             $images = $form->get('images')->getData();
 
-
-
-            $memorial->addPhoto($galerie);
-            $entityManager = $doctrine->getManager();
-            $entityManager->persist($galerie);
-            $entityManager->flush();    
+            foreach($images as $image){
+                $folder = "imgGalerie";
+                $fichier = $uploaderService->add($image,$folder);
+                $photo= new Photo();
+                $photo->setPhoto($fichier);
+                $memorial->addPhoto($photo);  
+                $entityManager = $doctrine->getManager();
+                $entityManager->persist($photo);
+                $entityManager->flush();                                  
+            }
 
 
             return $this->redirectToRoute(
