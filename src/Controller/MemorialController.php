@@ -113,17 +113,14 @@ class MemorialController extends AbstractController
 
                     $folder = 'imgMemorial';
                     $uploaderService->delete($previousPhoto,$folder);
-                }                    
+                }
+                // Dans le cas où il y a une image soumise mais que le mémorial n'a pas encore d'image (=> cas d'ajout de mémorial ou edit sans image)
+                $folder = 'imgMemorial';
+                $image = $uploaderService->add($imgMemorial,$folder);
+                $memorial->setPhoto($image);                              
             }
 
-                $folder = 'imgMemorial';
-
-                $image = $uploaderService->add($imgMemorial,$folder);
-
-                $memorial->setPhoto($image);
-            
-
-
+            // Dans tous les cas, on persist le memorial
             $entityManager = $doctrine->getManager();
             $entityManager->persist($memorial);
             $entityManager->flush();
