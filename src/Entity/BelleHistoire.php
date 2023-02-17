@@ -32,6 +32,9 @@ class BelleHistoire
     #[ORM\OneToMany(mappedBy: 'belleHistoire', targetEntity: CommentBelleHistoire::class, orphanRemoval: true)]
     private Collection $commentaires;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $dateCreation = null;
+
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
@@ -120,8 +123,22 @@ class BelleHistoire
         return $this;
     }
 
+    public function getDateCreation(): ?\DateTimeInterface
+    {
+        return $this->dateCreation;
+    }
+
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    {
+        $this->dateCreation = $dateCreation;
+
+        return $this;
+    }
+    
     public function __toString()
     {
         return $this->titre;
     }
+
+
 }

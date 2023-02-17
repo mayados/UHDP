@@ -76,6 +76,9 @@ class AnimalMemorial
     #[ORM\JoinColumn(nullable: false)]
     private ?User $auteur = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $dateCreation = null;
+
     public function __construct()
     {
         $this->photos = new ArrayCollection();
@@ -263,5 +266,17 @@ class AnimalMemorial
 
     public function __toString(){
         return $this->nom;
+    }
+
+    public function getDateCreation(): ?\DateTimeInterface
+    {
+        return $this->dateCreation;
+    }
+
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    {
+        $this->dateCreation = $dateCreation;
+
+        return $this;
     }
 }
