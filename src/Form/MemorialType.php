@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class MemorialType extends AbstractType
 {
@@ -23,13 +24,21 @@ class MemorialType extends AbstractType
         $builder
             ->add('nom', TextType::class,[
                 'label' => "Nom de l'animal",
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'Le nom ne peut pas être nul']),
+                    new Assert\Length(['min' => 2, 'max' => 50, 'minMessage' => 'Le nom doit faire au moins {{ limit }} caractères', 'maxMessage' => 'Le nom ne peut pas faire plus de {{ limit }} caractères'])
+                ]
             ])
             ->add('sexe', ChoiceType::class, [
                 'choices' => [
                     'Inconnu' => 'Inconnu',
                     'Male' => 'Male',
-                    'Femelle' => 'femelle',
+                    'Femelle' => 'Femelle',
                 ],
+                'constraints' => [
+                    new Assert\Choice(['choices' => ['Inconnu','Male','Femelle'], 'message' => 'Veuillez choisir un genre valide']),                    
+                ]
+
             ])
             ->add('dateNaissance', DateType::class, [
                 // Pour avoir un mini calendrier à l'affichage
@@ -41,7 +50,12 @@ class MemorialType extends AbstractType
                 'widget' => 'single_text',
                 'label' =>  'Date de décès',
             ])
-            ->add('lieu')
+            ->add('lieu', TextType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Assert\Length(['min' => 2, 'max' => 100, 'minMessage' => 'Le lieu doit faire au moins {{ limit }} caractères', 'maxMessage' => 'Le lieu ne peut pas faire plus de {{ limit }} caractères'])
+                ]
+            ])
             ->add('imgMemorial', FileType::class, [
                 'label' => "Image de l'animal",
                 // Signifie que ce champ n'est pas associé à une propriété de l'entité AnimalMemorial
@@ -61,19 +75,34 @@ class MemorialType extends AbstractType
             ])
             ->add('presentation', TextareaType::class, [
                 'label' => 'Présentation',
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'La présentation ne peut pas être nulle']),
+                ]
             ])
             ->add('chosesAimees', TextareaType::class, [
-                'label' => "Ce qu'il / elle aimait"
+                'label' => "Ce qu'il / elle aimait",
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'Cette section ne peut pas être nulle']),
+                ]
             ])
             ->add('chosesDetestees', TextareaType::class, [
-                'label' => "Ce qu'il / elle détestait"
+                'label' => "Ce qu'il / elle détestait",
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'Cette section ne peut pas être nulle']),
+                ]
             ])
             ->add('histoire', TextareaType::class, [
-                'label' => "Votre histoire / amitié"
+                'label' => "Votre histoire / amitié",
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'Cette section ne peut pas être nulle']),
+                ]
             ])
             ->add('categorieAnimal', EntityType::class, [
                 'label' => 'Categorie',
                 'class' => CategorieAnimal::class,
+                'constraints' => [
+                    new Assert\NotNull(['message' => 'La catégorie ne peut pas être nulle']),
+                ]
             ])
             ->add('auteur')
             ->add('submit', SubmitType::class)
