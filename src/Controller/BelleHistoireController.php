@@ -65,17 +65,18 @@ class BelleHistoireController extends AbstractController
         $edit = false;
         if($histoire){
             $edit = true;
-        }
-
-        if(!$histoire){
+            $date = $histoire->getDateCreation();
+        }else{
             $histoire = new BelleHistoire();
+            $date = new \DateTime();            
         }
 
         $form = $this->createForm(HistoireType::class, $histoire);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $memorial = $form->getData();            
+            $histoire = $form->getData();            
+               
             $imgHistoire = $form->get('imgHistoire')->getData();
             if($imgHistoire){
                 // Si on est dans le cas d'un edit et qu'une nouvelle image est uploadée (car lors d'un ajout on ne va pas supprimer le fichier qu'ion crée..)
@@ -89,9 +90,11 @@ class BelleHistoireController extends AbstractController
                 // Dans le cas où il y a une image soumise mais que le mémorial n'a pas encore d'image (=> cas d'ajout de mémorial ou edit sans image)
                 $folder = 'imgHistoire';
                 $image = $uploaderService->add($imgHistoire,$folder);
-                $memorial->setPhoto($image);                              
-            }
+                $histoire->setPhoto($image);     
 
+
+            }
+            $histoire->setDateCreation($date); 
             // Dans tous les cas, on persist le memorial
             $entityManager = $doctrine->getManager();
             $entityManager->persist($histoire);

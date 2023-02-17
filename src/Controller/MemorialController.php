@@ -93,10 +93,10 @@ class MemorialController extends AbstractController
         $edit = false;
         if($memorial){
             $edit = true;
-        }
-
-        if(!$memorial){
+            $date = $memorial->getDateCreation();
+        }else{
             $memorial = new AnimalMemorial();
+            $date = new \DateTime();            
         }
 
         $form = $this->createForm(MemorialType::class, $memorial);
@@ -119,7 +119,7 @@ class MemorialController extends AbstractController
                 $image = $uploaderService->add($imgMemorial,$folder);
                 $memorial->setPhoto($image);                              
             }
-
+            $memorial->setDateCreation($date); 
             // Dans tous les cas, on persist le memorial
             $entityManager = $doctrine->getManager();
             $entityManager->persist($memorial);
