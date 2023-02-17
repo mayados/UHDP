@@ -20,7 +20,7 @@ class BelleHistoireController extends AbstractController
     public function index(BelleHistoireRepository $bhr): Response
     {
 
-        $listeHistoires = $bhr->findAll();
+        $listeHistoires = $bhr->findBy([],['dateCreation' => 'ASC']);
 
         return $this->render('belle_histoire/bellesHistoires.html.twig', [
             'listeHistoires' => $listeHistoires,
