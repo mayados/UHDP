@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Belles histoires{% endblock %}
+
+{% block body %}
+
+<div class="container-page">
+
+    <h2> Les belles histoires</h2>
+
+    {% for histoire in listeHistoires %}
+        <div class="histoire">
+            <p>{{ histoire.titre }}</p>
+            {% if histoire.photo == null %}
+            <p>Pas de photo</p>
+            {% else %}
+            <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">
+            {% endif %}
+            <p>{{ histoire.texte|slice(0, 100) }}...</p>
+            <p>{{ histoire.auteur }}</p>
+            <a href="{{path('show_histoire', {'id': histoire.id}) }}">Voir l'histoire</a>
+        </div>
+    {% endfor %}
+
+</div>
+{% endblock %}
