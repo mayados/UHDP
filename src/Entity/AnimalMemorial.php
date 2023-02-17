@@ -16,7 +16,7 @@ class AnimalMemorial
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 50)]
     private ?string $nom = null;
 
     #[ORM\Column(length: 10, nullable: true)]
