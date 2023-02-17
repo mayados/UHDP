@@ -25,7 +25,7 @@ class MemorialType extends AbstractType
             ->add('nom', TextType::class,[
                 'label' => "Nom de l'animal",
                 'constraints' => [
-                    new Assert\NotBlank(['message' => 'Le nom ne peut pas être nul']),
+                    new Assert\NotBlank(['message' => 'Le nom ne peut pas être vide']),
                     new Assert\Length(['min' => 2, 'max' => 50, 'minMessage' => 'Le nom doit faire au moins {{ limit }} caractères', 'maxMessage' => 'Le nom ne peut pas faire plus de {{ limit }} caractères'])
                 ]
             ])
@@ -44,11 +44,20 @@ class MemorialType extends AbstractType
                 // Pour avoir un mini calendrier à l'affichage
                 'widget' => 'single_text',
                 'label' =>  'Date de naissance',
+                'constraints' => [
+                     /* Il ne serait pas logique de pouvoir sélectionner une date supérieure à la date actuelle
+                     On ajoute en contrainte que la date soumise doit être inférieure ou égale à la date acteulle (en fonction de la date du serveur) */
+                    new Assert\LessThanOrEqual(['value' => 'today', 'message' => 'La date de naissance ne peut pas être supérieure à la date actuelle']),
+                ]
             ])
             ->add('dateDeces', DateType::class, [
                 // Pour avoir un mini calendrier à l'affichage
                 'widget' => 'single_text',
                 'label' =>  'Date de décès',
+                'constraints' => [
+                    // Il ne serait pas logique de pouvoir sélectionner une date supérieure à la date actuelle
+                    new Assert\LessThanOrEqual(['value' => 'today', 'message' => 'La date de décès ne peut pas être supérieure à la date actuelle']),
+                ]
             ])
             ->add('lieu', TextType::class, [
                 'required' => false,
