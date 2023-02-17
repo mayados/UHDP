@@ -1,20 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello{% endblock %}
+{% block title %}{{histoire.titre}}{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<div class="container-page">
+    <section id="histoire">
+        <h2>{{histoire.titre}}</h2>
+        {% if histoire.photo == null %}
+            <p>Pas de photo</p>
+        {% else %}
+            <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">
+        {% endif %}
+        <p>{{ histoire.texte }}</p>
+    </section>
+    <section id="comment-histoire">
+        <h4>Ajouter un commentaire</h4>
+        {{ form_start(formAddComment) }}    
+        {{ form_end(formAddComment) }} 
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/laragon/www/UneHistoireDePattes/src/Controller/HomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/laragon/www/UneHistoireDePattes/templates/home/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a></code></li>
-    </ul>
+        {% for commentaire in histoire.commentaires %}
+            <div class="commentaire">
+                <p>{{ commentaire.auteur }}</p>
+                <p>{{ commentaire.texte }}</p>
+            </div>
+        {% endfor %}
+    </section>
+
 </div>
 {% endblock %}
