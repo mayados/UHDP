@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ForumController!{% endblock %}
+
+{% block body %}
+
+<div class="container-page">
+    <h2>Les topics</h2>
+
+    {% for topic in topics %}
+    <div class="topic">
+        {# <a href="{{path('show_topic', {'id' : categorie.id}) }}">{{ topic.titre }}</a> #}
+        {{ topic.titre }}
+    </div>
+    {% endfor %}
+
+</div>
+{% endblock %}
