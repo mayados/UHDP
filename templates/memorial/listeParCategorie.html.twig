@@ -9,7 +9,7 @@
     {{ categorie.nom }}
 
     {% if categorie.animaux | length > 0 %}
-        {% for memorial in categorie.animaux %}
+        {% for memorial in memoriaux %}
             <div class="memorial">
                 <p>{{ memorial.nom }}</p>
                 {% if memorial.photo == null %}
