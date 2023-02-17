@@ -12,6 +12,7 @@
         {% else %}
             <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">
         {% endif %}
+        <p>Date de création {{ histoire.dateCreation | date('d-m-Y') }}</p>
         <p>{{ histoire.texte }}</p>
     </section>
     <section id="comment-histoire">
