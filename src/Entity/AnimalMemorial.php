@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AnimalMemorialRepository::class)]
 class AnimalMemorial
@@ -17,33 +18,50 @@ class AnimalMemorial
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    // Les contraintes ont déjà été définies dnas le formulaire associé, mais pour assurer un maximum de sécurié, je les réitère ici
+    #[Assert\NotBlank()]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+    )]
     private ?string $nom = null;
 
     #[ORM\Column(length: 10, nullable: true)]
+    #[Assert\Choice(['Inconnu','Male','Femelle'])]
     private ?string $sexe = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\LessThanOrEqual('today')]
     private ?\DateTimeInterface $dateNaissance = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\LessThanOrEqual('today')]
     private ?\DateTimeInterface $dateDeces = null;
 
     #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\Length(
+        min: 2,
+        max: 100,
+    )]
     private ?string $lieu = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photo = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank()]
     private ?string $presentation = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank()]
     private ?string $chosesAimees = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank()]
     private ?string $chosesDetestees = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank()]
     private ?string $histoire = null;
 
     // On doit indiquer que le persist doit se faire également sur cette collection, même s'il n'y a pas de champs dans la database de AnimalMemorial pour les photos de la galerie
