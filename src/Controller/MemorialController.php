@@ -24,7 +24,7 @@ class MemorialController extends AbstractController
     #[Route('/memoriaux', name: 'app_memoriaux')]
     public function index(AnimalMemorialRepository $amr, CategorieAnimalRepository $car): Response
     {
-        $listeMemoriaux = $amr->findAll();
+        $listeMemoriaux = $amr->findBy([],['dateCreation' => 'ASC']);
 
         $categories = $car->findAll();
 
@@ -35,12 +35,14 @@ class MemorialController extends AbstractController
     }
 
     #[Route('/categorie/{id}', name: 'app_categorie')]
-    public function memoriauxParCategorie(CategorieAnimalRepository $car, CategorieAnimal $categorie): Response
+    public function memoriauxParCategorie(AnimalMemorialRepository $amr, CategorieAnimalRepository $car, CategorieAnimal $categorie): Response
     {
-        $categorie = $car->find($categorie->getId());
+        $memoriaux = $amr->findBy(['categorieAnimal' => $categorie->getId()],['dateCreation' => 'ASC']);
+        $categorieMemorial = $car->find($categorie->getId());
 
         return $this->render('memorial/listeParCategorie.html.twig', [
-            'categorie' => $categorie,
+            'memoriaux' => $memoriaux,
+            'categorie' => $categorieMemorial,
         ]);
     }
 
