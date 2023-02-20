@@ -29,7 +29,7 @@ class Topic
     #[ORM\JoinColumn(nullable: false)]
     private ?User $auteur = null;
 
-    #[ORM\OneToMany(mappedBy: 'topic', targetEntity: Post::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'topic', targetEntity: Post::class, orphanRemoval: true, cascade:['persist'])]
     private Collection $posts;
 
     public function __construct()
