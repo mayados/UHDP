@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Post;
 use App\Entity\Topic;
+use App\Form\PostType;
 use App\Form\TopicType;
 use App\Repository\TopicRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -22,6 +23,37 @@ class ForumController extends AbstractController
         
         return $this->render('forum/index.html.twig', [
             'topics' => $topics,
+        ]);
+    }
+
+    #[Route('/topic/{id}', name: 'show_topic')]
+    public function showTopic(ManagerRegistry $doctrine, TopicRepository $tr, Topic $topic, Request $request): Response
+    {
+        $topic = $tr->find($topic->getId());
+
+        $post = new Post();
+        $date = new \DateTime();     
+        $form = $this->createForm(PostType::class, $post);
+        $form->handleRequest($request); 
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $post = $form->getData();  
+            $post->setTopic($topic);
+            $post->setDateCreation($date);
+            $topic->addPost($post);  
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($post);
+            $entityManager->flush();                                  
+
+            return $this->redirectToRoute(
+                'show_topic',
+                ['id' => $topic->getId()]
+            );
+        }
+
+        return $this->render('forum/topic.html.twig', [
+            'topic' => $topic,
+            'formAddPost' => $form->createView(),
         ]);
     }
 
