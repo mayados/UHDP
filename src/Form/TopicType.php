@@ -6,6 +6,8 @@ use App\Entity\Topic;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class TopicType extends AbstractType
 {
@@ -13,9 +15,12 @@ class TopicType extends AbstractType
     {
         $builder
             ->add('titre')
-            ->add('dateCreation')
-            ->add('verrouillage')
+            ->add('firstComment', TextareaType::class, [
+                'label' => "Commentaire",
+                'mapped' => false,
+            ])
             ->add('auteur')
+            ->add('submit', SubmitType::class)
         ;
     }
 
