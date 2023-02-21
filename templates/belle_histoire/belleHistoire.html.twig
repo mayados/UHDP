@@ -14,6 +14,7 @@
         {% endif %}
         <p>Date de création {{ histoire.dateCreation | date('d-m-Y') }}</p>
         <p>{{ histoire.texte }}</p>
+        <a href="{{ path('remove_histoire', {'id': histoire.id}) }}">Supprimer l'histoire</a>
     </section>
     <section id="comment-histoire">
         <h4>Ajouter un commentaire</h4>
