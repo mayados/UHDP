@@ -133,4 +133,26 @@ class ForumController extends AbstractController
         );
     }
 
+    #[Route('/topic/verrouillage/{id}', name: 'verrouillage_topic')]
+    public function verrouillageTopic(Topic $topic, TopicRepository $tr, ManagerRegistry $doctrine)
+    {
+        $entityManager = $doctrine->getManager();
+        $topic = $tr->find($topic->getId());
+        // On vérifie s'il s'agit d'un verrouillage ou dévérouillage
+        if($topic->isVerrouillage() == false){
+            // On vérrouille le topic
+            $topic->setVerrouillage(true);
+        }else{
+            // On déverouille
+            $topic->setVerrouillage(false);
+        }
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute(
+            'show_topic',
+            ['id' => $topic->getId()]
+        );
+    }
+
 }
