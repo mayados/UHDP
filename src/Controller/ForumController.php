@@ -6,12 +6,14 @@ use App\Entity\Post;
 use App\Entity\Topic;
 use App\Form\PostType;
 use App\Form\TopicType;
+use App\Repository\PostRepository;
 use App\Repository\TopicRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class ForumController extends AbstractController
 {
@@ -106,4 +108,29 @@ class ForumController extends AbstractController
         ]);
 
     }
+
+    #[Route('/topic/remove/{id}', name: 'remove_topic')]
+    public function removeTopic(TopicRepository $tr, Topic $topic)
+    {
+        $topic = $tr->find($topic->getId());
+        $tr->remove($topic, $flush = true);
+
+        return $this->redirectToRoute('app_forum');
+    }
+
+    #[Route('/post/remove/{idTopic}/{id}', name: 'remove_post')]
+    #[ParamConverter("topic", options: ["mapping" => ["idTopic" => "id"]])]
+    #[ParamConverter("post", options: ["mapping" => ["id" => "id"]])]
+    public function removePost(PostRepository $pr, Post $post, Topic $topic)
+    {
+        $post = $pr->find($post->getId());
+        $topic = $topic->getId();
+        $pr->remove($post, $flush = true);
+
+        return $this->redirectToRoute(
+            'show_topic',
+            ['id' => $topic]
+        );
+    }
+
 }
