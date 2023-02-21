@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello{% endblock %}
+{% block title %}{{topic.titre}}{% endblock %}
 
 {% block body %}
 
@@ -22,10 +22,14 @@
         </div>
     {% endfor %}
 
-    <h5>Ajout de commentaires</h5>
+    <a href="{{ path('verrouillage_topic', {'id': topic.id}) }}">Verrouiller le topic</a>
 
-    {{ form_start(formAddPost) }}    
-    {{ form_end(formAddPost) }}
+    {% if topic.verrouillage == 0 %}
+        <h5>Ajout de commentaires</h5>
+
+        {{ form_start(formAddPost) }}    
+        {{ form_end(formAddPost) }}
+    {% endif %}
 
 </div>
 
