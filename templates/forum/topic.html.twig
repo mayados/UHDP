@@ -11,11 +11,14 @@
     {{ topic.dateCreation | date('d-m-Y') }}
 
     {{ topic.auteur }}
+
+    <a href="{{path('remove_topic', {'id': topic.id}) }}">Supprimer le topic</a>
  
     {% for post in topic.posts %}
         <div class="post">
             {{ post.texte }}
             ({{ post.auteur }})
+            <a href="{{path('remove_post', {'id': post.id, 'idTopic': topic.id}) }}">Delete</a>
         </div>
     {% endfor %}
 
