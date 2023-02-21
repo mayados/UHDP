@@ -20,7 +20,7 @@ class BelleHistoireController extends AbstractController
     public function index(BelleHistoireRepository $bhr): Response
     {
 
-        $listeHistoires = $bhr->findBy([],['dateCreation' => 'ASC']);
+        $listeHistoires = $bhr->findBy([],['dateCreation' => 'DESC']);
 
         return $this->render('belle_histoire/bellesHistoires.html.twig', [
             'listeHistoires' => $listeHistoires,
@@ -109,4 +109,17 @@ class BelleHistoireController extends AbstractController
         ]);
         
     }
+
+    #[Route('/bellesHistoires/histoire/remove/{id}', name: 'remove_histoire')]
+    public function removeHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire, UploaderService $uploaderService)
+    {
+        $histoire = $bhr->find($histoire->getId());        
+        $photo = $histoire->getPhoto();
+        $folder = 'imgHistoire';
+        $uploaderService->delete($photo,$folder);   
+        $bhr->remove($histoire, $flush = true);
+
+        return $this->redirectToRoute('app_belles_histoires');
+    }
+
 }
