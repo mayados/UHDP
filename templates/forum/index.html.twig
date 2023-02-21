@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ForumController!{% endblock %}
+{% block title %}Forum{% endblock %}
 
 {% block body %}
 
@@ -9,7 +9,6 @@
 
     {% for topic in topics %}
     <div class="topic">
-        {# <a href="{{path('show_topic', {'id' : categorie.id}) }}">{{ topic.titre }}</a> #}
         {{ topic.titre }}
         <a href="{{path('show_topic', {'id': topic.id}) }}">Voir le topic</a>
     </div>
