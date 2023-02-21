@@ -12,7 +12,9 @@ use App\Repository\BelleHistoireRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\CommentBelleHistoireRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class BelleHistoireController extends AbstractController
 {
@@ -113,13 +115,32 @@ class BelleHistoireController extends AbstractController
     #[Route('/bellesHistoires/histoire/remove/{id}', name: 'remove_histoire')]
     public function removeHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire, UploaderService $uploaderService)
     {
-        $histoire = $bhr->find($histoire->getId());        
-        $photo = $histoire->getPhoto();
-        $folder = 'imgHistoire';
-        $uploaderService->delete($photo,$folder);   
+        $histoire = $bhr->find($histoire->getId());   
+        // Comme la photo est nullable dans l'entité, on doit ajouter cette condition sinon ça fait unen erreur si l'image est vide
+        if($histoire->getPhoto()){
+            $photo = $histoire->getPhoto();
+            $folder = 'imgHistoire';
+            $uploaderService->delete($photo,$folder);             
+        }     
+  
         $bhr->remove($histoire, $flush = true);
 
         return $this->redirectToRoute('app_belles_histoires');
+    }
+
+    #[Route('/comment/remove/{idHistoire}/{id}', name: 'remove_comment')]
+    #[ParamConverter("histoire", options: ["mapping" => ["idHistoire" => "id"]])]
+    #[ParamConverter("commentaire", options: ["mapping" => ["id" => "id"]])]
+    public function removeComment(CommentBelleHistoireRepository $cbhr, CommentBelleHistoire $comment, BelleHistoire $histoire)
+    {
+        $comment = $cbhr->find($comment->getId());
+        $histoire = $histoire->getId();
+        $cbhr->remove($comment, $flush = true);
+
+        return $this->redirectToRoute(
+            'show_histoire',
+            ['id' => $histoire]
+        );
     }
 
 }
