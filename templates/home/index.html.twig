@@ -8,15 +8,26 @@
     <h1>Bienvenue sur Une histoire de pattes !</h1>
 
     <section id="derniers-memoriaux">
+        <h3>Derniers mémoriaux</h3>
         {% for memorial in derniersMemoriaux %}
             <div class="memorial-recent">
                 {{ memorial.nom }}
                 <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">
+                <a href="{{path('show_memorial', {'id': memorial.id}) }}">Voir le Memorial</a>
             </div>
         {% endfor %}
     </section>
     <section id="dernieres-belles-histoires">
-
+        <h3>Dernières belles histoires</h3>
+        {% for histoire in dernieresHistoires %}
+            <div class="histoire-recente">
+                {{ histoire.titre }}
+                <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">
+                <p>{{ histoire.texte|slice(0, 100) }}...</p>
+                <p>{{ histoire.auteur }}</p>
+                <a href="{{path('show_histoire', {'id': histoire.id}) }}">Voir l'histoire</a>
+            </div>
+        {% endfor %}
     </section>
 </div>
 {% endblock %}
