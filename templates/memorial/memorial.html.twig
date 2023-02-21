@@ -19,7 +19,9 @@
 
         {{ memorial.chosesDetestees }}
 
-        {{ memorial.histoire }}        
+        {{ memorial.histoire }}    
+        
+        <a href="{{path('remove_memorial', {'id': memorial.id}) }}">Supprimer le mémorial</a>
     </section>
     <section id='galerie-photo'>
 
