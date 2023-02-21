@@ -144,16 +144,22 @@ class MemorialController extends AbstractController
 
         // Nous cherchons le mémorial ayant pour id l'id envoyé, puis nous l'enlevons de la base de données avec remove() (fonction intégrer de base au repository)
         $memorial = $amr->find($memorial->getId());
-        $photoMemo = $memorial->getPhoto();
-        $folder = 'imgMemorial';
-        $uploaderService->delete($photoMemo, $folder);
-        // On pense à récupérer les images de la galerie pour les effacer aussi dans le dossier imgGalerie et pas seulement en base de données
-        $photos = $memorial->getPhotos();
-        foreach($photos as $photo){
-            // On récupère la string et non l'objet en lui même, car il faut connaître le nom du fichier à supprimer            
-            $photo = $photo->getPhoto();
-            $folder = 'imgGalerie';
-            $uploaderService->delete($photo,$folder);            
+        // Comme la photo est nullable dans l'entité, on doit ajouter cette condition sinon ça fait unen erreur si l'image est vide
+        if($memorial->getPhoto()){
+            $photoMemo = $memorial->getPhoto();
+            $folder = 'imgMemorial';
+            $uploaderService->delete($photoMemo, $folder);            
+        }
+
+        if($memorial->getPhotos()){
+            // On pense à récupérer les images de la galerie pour les effacer aussi dans le dossier imgGalerie et pas seulement en base de données
+            $photos = $memorial->getPhotos();
+            foreach($photos as $photo){
+                // On récupère la string et non l'objet en lui même, car il faut connaître le nom du fichier à supprimer            
+                $photo = $photo->getPhoto();
+                $folder = 'imgGalerie';
+                $uploaderService->delete($photo,$folder);            
+            }            
         }
 
         /*  Les photos de la galerie seront aussi supprimées de l'entity Photo (qui représente la galerie photo comme plusieurs photos 
