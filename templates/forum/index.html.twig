@@ -11,6 +11,7 @@
     <div class="topic">
         {# <a href="{{path('show_topic', {'id' : categorie.id}) }}">{{ topic.titre }}</a> #}
         {{ topic.titre }}
+        <a href="{{path('show_topic', {'id': topic.id}) }}">Voir le topic</a>
     </div>
     {% endfor %}
 
