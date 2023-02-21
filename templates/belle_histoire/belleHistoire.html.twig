@@ -23,8 +23,8 @@
 
         {% for commentaire in histoire.commentaires %}
             <div class="commentaire">
-                <p>{{ commentaire.auteur }}</p>
-                <p>{{ commentaire.texte }}</p>
+                <p>{{ commentaire.texte }} ({{ commentaire.auteur }})</p>
+                <a href="{{ path('remove_comment', {'idHistoire': histoire.id, 'id': commentaire.id}) }}">Delete</a>
             </div>
         {% endfor %}
     </section>

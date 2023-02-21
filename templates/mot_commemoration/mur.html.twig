@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MotCommemorationController!{% endblock %}
+{% block title %}Mur de commémoration{% endblock %}
 
 {% block body %}
 
@@ -12,6 +12,7 @@
             <p>{{ mot.mot }}
             ({{ mot.auteur }}
             {{ mot.dateCreation | date('d-m-Y') }})
+            <a href="{{ path('remove_mot', {'id': mot.id}) }}">Delete</a>
             </p>
         </div>
     {% endfor %}
