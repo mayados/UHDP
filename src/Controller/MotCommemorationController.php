@@ -43,4 +43,13 @@ class MotCommemorationController extends AbstractController
         ]);
     }
 
+    #[Route('/mot/commemoration/remove/mot/{id}', name: 'remove_mot')]
+    public function removeMot(MotCommemorationRepository $mcr, MotCommemoration $mot)
+    {
+        $mot = $mcr->find($mot->getId());
+        $mcr->remove($mot, $flush = true);
+
+        return $this->redirectToRoute('app_mot_commemoration');
+    }
+
 }
