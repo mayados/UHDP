@@ -2,14 +2,65 @@
 
 {% block title %}Ajout mémorial{% endblock %}
 
-{% block body %}
 
+{% block javascripts %}
+    <script>
+        /* Une fois que les éléments de la page sont chargés, le code JavaScript peut s'exécuter */
+        window.addEventListener('DOMContentLoaded', (event) => {
+            var inputLieu = document.querySelector('#memorial_lieu');
+            var liste = document.createElement("ul");
+            inputLieu.appendChild(liste)         
+            /* il vaut mieux utiliser l'évènement input que les events keyboard, car les events keyboard risquent de ne pas
+            détecter les touches d'un clavier tactile (tablette / mobile), ni la reconnaissance vocale */
+            inputLieu.addEventListener("input", (event) => {
+                event.preventDefault();
+                // Lorsque le form est submitted, on appelle la fonction getInfosJeux
+                getInfos(liste);
+            })
+
+            function getInfos(liste){
+                fetch("https://geo.api.gouv.fr/communes?nom="+inputLieu.value+"&fields=departement&boost=population&limit=5")
+                // On crée une variable réponse par rapport aux éléments du dessus, qui va être transformée en json
+                .then( (response) => response.json())
+                // On donne un nom de variable pour récupérer les données
+                .then( (data)=> {
+
+                    data.forEach(ville => {
+
+                        let listItem = document.createElement("li")
+                        let listItemButton = document.createElement("button")
+                        listItemButton.innerHTML = ville.nom                        
+                        listItem.appendChild(listItemButton)
+                        liste.appendChild(listItem)                        
+                        console.log(listItem)
+                    });
+                document.querySelector("#form-lieu").appendChild(liste)
+                })                
+            }
+        })
+    </script>
+{% endblock %}
+
+{% block body %}
 
 <div class="container-page">
 
     <h3>Création d'un mémorial</h3>
 
     {{ form_start(formAddMemorial) }}    
+        {{ form_row(formAddMemorial.nom) }}
+        {{ form_row(formAddMemorial.sexe) }}
+        {{ form_row(formAddMemorial.dateNaissance) }}
+        {{ form_row(formAddMemorial.dateDeces) }}
+        <div id="form-lieu">
+            {{ form_row(formAddMemorial.lieu) }}            
+        </div>
+        {{ form_row(formAddMemorial.imgMemorial) }}
+        {{ form_row(formAddMemorial.presentation) }}
+        {{ form_row(formAddMemorial.chosesAimees) }}
+        {{ form_row(formAddMemorial.chosesDetestees) }}
+        {{ form_row(formAddMemorial.histoire) }}
+        {{ form_row(formAddMemorial.categorieAnimal) }}
     {{ form_end(formAddMemorial) }}
 
 </div>
