@@ -28,7 +28,7 @@ class HistoireType extends AbstractType
             ->add('texte', TextareaType::class, [
                 'label' => 'Texte',
                 'constraints' => [
-                    new Assert\NotBlank(['message' => 'La présentation ne peut pas être nulle']),
+                    new Assert\NotBlank(['message' => 'Le texte ne peut pas être nul']),
                 ]
             ])
             ->add('imgHistoire', FileType::class, [
@@ -48,7 +48,6 @@ class HistoireType extends AbstractType
                     ])
                 ]
             ])
-            ->add('auteur')
             ->add('submit', SubmitType::class)
         ;
     }

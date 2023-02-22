@@ -7,14 +7,19 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class PostType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('texte')
-            ->add('auteur')
+            ->add('texte', TextareaType::class, [
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'Le commentaire ne peut pas être nul']),
+                ]
+            ])
             ->add('submit', SubmitType::class)
         ;
     }

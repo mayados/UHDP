@@ -8,18 +8,27 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class TopicType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('titre')
+            ->add('titre', TextType::class, [
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'Le titre ne peut pas être vide']),
+                    new Assert\Length(['min' => 2, 'max' => 255, 'minMessage' => 'Le titre doit faire au moins {{ limit }} caractères', 'maxMessage' => 'Le titre ne peut pas faire plus de {{ limit }} caractères'])
+                ]
+            ])
             ->add('firstComment', TextareaType::class, [
                 'label' => "Commentaire",
                 'mapped' => false,
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'Le commentaire ne peut pas être nul']),
+                ]
             ])
-            ->add('auteur')
             ->add('submit', SubmitType::class)
         ;
     }

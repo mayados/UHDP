@@ -113,7 +113,6 @@ class MemorialType extends AbstractType
                     new Assert\NotNull(['message' => 'La catégorie ne peut pas être nulle']),
                 ]
             ])
-            ->add('auteur')
             ->add('submit', SubmitType::class)
         ;
     }

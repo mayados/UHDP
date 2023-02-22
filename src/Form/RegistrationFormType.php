@@ -10,16 +10,29 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email')
-            ->add('pseudo')
+            ->add('email', EmailType::class, [
+                'constraints' => [
+                    new Assert\Email(['message' => 'L\'email {{ value }} n\'est pas un email valide']),
+                    new Assert\NotBlank(['message' => 'L\'email ne peut pas être nul']),
+                ]
+            ])
+            ->add('pseudo', TextType::class, [
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'Le pseudo ne peut pas être nul']),
+                    new Assert\Length(['min' => 2, 'max' => 50, 'minMessage' => 'Le pseudo doit faire au moins {{ limit }} caractères', 'maxMessage' => 'Le pseudo ne peut pas faire plus de {{ limit }} caractères'])
+                ]
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
