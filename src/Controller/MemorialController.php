@@ -121,6 +121,7 @@ class MemorialController extends AbstractController
                 $image = $uploaderService->add($imgMemorial,$folder);
                 $memorial->setPhoto($image);                              
             }
+            $memorial->setAuteur($this->getUser());
             $memorial->setDateCreation($date); 
             // Dans tous les cas, on persist le memorial
             $entityManager = $doctrine->getManager();

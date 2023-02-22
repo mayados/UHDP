@@ -39,7 +39,8 @@ class ForumController extends AbstractController
         $form->handleRequest($request); 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $post = $form->getData();  
+            $post = $form->getData(); 
+            $post->setAuteur($this->getUser()); 
             $post->setTopic($topic);
             $post->setDateCreation($date);
             $topic->addPost($post);  
@@ -85,12 +86,13 @@ class ForumController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $topic = $form->getData();   
             $firstComment = $form->get('firstComment')->getData();
-            $auteurTopic = $form->get('auteur')->getData();
+            $auteurTopic = $this->getUser();
             $post->setTexte($firstComment);
             $post->setAuteur($auteurTopic);
             $post->setTopic($topic);
             $post->setDateCreation($date);
             $topic->addPost($post);
+            $topic->setAuteur($auteurTopic);
             $topic->setDateCreation($date); 
             $topic->setVerrouillage(0);
             $entityManager = $doctrine->getManager();

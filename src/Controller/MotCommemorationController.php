@@ -27,6 +27,7 @@ class MotCommemorationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $mot = $form->getData();  
+            $mot->setAuteur($this->getUser());
             $mot->setDateCreation($date);
             $entityManager = $doctrine->getManager();
             $entityManager->persist($mot);

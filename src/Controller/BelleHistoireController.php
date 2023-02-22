@@ -33,6 +33,7 @@ class BelleHistoireController extends AbstractController
     #[Route('/bellesHistoires/histoire/{id}', name: 'show_histoire')]
     public function showHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire, ManagerRegistry $doctrine, Request $request): Response
     {
+
         $histoire = $bhr->find($histoire->getId());
 
         $commentaire = new CommentBelleHistoire();
@@ -41,6 +42,8 @@ class BelleHistoireController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $commentaire = $form->getData();  
             $dateNow = new \DateTime();
+            $commentaire->setAuteur($this->getUser());
+            $commentaire->setBelleHistoire($histoire);
             $commentaire->setDateCreation($dateNow);
             $histoire->addCommentaire($commentaire);  
             $entityManager = $doctrine->getManager();
@@ -96,6 +99,7 @@ class BelleHistoireController extends AbstractController
 
 
             }
+            $histoire->setAuteur($this->getUser());
             $histoire->setDateCreation($date); 
             // Dans tous les cas, on persist le memorial
             $entityManager = $doctrine->getManager();
