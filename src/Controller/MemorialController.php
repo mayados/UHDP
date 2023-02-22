@@ -7,10 +7,11 @@ use App\Form\MemorialType;
 use App\Entity\AnimalMemorial;
 use App\Form\GaleriePhotoType;
 use App\Entity\CategorieAnimal;
+use App\Service\UploaderService;
+use App\Repository\PhotoRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\AnimalMemorialRepository;
 use App\Repository\CategorieAnimalRepository;
-use App\Service\UploaderService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,6 +19,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class MemorialController extends AbstractController
 {
@@ -103,7 +105,7 @@ class MemorialController extends AbstractController
 
         $form = $this->createForm(MemorialType::class, $memorial);
         $form->handleRequest($request);
-
+        // dd($this->getUser());
         if ($form->isSubmitted() && $form->isValid()) {
             $memorial = $form->getData();            
             $imgMemorial = $form->get('imgMemorial')->getData();
@@ -168,6 +170,22 @@ class MemorialController extends AbstractController
         $amr->remove($memorial, $flush = true);
 
         return $this->redirectToRoute("app_memoriaux");
+    }
+
+    #[Route('/memorial/{idMemorial}/galerie/delete/{id}', name: 'remove_photo')]
+    #[ParamConverter("memorial", options: ["mapping" => ["idMemorial" => "id"]])]
+    #[ParamConverter("image", options: ["mapping" => ["id" => "id"]])]
+    public function removePhotoGalerie(PhotoRepository $pr, Photo $photo, AnimalMemorial $memorial, UploaderService $uploaderService)
+    {
+        $photo = $pr->find($photo->getId());
+        $folder = 'imgGalerie';
+        $uploaderService->delete($photo->getPhoto(),$folder);
+        $pr->remove($photo, $flush = true);
+
+        return $this->redirectToRoute(
+            'show_memorial',
+            ['id' => $memorial->getId()],
+        );
     }
 
 }
