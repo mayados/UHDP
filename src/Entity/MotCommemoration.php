@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\MotCommemorationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MotCommemorationRepository::class)]
 class MotCommemoration
@@ -15,6 +16,11 @@ class MotCommemoration
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank()]
+    #[Assert\Length(
+        min: 4,
+        max: 500,
+    )]
     private ?string $mot = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]

@@ -6,6 +6,7 @@ use App\Repository\CategorieAnimalRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategorieAnimalRepository::class)]
 class CategorieAnimal
@@ -16,6 +17,11 @@ class CategorieAnimal
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank()]
+    #[Assert\Length(
+        min: 1,
+        max: 50,
+    )]
     private ?string $nom = null;
 
     #[ORM\OneToMany(mappedBy: 'categorieAnimal', targetEntity: AnimalMemorial::class)]
