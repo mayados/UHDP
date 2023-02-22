@@ -61,6 +61,10 @@ class MemorialType extends AbstractType
             ])
             ->add('lieu', TextType::class, [
                 'required' => false,
+                // Certains navigateurs ont une autocomplétion de base, mais nous ne la voulons pas car nous en créons une 
+                'attr' => [
+                    'autocomplete' => 'off',
+                ],
                 'constraints' => [
                     new Assert\Length(['min' => 2, 'max' => 100, 'minMessage' => 'Le lieu doit faire au moins {{ limit }} caractères', 'maxMessage' => 'Le lieu ne peut pas faire plus de {{ limit }} caractères'])
                 ]
