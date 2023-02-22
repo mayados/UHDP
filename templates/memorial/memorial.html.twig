@@ -32,6 +32,7 @@
         {% for image in memorial.photos %}
             <div class="image-galerie">
                     <img src="{{ asset('uploads/imgGalerie/'~ image.photo) }}" alt="photo de l'animal">
+                    <a href="{{path('remove_photo', {'idMemorial': memorial.id, 'id': image.id}) }}">Supprimer la photo</a>
             </div>
         {% endfor %}
 
