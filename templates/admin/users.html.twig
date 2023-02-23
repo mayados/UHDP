@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Utilisateurs{% endblock %}
+
+{% block body %}
+
+<div class="container-page">
+
+    <h2>Liste des utilisateurs</h2>
+
+    <h5>Utilisateurs bannis</h5>
+
+    {% for banni in utilisateursBannis %}
+        <p>{{ banni.pseudo }}</p>
+    {% endfor %}
+
+    <h5>Utilisateurs non bannis</h5>
+
+    {% for utilisateur in utilisateursNonBannis %}
+        <p>{{ utilisateur.pseudo }}</p>
+    {% endfor %}
+
+</div>
+{% endblock %}
