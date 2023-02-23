@@ -16,6 +16,10 @@ doctrine:
                 prefix: 'App\Entity'
                 alias: App
 
+        dql:
+            string_functions:
+                JSON_EXTRACT: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonExtract                
+
 when@test:
     doctrine:
         dbal:
@@ -33,6 +37,8 @@ when@prod:
             result_cache_driver:
                 type: pool
                 pool: doctrine.result_cache_pool
+
+
 
     framework:
         cache:
