@@ -11,6 +11,10 @@
         <p>Pas de photo</p>
     {% endif %}
     <h5>{{ user.pseudo }}</h5>
-    <a href="{{ path('ban_user', {'id': user.id}) }}">Bannir</a>
+    {% if user.isBannir == false %}
+        <a href="{{ path('ban_user', {'id': user.id}) }}">Bannir</a>
+    {% else %}
+        <a href="{{ path('ban_user', {'id': user.id}) }}">Dé-bannir</a>
+    {% endif %}
 </div>
 {% endblock %}
