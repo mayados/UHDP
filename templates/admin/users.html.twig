@@ -11,13 +11,18 @@
     <h5>Utilisateurs bannis</h5>
 
     {% for banni in utilisateursBannis %}
-        <p>{{ banni.pseudo }}</p>
+        <div class="banni">
+            <p>{{ banni.pseudo }}  </p>  
+            <a href="{{ path('show_profile', {'id': banni.id}) }}">Voir le profil</a>      
+        </div>
+
     {% endfor %}
 
     <h5>Utilisateurs non bannis</h5>
 
     {% for utilisateur in utilisateursNonBannis %}
         <p>{{ utilisateur.pseudo }}</p>
+        <a href="{{ path('show_profile', {'id': utilisateur.id}) }}">Voir le profil</a>
     {% endfor %}
 
 </div>
