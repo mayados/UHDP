@@ -16,5 +16,29 @@
     {% else %}
         <a href="{{ path('ban_user', {'id': user.id}) }}">Dé-bannir</a>
     {% endif %}
+
+    <h5>Mémoriaux créés</h5>
+
+    {% if user.memoriaux | length == 0 %}
+        <p>Pas de mémoriaux créés</p>
+    {% else %}
+        {% for memorial in user.memoriaux %}
+            <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="">
+            <p>{{ memorial.nom }}</p>
+            <a href="{{ path('show_memorial', {'id': memorial.id}) }}">Voir le mémorial</a>
+        {% endfor %}
+    {% endif %}
+
+    <h5>Belles Histoires créées</h5>
+
+    {% if user.bellesHistoires | length == 0 %}
+    <p>Pas de belles histoires créées</p>
+    {% else %}
+        {% for histoire in user.bellesHistoires %}
+            <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="">
+            <p>{{ memorial.nom }}</p>
+            <a href="{{ path('show_histoire', {'id': histoire.id}) }}">Lire l'histoire</a>
+        {% endfor %}
+    {% endif %}
 </div>
 {% endblock %}
