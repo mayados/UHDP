@@ -57,9 +57,24 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     // Trouver que les roles user pas les admin
-    public function findUsersBanned()
+    public function findBannedUsersNotAdmin()
     {
+        return $this->createQueryBuilder('u')
+            ->where("JSON_EXTRACT(u.roles, '$[0]') = 'ROLE_USER'")
+            ->andWhere('u.bannir = 1')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
+    public function findNotBannedUsersNotAdmin()
+    {
+        return $this->createQueryBuilder('u')
+            ->where("JSON_EXTRACT(u.roles, '$[0]') = 'ROLE_USER'")
+            ->andWhere('u.bannir = 0')
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
 //    /**
