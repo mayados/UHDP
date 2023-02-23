@@ -5,45 +5,49 @@
 
 {% block javascripts %}
     <script>
-        /* Une fois que les éléments de la page sont chargés, le code JavaScript peut s'exécuter */
+                /* Une fois que les éléments de la page sont chargés, le code JavaScript peut s'exécuter */
         window.addEventListener('DOMContentLoaded', (event) => {
             var inputLieu = document.querySelector('#memorial_lieu');
-                    
             /* il vaut mieux utiliser l'évènement input que les events keyboard, car les events keyboard risquent de ne pas
             détecter les touches d'un clavier tactile (tablette / mobile), ni la reconnaissance vocale */
             inputLieu.addEventListener("input", (event) => {
+                let searchValue = inputLieu.value;   
                 event.preventDefault();
                 removeListe();       
-                getInfos();
+                getInfos(searchValue);
             })
 
-            function getInfos(){
+            function getInfos(searchValue){
                 // S'il n'y a pas de valeur on ne return rien, et les éléments au bas de la fonction ne s'exécutent pas
-                if(inputLieu.value == '') return;                     
-                fetch("https://geo.api.gouv.fr/communes?nom="+inputLieu.value+"&fields=departement&limit=5")
-                // On crée une variable réponse par rapport aux éléments du dessus, qui va être transformée en json
-                .then( (response) => response.json())
-                // On donne un nom de variable pour récupérer les données
-                .then( (data)=> {
-                    
-                var liste = document.createElement("ul");
-                liste.id = "autocomplete-list"
-                inputLieu.appendChild(liste)                          
-
-                    data.forEach(ville => {
-                        let listItem = document.createElement("li")
-                        let listItemButton = document.createElement("button")
-                        listItemButton.innerHTML = ville.nom +" ("+ ville.departement.code +"-"+ ville.departement.nom+")"
-                        console.log(listItemButton.innerHTML)
-                        listItemButton.addEventListener("click", clickListItemButton)                  
-                        listItem.appendChild(listItemButton)
-                        liste.appendChild(listItem)                        
-                    });
-                document.querySelector("#form-lieu").appendChild(liste)
-                })  
-       
+                if(searchValue == '') return;  
+                const url = "/villes";  
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Accept': '*/*'
+                    },
+                    body: new URLSearchParams({
+                        'searchValue': searchValue
+                    })
+                })   
+                .then(async (response) => {
+                    const data = await response.json();
+                    var liste = document.createElement("ul");
+                    liste.id = "autocomplete-list"
+                    inputLieu.appendChild(liste)                          
+                        data.forEach(ville => {
+                            let listItem = document.createElement("li")
+                            let listItemButton = document.createElement("button")
+                            listItemButton.innerHTML = ville.nom +" ("+ ville.departement.code +"-"+ ville.departement.nom+")"
+                            listItemButton.addEventListener("click", clickListItemButton)                  
+                            listItem.appendChild(listItemButton)
+                            liste.appendChild(listItem) 
+                                               
+                        });
+                    document.querySelector("#form-lieu").appendChild(liste)                    
+                })
             }
-
             function removeListe(){
                 var liste = document.querySelector("#autocomplete-list")
                 // Si la liste existe, on la retire du document
@@ -61,6 +65,7 @@
                 removeListe();
             }
         })
+
     </script>
 {% endblock %}
 
