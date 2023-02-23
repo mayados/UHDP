@@ -22,14 +22,13 @@ class UserController extends AbstractController
     #[Route('/users', name: 'app_users')]
     public function findUsers(UserRepository $ur): Response
     {
-        $utilisateursBannis = $ur->findBy(['bannir' => '1']);
-        $utilisateursNonBannis = $ur->findBy(['bannir' => '0']);
+        $utilisateursBannis = $ur->findBannedUsersNotAdmin();
+        $utilisateursNonBannis = $ur->findNotBannedUsersNotAdmin();
 
         return $this->render('admin/users.html.twig', [
             'utilisateursBannis' => $utilisateursBannis,
             'utilisateursNonBannis' => $utilisateursNonBannis,
         ]);
-
     }
 
     #[Route('/user/{id}', name: 'show_profile')]
