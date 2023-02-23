@@ -17,6 +17,11 @@ framework:
     php_errors:
         log: true
 
+    http_client:
+        scoped_clients:
+            geo:
+                base_uri: https://geo.api.gouv.fr
+
 when@test:
     framework:
         test: true
