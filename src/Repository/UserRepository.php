@@ -56,6 +56,12 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->save($user, true);
     }
 
+    // Trouver que les roles user pas les admin
+    public function findUsersBanned()
+    {
+
+    }
+
 //    /**
 //     * @return User[] Returns an array of User objects
 //     */
