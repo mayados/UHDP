@@ -21,7 +21,7 @@ class ForumController extends AbstractController
     public function index(TopicRepository $tr): Response
     {
 
-        $topics = $tr->findBy([],['dateCreation' => 'ASC']);
+        $topics = $tr->findBy([],['dateCreation' => 'DESC']);
         
         return $this->render('forum/index.html.twig', [
             'topics' => $topics,
