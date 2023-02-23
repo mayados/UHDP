@@ -20,6 +20,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use App\HttpClient\GEOHttpClient as GEOHttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class MemorialController extends AbstractController
 {
@@ -89,9 +91,17 @@ class MemorialController extends AbstractController
         ]);
     }
 
+    // Pour autocompléter le nom du lieu du mémorial (ne fonctionne pas quand la requête est effectuée avec la route /memoriaux/add)
+    #[Route('/villes', name: 'add_ville', methods: ['POST'])]
+    public function lieu(Request $request, GEOHttpClient $geo){
+        $search = $request->request->get('searchValue');
+        return new Response($geo->getVilles($search));
+        return $this->render('memorial/add.html.twig');
+    }
+
     #[Route('/memoriaux/add', name: 'add_memorial')]
     #[Route('/memoriaux/edit/{id}', name: 'edit_memorial')]
-    public function add(ManagerRegistry $doctrine, AnimalMemorial $memorial = null, UploaderService $uploaderService, Request $request): Response
+    public function add(ManagerRegistry $doctrine, AnimalMemorial $memorial = null, UploaderService $uploaderService, Request $request, GEOHttpClient $geo): Response
     {
 
         $edit = false;
