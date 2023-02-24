@@ -77,20 +77,24 @@ class BelleHistoireController extends AbstractController
     public function addHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire = null, UploaderService $uploaderService, ManagerRegistry $doctrine, Request $request): Response
     {
 
-        // Vérifier s'il y a un utilisateur connecté, sinon rediriger vers la page de login
-        // Vérifier si c'est un édit ou autre grâce à un switch ?
-        // Dans le cas d'un édit, vérifier que le current user est égal à histoire->getAuteur() ou qu'il soit admin
-        // Dans le cas d'un ajout : il faut juste être connecté ET vérifié
+        // Vérifier si c'est un édit ou une création
+        // Dans le cas d'un édit, vérifier que le current user est égal à histoire->getAuteur() ou qu'il soit admin //if(isset id && (user == createur || user == admin))
+        // Dans le cas d'un ajout : il faut juste être connecté ET vérifié // elseif (user connected) //else redirect
 
         if($this->getUser()){
             $edit = false;
-            if($histoire){
+            if($histoire && ($this->getUser() == $histoire->getAuteur() || $this->getUser()->getRoles()['0'] == "ROLE_ADMIN")){
                 $edit = true;
                 $date = $histoire->getDateCreation();
-            }else{
+                $auteur = $histoire->getAuteur();
+            }elseif(!$histoire && $this->getUser()->isVerified()){
                 $histoire = new BelleHistoire();
-                $date = new \DateTime();            
+                $date = new \DateTime();          
+                $auteur = $this->getUser();  
+            }else{
+                return $this->redirectToRoute('app_login');
             }
+
 
             $form = $this->createForm(HistoireType::class, $histoire);
             $form->handleRequest($request);
@@ -115,7 +119,7 @@ class BelleHistoireController extends AbstractController
 
 
                 }
-                $histoire->setAuteur($this->getUser());
+                $histoire->setAuteur($auteur);
                 $histoire->setDateCreation($date); 
                 // Dans tous les cas, on persist le memorial
                 $entityManager = $doctrine->getManager();
@@ -132,7 +136,7 @@ class BelleHistoireController extends AbstractController
             ]);            
         }
 
-        // S'il n'y a pas de User, il est rédirigé vers la page de connexion
+        // S'il n'y a pas de User, ou qu'il ne s'est pas vérifié, il est rédirigé vers la page de connexion
         return $this->redirectToRoute('app_login');
         
     }
@@ -140,17 +144,23 @@ class BelleHistoireController extends AbstractController
     #[Route('/bellesHistoires/histoire/remove/{id}', name: 'remove_histoire')]
     public function removeHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire, UploaderService $uploaderService)
     {
-        $histoire = $bhr->find($histoire->getId());   
-        // Comme la photo est nullable dans l'entité, on doit ajouter cette condition sinon ça fait unen erreur si l'image est vide
-        if($histoire->getPhoto()){
-            $photo = $histoire->getPhoto();
-            $folder = 'imgHistoire';
-            $uploaderService->delete($photo,$folder);             
-        }     
-  
-        $bhr->remove($histoire, $flush = true);
+        $histoire = $bhr->find($histoire->getId());  
 
-        return $this->redirectToRoute('app_belles_histoires');
+        if($this->getUser() && ($this->getUser() == $histoire->getAuteur() || $this->getUser()->getRoles()['0'] == "ROLE_ADMIN")){
+            // Comme la photo est nullable dans l'entité, on doit ajouter cette condition sinon ça fait unen erreur si l'image est vide
+            if($histoire->getPhoto()){
+                $photo = $histoire->getPhoto();
+                $folder = 'imgHistoire';
+                $uploaderService->delete($photo,$folder);             
+            }     
+    
+            $bhr->remove($histoire, $flush = true);
+
+            return $this->redirectToRoute('app_belles_histoires');            
+        }
+        
+        return $this->redirectToRoute('app_login');
+
     }
 
     #[Route('/comment/remove/{idHistoire}/{id}', name: 'remove_comment')]
@@ -159,13 +169,19 @@ class BelleHistoireController extends AbstractController
     public function removeComment(CommentBelleHistoireRepository $cbhr, CommentBelleHistoire $comment, BelleHistoire $histoire)
     {
         $comment = $cbhr->find($comment->getId());
-        $histoire = $histoire->getId();
-        $cbhr->remove($comment, $flush = true);
 
-        return $this->redirectToRoute(
-            'show_histoire',
-            ['id' => $histoire]
-        );
+        if($this->getUser() && ( $this->getUser() == $comment->getAuteur() || $this->getUser()->getRoles()['0'] == "ROLE_ADMIN")){
+            $histoire = $histoire->getId();
+            $cbhr->remove($comment, $flush = true);
+
+            return $this->redirectToRoute(
+                'show_histoire',
+                ['id' => $histoire]
+            );            
+        }
+
+        return $this->redirectToRoute('app_login');
+
     }
 
 }
