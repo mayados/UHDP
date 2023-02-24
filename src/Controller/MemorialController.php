@@ -146,6 +146,7 @@ class MemorialController extends AbstractController
 
         return $this->render('memorial/add.html.twig', [
             'formAddMemorial' => $form->createView(),
+            'edit' => $edit,
         ]);
 
     }
