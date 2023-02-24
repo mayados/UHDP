@@ -17,16 +17,23 @@
         <a href="{{ path('remove_histoire', {'id': histoire.id}) }}">Supprimer l'histoire</a>
     </section>
     <section id="comment-histoire">
-        <h4>Ajouter un commentaire</h4>
-        {{ form_start(formAddComment) }}    
-        {{ form_end(formAddComment) }} 
-
+        <h3>Commentaires</h3>
         {% for commentaire in histoire.commentaires %}
             <div class="commentaire">
                 <p>{{ commentaire.texte }} ({{ commentaire.auteur }})</p>
                 <a href="{{ path('remove_comment', {'idHistoire': histoire.id, 'id': commentaire.id}) }}">Delete</a>
             </div>
-        {% endfor %}
+        {% endfor %}           
+            <h4>Ajouter un commentaire</h4>        
+        {% if app.user and app.user.isVerified %}
+            {{ form_start(formAddComment) }}    
+            {{ form_end(formAddComment) }}      
+        {% elseif app.user and not app.user.isVerified %}
+            <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir commenter</p>
+        {% else %}
+            <p>Veuillez vous inscrire ou vous connecter pour pouvoir commenter</p>
+        {% endif %}
+
     </section>
 
 </div>

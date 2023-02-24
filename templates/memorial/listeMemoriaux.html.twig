@@ -13,7 +13,14 @@
         </div>
     {% endfor %}
     </div>
-
+    {% if app.user and app.user.isVerified %}
+        <a href="{{ path('add_memorial') }}">Créer un mémorial</a>
+    {% elseif app.user and not app.user.isVerified %}
+        <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir créer un mémorial</p>
+    {% else %}
+        <p>Veuillez vous inscrire ou vous connecter pour pouvoir créer un mémorial</p>
+    {% endif %}
+    <div id="memoriaux">
     {% for memorial in listeMemoriaux %}
         <div class="memorial">
             <p>{{ memorial.nom }}</p>
@@ -26,7 +33,8 @@
             <p>{{ memorial.presentation|slice(0, 20) }}...</p>
             <a href="{{path('show_memorial', {'id': memorial.id}) }}">Voir le Memorial</a>
         </div>
-    {% endfor %}
+    {% endfor %}        
+    </div>
 
 </div>
 

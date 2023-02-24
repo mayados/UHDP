@@ -6,7 +6,17 @@
 
 <div class="container-page">
 
-    {{ categorie.nom }}
+    <div class="categorie">
+        {{ categorie.nom }}        
+    </div>
+
+    {% if app.user and app.user.isVerified %}
+        <a href="{{ path('add_memorial') }}">Créer un mémorial</a>
+    {% elseif app.user and not app.user.isVerified %}
+        <p>Veuillez cliquer sur le lien envoé à votre adresse mail pour pouvoir créer un mémorial</p>
+    {% else %}
+        <p>Veuillez vous inscrire ou vous connecter pour pouvoir créer un mémorial</p>
+    {% endif %}
 
     {% if categorie.animaux | length > 0 %}
         {% for memorial in memoriaux %}

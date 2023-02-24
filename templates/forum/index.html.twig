@@ -5,6 +5,12 @@
 {% block body %}
 
 <div class="container-page">
+
+    {% if app.user.isVerified %}
+        <a href="{{ path('add_topic') }}">Créer un topic</a>
+    {% else %}
+        <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir créer un topic</p>
+    {% endif %}
     <h2>Les topics</h2>
 
     {% for topic in topics %}

@@ -9,6 +9,10 @@
     <section id="memorial-infos">
         <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">
 
+        {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+            <a href="{{ path('show_profile', {'id': memorial.auteur.id}) }}">{{ memorial.auteur }}</a>
+        {% endif %}
+
         {{ memorial.nom }}
 
         {{ memorial.dateNaissance | date('d-m-Y') }}

@@ -24,13 +24,26 @@
 
     <a href="{{ path('verrouillage_topic', {'id': topic.id}) }}">Verrouiller le topic</a>
 
+
+
+
+
+
     {% if topic.verrouillage == 0 %}
         <h5>Ajout de commentaires</h5>
-
-        {{ form_start(formAddPost) }}    
-        {{ form_end(formAddPost) }}
+        {% if app.user.isVerified %}
+            {{ form_start(formAddPost) }}    
+            {{ form_end(formAddPost) }}
+        {% else %}
+        <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir commenter</p>
+        {% endif %}
+    {% else %}
+        <p>Le topic est verrouillé, vous ne pouvez plus écrire de message</p>
     {% endif %}
 
 </div>
+
+
+
 
 {% endblock %}

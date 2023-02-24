@@ -6,6 +6,14 @@
 
 <div class="container-page">
 
+    {% if app.user and app.user.isVerified %}
+        <a href="{{ path('add_histoire') }}">Créer une belle histoire</a>
+    {% elseif app.user and not app.user.isVerified %}
+        <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir créer une belle histoire</p>
+    {% else %}
+        <p>Veuillez vous inscrire ou vous connecter pour pouvoir créer une belle histoire</p>
+    {% endif %}
+
     <h2> Les belles histoires</h2>
 
     {% for histoire in listeHistoires %}

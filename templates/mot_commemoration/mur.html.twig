@@ -10,14 +10,23 @@
     {% for mot in mots %}
         <div class="mot">
             <p>{{ mot.mot }}
-            ({{ mot.auteur }}
+            {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+                ({{ mot.auteur }}
+            {% endif %}
             {{ mot.dateCreation | date('d-m-Y') }})
             <a href="{{ path('remove_mot', {'id': mot.id}) }}">Delete</a>
             </p>
         </div>
     {% endfor %}
 
-    {{ form_start(formAddMot) }}
-    {{ form_end(formAddMot) }}
+    <div id="ajout-mot">
+        {% if app.user and app.user.isVerified %}
+            {{ form_start(formAddMot) }}
+            {{ form_end(formAddMot) }}          
+        {% elseif app.user and not app.user.isVerified %}
+            <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir ajouter un mot</p>
+        {% endif %}
+    </div>
+
 </div>
 {% endblock %}
