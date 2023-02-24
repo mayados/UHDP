@@ -27,18 +27,27 @@
 
         {{ memorial.histoire }}    
         
-        <a href="{{path('remove_memorial', {'id': memorial.id}) }}">Supprimer le mémorial</a>
+        {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+            <a href="{{path('remove_memorial', {'id': memorial.id}) }}">Supprimer le mémorial</a>
+        {% endif %}
+  
     </section>
     <section id='galerie-photo'>
 
-        <h3>Ajouter une photo à la galerie</h3>
-        {{ form_start(formAddPhotoGalerie) }}    
-        {{ form_end(formAddPhotoGalerie) }}
+        <h3>Galerie photo</h3>
+
+        {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+            <h4>Ajouter une photo à la galerie</h4>
+            {{ form_start(formAddPhotoGalerie) }}    
+            {{ form_end(formAddPhotoGalerie) }}
+        {% endif %}
 
         {% for image in memorial.photos %}
             <div class="image-galerie">
                     <img src="{{ asset('uploads/imgGalerie/'~ image.photo) }}" alt="photo de l'animal">
-                    <a href="{{path('remove_photo', {'idMemorial': memorial.id, 'id': image.id}) }}">Supprimer la photo</a>
+                    {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+                        <a href="{{path('remove_photo', {'idMemorial': memorial.id, 'id': image.id}) }}">Supprimer la photo</a>
+                    {% endif %}
             </div>
         {% endfor %}
 

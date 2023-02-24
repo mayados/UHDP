@@ -14,14 +14,19 @@
         {% endif %}
         <p>Date de création {{ histoire.dateCreation | date('d-m-Y') }}</p>
         <p>{{ histoire.texte }}</p>
-        <a href="{{ path('remove_histoire', {'id': histoire.id}) }}">Supprimer l'histoire</a>
+        {% if app.user == histoire.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+            <a href="{{ path('remove_histoire', {'id': histoire.id}) }}">Supprimer l'histoire</a>
+            <a href="{{ path('edit_histoire', {'id': histoire.id}) }}">Edit l'histoire</a>
+        {% endif %}
     </section>
     <section id="comment-histoire">
         <h3>Commentaires</h3>
         {% for commentaire in histoire.commentaires %}
             <div class="commentaire">
                 <p>{{ commentaire.texte }} ({{ commentaire.auteur }})</p>
-                <a href="{{ path('remove_comment', {'idHistoire': histoire.id, 'id': commentaire.id}) }}">Delete</a>
+                {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+                    <a href="{{ path('remove_comment', {'idHistoire': histoire.id, 'id': commentaire.id}) }}">Delete</a>
+                {% endif %}
             </div>
         {% endfor %}           
             <h4>Ajouter un commentaire</h4>        

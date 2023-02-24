@@ -12,24 +12,28 @@
 
     {{ topic.auteur }}
 
-    <a href="{{path('remove_topic', {'id': topic.id}) }}">Supprimer le topic</a>
- 
+    {% if app.user == topic.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+        <a href="{{path('remove_topic', {'id': topic.id}) }}">Supprimer le topic</a>
+        <a href="{{ path('edit_topic', {'id': topic.id}) }}">Edit</a>
+        {% if topic.isVerrouillage %}
+            <a href="{{ path('verrouillage_topic', {'id': topic.id}) }}">Déverouiller le topic</a> 
+        {% else %}
+            <a href="{{ path('verrouillage_topic', {'id': topic.id}) }}">Verouiller le topic</a>
+        {% endif %}
+    {% endif %}
+
+
     {% for post in topic.posts %}
         <div class="post">
             {{ post.texte }}
             ({{ post.auteur }})
-            <a href="{{path('remove_post', {'id': post.id, 'idTopic': topic.id}) }}">Delete</a>
+            {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+                <a href="{{path('remove_post', {'id': post.id, 'idTopic': topic.id}) }}">Delete</a>
+            {% endif %}
         </div>
     {% endfor %}
 
-    <a href="{{ path('verrouillage_topic', {'id': topic.id}) }}">Verrouiller le topic</a>
-
-
-
-
-
-
-    {% if topic.verrouillage == 0 %}
+    {% if not topic.isVerrouillage %}
         <h5>Ajout de commentaires</h5>
         {% if app.user.isVerified %}
             {{ form_start(formAddPost) }}    
