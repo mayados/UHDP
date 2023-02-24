@@ -36,30 +36,39 @@ class BelleHistoireController extends AbstractController
 
         $histoire = $bhr->find($histoire->getId());
 
-        $commentaire = new CommentBelleHistoire();
-        $form = $this->createForm(CommentHistoireType::class, $commentaire);
-        $form->handleRequest($request); 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $commentaire = $form->getData();  
-            $dateNow = new \DateTime();
-            $commentaire->setAuteur($this->getUser());
-            $commentaire->setBelleHistoire($histoire);
-            $commentaire->setDateCreation($dateNow);
-            $histoire->addCommentaire($commentaire);  
-            $entityManager = $doctrine->getManager();
-            $entityManager->persist($commentaire);
-            $entityManager->flush();                                  
+        // S'il y a un utilisateur et qu'il est vérifié, il a le droit à accéder au formulaire de commentaire, sinon non
+        if($this->getUser() && $this->getUser()->isVerified() === true){
+            $commentaire = new CommentBelleHistoire();
+            $form = $this->createForm(CommentHistoireType::class, $commentaire);
+            $form->handleRequest($request); 
+            if ($form->isSubmitted() && $form->isValid()) {
+                $commentaire = $form->getData();  
+                $dateNow = new \DateTime();
+                $commentaire->setAuteur($this->getUser());
+                $commentaire->setBelleHistoire($histoire);
+                $commentaire->setDateCreation($dateNow);
+                $histoire->addCommentaire($commentaire);  
+                $entityManager = $doctrine->getManager();
+                $entityManager->persist($commentaire);
+                $entityManager->flush();                                  
 
-            return $this->redirectToRoute(
-                'show_histoire',
-                ['id' => $histoire->getId()]
-            );
+                return $this->redirectToRoute(
+                    'show_histoire',
+                    ['id' => $histoire->getId()]
+                );
+            }
+
+            return $this->render('belle_histoire/belleHistoire.html.twig', [
+                'histoire' => $histoire,
+                'formAddComment' => $form->createView(),
+            ]);
+
         }
 
         return $this->render('belle_histoire/belleHistoire.html.twig', [
             'histoire' => $histoire,
-            'formAddComment' => $form->createView(),
         ]);
+
         
     }
 
@@ -67,52 +76,64 @@ class BelleHistoireController extends AbstractController
     #[Route('/bellesHistoires/edit/{id}', name: 'edit_histoire')]
     public function addHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire = null, UploaderService $uploaderService, ManagerRegistry $doctrine, Request $request): Response
     {
-        $edit = false;
-        if($histoire){
-            $edit = true;
-            $date = $histoire->getDateCreation();
-        }else{
-            $histoire = new BelleHistoire();
-            $date = new \DateTime();            
-        }
 
-        $form = $this->createForm(HistoireType::class, $histoire);
-        $form->handleRequest($request);
+        // Vérifier s'il y a un utilisateur connecté, sinon rediriger vers la page de login
+        // Vérifier si c'est un édit ou autre grâce à un switch ?
+        // Dans le cas d'un édit, vérifier que le current user est égal à histoire->getAuteur() ou qu'il soit admin
+        // Dans le cas d'un ajout : il faut juste être connecté ET vérifié
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $histoire = $form->getData();            
-               
-            $imgHistoire = $form->get('imgHistoire')->getData();
-            if($imgHistoire){
-                // Si on est dans le cas d'un edit et qu'une nouvelle image est uploadée (car lors d'un ajout on ne va pas supprimer le fichier qu'ion crée..)
-                if($histoire->getPhoto() != null){
-                    // On cherche la photo stockée pour le mémorial correspondant
-                    $previousPhoto = $histoire->getPhoto();
-
-                    $folder = 'imgHistoire';
-                    $uploaderService->delete($previousPhoto,$folder);
-                }
-                // Dans le cas où il y a une image soumise mais que le mémorial n'a pas encore d'image (=> cas d'ajout de mémorial ou edit sans image)
-                $folder = 'imgHistoire';
-                $image = $uploaderService->add($imgHistoire,$folder);
-                $histoire->setPhoto($image);     
-
-
+        if($this->getUser()){
+            $edit = false;
+            if($histoire){
+                $edit = true;
+                $date = $histoire->getDateCreation();
+            }else{
+                $histoire = new BelleHistoire();
+                $date = new \DateTime();            
             }
-            $histoire->setAuteur($this->getUser());
-            $histoire->setDateCreation($date); 
-            // Dans tous les cas, on persist le memorial
-            $entityManager = $doctrine->getManager();
-            $entityManager->persist($histoire);
-            $entityManager->flush();
+
+            $form = $this->createForm(HistoireType::class, $histoire);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $histoire = $form->getData();            
+                
+                $imgHistoire = $form->get('imgHistoire')->getData();
+                if($imgHistoire){
+                    // Si on est dans le cas d'un edit et qu'une nouvelle image est uploadée (car lors d'un ajout on ne va pas supprimer le fichier qu'ion crée..)
+                    if($histoire->getPhoto() != null){
+                        // On cherche la photo stockée pour le mémorial correspondant
+                        $previousPhoto = $histoire->getPhoto();
+
+                        $folder = 'imgHistoire';
+                        $uploaderService->delete($previousPhoto,$folder);
+                    }
+                    // Dans le cas où il y a une image soumise mais que le mémorial n'a pas encore d'image (=> cas d'ajout de mémorial ou edit sans image)
+                    $folder = 'imgHistoire';
+                    $image = $uploaderService->add($imgHistoire,$folder);
+                    $histoire->setPhoto($image);     
 
 
-            return $this->redirectToRoute('app_belles_histoires');
+                }
+                $histoire->setAuteur($this->getUser());
+                $histoire->setDateCreation($date); 
+                // Dans tous les cas, on persist le memorial
+                $entityManager = $doctrine->getManager();
+                $entityManager->persist($histoire);
+                $entityManager->flush();
+
+
+                return $this->redirectToRoute('app_belles_histoires');
+            }
+
+            return $this->render('belle_histoire/add.html.twig', [
+                'formAddHistoire' => $form->createView(),
+                'edit' => $edit,
+            ]);            
         }
 
-        return $this->render('belle_histoire/add.html.twig', [
-            'formAddHistoire' => $form->createView(),
-        ]);
+        // S'il n'y a pas de User, il est rédirigé vers la page de connexion
+        return $this->redirectToRoute('app_login');
         
     }
 
