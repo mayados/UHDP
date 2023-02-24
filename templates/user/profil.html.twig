@@ -5,6 +5,7 @@
 {% block body %}
 
 <div class="container-page">
+
     {% if user.photo %}
         <img src="{{ asset('uploads/imgGalerie/'~ user.photo) }}" alt="">
     {% else %}
@@ -19,26 +20,26 @@
 
     <h5>Mémoriaux créés</h5>
 
-    {% if user.memoriaux | length == 0 %}
-        <p>Pas de mémoriaux créés</p>
-    {% else %}
+    {% if user.memoriaux | length > 0 %}
         {% for memorial in user.memoriaux %}
             <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="">
             <p>{{ memorial.nom }}</p>
             <a href="{{ path('show_memorial', {'id': memorial.id}) }}">Voir le mémorial</a>
-        {% endfor %}
+        {% endfor %}    
+    {% else %}
+        <p>Pas de mémoriaux créés</p>
     {% endif %}
 
     <h5>Belles Histoires créées</h5>
 
-    {% if user.bellesHistoires | length == 0 %}
-    <p>Pas de belles histoires créées</p>
-    {% else %}
+    {% if user.bellesHistoires | length > 0 %}
         {% for histoire in user.bellesHistoires %}
             <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="">
-            <p>{{ memorial.nom }}</p>
+            <p>{{ histoire.titre }}</p>
             <a href="{{ path('show_histoire', {'id': histoire.id}) }}">Lire l'histoire</a>
-        {% endfor %}
+        {% endfor %}    
+    {% else %}
+    <p>Pas de belles histoires créées</p>
     {% endif %}
 </div>
 {% endblock %}
