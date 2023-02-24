@@ -21,16 +21,22 @@ class ForumController extends AbstractController
     public function index(TopicRepository $tr): Response
     {
 
-        $topics = $tr->findBy([],['dateCreation' => 'DESC']);
-        
-        return $this->render('forum/index.html.twig', [
-            'topics' => $topics,
-        ]);
+        if($this->getUser()){
+            $topics = $tr->findBy([],['dateCreation' => 'DESC']);
+            
+            return $this->render('forum/index.html.twig', [
+                'topics' => $topics,
+            ]);            
+        }
+
+        return $this->render('forum/nonConnecte.html.twig');       
+
     }
 
     #[Route('/topic/{id}', name: 'show_topic')]
     public function showTopic(ManagerRegistry $doctrine, TopicRepository $tr, Topic $topic, Request $request): Response
     {
+        
         $topic = $tr->find($topic->getId());
 
         $post = new Post();
