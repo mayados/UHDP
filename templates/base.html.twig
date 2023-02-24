@@ -14,6 +14,48 @@
         {% endblock %}
     </head>
     <body>
+        <header>
+            <nav>
+                <ul>
+                        <li>
+                            <a href="{{ path('app_home') }}">Accueil</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_memoriaux') }}">Memoriaux</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_belles_histoires') }}">Belles histoires</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_mot_commemoration') }}">Commémoration</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_forum') }}">Forum</a>
+                        </li>
+                        <li>
+                            <a href="#">Notre histoire</a>
+                        </li>
+                    {% if app.user %}                        
+                        <li>
+                            <a href="{{ path('show_profile', {'id': app.user.id}) }}">Profil</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_logout') }}">Déconnexion</a>
+                        </li>
+                    {% elseif not app.user %}
+                        <li>
+                            <a href="{{ path('app_login') }}">Connexion</a>
+                        </li>
+                    {% endif %}
+                    {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+                        <li>
+                            <a href="{{ path('app_users') }}">Utilisateurs</a>
+                        </li>
+                    {% endif %}  
+                </ul>
+            </nav>
+        </header>
+
         {% block body %}{% endblock %}
     </body>
 </html>
