@@ -16,32 +16,37 @@ class MotCommemorationController extends AbstractController
     #[Route('/mot/commemoration', name: 'app_mot_commemoration')]
     public function index(MotCommemorationRepository $mcr, ManagerRegistry $doctrine, Request $request): Response
     {
-        // On trouve tous les mots par ordre décroissant pour afficher le dernier écrit au-dessus
-        $mots = $mcr->findBy([],['dateCreation' => 'DESC']);
+        if($this->getUser()){
+            // On trouve tous les mots par ordre décroissant pour afficher le dernier écrit au-dessus
+            $mots = $mcr->findBy([],['dateCreation' => 'DESC']);
 
-        // On veut afficher le formulaire pour ajouter un mot depuis cette même page
-        $mot = new MotCommemoration();
-        $date = new \DateTime();     
-        $form = $this->createForm(MotType::class, $mot);
-        $form->handleRequest($request); 
+            // On veut afficher le formulaire pour ajouter un mot depuis cette même page
+            $mot = new MotCommemoration();
+            $date = new \DateTime();     
+            $form = $this->createForm(MotType::class, $mot);
+            $form->handleRequest($request); 
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $mot = $form->getData();  
-            $mot->setAuteur($this->getUser());
-            $mot->setDateCreation($date);
-            $entityManager = $doctrine->getManager();
-            $entityManager->persist($mot);
-            $entityManager->flush();                                  
+            if ($form->isSubmitted() && $form->isValid()) {
+                $mot = $form->getData();  
+                $mot->setAuteur($this->getUser());
+                $mot->setDateCreation($date);
+                $entityManager = $doctrine->getManager();
+                $entityManager->persist($mot);
+                $entityManager->flush();                                  
 
-            return $this->redirectToRoute(
-                'app_mot_commemoration',
-            );
+                return $this->redirectToRoute(
+                    'app_mot_commemoration',
+                );
+            }
+
+            return $this->render('mot_commemoration/mur.html.twig', [
+                'mots' => $mots,
+                'formAddMot' => $form->createView(),
+            ]);            
         }
 
-        return $this->render('mot_commemoration/mur.html.twig', [
-            'mots' => $mots,
-            'formAddMot' => $form->createView(),
-        ]);
+        return $this->render('mot_commemoration/nonConnecte.html.twig');  
+
     }
 
     #[Route('/mot/commemoration/remove/mot/{id}', name: 'remove_mot')]
