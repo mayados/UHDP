@@ -34,11 +34,19 @@ class UserController extends AbstractController
     #[Route('/user/{id}', name: 'show_profile')]
     public function showProfile(UserRepository $ur, User $user): Response
     {
-        $user = $ur->find($user->getId());
 
-        return $this->render('user/profil.html.twig', [
-            'user' => $user,
-        ]);
+        // En fonction de si le user est le même que le current ou non, on affiche des render différents
+        $user = $ur->find($user->getId());
+        if($this->getUser() != $user){
+            return $this->render('user/profil.html.twig', [
+                'user' => $user,
+            ]);            
+        }else{
+            return $this->render('user/monProfil.html.twig', [
+                'user' => $user,
+            ]); 
+        }
+
     }
 
     #[Route('/user/ban/{id}', name: 'ban_user')]
