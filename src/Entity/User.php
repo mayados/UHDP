@@ -365,10 +365,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function __toString(){
-        return $this->pseudo;
-    }
-
     public function isVerified(): bool
     {
         return $this->isVerified;
@@ -380,4 +376,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+    public function __toString(){
+        return $this->pseudo;
+    }
+
 }
