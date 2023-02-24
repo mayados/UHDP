@@ -36,34 +36,46 @@ class ForumController extends AbstractController
     #[Route('/topic/{id}', name: 'show_topic')]
     public function showTopic(ManagerRegistry $doctrine, TopicRepository $tr, Topic $topic, Request $request): Response
     {
-        
-        $topic = $tr->find($topic->getId());
+        if($this->getUser()){
+            $topic = $tr->find($topic->getId());
 
-        $post = new Post();
-        $date = new \DateTime();     
-        $form = $this->createForm(PostType::class, $post);
-        $form->handleRequest($request); 
+            if ($this->getUser()->isVerified() === true) {
+                $post = new Post();
+                $date = new \DateTime();
+                $form = $this->createForm(PostType::class, $post);
+                $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $post = $form->getData(); 
-            $post->setAuteur($this->getUser()); 
-            $post->setTopic($topic);
-            $post->setDateCreation($date);
-            $topic->addPost($post);  
-            $entityManager = $doctrine->getManager();
-            $entityManager->persist($post);
-            $entityManager->flush();                                  
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $post = $form->getData();
+                    $post->setAuteur($this->getUser());
+                    $post->setTopic($topic);
+                    $post->setDateCreation($date);
+                    $topic->addPost($post);
+                    $entityManager = $doctrine->getManager();
+                    $entityManager->persist($post);
+                    $entityManager->flush();
 
-            return $this->redirectToRoute(
-                'show_topic',
-                ['id' => $topic->getId()]
-            );
+                    return $this->redirectToRoute(
+                        'show_topic',
+                        ['id' => $topic->getId()]
+                    );
+                }
+
+                return $this->render('forum/topic.html.twig', [
+                    'topic' => $topic,
+                    'formAddPost' => $form->createView(),
+                ]);
+            }
+
+            // S'il y a un utilisateur et qu'il n'est pas vérifié on renvoie à la vue sans le form du post
+            return $this->render('forum/topic.html.twig', [
+                'topic' => $topic,
+            ]);            
         }
 
-        return $this->render('forum/topic.html.twig', [
-            'topic' => $topic,
-            'formAddPost' => $form->createView(),
-        ]);
+        // Si le user n'est pas connecté on redirige vers le login car il n'a pas le droit d'accès à cette page
+        return $this->redirectToRoute('app_login');
+
     }
 
     #[Route('/forum/add', name: 'add_topic')]
