@@ -111,7 +111,7 @@ class ForumController extends AbstractController
 
         return $this->render('forum/add.html.twig', [
             'formAddTopic' => $form->createView(),
-            'edit' => $topic->getId(),
+            'edit' => $edit,
             'post' => $post,
         ]);
 
