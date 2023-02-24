@@ -1,11 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello{% endblock %}
+{% block title %}
+    {% if edit == false %}
+        Création d'un topic
+    {% else %}
+        Edition du topic
+    {% endif %}
+{% endblock %}
 
 {% block body %}
 
 <div class="container-page">
-    <h2>Créer un topic</h2>
+
+    {% if edit == false %}
+        <h2>Création d'un topic</h2>
+    {% else %}
+        <h2>Edition du topic</h2>
+    {% endif %}
 
     {{ form_start(formAddTopic) }}    
     {{ form_row(formAddTopic.titre) }} 

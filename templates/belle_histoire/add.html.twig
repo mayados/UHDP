@@ -1,11 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ajouter une belle histoire{% endblock %}
+{% block title %}
+    {% if edit == false %}
+        Création d'une belle histoire
+    {% else %}
+        Edition de l'histoire
+    {% endif %}
+{% endblock %}
 
 {% block body %}
 
 <div class="container-page">
-    <h2>Ajouter une belle histoire</h2>
+
+    {% if edit == false %}
+        <h2>Création d'une belle histoire</h2>
+    {% else %}
+        <h2>Edition de l'histoire</h2>
+    {% endif %}
+
 
     {{ form_start(formAddHistoire) }}    
     {{ form_end(formAddHistoire) }}

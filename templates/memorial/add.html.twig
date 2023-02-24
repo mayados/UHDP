@@ -1,6 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ajout mémorial{% endblock %}
+{% block title %}
+    {% if edit == false %}
+        Création d'un mémorial
+    {% else %}
+        Edition du mémorial
+    {% endif %}
+{% endblock %}
 
 {% block javascripts %}
 <script src="{{ asset('js/api_lieu.js')}}"></script>
@@ -10,7 +16,11 @@
 
 <div class="container-page">
 
-    <h3>Création d'un mémorial</h3>
+    {% if edit == false %}
+        <h2>Création d'un mémorial</h2>
+    {% else %}
+         <h2>Edition du mémorial</h2>
+    {% endif %}
 
     {{ form_start(formAddMemorial) }}    
         {{ form_row(formAddMemorial.nom) }}
