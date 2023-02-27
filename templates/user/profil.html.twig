@@ -13,9 +13,9 @@
     {% endif %}
     <h5>{{ user.pseudo }}</h5>
     {% if user.isBannir == false %}
-        <a href="{{ path('ban_user', {'id': user.id}) }}">Bannir</a>
+        <a href="{{ path('ban_admin_user', {'id': user.id}) }}">Bannir</a>
     {% else %}
-        <a href="{{ path('ban_user', {'id': user.id}) }}">Dé-bannir</a>
+        <a href="{{ path('ban_admin_user', {'id': user.id}) }}">Dé-bannir</a>
     {% endif %}
 
     <h5>Mémoriaux créés</h5>
