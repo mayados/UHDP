@@ -13,8 +13,12 @@
             <p>{{ categorie.nom }}  </p>  
             <a href="{{ path('app_admin_remove_categorie', {'id': categorie.id}) }}">Supprimer</a>      
         </div>
-
     {% endfor %}
+
+    <h4>Ajouter une catégorie</h4>
+
+    {{form_start(formAddCategorie)}}
+    {{form_end(formAddCategorie)}}
 
 </div>
 {% endblock %}
