@@ -34,18 +34,23 @@ class UserController extends AbstractController
     #[Route('/user/{id}', name: 'show_profile')]
     public function showProfile(UserRepository $ur, User $user): Response
     {
-
-        // En fonction de si le user est le même que le current ou non, on affiche des render différents
-        $user = $ur->find($user->getId());
-        if($this->getUser() != $user){
-            return $this->render('user/profil.html.twig', [
-                'user' => $user,
-            ]);            
-        }else{
-            return $this->render('user/monProfil.html.twig', [
-                'user' => $user,
-            ]); 
+        // Il faut être connecté pour accéder à son profil ou à la page de profil d'un utilisateur
+        if($this->getUser()){
+            // En fonction de si le user est le même que le current ou non, on affiche des render différents
+            $user = $ur->find($user->getId());
+            if($this->getUser() != $user){
+                return $this->render('user/profil.html.twig', [
+                    'user' => $user,
+                ]);            
+            }else{
+                return $this->render('user/monProfil.html.twig', [
+                    'user' => $user,
+                ]); 
+            }            
         }
+
+        // Si le user n'est pas connecté, on dirige vers la page de login
+        return $this->redirectToRoute('app_login'); 
 
     }
 

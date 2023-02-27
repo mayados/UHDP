@@ -20,29 +20,38 @@ class MotCommemorationController extends AbstractController
             // On trouve tous les mots par ordre décroissant pour afficher le dernier écrit au-dessus
             $mots = $mcr->findBy([],['dateCreation' => 'DESC']);
 
-            // On veut afficher le formulaire pour ajouter un mot depuis cette même page
-            $mot = new MotCommemoration();
-            $date = new \DateTime();     
-            $form = $this->createForm(MotType::class, $mot);
-            $form->handleRequest($request); 
+            // On affiche le formulaire d'ajout de mot uniquement à un utilisateur CONNECTE et VERIFIE
+            if ($this->getUser() && $this->getUser()->isVerified() === true) {
+                // On veut afficher le formulaire pour ajouter un mot depuis cette même page
+                $mot = new MotCommemoration();
+                $date = new \DateTime();     
+                $form = $this->createForm(MotType::class, $mot);
+                $form->handleRequest($request); 
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $mot = $form->getData();  
-                $mot->setAuteur($this->getUser());
-                $mot->setDateCreation($date);
-                $entityManager = $doctrine->getManager();
-                $entityManager->persist($mot);
-                $entityManager->flush();                                  
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $mot = $form->getData();  
+                    $mot->setAuteur($this->getUser());
+                    $mot->setDateCreation($date);
+                    $entityManager = $doctrine->getManager();
+                    $entityManager->persist($mot);
+                    $entityManager->flush();                                  
 
-                return $this->redirectToRoute(
-                    'app_mot_commemoration',
-                );
+                    return $this->redirectToRoute(
+                        'app_mot_commemoration',
+                    );
+                }
+
+                return $this->render('mot_commemoration/mur.html.twig', [
+                    'mots' => $mots,
+                    'formAddMot' => $form->createView(),
+                ]);                  
             }
 
+            // Si l'utilisateur n'est pas vérifié, on render juste les mots
             return $this->render('mot_commemoration/mur.html.twig', [
                 'mots' => $mots,
-                'formAddMot' => $form->createView(),
-            ]);            
+            ]);      
+          
         }
 
         return $this->render('mot_commemoration/nonConnecte.html.twig');  
@@ -52,10 +61,16 @@ class MotCommemorationController extends AbstractController
     #[Route('/mot/commemoration/remove/mot/{id}', name: 'remove_mot')]
     public function removeMot(MotCommemorationRepository $mcr, MotCommemoration $mot)
     {
-        $mot = $mcr->find($mot->getId());
-        $mcr->remove($mot, $flush = true);
 
-        return $this->redirectToRoute('app_mot_commemoration');
+        $mot = $mcr->find($mot->getId());        
+        // Seuls l'auteur du mot OU un admin peut supprimer un mot
+        if($this->getUser() && ($this->getUser() == $mot->getAuteur() || $this->getUser()->getRoles()['0'] == "ROLE_ADMIN")){
+            $mcr->remove($mot, $flush = true);
+            return $this->redirectToRoute('app_mot_commemoration');            
+        }
+
+        return $this->redirectToRoute('app_login'); 
+
     }
 
 }
