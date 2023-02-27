@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categories{% endblock %}
+
+{% block body %}
+
+<div class="container-page">
+
+    <h2>Liste des catégories</h2>
+
+    {% for categorie in categories %}
+        <div class="categorie">
+            <p>{{ categorie.nom }}  </p>  
+            <a href="{{ path('app_admin_remove_categorie', {'id': categorie.id}) }}">Supprimer</a>      
+        </div>
+
+    {% endfor %}
+
+</div>
+{% endblock %}
