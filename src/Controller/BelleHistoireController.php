@@ -83,7 +83,8 @@ class BelleHistoireController extends AbstractController
 
         if($this->getUser()){
             $edit = false;
-            if($histoire && ($this->getUser() == $histoire->getAuteur() || $this->getUser()->getRoles()['0'] == "ROLE_ADMIN")){
+            // EDIT : seul l'auteur de l'histoire peut la modifier
+            if($histoire && ($this->getUser() == $histoire->getAuteur())){
                 $edit = true;
                 $date = $histoire->getDateCreation();
                 $auteur = $histoire->getAuteur();
@@ -170,6 +171,7 @@ class BelleHistoireController extends AbstractController
     {
         $comment = $cbhr->find($comment->getId());
 
+        // Seuls l'admin OU l'auteur du commentaire peuvent l'effacer
         if($this->getUser() && ( $this->getUser() == $comment->getAuteur() || $this->getUser()->getRoles()['0'] == "ROLE_ADMIN")){
             $histoire = $histoire->getId();
             $cbhr->remove($comment, $flush = true);
