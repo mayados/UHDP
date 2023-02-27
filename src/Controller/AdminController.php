@@ -2,11 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Form\CategorieType;
 use App\Entity\CategorieAnimal;
+use App\Repository\UserRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\CategorieAnimalRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdminController extends AbstractController
 {
@@ -20,17 +25,33 @@ class AdminController extends AbstractController
 
     // Montrer les catégories existantes et formulaire d'ajout de catégorie
     #[Route('/admin/categories', name: 'app_admin_categories')]
-    public function categories(CategorieAnimalRepository $car): Response
+    public function categories(CategorieAnimalRepository $car, ManagerRegistry $doctrine, Request $request): Response
     {
 
         $categories = $car->findAll();
 
+        // Créer une catégorie -> directement possible depuis la vue TWIG
+        $categorie = new CategorieAnimal(); 
+        $form = $this->createForm(CategorieType::class, $categorie);
+        $form->handleRequest($request); 
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $categorie = $form->getData();  
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($categorie);
+            $entityManager->flush();                                  
+
+            return $this->redirectToRoute(
+                'app_admin_categories',
+            );
+        }
 
         return $this->render('admin/categories.html.twig', [
             'categories' => $categories,
-        ]);
-    }
+            'formAddCategorie' => $form->createView(),
+        ]);  
 
+    }
 
     #[Route('/admin/categorie/remove/{id}', name: 'app_admin_remove_categorie')]
     public function removeCategorie(CategorieAnimalRepository $car, CategorieAnimal $categorie): Response
@@ -42,5 +63,38 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('app_admin_categories');
     }
 
-    // Liste des utilisateurs (voir dans UserController)
+    #[Route('/admin/users', name: 'app_admin_users')]
+    public function findUsers(UserRepository $ur): Response
+    {
+        $utilisateursBannis = $ur->findBannedUsersNotAdmin();
+        $utilisateursNonBannis = $ur->findNotBannedUsersNotAdmin();
+
+        return $this->render('admin/users.html.twig', [
+            'utilisateursBannis' => $utilisateursBannis,
+            'utilisateursNonBannis' => $utilisateursNonBannis,
+        ]);
+    }
+
+    #[Route('/admin/user/ban/{id}', name: 'ban_admin_user')]
+    public function banUser(User $user, UserRepository $ur, ManagerRegistry $doctrine)
+    {
+        $entityManager = $doctrine->getManager();
+        $user = $ur->find($user->getId());
+        // On vérifie s'il s'agit d'un bannissement ou débannissement
+        if($user->isBannir() == false){
+            // On ban
+            $user->setBannir(true);
+        }else{
+            // On dé-ban
+            $user->setBannir(false);
+        }
+
+        $entityManager->flush();
+
+        return $this->redirectToRoute(
+            'show_profile',
+            ['id' => $user->getId()]
+        );
+    }
+
 }
