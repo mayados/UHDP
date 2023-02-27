@@ -37,7 +37,7 @@ class BelleHistoireController extends AbstractController
         $histoire = $bhr->find($histoire->getId());
 
         // S'il y a un utilisateur et qu'il est vérifié, il a le droit à accéder au formulaire de commentaire, sinon non
-        if($this->getUser() && $this->getUser()->isVerified() === true){
+        if($this->getUser() && $this->getUser()->isVerified()){
             $commentaire = new CommentBelleHistoire();
             $form = $this->createForm(CommentHistoireType::class, $commentaire);
             $form->handleRequest($request); 
@@ -147,7 +147,7 @@ class BelleHistoireController extends AbstractController
     {
         $histoire = $bhr->find($histoire->getId());  
 
-        if($this->getUser() && ($this->getUser() == $histoire->getAuteur() || $this->getUser()->getRoles()['0'] == "ROLE_ADMIN")){
+        if($this->getUser() && ($this->getUser() == $histoire->getAuteur() || $this->isGranted('ROLE_ADMIN'))){
             // Comme la photo est nullable dans l'entité, on doit ajouter cette condition sinon ça fait unen erreur si l'image est vide
             if($histoire->getPhoto()){
                 $photo = $histoire->getPhoto();
@@ -172,7 +172,7 @@ class BelleHistoireController extends AbstractController
         $comment = $cbhr->find($comment->getId());
 
         // Seuls l'admin OU l'auteur du commentaire peuvent l'effacer
-        if($this->getUser() && ( $this->getUser() == $comment->getAuteur() || $this->getUser()->getRoles()['0'] == "ROLE_ADMIN")){
+        if($this->getUser() && ( $this->getUser() == $comment->getAuteur() || $this->isGranted('ROLE_ADMIN'))){
             $histoire = $histoire->getId();
             $cbhr->remove($comment, $flush = true);
 

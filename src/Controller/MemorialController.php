@@ -174,7 +174,7 @@ class MemorialController extends AbstractController
         $memorial = $amr->find($memorial->getId());        
 
         // Seuls l'admin ou l'utilisateur qui a créé la mémorial peuvent le supprimer
-        if($this->getUser() && ($this->getUser() == $memorial->getAuteur() || $this->getUser()->getRoles()['0'] == "ROLE_ADMIN")){
+        if($this->getUser() && ($this->getUser() == $memorial->getAuteur() || $this->isGranted('ROLE_ADMIN'))){
 
             // Comme la photo est nullable dans l'entité, on doit ajouter cette condition sinon ça fait unen erreur si l'image est vide
             if($memorial->getPhoto()){
@@ -212,7 +212,7 @@ class MemorialController extends AbstractController
     public function removePhotoGalerie(PhotoRepository $pr, Photo $photo, AnimalMemorial $memorial, UploaderService $uploaderService)
     {
 
-        if ($this->getUser() && ($this->getUser() == $memorial->getAuteur() || $this->getUser()->getRoles()['0'] == "ROLE_ADMIN")) {
+        if ($this->getUser() && ($this->getUser() == $memorial->getAuteur() || $this->isGranted('ROLE_ADMIN'))) {
                 $photo = $pr->find($photo->getId());
                 $folder = 'imgGalerie';
                 $uploaderService->delete($photo->getPhoto(),$folder);

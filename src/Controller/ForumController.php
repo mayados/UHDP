@@ -40,7 +40,7 @@ class ForumController extends AbstractController
             $topic = $tr->find($topic->getId());
 
             // Si l'utilisateur est connecté et vérifié
-            if ($this->getUser()->isVerified() === true) {
+            if ($this->getUser()->isVerified()) {
                 $post = new Post();
                 $date = new \DateTime();
                 $form = $this->createForm(PostType::class, $post);
@@ -146,7 +146,7 @@ class ForumController extends AbstractController
     {
 
         // Seul un utilisateur connecté ET auteur du topic OU admin peuvent le supprimer
-        if($this->getUser() && ($this->getUser() == $topic->getAuteur() || $this->getUser()->getRoles()['0'] == "ROLE_ADMIN")){
+        if($this->getUser() && ($this->getUser() == $topic->getAuteur() || $this->isGranted('ROLE_ADMIN'))){
             $topic = $tr->find($topic->getId());
             $tr->remove($topic, $flush = true);
 
@@ -163,7 +163,7 @@ class ForumController extends AbstractController
     public function removePost(PostRepository $pr, Post $post, Topic $topic)
     {
 
-        if ($this->getUser() && ($this->getUser() == $post->getAuteur() || $this->getUser()->getRoles()['0'] == "ROLE_ADMIN")) {
+        if ($this->getUser() && ($this->getUser() == $post->getAuteur() || $this->isGranted('ROLE_ADMIN'))) {
             $post = $pr->find($post->getId());
             $topic = $topic->getId();
             $pr->remove($post, $flush = true);
@@ -181,7 +181,7 @@ class ForumController extends AbstractController
     public function verrouillageTopic(Topic $topic, TopicRepository $tr, ManagerRegistry $doctrine)
     {
 
-        if($this->getUser() && ($this->getUser() == $topic->getAuteur() || $this->getUser()->getRoles()['0'] == "ROLE_ADMIN")){
+        if($this->getUser() && ($this->getUser() == $topic->getAuteur() || $this->isGranted('ROLE_ADMIN'))){
             $entityManager = $doctrine->getManager();
             $topic = $tr->find($topic->getId());
             // On vérifie s'il s'agit d'un verrouillage ou dévérouillage

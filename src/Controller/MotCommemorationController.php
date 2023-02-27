@@ -21,7 +21,7 @@ class MotCommemorationController extends AbstractController
             $mots = $mcr->findBy([],['dateCreation' => 'DESC']);
 
             // On affiche le formulaire d'ajout de mot uniquement à un utilisateur CONNECTE et VERIFIE
-            if ($this->getUser() && $this->getUser()->isVerified() === true) {
+            if ($this->getUser() && $this->getUser()->isVerified()) {
                 // On veut afficher le formulaire pour ajouter un mot depuis cette même page
                 $mot = new MotCommemoration();
                 $date = new \DateTime();     
@@ -64,7 +64,7 @@ class MotCommemorationController extends AbstractController
 
         $mot = $mcr->find($mot->getId());        
         // Seuls l'auteur du mot OU un admin peut supprimer un mot
-        if($this->getUser() && ($this->getUser() == $mot->getAuteur() || $this->getUser()->getRoles()['0'] == "ROLE_ADMIN")){
+        if($this->getUser() && ($this->getUser() == $mot->getAuteur() || $this->isGranted('ROLE_ADMIN'))){
             $mcr->remove($mot, $flush = true);
             return $this->redirectToRoute('app_mot_commemoration');            
         }
