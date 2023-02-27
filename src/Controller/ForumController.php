@@ -87,8 +87,8 @@ class ForumController extends AbstractController
         // Il faut être un utilisateur connecté pour accéder à l'edit ou à la création
         if($this->getUser()){
             $edit = false;
-            // CAS  de l'edit => Si le topic existe ET que l'utilisateur connecté est l'auteur du topic OU que l'utilisateur a le rôle admin...
-            if($topic && ($this->getUser() == $topic->getAuteur() || $this->getUser()->getRoles()['0'] == "ROLE_ADMIN")){
+            // CAS  de l'edit => Si le topic existe ET que l'utilisateur connecté est l'auteur du topic 
+            if($topic && ($this->getUser() == $topic->getAuteur())){
                 $edit = true;
                 $date = $topic->getDateCreation();
                 /* Nous ciblons le premier post de la collection de posts de l'entité Topic, car il correspond au message de l'auteur
@@ -144,10 +144,17 @@ class ForumController extends AbstractController
     #[Route('/topic/remove/{id}', name: 'remove_topic')]
     public function removeTopic(TopicRepository $tr, Topic $topic)
     {
-        $topic = $tr->find($topic->getId());
-        $tr->remove($topic, $flush = true);
 
-        return $this->redirectToRoute('app_forum');
+        // Seul un utilisateur connecté ET auteur du topic OU admin peuvent le supprimer
+        if($this->getUser() && ($this->getUser() == $topic->getAuteur() || $this->getUser()->getRoles()['0'] == "ROLE_ADMIN")){
+            $topic = $tr->find($topic->getId());
+            $tr->remove($topic, $flush = true);
+
+            return $this->redirectToRoute('app_forum');            
+        }
+
+        return $this->redirectToRoute('app_login');
+
     }
 
     #[Route('/post/remove/{idTopic}/{id}', name: 'remove_post')]
@@ -155,36 +162,49 @@ class ForumController extends AbstractController
     #[ParamConverter("post", options: ["mapping" => ["id" => "id"]])]
     public function removePost(PostRepository $pr, Post $post, Topic $topic)
     {
-        $post = $pr->find($post->getId());
-        $topic = $topic->getId();
-        $pr->remove($post, $flush = true);
 
-        return $this->redirectToRoute(
-            'show_topic',
-            ['id' => $topic]
-        );
+        if ($this->getUser() && ($this->getUser() == $post->getAuteur() || $this->getUser()->getRoles()['0'] == "ROLE_ADMIN")) {
+            $post = $pr->find($post->getId());
+            $topic = $topic->getId();
+            $pr->remove($post, $flush = true);
+
+            return $this->redirectToRoute(
+                'show_topic',
+                ['id' => $topic]
+            );
+        }
+
+        return $this->redirectToRoute('app_login');
     }
 
     #[Route('/topic/verrouillage/{id}', name: 'verrouillage_topic')]
     public function verrouillageTopic(Topic $topic, TopicRepository $tr, ManagerRegistry $doctrine)
     {
-        $entityManager = $doctrine->getManager();
-        $topic = $tr->find($topic->getId());
-        // On vérifie s'il s'agit d'un verrouillage ou dévérouillage
-        if($topic->isVerrouillage() == false){
-            // On vérrouille le topic
-            $topic->setVerrouillage(true);
-        }else{
-            // On déverouille
-            $topic->setVerrouillage(false);
+
+        if($this->getUser() && ($this->getUser() == $topic->getAuteur() || $this->getUser()->getRoles()['0'] == "ROLE_ADMIN")){
+            $entityManager = $doctrine->getManager();
+            $topic = $tr->find($topic->getId());
+            // On vérifie s'il s'agit d'un verrouillage ou dévérouillage
+            if($topic->isVerrouillage() == false){
+                // On vérrouille le topic
+                $topic->setVerrouillage(true);
+            }else{
+                // On déverouille
+                $topic->setVerrouillage(false);
+            }
+
+            $entityManager->flush();
+
+            return $this->redirectToRoute(
+                'show_topic',
+                ['id' => $topic->getId()]
+            );            
         }
 
-        $entityManager->flush();
+        return $this->redirectToRoute('app_login');    
 
-        return $this->redirectToRoute(
-            'show_topic',
-            ['id' => $topic->getId()]
-        );
     }
+
+
 
 }
