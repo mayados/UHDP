@@ -22,6 +22,8 @@ class UserController extends AbstractController
     #[Route('/users', name: 'app_users')]
     public function findUsers(UserRepository $ur): Response
     {
+        // Renvoie une erreur 400 : acces denied si le user qui tente d'y accéder n'a pas le rôle admin
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $utilisateursBannis = $ur->findBannedUsersNotAdmin();
         $utilisateursNonBannis = $ur->findNotBannedUsersNotAdmin();
 
