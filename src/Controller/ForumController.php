@@ -39,6 +39,7 @@ class ForumController extends AbstractController
         if($this->getUser()){
             $topic = $tr->find($topic->getId());
 
+            // Si l'utilisateur est connecté et vérifié
             if ($this->getUser()->isVerified() === true) {
                 $post = new Post();
                 $date = new \DateTime();
@@ -83,49 +84,60 @@ class ForumController extends AbstractController
     public function add(ManagerRegistry $doctrine, Topic $topic = null, Request $request): Response
     {
 
-        $edit = false;
-        if($topic){
-            $edit = true;
-            $date = $topic->getDateCreation();
-            /* Nous ciblons le premier post de la collection de posts de l'entité Topic, car il correspond au message de l'auteur
-            et qu'il faudra le modifier dans le cadre d'un edit, et non créer un autre post */
-            $post = $topic->getPosts()[0];
-            
-        }else{
-            $topic = new Topic();
-            $date = new \DateTime();    
-            $post = new Post();                    
+        // Il faut être un utilisateur connecté pour accéder à l'edit ou à la création
+        if($this->getUser()){
+            $edit = false;
+            // CAS  de l'edit => Si le topic existe ET que l'utilisateur connecté est l'auteur du topic OU que l'utilisateur a le rôle admin...
+            if($topic && ($this->getUser() == $topic->getAuteur() || $this->getUser()->getRoles()['0'] == "ROLE_ADMIN")){
+                $edit = true;
+                $date = $topic->getDateCreation();
+                /* Nous ciblons le premier post de la collection de posts de l'entité Topic, car il correspond au message de l'auteur
+                et qu'il faudra le modifier dans le cadre d'un edit, et non créer un autre post */
+                $post = $topic->getPosts()[0];
+                // Dans le cas d'un edit, on attribue à auteur la value de l'auteur du topic stockée en base de données (car si c'est un admin qui modifie, ce ne sera pas l'auteur)
+                $auteurTopic = $topic->getAuteur();
+            // CAS de la création => Si le topic n'existe pas ET que l'utilisateur courant est vérifié
+            }elseif(!$topic && $this->getUser()->isVerified()){
+                $topic = new Topic();
+                $date = new \DateTime();    
+                $post = new Post();   
+                $auteurTopic = $this->getUser();                                 
+            }else{
+                // Si l'utilisateur courant ne correspond à aucun critère ci-dessus on redirige vers le login
+                return $this->redirectToRoute('app_login');
+            }
+            // dd($topic->getPosts()[0]->getTexte());
+
+            $form = $this->createForm(TopicType::class, $topic);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $topic = $form->getData();   
+                $firstComment = $form->get('firstComment')->getData();
+                $post->setTexte($firstComment);
+                $post->setAuteur($auteurTopic);
+                $post->setTopic($topic);
+                $post->setDateCreation($date);
+                $topic->addPost($post);
+                $topic->setAuteur($auteurTopic);
+                $topic->setDateCreation($date); 
+                $topic->setVerrouillage(0);
+                $entityManager = $doctrine->getManager();
+                $entityManager->persist($topic);
+                $entityManager->flush();
+
+
+                return $this->redirectToRoute('app_forum');
+            }
+
+            return $this->render('forum/add.html.twig', [
+                'formAddTopic' => $form->createView(),
+                'edit' => $edit,
+                'post' => $post,
+            ]);            
         }
-        // dd($topic->getPosts()[0]->getTexte());
-
-        $form = $this->createForm(TopicType::class, $topic);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $topic = $form->getData();   
-            $firstComment = $form->get('firstComment')->getData();
-            $auteurTopic = $this->getUser();
-            $post->setTexte($firstComment);
-            $post->setAuteur($auteurTopic);
-            $post->setTopic($topic);
-            $post->setDateCreation($date);
-            $topic->addPost($post);
-            $topic->setAuteur($auteurTopic);
-            $topic->setDateCreation($date); 
-            $topic->setVerrouillage(0);
-            $entityManager = $doctrine->getManager();
-            $entityManager->persist($topic);
-            $entityManager->flush();
-
-
-            return $this->redirectToRoute('app_forum');
-        }
-
-        return $this->render('forum/add.html.twig', [
-            'formAddTopic' => $form->createView(),
-            'edit' => $edit,
-            'post' => $post,
-        ]);
+        // Si l'utilisateur courant n'est pas connecté on redirige vers le login
+        return $this->redirectToRoute('app_login');
 
     }
 
