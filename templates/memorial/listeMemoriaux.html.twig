@@ -15,7 +15,7 @@
             {% endfor %}
         </ul>        
     </section>
-    <section class="creation-memorial">
+    <section class="creation">
         {% if app.user and app.user.isVerified %}
             <a href="{{ path('add_memorial') }}">Créer un mémorial</a>
         {% elseif app.user and not app.user.isVerified %}

@@ -6,29 +6,38 @@
 
 <div class="container-page">
 
-    {% if app.user and app.user.isVerified %}
-        <a href="{{ path('add_histoire') }}">Créer une belle histoire</a>
-    {% elseif app.user and not app.user.isVerified %}
-        <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir créer une belle histoire</p>
-    {% else %}
-        <p>Veuillez vous inscrire ou vous connecter pour pouvoir créer une belle histoire</p>
-    {% endif %}
+    <section class="creation">
+        {% if app.user and app.user.isVerified %}
+            <a href="{{ path('add_histoire') }}">Créer une belle histoire</a>
+        {% elseif app.user and not app.user.isVerified %}
+            <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir créer une belle histoire</p>
+        {% else %}
+            <p>Veuillez vous inscrire ou vous connecter pour pouvoir créer une belle histoire</p>
+        {% endif %}        
+    </section>
 
-    <h2> Les belles histoires</h2>
+    <section id="belles-histoires">
+        <h2> Les belles histoires</h2>
 
-    {% for histoire in listeHistoires %}
-        <div class="histoire">
-            <p>{{ histoire.titre }}</p>
-            {% if histoire.photo == null %}
-            <p>Pas de photo</p>
-            {% else %}
-            <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">
-            {% endif %}
-            <p>{{ histoire.texte|slice(0, 100) }}...</p>
-            <p>{{ histoire.auteur }}</p>
-            <a href="{{path('show_histoire', {'id': histoire.id}) }}">Voir l'histoire</a>
-        </div>
-    {% endfor %}
-
+        {% for histoire in listeHistoires %}
+            <article class="histoire">
+                <div class="histoire-left">
+                    <p>{{ histoire.titre }}</p>
+                    {% if histoire.photo == null %}
+                    <p>Pas de photo</p>
+                    {% else %}
+                    <figure>
+                        <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">                    
+                    </figure>
+                    {% endif %}                    
+                </div>
+                <div class="histoire-right">
+                    <p>{{ histoire.texte|slice(0, 100) }}...</p>
+                    <p>{{ histoire.auteur }}</p>
+                    <a href="{{path('show_histoire', {'id': histoire.id}) }}">Voir l'histoire</a>                    
+                </div>
+            </article>
+        {% endfor %}        
+    </section>
 </div>
 {% endblock %}
