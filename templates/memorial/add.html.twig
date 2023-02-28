@@ -22,22 +22,45 @@
          <h2>Edition du mémorial</h2>
     {% endif %}
 
+    <form>
     {{ form_start(formAddMemorial) }}    
-        {{ form_row(formAddMemorial.nom) }}
-        {{ form_row(formAddMemorial.sexe) }}
-        {{ form_row(formAddMemorial.dateNaissance) }}
-        {{ form_row(formAddMemorial.dateDeces) }}
-        <div id="form-lieu">
+        <div class="form-element">
+            {{ form_row(formAddMemorial.nom) }}            
+        </div>
+        <div class="form-element">
+            {{ form_row(formAddMemorial.sexe) }}            
+        </div>
+        <div class="form-element">
+            {{ form_row(formAddMemorial.dateNaissance) }}            
+        </div>
+        <div class="form-element">
+            {{ form_row(formAddMemorial.dateDeces) }}            
+        </div>
+        <div id="form-lieu" class="form-element">
             {{ form_row(formAddMemorial.lieu) }}            
         </div>
-        {{ form_row(formAddMemorial.imgMemorial) }}
-        {{ form_row(formAddMemorial.presentation) }}
-        {{ form_row(formAddMemorial.chosesAimees) }}
-        {{ form_row(formAddMemorial.chosesDetestees) }}
-        {{ form_row(formAddMemorial.histoire) }}
-        {{ form_row(formAddMemorial.categorieAnimal) }}
-    {{ form_end(formAddMemorial) }}
-
+        <div class="form-element">
+            {{ form_row(formAddMemorial.imgMemorial) }}            
+        </div>
+        <div class="form-element">
+            {{ form_row(formAddMemorial.presentation) }}
+        </div>
+        <div class="form-element">
+            {{ form_row(formAddMemorial.chosesAimees) }}
+        </div>
+        <div class="form-element">
+            {{ form_row(formAddMemorial.chosesDetestees) }}
+        </div>
+        <div class="form-element">
+            {{ form_row(formAddMemorial.histoire) }}
+        </div>
+        <div class="form-element">
+            {{ form_row(formAddMemorial.categorieAnimal) }}
+        </div>
+        <div class="form-element">
+            {{ form_row(formAddMemorial.submit) }}
+        </div>
+    {{ form_end(formAddMemorial) }}  
+    </form>
 </div>
-
 {% endblock %}

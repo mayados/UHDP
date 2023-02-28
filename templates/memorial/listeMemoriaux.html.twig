@@ -6,36 +6,42 @@
 
 <div class="container-page">
 
-    <div id="categories">
-        {% for categorie in categories %}
-        <div class="categorie">
-            <a href="{{path('app_categorie', {'id' : categorie.id}) }}">{{ categorie.nom }}</a>
-        </div>
-    {% endfor %}
-    </div>
-    {% if app.user and app.user.isVerified %}
-        <a href="{{ path('add_memorial') }}">Créer un mémorial</a>
-    {% elseif app.user and not app.user.isVerified %}
-        <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir créer un mémorial</p>
-    {% else %}
-        <p>Veuillez vous inscrire ou vous connecter pour pouvoir créer un mémorial</p>
-    {% endif %}
-    <div id="memoriaux">
-    {% for memorial in listeMemoriaux %}
-        <div class="memorial">
-            <p>{{ memorial.nom }}</p>
-            {% if memorial.photo == null %}
-                <p>Pas de photo</p>
-            {% else %}
-                <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">
-            {% endif %}
-            {# le filtre slice permet d'afficher un certain nombre de caractères => Ici, on prend du caractère 0 à 20 #}
-            <p>{{ memorial.presentation|slice(0, 20) }}...</p>
-            <a href="{{path('show_memorial', {'id': memorial.id}) }}">Voir le Memorial</a>
-        </div>
-    {% endfor %}        
-    </div>
+    <section id="categories">
+        <ul class="categorie-elements"></ul>        
+            {% for categorie in categories %}
+                <li>
+                    <a href="{{path('app_categorie', {'id' : categorie.id}) }}">{{ categorie.nom }}</a>                    
+                </li>
+            {% endfor %}
+        </ul>        
+    </section>
+    <section class="creation-memorial">
+        {% if app.user and app.user.isVerified %}
+            <a href="{{ path('add_memorial') }}">Créer un mémorial</a>
+        {% elseif app.user and not app.user.isVerified %}
+            <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir créer un mémorial</p>
+        {% else %}
+            <p>Veuillez vous inscrire ou vous connecter pour pouvoir créer un mémorial</p>
+        {% endif %}
+    </section>
+
+    <section class="memoriaux">
+        {% for memorial in listeMemoriaux %}
+            <div class="memorial">
+                <p>{{ memorial.nom }}</p>
+                {% if memorial.photo == null %}
+                    <p>Pas de photo</p>
+                {% else %}
+                    <figure>
+                        <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">                        
+                    </figure>
+                {% endif %}
+                {# le filtre slice permet d'afficher un certain nombre de caractères => Ici, on prend du caractère 0 à 20 #}
+                <p>{{ memorial.presentation|slice(0, 20) }}...</p>
+                <a href="{{path('show_memorial', {'id': memorial.id}) }}">Voir le Memorial</a>
+            </div>
+        {% endfor %}        
+    </section>
 
 </div>
-
 {% endblock %}

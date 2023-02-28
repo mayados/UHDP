@@ -5,38 +5,45 @@
 {% block body %}
 
 <div class="container-page">
-    {% if app.user and app.user.roles.0 == "ROLE_USER" %}
-        <h1>Contents de vous revoir {{ app.user.pseudo }} !</h1>
-    {% elseif app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-        <h1>Bon retour à notre cher admin {{ app.user.pseudo }} ! </h1>
-    {% elseif not app.user %} 
-        <h1>Bienvenue sur Une histoire de pattes !</h1>     
-    {% endif %}
+    <section id="bienvenue">
+        {% if app.user and app.user.roles.0 == "ROLE_USER" %}
+            <h1>Contents de vous revoir {{ app.user.pseudo }} !</h1>
+        {% elseif app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+            <h1>Bon retour à notre cher(e) admin {{ app.user.pseudo }} ! </h1>
+        {% elseif not app.user %} 
+            <h1>Bienvenue sur Une histoire de pattes !</h1>     
+        {% endif %}
 
-    {% if not app.user %}
-        <p>Une Histoire De Pattes est Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sapien pellentesque habitant morbi tristique senectus et netus et. Amet consectetur adipiscing elit duis tristique sollicitudin. Pulvinar proin gravida hendrerit lectus a. Venenatis tellus in metus vulputate eu scelerisque felis imperdiet. Placerat duis ultricies lacus sed. Pharetra massa massa ultricies mi quis hendrerit dolor magna. Tortor id aliquet lectus proin nibh nisl condimentum id venenatis. Vitae elementum curabitur vitae nunc sed velit. Id aliquet risus feugiat in ante. Nisl condimentum id venenatis a condimentum vitae sapien. Enim praesent elementum facilisis leo. Neque volutpat ac tincidunt vitae semper quis lectus. Orci nulla pellentesque dignissim enim sit. Cras tincidunt lobortis feugiat vivamus. Elementum tempus egestas sed sed risus pretium quam vulputate dignissim. Posuere morbi leo urna molestie at elementum eu facilisis sed. Urna cursus eget nunc scelerisque viverra mauris in aliquam.</p>
-    {% elseif app.user and not app.user.isVerified %}
-        <p>N'oubliez pas de cliquer sur le lien envoyé sur votre adresse mail pour accéder à toutes les fonctionnalités !</p>
-    {% endif %}
+        {% if not app.user %}
+        <article id="uhdp-description">
+            <p>Une Histoire De Pattes est Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sapien pellentesque habitant morbi tristique senectus et netus et. Amet consectetur adipiscing elit duis tristique sollicitudin. Pulvinar proin gravida hendrerit lectus a. Venenatis tellus in metus vulputate eu scelerisque felis imperdiet. Placerat duis ultricies lacus sed. Pharetra massa massa ultricies mi quis hendrerit dolor magna. Tortor id aliquet lectus proin nibh nisl condimentum id venenatis. Vitae elementum curabitur vitae nunc sed velit. Id aliquet risus feugiat in ante. Nisl condimentum id venenatis a condimentum vitae sapien. Enim praesent elementum facilisis leo. Neque volutpat ac tincidunt vitae semper quis lectus. Orci nulla pellentesque dignissim enim sit. Cras tincidunt lobortis feugiat vivamus. Elementum tempus egestas sed sed risus pretium quam vulputate dignissim. Posuere morbi leo urna molestie at elementum eu facilisis sed. Urna cursus eget nunc scelerisque viverra mauris in aliquam.</p>
+        </article>
+        {% elseif app.user and not app.user.isVerified %}
+            <p>N'oubliez pas de cliquer sur le lien envoyé sur votre adresse mail pour accéder à toutes les fonctionnalités !</p>
+        {% endif %}        
+    </section>
 
     <section id="derniers-memoriaux">
         <h3>Derniers mémoriaux</h3>
         {% for memorial in derniersMemoriaux %}
             <div class="memorial-recent">
-                {{ memorial.nom }}
-                <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">
+                <figure>
+                    <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">
+                    <figcaption>{{ memorial.nom }}</figcaption>                    
+                </figure>
                 <a href="{{path('show_memorial', {'id': memorial.id}) }}">Voir le Memorial</a>
             </div>
         {% endfor %}
     </section>
+
     <section id="dernieres-belles-histoires">
         <h3>Dernières belles histoires</h3>
         {% for histoire in dernieresHistoires %}
             <div class="histoire-recente">
-                {{ histoire.titre }}
-                <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">
-                <p>{{ histoire.texte|slice(0, 100) }}...</p>
-                <p>{{ histoire.auteur }}</p>
+                <figure>
+                    <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">    
+                    <figcaption>{{ histoire.titre }}</figcaption>                
+                </figure>
                 <a href="{{path('show_histoire', {'id': histoire.id}) }}">Voir l'histoire</a>
             </div>
         {% endfor %}

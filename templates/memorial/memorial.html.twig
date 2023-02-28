@@ -6,54 +6,64 @@
 
 <div class="container-page">
 
-    <section id="memorial-infos">
-        <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">
+    <section id="memorial">
+        <article id="memorial-infos">
+            <figure>
+                <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal"> 
+                <figcaption>{{ memorial.nom }}</figcaption>           
+            </figure>        
+            {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+                <a href="{{ path('show_profile', {'id': memorial.auteur.id}) }}">{{ memorial.auteur }}</a>
+            {% endif %}
+            <p>
+                {{ memorial.dateNaissance | date('d-m-Y') }}                
+            </p>
+            <p>
+              {{ memorial.lieu }}   
+            </p>      
+        </article>
 
-        {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-            <a href="{{ path('show_profile', {'id': memorial.auteur.id}) }}">{{ memorial.auteur }}</a>
-        {% endif %}
-
-        {{ memorial.nom }}
-
-        {{ memorial.dateNaissance | date('d-m-Y') }}
-
-        {{ memorial.lieu }}
-
-        {{ memorial.presentation }}
-
-        {{ memorial.chosesAimees }}
-
-        {{ memorial.chosesDetestees }}
-
-        {{ memorial.histoire }}    
-        
+        <article id="memorial-description">
+            <p>
+                {{ memorial.presentation }}
+            </p>
+            <p>
+                {{ memorial.chosesAimees }}                
+            </p>
+            <p>
+                {{ memorial.chosesDetestees }}                
+            </p>
+            <p>
+                {{ memorial.histoire }}                   
+            </p>
+        </article>
         {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
             <a href="{{path('remove_memorial', {'id': memorial.id}) }}">Supprimer le mémorial</a>
         {% endif %}
-  
     </section>
+
     <section id='galerie-photo'>
 
         <h3>Galerie photo</h3>
 
-        {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-            <h4>Ajouter une photo à la galerie</h4>
-            {{ form_start(formAddPhotoGalerie) }}    
-            {{ form_end(formAddPhotoGalerie) }}
-        {% endif %}
+        <div id="container-photos">
+            {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+                <h4>Ajouter une photo à la galerie</h4>
+                {{ form_start(formAddPhotoGalerie) }}    
+                {{ form_end(formAddPhotoGalerie) }}
+            {% endif %}
 
-        {% for image in memorial.photos %}
-            <div class="image-galerie">
-                    <img src="{{ asset('uploads/imgGalerie/'~ image.photo) }}" alt="photo de l'animal">
+            {% for image in memorial.photos %}
+                <div class="image-galerie">
+                    <figure>
+                        <img src="{{ asset('uploads/imgGalerie/'~ image.photo) }}" alt="photo de l'animal">                        
+                    </figure>
                     {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
                         <a href="{{path('remove_photo', {'idMemorial': memorial.id, 'id': image.id}) }}">Supprimer la photo</a>
                     {% endif %}
-            </div>
-        {% endfor %}
-
-
+                </div>
+            {% endfor %}            
+        </div>
     </section>
-
-
 </div>
 {% endblock %}
