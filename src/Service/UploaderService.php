@@ -23,11 +23,14 @@ class UploaderService
         $originalFileName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalFileName);
         $newFilename = $safeFilename.'-'.uniqid().'.'.$image->guessExtension();
+        $path = $this->params->get('images_directory') . $folder;
+
+        if(!file_exists($path)){
+            mkdir($path, 0777, true);
+        }
 
         try{
-            $image->move(
-                $this->params->get('images_directory') . $folder,
-                $newFilename
+            $image->move($path, $newFilename
             );
         }   catch (FileException $e){
 
