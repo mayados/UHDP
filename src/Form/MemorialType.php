@@ -83,6 +83,8 @@ class MemorialType extends AbstractType
                             'image/png',
                         ],
                         'mimeTypesMessage' => 'Veuillez choisir un format valide (jpeg, jpg, png)',
+                        'maxSize' => '300k',
+                        'maxSizeMessage' => "Image trop lourde, veuillez en sélectionner une autre.",
                     ])
                 ]
             ])
