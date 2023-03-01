@@ -13,27 +13,27 @@
 <div class="container-page">
 
     {% if edit == false %}
-        <h2>Création d'une belle histoire</h2>
+        <h1>Création d'une belle histoire</h1>
     {% else %}
-        <h2>Edition de l'histoire</h2>
+        <h1>Edition de l'histoire</h1>
     {% endif %}
 
-    <form>
-    {{ form_start(formAddHistoire) }}  
-        <div class="form-element">
-            {{ form_row(formAddHistoire.titre) }} 
-        </div>
-        <div class="form-element">
-            {{ form_row(formAddHistoire.texte) }} 
-        </div>
-        <div class="form-element">
-            {{ form_row(formAddHistoire.imgHistoire) }} 
-        </div>
-        <div class="form-element">
-            {{ form_row(formAddHistoire.submit) }} 
-        </div>
-    {{ form_end(formAddHistoire) }}        
-    </form>
+    <div class="formulaire">
+        {{ form_start(formAddHistoire) }}  
+            <div class="form-element">
+                {{ form_row(formAddHistoire.titre) }} 
+            </div>
+            <div class="form-element">
+                {{ form_row(formAddHistoire.texte) }} 
+            </div>
+            <div class="form-element">
+                {{ form_row(formAddHistoire.imgHistoire) }} 
+            </div>
+            <div class="form-element">
+                {{ form_row(formAddHistoire.submit) }} 
+            </div>
+        {{ form_end(formAddHistoire) }}        
+    </div>
 
 
 </div>

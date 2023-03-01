@@ -17,12 +17,12 @@
 <div class="container-page">
 
     {% if edit == false %}
-        <h2>Création d'un mémorial</h2>
+        <h1>Création d'un mémorial</h1>
     {% else %}
-         <h2>Edition du mémorial</h2>
+         <h1>Edition du mémorial</h1>
     {% endif %}
 
-    <form>
+    <div class="formulaire">
     {{ form_start(formAddMemorial) }}    
         <div class="form-element">
             {{ form_row(formAddMemorial.nom) }}            
@@ -61,6 +61,6 @@
             {{ form_row(formAddMemorial.submit) }}
         </div>
     {{ form_end(formAddMemorial) }}  
-    </form>
+    </div>
 </div>
 {% endblock %}

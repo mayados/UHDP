@@ -7,7 +7,7 @@
 <div class="container-page">
     <article id="histoire">
         <header>
-            <h2>{{histoire.titre}}</h2>
+            <h1>{{histoire.titre}}</h1>
             {% if histoire.photo == null %}
                 <p>Pas de photo</p>
             {% else %}
@@ -25,7 +25,7 @@
             {% endif %}
         </section>
         <section id="comment-histoire">
-            <h3>Commentaires</h3>
+            <h2>Commentaires</h2>
             {% for commentaire in histoire.commentaires %}
                 <article class="commentaire">
                     <p>{{ commentaire.texte }} 
@@ -39,9 +39,9 @@
             {% endfor %}    
         </section>             
         <section id="ajout-commentaire">
-            <h4>Ajouter un commentaire</h4>        
+            <h2>Ajouter un commentaire</h2>        
             {% if app.user and app.user.isVerified %}
-                <form>
+                <div class="formulaire">
                     {{ form_start(formAddComment) }}   
                     <div class="form-element">
                         {{ form_row(formAddComment.texte) }}
@@ -50,7 +50,7 @@
                         {{ form_row(formAddComment.submit) }}
                     </div>
                     {{ form_end(formAddComment) }}                        
-                </form>
+                </div>
             {% elseif app.user and not app.user.isVerified %}
                 <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir commenter</p>
             {% else %}

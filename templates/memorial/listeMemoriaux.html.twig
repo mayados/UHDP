@@ -26,9 +26,11 @@
     </section>
 
     <section class="memoriaux">
+
+        <h1>Les mémoriaux</h1>
         {% for memorial in listeMemoriaux %}
             <div class="memorial">
-                <p>{{ memorial.nom }}</p>
+                <h2>{{ memorial.nom }}</h2>
                 {% if memorial.photo == null %}
                     <p>Pas de photo</p>
                 {% else %}

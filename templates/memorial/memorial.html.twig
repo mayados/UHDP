@@ -8,9 +8,9 @@
 
     <section id="memorial">
         <div id="memorial-infos">
+            <h1>{{ memorial.nom }}</h1>
             <figure>
-                <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal"> 
-                <figcaption>{{ memorial.nom }}</figcaption>           
+                <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">       
             </figure>        
             {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
                 <a href="{{ path('show_profile', {'id': memorial.auteur.id}) }}">{{ memorial.auteur }}</a>
@@ -43,7 +43,7 @@
     </section>
 
     <section id='galerie-photo'>
-        <h3>Galerie photo</h3>
+        <h2>Galerie photo</h2>
 
         <div id="container-photos">
             {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}

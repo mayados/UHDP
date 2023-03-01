@@ -6,10 +6,10 @@
 
 <div class="container-page">
 
-    <h2>Liste des utilisateurs</h2>
+    <h1>Liste des utilisateurs</h1>
 
     <section id="users-bannis">
-        <h5>Utilisateurs bannis</h5>
+        <h2>Utilisateurs bannis</h2>
 
         {% for banni in utilisateursBannis %}
             <div class="banni">
@@ -19,7 +19,7 @@
         {% endfor %}
     </section>
     <section id="users-non-bannis">
-        <h5>Utilisateurs non bannis</h5>
+        <h2>Utilisateurs non bannis</h2>
 
         {% for utilisateur in utilisateursNonBannis %}
             <p>{{ utilisateur.pseudo }}</p>

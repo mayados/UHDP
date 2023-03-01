@@ -6,7 +6,7 @@
 
 <div class="container-page">
     <section id="mur-commemoration">
-        <h3>Mur de commémoration</h3>
+        <h1>Mur de commémoration</h1>
 
         {% for mot in mots %}
             <div class="mot">
@@ -22,8 +22,9 @@
     </section>
 
     <section id="ajout-mot">
-        {% if app.user and app.user.isVerified %}
-            <form>
+        {% if app.user and app.user.isVerified %}        
+        <h2>Ajouter un mot de commémoration</h2>
+            <div class="formulaire">
                 {{ form_start(formAddMot) }}
                     <div class="form-element">
                         {{ form_row(formAddMot.mot) }}
@@ -32,7 +33,7 @@
                         {{ form_row(formAddMot.submit) }}
                     </div>
                 {{ form_end(formAddMot) }}                   
-            </form>
+                </div>
         {% elseif app.user and not app.user.isVerified %}
             <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir ajouter un mot</p>
         {% endif %}

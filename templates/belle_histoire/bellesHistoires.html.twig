@@ -17,12 +17,12 @@
     </section>
 
     <section id="belles-histoires">
-        <h2> Les belles histoires</h2>
+        <h1>Les belles histoires</h1>
 
         {% for histoire in listeHistoires %}
             <article class="histoire">
                 <div class="histoire-left">
-                    <p>{{ histoire.titre }}</p>
+                    <h2>{{ histoire.titre }}</h2>
                     {% if histoire.photo == null %}
                     <p>Pas de photo</p>
                     {% else %}

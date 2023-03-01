@@ -6,7 +6,7 @@
 
 <div class="container-page">
     <section id="topic">
-        <h2>{{ topic.titre }}</h2>
+        <h1>{{ topic.titre }}</h1>
 
         {% if app.user == topic.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
             <a href="{{path('remove_topic', {'id': topic.id}) }}">Supprimer le topic</a>
@@ -38,10 +38,19 @@
 
     <section class="ajout-posts">
         {% if not topic.isVerrouillage %}
-            <h5>Ajout de commentaires</h5>
+            <h2>Ajout de commentaires</h2>
             {% if app.user.isVerified %}
-                {{ form_start(formAddPost) }}    
-                {{ form_end(formAddPost) }}
+                <div class="formulaire">
+                    {{ form_start(formAddPost) }}    
+                        <div class="form-element">
+                            {{ form_row(formAddPost.texte) }}
+                        </div>
+                        <div class="form-element">
+                            {{ form_row(formAddPost.submit) }}
+                        </div>
+                    {{ form_end(formAddPost) }}                    
+                    </div>
+
             {% else %}
             <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir commenter</p>
             {% endif %}

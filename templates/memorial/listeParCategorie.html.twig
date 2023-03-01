@@ -14,17 +14,19 @@
         {% if app.user and app.user.isVerified %}
             <a href="{{ path('add_memorial') }}">Créer un mémorial</a>
         {% elseif app.user and not app.user.isVerified %}
-            <p>Veuillez cliquer sur le lien envoé à votre adresse mail pour pouvoir créer un mémorial</p>
+            <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir créer un mémorial</p>
         {% else %}
             <p>Veuillez vous inscrire ou vous connecter pour pouvoir créer un mémorial</p>
         {% endif %}        
     </section>
 
     <section class="memoriaux">
+
+        <h1>Les mémoriaux des {{ categorie.nom }}</h1>
         {% if categorie.animaux | length > 0 %}
             {% for memorial in memoriaux %}
                 <div class="memorial">
-                    <p>{{ memorial.nom }}</p>
+                    <h2>{{ memorial.nom }}</h2>
                     {% if memorial.photo == null %}
                         <p>Pas de photo</p>
                     {% else %}

@@ -12,12 +12,12 @@
 <div class="container-page">
 
     {% if edit == false %}
-        <h2>Création d'un topic</h2>
+        <h1>Création d'un topic</h1>
     {% else %}
-        <h2>Edition du topic</h2>
+        <h1>Edition du topic</h1>
     {% endif %}
 
-    <form>
+    <div class="formulaire">
         {{ form_start(formAddTopic) }}   
             <div class="form-element">
                 {{ form_row(formAddTopic.titre) }}                 
@@ -35,6 +35,6 @@
                 {{ form_row(formAddTopic.submit) }}                 
             </div>
         {{ form_end(formAddTopic) }}        
-    </form>
+    </div>
 </div>
 {% endblock %}
