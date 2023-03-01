@@ -8,9 +8,10 @@
     <section id="infos-mon-profil">
         <h1>Mon profil</h1>
         <figure>
-            <img src="" alt="">
+            <img src="{{ asset('uploads/imgUserProfil/'~ user.photo) }}" alt="">
             <figcaption>{{ user.pseudo }}</figcaption>
-        </figure>        
+        </figure>     
+        <a href="{{ path('edit_profile', {'id': user.id}) }}">Paramètres du profil</a>   
     </section>
 
     <section id="mes-memoriaux">
