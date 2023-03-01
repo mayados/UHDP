@@ -9,7 +9,11 @@
     <section id="infos-profil">
         <h1>{{ user.pseudo }}</h1>
         <figure>
-            <img src="{{ asset('uploads/imgGalerie/'~ user.photo) }}" alt="">     
+            {% if not user.photo %}
+                <img src="{{ asset('img/default_user.png') }}" alt="">
+            {% else %}
+                <img src="{{ asset('uploads/imgGalerie/'~ user.photo) }}" alt="">   
+            {% endif %}  
         </figure>
         {% if user.isBannir == false %}
             <a href="{{ path('ban_admin_user', {'id': user.id}) }}">Bannir</a>
