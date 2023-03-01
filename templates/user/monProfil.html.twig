@@ -6,7 +6,7 @@
 
 <div class="container-page">
     <section id="infos-mon-profil">
-        <h3>Mon profil</h3>
+        <h1>Mon profil</h1>
         <figure>
             <img src="" alt="">
             <figcaption>{{ user.pseudo }}</figcaption>
@@ -14,13 +14,38 @@
     </section>
 
     <section id="mes-memoriaux">
-
+        <h2>Mes mémoriaux</h2>
+        {% for memorial in memoriaux %}
+        <div class="memorial-user">
+            <h3>{{ memorial.nom }}</h3>              
+            <figure>
+                <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="">
+            </figure>
+            <a href="{{path('show_memorial', {'id': memorial.id}) }}">Voir</a>
+        </div>
+        {% endfor %}
     </section>
     <section id="mes-histoires">
-
+        <h2>Mes belles histoires</h2>
+        {% for histoire in histoires %}
+        <div class="histoire-user">
+            <h3>{{ histoire.titre }}</h3>
+            <figure>
+                <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="">
+            </figure>
+            <a href="{{path('show_histoire', {'id': histoire.id}) }}">Voir</a>
+        </div>
+        {% endfor %}
     </section>
     <section id="mes-topics">
-
+        <h2>Mes topics</h2>
+        {% for topic in topics %}
+        <div class="topic-user">
+            <h3>{{ topic.titre }}</h3>
+            <a href="{{path('show_topic', {'id': topic.id}) }}">Voir</a>
+        </div>
+            
+        {% endfor %}
     </section>
 </div>
 {% endblock %}

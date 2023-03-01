@@ -7,9 +7,9 @@
 <div class="container-page">
 
     <section id="infos-profil">
+        <h1>{{ user.pseudo }}</h1>
         <figure>
             <img src="{{ asset('uploads/imgGalerie/'~ user.photo) }}" alt="">     
-            <figcaption>{{ user.pseudo }}</figcaption>   
         </figure>
         {% if user.isBannir == false %}
             <a href="{{ path('ban_admin_user', {'id': user.id}) }}">Bannir</a>
@@ -19,13 +19,16 @@
     </section>
 
     <section id="memoriaux-crees">
-        <h5>Mémoriaux créés</h5>
-
-        {% if user.memoriaux | length > 0 %}
-            {% for memorial in user.memoriaux %}
-                <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="">
-                <p>{{ memorial.nom }}</p>
-                <a href="{{ path('show_memorial', {'id': memorial.id}) }}">Voir le mémorial</a>
+        <h2>Mémoriaux créés</h2>
+        {% if memoriaux | length > 0 %}
+            {% for memorial in memoriaux %}
+                <div class="memorial-user">
+                    <h3>{{ memorial.nom }}</h3>
+                    <figure>
+                        <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="">                    
+                    </figure>            
+                    <a href="{{ path('show_memorial', {'id': memorial.id}) }}">Voir le mémorial</a>                
+                </div>
             {% endfor %}    
         {% else %}
             <p>Pas de mémoriaux créés</p>
@@ -33,13 +36,16 @@
     </section>
 
     <section id="histoires-creees">
-        <h5>Belles Histoires créées</h5>
-
-        {% if user.bellesHistoires | length > 0 %}
-            {% for histoire in user.bellesHistoires %}
-                <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="">
-                <p>{{ histoire.titre }}</p>
-                <a href="{{ path('show_histoire', {'id': histoire.id}) }}">Lire l'histoire</a>
+        <h2>Belles Histoires créées</h2>
+        {% if histoires | length > 0 %}
+            {% for histoire in histoires %}
+                <div class="histoire-user">
+                    <h3>{{ histoire.titre }}</h3>    
+                    <figure>
+                        <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="">                    
+                    </figure>        
+                    <a href="{{ path('show_histoire', {'id': histoire.id}) }}">Lire l'histoire</a>                
+                </div>
             {% endfor %}    
         {% else %}
         <p>Pas de belles histoires créées</p>
@@ -47,7 +53,17 @@
     </section>
 
     <section id="topics-crees">
-        
+        <h2>Topics créés</h2>
+        {% if topics | length > 0 %}
+            {% for topic in topics %}
+                <div class="topic-user">
+                    <h3>{{ topic.titre }}</h3>    
+                    <a href="{{ path('show_topic', {'id': topic.id}) }}">Voir</a>                
+                </div>
+            {% endfor %}    
+            {% else %}
+            <p>Pas de topics créés</p>
+        {% endif %}  
     </section>
 
 </div>
