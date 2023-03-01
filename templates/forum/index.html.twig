@@ -6,19 +6,44 @@
 
 <div class="container-page">
 
-    {% if app.user.isVerified %}
-        <a href="{{ path('add_topic') }}">Créer un topic</a>
-    {% else %}
-        <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir créer un topic</p>
-    {% endif %}
-    <h2>Les topics</h2>
+    <section class="creation">
+        {% if app.user.isVerified %}
+            <a href="{{ path('add_topic') }}">Créer un topic</a>
+        {% else %}
+            <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir créer un topic</p>
+        {% endif %}        
+    </section>
+    <section id="topics">
+        <h2>Les topics</h2>
 
-    {% for topic in topics %}
-    <div class="topic">
-        {{ topic.titre }}
-        <a href="{{path('show_topic', {'id': topic.id}) }}">Voir le topic</a>
-    </div>
-    {% endfor %}
-
+        <table>
+            <tr>
+                <th>Titre</th>
+                <th>Messages</th>
+                <th>Date de création</th>
+                <th>Auteur</th>
+            </tr>
+            {% if topics | length > 0 %}
+                {% for topic in topics %}
+                <div class="topic">
+                    <td>
+                        <a href="{{path('show_topic', {'id': topic.id}) }}">{{ topic.titre }}</a>                    
+                    </td>
+                    <td>
+                        0
+                    </td>
+                    <td>
+                        {{ topic.dateCreation | date('d-m-Y') }}
+                    </td>
+                    <td>
+                        {{ topic.auteur }}
+                    </td>
+                </div>
+                {% endfor %}    
+            {% else %}
+                <p>Pas de topics pour le moment..</p>
+            {% endif %}              
+        </table>
+    </section>
 </div>
 {% endblock %}

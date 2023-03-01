@@ -18,9 +18,23 @@
         <h2>Edition de l'histoire</h2>
     {% endif %}
 
+    <form>
+    {{ form_start(formAddHistoire) }}  
+        <div class="form-element">
+            {{ form_row(formAddHistoire.titre) }} 
+        </div>
+        <div class="form-element">
+            {{ form_row(formAddHistoire.texte) }} 
+        </div>
+        <div class="form-element">
+            {{ form_row(formAddHistoire.imgHistoire) }} 
+        </div>
+        <div class="form-element">
+            {{ form_row(formAddHistoire.submit) }} 
+        </div>
+    {{ form_end(formAddHistoire) }}        
+    </form>
 
-    {{ form_start(formAddHistoire) }}    
-    {{ form_end(formAddHistoire) }}
 
 </div>
 {% endblock %}
