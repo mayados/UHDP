@@ -17,24 +17,24 @@
         <header>
             <nav>
                 <ul>
-                        <li>
-                            <a href="{{ path('app_home') }}">Accueil</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('app_memoriaux') }}">Memoriaux</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('app_belles_histoires') }}">Belles histoires</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('app_mot_commemoration') }}">Commémoration</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('app_forum') }}">Forum</a>
-                        </li>
-                        <li>
-                            <a href="#">Notre histoire</a>
-                        </li>
+                    <li>
+                        <a href="{{ path('app_home') }}">Accueil</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_memoriaux') }}">Memoriaux</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_belles_histoires') }}">Belles histoires</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_mot_commemoration') }}">Commémoration</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_forum') }}">Forum</a>
+                    </li>
+                    <li>
+                        <a href="#">Notre histoire</a>
+                    </li>
                     {% if app.user %}                        
                         <li>
                             <a href="{{ path('show_profile', {'id': app.user.id}) }}">Profil</a>
@@ -55,7 +55,9 @@
                 </ul>
             </nav>
         </header>
-
-        {% block body %}{% endblock %}
+            {% block body %}{% endblock %}            
+        <footer>
+            
+        </footer>
     </body>
 </html>
