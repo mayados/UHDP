@@ -6,40 +6,49 @@
 
 <div class="container-page">
 
-    {% if user.photo %}
-        <img src="{{ asset('uploads/imgGalerie/'~ user.photo) }}" alt="">
-    {% else %}
-        <p>Pas de photo</p>
-    {% endif %}
-    <h5>{{ user.pseudo }}</h5>
-    {% if user.isBannir == false %}
-        <a href="{{ path('ban_admin_user', {'id': user.id}) }}">Bannir</a>
-    {% else %}
-        <a href="{{ path('ban_admin_user', {'id': user.id}) }}">Dé-bannir</a>
-    {% endif %}
+    <section id="infos-profil">
+        <figure>
+            <img src="{{ asset('uploads/imgGalerie/'~ user.photo) }}" alt="">     
+            <figcaption>{{ user.pseudo }}</figcaption>   
+        </figure>
+        {% if user.isBannir == false %}
+            <a href="{{ path('ban_admin_user', {'id': user.id}) }}">Bannir</a>
+        {% else %}
+            <a href="{{ path('ban_admin_user', {'id': user.id}) }}">Dé-bannir</a>
+        {% endif %}        
+    </section>
 
-    <h5>Mémoriaux créés</h5>
+    <section id="memoriaux-crees">
+        <h5>Mémoriaux créés</h5>
 
-    {% if user.memoriaux | length > 0 %}
-        {% for memorial in user.memoriaux %}
-            <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="">
-            <p>{{ memorial.nom }}</p>
-            <a href="{{ path('show_memorial', {'id': memorial.id}) }}">Voir le mémorial</a>
-        {% endfor %}    
-    {% else %}
-        <p>Pas de mémoriaux créés</p>
-    {% endif %}
+        {% if user.memoriaux | length > 0 %}
+            {% for memorial in user.memoriaux %}
+                <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="">
+                <p>{{ memorial.nom }}</p>
+                <a href="{{ path('show_memorial', {'id': memorial.id}) }}">Voir le mémorial</a>
+            {% endfor %}    
+        {% else %}
+            <p>Pas de mémoriaux créés</p>
+        {% endif %}        
+    </section>
 
-    <h5>Belles Histoires créées</h5>
+    <section id="histoires-creees">
+        <h5>Belles Histoires créées</h5>
 
-    {% if user.bellesHistoires | length > 0 %}
-        {% for histoire in user.bellesHistoires %}
-            <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="">
-            <p>{{ histoire.titre }}</p>
-            <a href="{{ path('show_histoire', {'id': histoire.id}) }}">Lire l'histoire</a>
-        {% endfor %}    
-    {% else %}
-    <p>Pas de belles histoires créées</p>
-    {% endif %}
+        {% if user.bellesHistoires | length > 0 %}
+            {% for histoire in user.bellesHistoires %}
+                <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="">
+                <p>{{ histoire.titre }}</p>
+                <a href="{{ path('show_histoire', {'id': histoire.id}) }}">Lire l'histoire</a>
+            {% endfor %}    
+        {% else %}
+        <p>Pas de belles histoires créées</p>
+        {% endif %}        
+    </section>
+
+    <section id="topics-crees">
+        
+    </section>
+
 </div>
 {% endblock %}

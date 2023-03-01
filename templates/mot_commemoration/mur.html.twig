@@ -5,28 +5,37 @@
 {% block body %}
 
 <div class="container-page">
-    <h3>Mur de commémoration</h3>
+    <section id="mur-commemoration">
+        <h3>Mur de commémoration</h3>
 
-    {% for mot in mots %}
-        <div class="mot">
-            <p>{{ mot.mot }}
-            {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-                ({{ mot.auteur }}
-            {% endif %}
-            {{ mot.dateCreation | date('d-m-Y') }})
-            <a href="{{ path('remove_mot', {'id': mot.id}) }}">Delete</a>
-            </p>
-        </div>
-    {% endfor %}
+        {% for mot in mots %}
+            <div class="mot">
+                <p>{{ mot.mot }}
+                {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+                    ({{ mot.auteur }}
+                {% endif %}
+                {{ mot.dateCreation | date('d-m-Y') }})
+                <a href="{{ path('remove_mot', {'id': mot.id}) }}">Delete</a>
+                </p>
+            </div>
+        {% endfor %}        
+    </section>
 
-    <div id="ajout-mot">
+    <section id="ajout-mot">
         {% if app.user and app.user.isVerified %}
-            {{ form_start(formAddMot) }}
-            {{ form_end(formAddMot) }}          
+            <form>
+                {{ form_start(formAddMot) }}
+                    <div class="form-element">
+                        {{ form_row(formAddMot.mot) }}
+                    </div>
+                    <div class="form-element">
+                        {{ form_row(formAddMot.submit) }}
+                    </div>
+                {{ form_end(formAddMot) }}                   
+            </form>
         {% elseif app.user and not app.user.isVerified %}
             <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir ajouter un mot</p>
         {% endif %}
-    </div>
-
+    </section>
 </div>
 {% endblock %}

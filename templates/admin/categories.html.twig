@@ -5,20 +5,34 @@
 {% block body %}
 
 <div class="container-page">
+    <section id="categories-liste">
+        <h2>Liste des catégories</h2>
 
-    <h2>Liste des catégories</h2>
+        {% for categorie in categories %}
+            <div class="categorie">
+                <p>{{ categorie.nom }}  </p>  
+                <a href="{{ path('app_admin_remove_categorie', {'id': categorie.id}) }}">Supprimer</a>      
+            </div>
+        {% endfor %}        
+    </section>
 
-    {% for categorie in categories %}
-        <div class="categorie">
-            <p>{{ categorie.nom }}  </p>  
-            <a href="{{ path('app_admin_remove_categorie', {'id': categorie.id}) }}">Supprimer</a>      
-        </div>
-    {% endfor %}
+    <section id="ajout-categorie">
+        <h4>Ajouter une catégorie</h4>
 
-    <h4>Ajouter une catégorie</h4>
+        <form>
+            {{form_start(formAddCategorie)}}
+                <div class="form-element">
+                    {{ form_row(formAddCategorie.nom) }}
+                </div>
+                <div class="form-element">
+                    {{ form_row(formAddCategorie.submit) }}
+                </div>
+            {{form_end(formAddCategorie)}}              
+        </form>
+      
+    </section>
 
-    {{form_start(formAddCategorie)}}
-    {{form_end(formAddCategorie)}}
+
 
 </div>
 {% endblock %}

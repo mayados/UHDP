@@ -7,7 +7,7 @@
 <div class="container-page">
 
     <section id="memorial">
-        <article id="memorial-infos">
+        <div id="memorial-infos">
             <figure>
                 <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal"> 
                 <figcaption>{{ memorial.nom }}</figcaption>           
@@ -21,9 +21,9 @@
             <p>
               {{ memorial.lieu }}   
             </p>      
-        </article>
+        </div>
 
-        <article id="memorial-description">
+        <div id="memorial-description">
             <p>
                 {{ memorial.presentation }}
             </p>
@@ -36,14 +36,13 @@
             <p>
                 {{ memorial.histoire }}                   
             </p>
-        </article>
+        </div>
         {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
             <a href="{{path('remove_memorial', {'id': memorial.id}) }}">Supprimer le mémorial</a>
         {% endif %}
     </section>
 
     <section id='galerie-photo'>
-
         <h3>Galerie photo</h3>
 
         <div id="container-photos">

@@ -9,7 +9,6 @@
 {% endblock %}
 
 {% block body %}
-
 <div class="container-page">
 
     {% if edit == false %}
@@ -18,16 +17,24 @@
         <h2>Edition du topic</h2>
     {% endif %}
 
-    {{ form_start(formAddTopic) }}    
-    {{ form_row(formAddTopic.titre) }} 
-    {% if edit %}
-        {{ form_row(formAddTopic.firstComment, {value: post}) }} 
-    {% else %}
-        {{ form_row(formAddTopic.firstComment) }}
-    {% endif %}
-    {{ form_row(formAddTopic.submit) }} 
-    {{ form_end(formAddTopic) }}
-
+    <form>
+        {{ form_start(formAddTopic) }}   
+            <div class="form-element">
+                {{ form_row(formAddTopic.titre) }}                 
+            </div> 
+            {% if edit %}
+                <div class="form-element">
+                    {{ form_row(formAddTopic.firstComment, {value: post}) }}                 
+                </div>
+            {% else %}
+                <div class="form-element">
+                    {{ form_row(formAddTopic.firstComment) }}                
+                </div>
+            {% endif %}
+            <div class="form-element">
+                {{ form_row(formAddTopic.submit) }}                 
+            </div>
+        {{ form_end(formAddTopic) }}        
+    </form>
 </div>
-
 {% endblock %}
