@@ -35,6 +35,14 @@
                     <li>
                         <a href="#">Notre histoire</a>
                     </li>
+                    {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+                        <li>
+                            <a href="{{ path('app_admin_users') }}">Utilisateurs</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('app_admin_categories') }}">Catégories</a>
+                        </li>
+                    {% endif %}                      
                     {% if app.user %}                        
                         <li>
                             <a href="{{ path('show_profile', {'id': app.user.id}) }}">Profil</a>
@@ -47,17 +55,19 @@
                             <a href="{{ path('app_login') }}">Connexion</a>
                         </li>
                     {% endif %}
-                    {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-                        <li>
-                            <a href="{{ path('app_admin_users') }}">Utilisateurs</a>
-                        </li>
-                    {% endif %}  
                 </ul>
             </nav>
         </header>
             {% block body %}{% endblock %}            
         <footer>
-            
+            {# <ul>
+                <li>CGU</li>
+                <li>Mentions légales</li>
+                <li>Site mapping</li>
+                <li>Nous contacter (créer formulaire de contact, même non fonctionnel)</li>
+                <li>Liens internes (à insérer)</li>
+                <li>Liens externes (réseaux sociaux)</li>
+            </ul> #}
         </footer>
     </body>
 </html>
