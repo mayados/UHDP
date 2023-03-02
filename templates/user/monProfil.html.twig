@@ -11,7 +11,7 @@
             {% if not user.photo %}
                 <img src="{{ asset('img/default_user.png') }}" alt="">
             {% else %}
-                <img src="{{ asset('uploads/imgGalerie/'~ user.photo) }}" alt="">   
+                <img src="{{ asset('uploads/imgUserProfil/'~ user.photo) }}" alt="">   
             {% endif %} 
             <figcaption>{{ user.pseudo }}</figcaption>
         </figure>     
