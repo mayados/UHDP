@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserEditPasswordType;
 use App\Form\UserType;
 use App\Service\UploaderService;
 use App\Repository\UserRepository;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
 {
@@ -58,8 +60,8 @@ class UserController extends AbstractController
 
     }
 
-    #[Route('/user/edit/{id}', name: 'edit_profile')]
-    public function editProfile(User $user, UploaderService $uploaderService, Request $request, ManagerRegistry $doctrine)
+    #[Route('/user/parametres/{id}', name: 'edit_profile')]
+    public function editProfile(User $user, UploaderService $uploaderService, Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $hasher)
     {
 
         if(!$this->getUser()){
@@ -99,11 +101,63 @@ class UserController extends AbstractController
                 );
         }
 
+        $formPassword = $this->createForm(UserEditPasswordType::class);
+        $formPassword->handleRequest($request);
+
+        if ($formPassword->isSubmitted() && $formPassword->isValid()) {   
+              
+            // On vérifie si le mot de passe courant renseigné dans le formulaire correspond avec le mot de passe hashé du user   
+            if($hasher->isPasswordValid($user, $formPassword->get('currentPassword')->getData())){
+       
+                $user->setPassword(
+                        $hasher->hashPassword(
+                            $user,
+                            $formPassword->get('newPassword')->getData(),
+                            // dd($form->get('newPassword')->getData())
+                        )
+                );
+
+                $entityManager = $doctrine->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+                return $this->redirectToRoute(
+                    'show_profile',
+                    ['id' => $user->getId()]
+                );
+
+            }
+
+        }
+
         return $this->render('user/edit.html.twig', [
             'user' => $user,
             'formEditProfile' => $form->createView(),
+            'formEditPassword' => $formPassword->createView(),
         ]); 
 
+    }
+
+    // #[Route('/user/password/{id}', name: 'edit_password_user')]
+    // public function modifyPassword(User $user, Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $hasher)
+    // {
+    //     // On vérifie d'abord si l'utilisateur est connecté ET si c'est le même qui demande la modification
+    //     if(!$this->getUser()){
+    //         return $this->redirectToRoute('app_login');
+    //     }
+
+    //     if(!$this->getUser() === $user){
+    //         return $this->redirectToRoute('app_home');
+    //     }
+
+
+
+    // }
+
+    #[Route('/user/delete/account/{id}', name: 'suppr_account_user')]
+    public function deleteUserAccount()
+    {
+        // Supprimer le compte et toutes les infos associées ? Anonymisation des messages sur forum ? Suppression mémoriaux etc
     }
 
 }
