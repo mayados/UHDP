@@ -73,7 +73,7 @@ class AnimalMemorial
     private ?CategorieAnimal $categorieAnimal = null;
 
     #[ORM\ManyToOne(inversedBy: 'memoriaux')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete:"SET NULL")]
     private ?User $auteur = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
