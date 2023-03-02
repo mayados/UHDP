@@ -23,7 +23,7 @@ class Post
     private ?\DateTimeInterface $dateCreation = null;
 
     #[ORM\ManyToOne(inversedBy: 'posts')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete:"SET NULL")]
     private ?User $auteur = null;
 
     #[ORM\ManyToOne(inversedBy: 'posts')]

@@ -32,7 +32,7 @@ class Topic
     private ?bool $verrouillage = null;
 
     #[ORM\ManyToOne(inversedBy: 'topics')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete:"SET NULL")]
     private ?User $auteur = null;
 
     #[ORM\OneToMany(mappedBy: 'topic', targetEntity: Post::class, orphanRemoval: true, cascade:['persist'])]

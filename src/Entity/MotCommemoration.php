@@ -27,7 +27,7 @@ class MotCommemoration
     private ?\DateTimeInterface $dateCreation = null;
 
     #[ORM\ManyToOne(inversedBy: 'motsCommemoration')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete:"SET NULL")]
     private ?User $auteur = null;
 
     public function getId(): ?int

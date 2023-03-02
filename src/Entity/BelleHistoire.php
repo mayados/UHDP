@@ -33,7 +33,7 @@ class BelleHistoire
     private ?string $photo = null;
 
     #[ORM\ManyToOne(inversedBy: 'bellesHistoires')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete:"SET NULL")]
     private ?User $auteur = null;
 
     #[ORM\OneToMany(mappedBy: 'belleHistoire', targetEntity: CommentBelleHistoire::class, orphanRemoval: true)]
