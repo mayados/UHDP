@@ -54,14 +54,14 @@ class MemorialController extends AbstractController
     public function showMemorial(ManagerRegistry $doctrine, AnimalMemorialRepository $amr, UploaderService $uploaderService, AnimalMemorial $memorial, Request $request, SluggerInterface $slugger): Response
     {
         $memorial = $amr->find($memorial->getId());
-        
+            $galerie = new Photo();
+            $form = $this->createForm(GaleriePhotoType::class, $galerie);        
         // On vérifie que le user courant est le créateur du mémorial, sinon on ne peut pas accéder au formulaire d'ajout de photo
         if($this->getUser() && $this->getUser()== $memorial->getAuteur()){
             // On souhaite insérer le formulaire d'ajout d'image à la galerie photo directement dans la page du mémorial
             // Dans un premier temps on persist dans la bdd de Photos le nom des fichiers
             // Puis on add chaque image grâce à la méthode de l'entity AnimalMemorial (qui contient un collectionType)
-            $galerie = new Photo();
-            $form = $this->createForm(GaleriePhotoType::class, $galerie);
+
             $form->handleRequest($request); 
             if ($form->isSubmitted() && $form->isValid()) {
                 $galerie = $form->getData();  
@@ -94,6 +94,7 @@ class MemorialController extends AbstractController
 
         return $this->render('memorial/memorial.html.twig',[
                 'memorial' => $memorial,
+                'formAddPhotoGalerie' => $form->createView(),
         ]);
 
     }

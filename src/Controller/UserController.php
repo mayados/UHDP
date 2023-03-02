@@ -27,7 +27,8 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/user/{id}', name: 'show_profile')]
+    // Requirements ici sert à ce que le paramètre entré soit obligatoirement un digit
+    #[Route('/user/{id}', name: 'show_profile', requirements: ['id' => '\d+'])]
     public function showProfile(UserRepository $ur, User $user, AnimalMemorialRepository $amr, BelleHistoireRepository $bhr, TopicRepository $tr): Response
     {
         // Il faut être connecté pour accéder à son profil ou à la page de profil d'un utilisateur
@@ -37,7 +38,6 @@ class UserController extends AbstractController
             $memoriaux = $amr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);               
             $histoires = $bhr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);               
             $topics = $tr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);               
-            if($this->getUser() != $user){
               
                 return $this->render('user/profil.html.twig', [
                     'user' => $user,
@@ -45,14 +45,7 @@ class UserController extends AbstractController
                     'histoires' => $histoires,
                     'topics' => $topics,
                 ]);            
-            }else{
-                return $this->render('user/monProfil.html.twig', [
-                    'user' => $user,
-                    'memoriaux' => $memoriaux,
-                    'histoires' => $histoires,
-                    'topics' => $topics,
-                ]); 
-            }            
+        
         }
 
         // Si le user n'est pas connecté, on dirige vers la page de login
@@ -60,18 +53,42 @@ class UserController extends AbstractController
 
     }
 
-    #[Route('/user/parametres/{id}', name: 'edit_profile')]
-    public function editProfile(User $user, UploaderService $uploaderService, Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $hasher)
+    #[Route('/monProfil', name: 'my_profile')]
+    public function showMyProfile(User $user, AnimalMemorialRepository $amr, BelleHistoireRepository $bhr, TopicRepository $tr)
+    {
+        if($this->getUser()){
+            return $this->redirectToRoute('app_login'); 
+        }
+
+        $user = $this->getUser();
+
+        $memoriaux = $amr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);               
+        $histoires = $bhr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);               
+        $topics = $tr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);  
+
+        return $this->render('user/monProfil.html.twig', [
+            'user' => $user,
+            'memoriaux' => $memoriaux,
+            'histoires' => $histoires,
+            'topics' => $topics,
+        ]); 
+
+    }
+
+
+    #[Route('/user/parametres', name: 'edit_profile')]
+    public function editProfile(UploaderService $uploaderService, Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $hasher)
     {
 
-        if(!$this->getUser()){
-            return $this->redirectToRoute('app_login');
-        }
+        // if(!$this->getUser()){
+        //     return $this->redirectToRoute('app_login');
+        // }
 
-        if(!$this->getUser() === $user){
-            return $this->redirectToRoute('app_home');
-        }
+        // if(!$this->getUser() === $user){
+        //     return $this->redirectToRoute('app_home');
+        // }
 
+        $user = $this->getUser();
 
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
@@ -148,6 +165,15 @@ class UserController extends AbstractController
     #[Route('/user/delete/account', name: 'suppr_account_user')]
     public function deleteUserAccount(UserRepository $ur, UploaderService $uploaderService, Request $request)
     {
+
+        if(!$this->getUser()){
+            return $this->redirectToRoute('app_login');
+        }
+
+        // if(!$this->getUser() === $user){
+        //     return $this->redirectToRoute('app_home');
+        // }
+
         // Supprimer le compte et toutes les infos associées puis mise en place de l'anonymisation dans les vues
         $user = $this->getUser();
         // Avant de supprimer le user, il faut supprimer la photo associée dans le dossier concerné
