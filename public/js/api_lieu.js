@@ -3,7 +3,7 @@
             var inputLieu = document.querySelector('#memorial_lieu');
             /* il vaut mieux utiliser l'évènement input que les events keyboard, car les events keyboard risquent de ne pas
             détecter les touches d'un clavier tactile (tablette / mobile), ni la reconnaissance vocale */
-            inputLieu.addEventListener("input", (event) => {
+            inputLieu.addEventListener("focusout", (event) => {
                 let searchValue = inputLieu.value;   
                 event.preventDefault();
                 removeListe();       
@@ -44,6 +44,7 @@
             function removeListe(){
                 var liste = document.querySelector("#autocomplete-list")
                 // Si la liste existe, on la retire du document
+                // liste.remove()
                 if(liste){
                     liste.remove();
                 }
