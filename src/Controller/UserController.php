@@ -54,9 +54,9 @@ class UserController extends AbstractController
     }
 
     #[Route('/monProfil', name: 'my_profile')]
-    public function showMyProfile(User $user, AnimalMemorialRepository $amr, BelleHistoireRepository $bhr, TopicRepository $tr)
+    public function showMyProfile(AnimalMemorialRepository $amr, BelleHistoireRepository $bhr, TopicRepository $tr)
     {
-        if($this->getUser()){
+        if(!$this->getUser()){
             return $this->redirectToRoute('app_login'); 
         }
 
@@ -112,10 +112,7 @@ class UserController extends AbstractController
                 $entityManager->persist($user);
                 $entityManager->flush();
 
-                return $this->redirectToRoute(
-                    'show_profile',
-                    ['id' => $user->getId()]
-                );
+                return $this->redirectToRoute('my_profile',);
         }
 
         $formPassword = $this->createForm(UserEditPasswordType::class);
