@@ -33,7 +33,14 @@
                 </div>
                 <div class="histoire-right">
                     <p>{{ histoire.texte|slice(0, 100) }}...</p>
-                    <p>{{ histoire.auteur }}</p>
+                    {% if histoire.auteur != null %}
+                        <a href="#">
+                            <p>{{ histoire.auteur }}</p>  
+                        </a>
+                    {% else %}
+                        <p>Utilisateur supprimé</p>
+                    {% endif %}
+
                     <a href="{{path('show_histoire', {'id': histoire.id}) }}">Voir l'histoire</a>                    
                 </div>
             </article>

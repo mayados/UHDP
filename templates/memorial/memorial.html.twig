@@ -13,7 +13,11 @@
                 <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">       
             </figure>        
             {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-                <a href="{{ path('show_profile', {'id': memorial.auteur.id}) }}">{{ memorial.auteur }}</a>
+                {% if memorial.auteur != null %}
+                    <a href="{{ path('show_profile', {'id': memorial.auteur.id}) }}">{{ memorial.auteur }}</a>
+                {% else %}
+                    <p>Utilisateur supprimé</p>
+                {% endif %}
             {% endif %}
             <p>
                 {{ memorial.dateNaissance | date('d-m-Y') }}                
@@ -41,8 +45,10 @@
                 {{ memorial.histoire }}                   
             </p>
         </div>
-        {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-            <a href="{{path('remove_memorial', {'id': memorial.id}) }}">Supprimer le mémorial</a>
+        {% if memorial.auteur != null %}
+            {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+                <a href="{{path('remove_memorial', {'id': memorial.id}) }}">Supprimer le mémorial</a>
+            {% endif %}
         {% endif %}
     </section>
 
@@ -50,10 +56,12 @@
         <h2>Galerie photo</h2>
 
         <div id="container-photos">
-            {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-                <h4>Ajouter une photo à la galerie</h4>
-                {{ form_start(formAddPhotoGalerie) }}    
-                {{ form_end(formAddPhotoGalerie) }}
+            {% if memorial.auteur != null %}
+                {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+                    <h4>Ajouter une photo à la galerie</h4>
+                    {{ form_start(formAddPhotoGalerie) }}    
+                    {{ form_end(formAddPhotoGalerie) }}
+                {% endif %}
             {% endif %}
 
             {% for image in memorial.photos %}
@@ -61,8 +69,10 @@
                     <figure>
                         <img src="{{ asset('uploads/imgGalerie/'~ image.photo) }}" alt="photo de l'animal">                        
                     </figure>
-                    {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-                        <a href="{{path('remove_photo', {'idMemorial': memorial.id, 'id': image.id}) }}">Supprimer la photo</a>
+                    {% if memorial.auteur != null %}
+                        {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+                            <a href="{{path('remove_photo', {'idMemorial': memorial.id, 'id': image.id}) }}">Supprimer la photo</a>
+                        {% endif %}
                     {% endif %}
                 </div>
             {% endfor %}            

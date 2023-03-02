@@ -36,7 +36,11 @@
                         {{ topic.dateCreation | date('d-m-Y') }}
                     </td>
                     <td>
-                        {{ topic.auteur }}
+                        {% if topic.auteur != null %}
+                            <a href="#">{{ topic.auteur }}</a>
+                        {% else %}
+                            <p>Utilisateur supprimé</p>
+                        {% endif %}
                     </td>
                 </div>
                 {% endfor %}    

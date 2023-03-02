@@ -19,9 +19,11 @@
         </header>
         <section id="histoire-texte">
             <p>{{ histoire.texte }}</p>
-            {% if app.user == histoire.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-                <a href="{{ path('remove_histoire', {'id': histoire.id}) }}">Supprimer l'histoire</a>
-                <a href="{{ path('edit_histoire', {'id': histoire.id}) }}">Edit l'histoire</a>
+            {% if histoire.auteur != null %}
+                {% if app.user == histoire.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+                    <a href="{{ path('remove_histoire', {'id': histoire.id}) }}">Supprimer l'histoire</a>
+                    <a href="{{ path('edit_histoire', {'id': histoire.id}) }}">Edit l'histoire</a>
+                {% endif %}
             {% endif %}
         </section>
         <section id="comment-histoire">
@@ -30,7 +32,11 @@
                 <article class="commentaire">
                     <p>{{ commentaire.texte }} 
                     <footer>
-                        ({{ commentaire.auteur }})</p>
+                        {% if commentaire.auteur != null %}
+                            ({{ commentaire.auteur }})</p>
+                        {% else %}
+                            <p>(Utilisateur supprimé)</p>
+                        {% endif %}
                         {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
                             <a href="{{ path('remove_comment', {'idHistoire': histoire.id, 'id': commentaire.id}) }}">Delete</a>
                         {% endif %}
