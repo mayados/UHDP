@@ -25,6 +25,18 @@
 
     <section id="infos-paswword">
         <h2>Modifier le mot de passe</h2>
+
+        {{ form_start(formEditPassword) }}
+        <div class="form-element">
+            {{ form_row(formEditPassword.currentPassword) }}
+        </div>
+        <div class="form-element">
+            {{ form_row(formEditPassword.newPassword) }}
+        </div>
+        <div class="form-element">
+            {{ form_row(formEditPassword.submit) }}
+        </div>
+    {{ form_end(formEditPassword) }}   
     </section>
 
 
