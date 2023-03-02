@@ -8,7 +8,11 @@
     <section id="infos-mon-profil">
         <h1>Mon profil</h1>
         <figure>
-            <img src="{{ asset('uploads/imgUserProfil/'~ user.photo) }}" alt="">
+            {% if not user.photo %}
+                <img src="{{ asset('img/default_user.png') }}" alt="">
+            {% else %}
+                <img src="{{ asset('uploads/imgGalerie/'~ user.photo) }}" alt="">   
+            {% endif %} 
             <figcaption>{{ user.pseudo }}</figcaption>
         </figure>     
         <a href="{{ path('edit_profile', {'id': user.id}) }}">Paramètres du profil</a>   
