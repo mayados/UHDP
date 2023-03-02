@@ -106,17 +106,18 @@ class UserController extends AbstractController
 
         if ($formPassword->isSubmitted() && $formPassword->isValid()) {   
               
-            // On vérifie si le mot de passe courant renseigné dans le formulaire correspond avec le mot de passe hashé du user   
+            // On vérifie si le mot de passe courant renseigné dans le formulaire correspond avec le mot de passe hashé du user (ici grâce à une méthode du UserPasswordHasherInterface) 
             if($hasher->isPasswordValid($user, $formPassword->get('currentPassword')->getData())){
        
+                // On attribue au USER le nouveau mot de passe (sur le champ Password présent dans l'entité) ET on le hache tout de suite également
                 $user->setPassword(
+                        // On hash le password : 2 arguments => Le user dont le password doit être hashé + le password à hasher
                         $hasher->hashPassword(
                             $user,
                             $formPassword->get('newPassword')->getData(),
-                            // dd($form->get('newPassword')->getData())
                         )
                 );
-
+                // On met à jour l'entité dans la bdd
                 $entityManager = $doctrine->getManager();
                 $entityManager->persist($user);
                 $entityManager->flush();
@@ -126,6 +127,12 @@ class UserController extends AbstractController
                     ['id' => $user->getId()]
                 );
 
+            }else{
+                // Si le mot de passe courant entré n'est pas valide, on envoie un message flash
+                $this->addFlash(
+                    'warning',
+                    'Le mot de passe entré est incorrect'
+                );
             }
 
         }
@@ -138,26 +145,25 @@ class UserController extends AbstractController
 
     }
 
-    // #[Route('/user/password/{id}', name: 'edit_password_user')]
-    // public function modifyPassword(User $user, Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $hasher)
-    // {
-    //     // On vérifie d'abord si l'utilisateur est connecté ET si c'est le même qui demande la modification
-    //     if(!$this->getUser()){
-    //         return $this->redirectToRoute('app_login');
-    //     }
-
-    //     if(!$this->getUser() === $user){
-    //         return $this->redirectToRoute('app_home');
-    //     }
-
-
-
-    // }
-
-    #[Route('/user/delete/account/{id}', name: 'suppr_account_user')]
-    public function deleteUserAccount()
+    #[Route('/user/delete/account', name: 'suppr_account_user')]
+    public function deleteUserAccount(UserRepository $ur, UploaderService $uploaderService, Request $request)
     {
-        // Supprimer le compte et toutes les infos associées ? Anonymisation des messages sur forum ? Suppression mémoriaux etc
+        // Supprimer le compte et toutes les infos associées puis mise en place de l'anonymisation dans les vues
+        $user = $this->getUser();
+        // Avant de supprimer le user, il faut supprimer la photo associée dans le dossier concerné
+        $photo = $user->getPhoto();
+        if(!$photo == null){
+            $folder = 'imgUserProfil';
+            $uploaderService->delete($photo, $folder);            
+        }
+
+        // dd($user);
+        // Il faut invalider la session et mettre le token à 0, comme ça Symfony ne cherche pas à rediriger l'utilisateur supprimé avec un id
+        $request->getSession()->invalidate();
+        $this->container->get('security.token_storage')->setToken(null);
+        $ur->remove($user, $flush = true);
+
+        return $this->redirectToRoute('app_logout');
     }
 
 }
