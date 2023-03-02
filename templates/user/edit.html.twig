@@ -3,8 +3,14 @@
 {% block title %}Paramètres{% endblock %}
 
 {% block body %}
+<div class="container-page">
 
-<div class="example-wrapper">
+    {% for message in app.flashes('warning') %}
+        <div class="warning">
+            {{ message }}
+        </div>
+    {% endfor %}
+ 
     <h1>Paramètres</h1>
 
     <section id="infos-profil">
@@ -39,6 +45,7 @@
     {{ form_end(formEditPassword) }}   
     </section>
 
+    <a href="{{ path('suppr_account_user', {'id': user.id}) }}">Supprimer le compte</a>
 
 
 </div>
