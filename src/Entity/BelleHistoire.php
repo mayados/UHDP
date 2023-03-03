@@ -2,14 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\BelleHistoireRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\BelleHistoireRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: BelleHistoireRepository::class)]
+#[UniqueEntity(fields: ['titre'], message: 'Il y a déjà une histoire avec ce titre')]
 class BelleHistoire
 {
     #[ORM\Id]
@@ -17,13 +19,16 @@ class BelleHistoire
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique:true)]
     #[Assert\NotBlank()]
     #[Assert\Length(
         min: 2,
         max: 255,
     )]
     private ?string $titre = null;
+
+    #[ORM\Column(length: 255, unique:true)]
+    private ?string $slug = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank()]
@@ -60,6 +65,18 @@ class BelleHistoire
     public function setTitre(string $titre): self
     {
         $this->titre = $titre;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
