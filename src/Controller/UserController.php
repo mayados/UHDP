@@ -27,6 +27,7 @@ class UserController extends AbstractController
         ]);
     }
 
+    // On accède juste à une page d'affichage d'informations, donc ici on peut passer l'id du user = donnée sensible (car on ne peut rien faire de mal dans l'url avec cette route)
     // Requirements ici sert à ce que le paramètre entré soit obligatoirement un digit
     #[Route('/user/{id}', name: 'show_profile', requirements: ['id' => '\d+'])]
     public function showProfile(UserRepository $ur, User $user, AnimalMemorialRepository $amr, BelleHistoireRepository $bhr, TopicRepository $tr): Response
