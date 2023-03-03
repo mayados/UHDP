@@ -18,9 +18,7 @@ class AdminController extends AbstractController
     #[Route('/admin', name: 'app_admin')]
     public function index(): Response
     {
-        return $this->render('admin/index.html.twig', [
-            'controller_name' => 'AdminController',
-        ]);
+        return $this->render('admin/index.html.twig');
     }
 
     // Montrer les catégories existantes et formulaire d'ajout de catégorie
@@ -97,4 +95,30 @@ class AdminController extends AbstractController
         );
     }
 
+    #[Route('/admin/memoriaux', name: 'admin_memoriaux')]
+    public function findMemoriaux()
+    {
+        // Afficher les mémoriaux du plus recent au plus ancien
+        // Afficher les mémoriaux dont l'auteur a été surppimé ? 
+    }
+
+    #[Route('/admin/topics', name: 'admin_topics')]
+    public function findTopics()
+    {
+        // Afficher les Topics non vérrouillés du plus recent au plus ancien
+        // Afficher les Topic vérouillés du plus récent au plus ancien 
+    }
+
+    #[Route('/admin/histoires', name: 'admin_histoires')]
+    public function findHistoires()
+    {
+        // Afficher les histoires de la plus récente à la plus ancienne
+    }
+
+    #[Route('/admin/mur', name: 'admin_mur')]
+    public function findMotsCommemoration()
+    {
+        // Afficher les mots de commémoration du plus récent au plus ancien
+    }
+    
 }
