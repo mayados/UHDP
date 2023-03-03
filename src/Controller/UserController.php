@@ -81,13 +81,9 @@ class UserController extends AbstractController
     public function editProfile(UploaderService $uploaderService, Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $hasher)
     {
 
-        // if(!$this->getUser()){
-        //     return $this->redirectToRoute('app_login');
-        // }
-
-        // if(!$this->getUser() === $user){
-        //     return $this->redirectToRoute('app_home');
-        // }
+        if(!$this->getUser()){
+            return $this->redirectToRoute('app_login');
+        }
 
         $user = $this->getUser();
 
@@ -167,10 +163,6 @@ class UserController extends AbstractController
         if(!$this->getUser()){
             return $this->redirectToRoute('app_login');
         }
-
-        // if(!$this->getUser() === $user){
-        //     return $this->redirectToRoute('app_home');
-        // }
 
         // Supprimer le compte et toutes les infos associées puis mise en place de l'anonymisation dans les vues
         $user = $this->getUser();
