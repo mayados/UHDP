@@ -30,7 +30,7 @@ class BelleHistoireController extends AbstractController
 
     }
 
-    #[Route('/bellesHistoires/histoire/{id}', name: 'show_histoire')]
+    #[Route('/bellesHistoires/histoire/{id}', name: 'show_histoire', requirements: ['id' => '\d+'])]
     public function showHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire, ManagerRegistry $doctrine, Request $request): Response
     {
 
@@ -73,7 +73,7 @@ class BelleHistoireController extends AbstractController
     }
 
     #[Route('/bellesHistoires/add', name: 'add_histoire')]
-    #[Route('/bellesHistoires/edit/{id}', name: 'edit_histoire')]
+    #[Route('/bellesHistoires/edit/{titre}', name: 'edit_histoire')]
     public function addHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire = null, UploaderService $uploaderService, ManagerRegistry $doctrine, Request $request): Response
     {
 
