@@ -9,3 +9,11 @@ img{
     width: 300px;
     object-fit: cover;
 }
+
+header ul{
+    display: flex;
+}
+
+.administration{
+    display: flex;
+}
