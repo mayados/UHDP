@@ -22,7 +22,7 @@
             {% if histoire.auteur != null %}
                 {% if app.user == histoire.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
                     <a href="{{ path('remove_histoire', {'id': histoire.id}) }}">Supprimer l'histoire</a>
-                    <a href="{{ path('edit_histoire', {'id': histoire.id}) }}">Edit l'histoire</a>
+                    <a href="{{ path('edit_histoire', {'titre': histoire.titre}) }}">Edit l'histoire</a>
                 {% endif %}
             {% endif %}
         </section>
