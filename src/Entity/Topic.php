@@ -19,13 +19,14 @@ class Topic
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, unique: true)]
+    #[ORM\Column(length: 255, unique:true)]
     #[Assert\NotBlank()]
     #[Assert\Length(
         min: 2,
         max: 255,
     )]
     private ?string $titre = null;
+
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateCreation = null;
@@ -39,6 +40,9 @@ class Topic
 
     #[ORM\OneToMany(mappedBy: 'topic', targetEntity: Post::class, orphanRemoval: true, cascade:['persist'])]
     private Collection $posts;
+
+    #[ORM\Column(length: 255, unique:true)]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -58,6 +62,18 @@ class Topic
     public function setTitre(string $titre): self
     {
         $this->titre = $titre;
+
+        return $this;
+    }
+
+        public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
@@ -127,4 +143,5 @@ class Topic
 
         return $this;
     }
+
 }

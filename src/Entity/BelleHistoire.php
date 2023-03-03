@@ -27,9 +27,6 @@ class BelleHistoire
     )]
     private ?string $titre = null;
 
-    #[ORM\Column(length: 255, unique:true)]
-    private ?string $slug = null;
-
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank()]
     private ?string $texte = null;
@@ -46,6 +43,9 @@ class BelleHistoire
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateCreation = null;
+
+    #[ORM\Column(length: 255, unique:true)]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -79,7 +79,7 @@ class BelleHistoire
         $this->slug = $slug;
 
         return $this;
-    }
+    }  
 
     public function getTexte(): ?string
     {
@@ -157,12 +157,11 @@ class BelleHistoire
         $this->dateCreation = $dateCreation;
 
         return $this;
-    }
-    
+    } 
+
     public function __toString()
     {
         return $this->titre;
     }
-
 
 }
