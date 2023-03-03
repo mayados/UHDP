@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CommentBelleHistoireRepository;
+use App\Service\SluggerService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
@@ -30,7 +31,7 @@ class BelleHistoireController extends AbstractController
 
     }
 
-    #[Route('/bellesHistoires/histoire/{id}', name: 'show_histoire', requirements: ['id' => '\d+'])]
+    #[Route('/bellesHistoires/histoire/{slug}', name: 'show_histoire')]
     public function showHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire, ManagerRegistry $doctrine, Request $request): Response
     {
 
@@ -54,7 +55,7 @@ class BelleHistoireController extends AbstractController
 
                 return $this->redirectToRoute(
                     'show_histoire',
-                    ['id' => $histoire->getId()]
+                    ['slug' => $histoire->getSlug()]
                 );
             }
 
@@ -73,13 +74,11 @@ class BelleHistoireController extends AbstractController
     }
 
     #[Route('/bellesHistoires/add', name: 'add_histoire')]
-    #[Route('/bellesHistoires/edit/{titre}', name: 'edit_histoire')]
-    public function addHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire = null, UploaderService $uploaderService, ManagerRegistry $doctrine, Request $request): Response
+    #[Route('/bellesHistoires/edit/{slug}', name: 'edit_histoire')]
+    public function addHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire = null, UploaderService $uploaderService, ManagerRegistry $doctrine, Request $request, SluggerService $sluggerService): Response
     {
 
         // Vérifier si c'est un édit ou une création
-        // Dans le cas d'un édit, vérifier que le current user est égal à histoire->getAuteur() ou qu'il soit admin //if(isset id && (user == createur || user == admin))
-        // Dans le cas d'un ajout : il faut juste être connecté ET vérifié // elseif (user connected) //else redirect
 
         if($this->getUser()){
             $edit = false;
@@ -104,6 +103,8 @@ class BelleHistoireController extends AbstractController
                 $histoire = $form->getData();            
                 
                 $imgHistoire = $form->get('imgHistoire')->getData();
+                $titre = $form->get('titre')->getData();
+                $slug = $sluggerService->slugElement($titre);
                 if($imgHistoire){
                     // Si on est dans le cas d'un edit et qu'une nouvelle image est uploadée (car lors d'un ajout on ne va pas supprimer le fichier qu'ion crée..)
                     if($histoire->getPhoto() != null){
@@ -120,6 +121,7 @@ class BelleHistoireController extends AbstractController
 
 
                 }
+                $histoire->setSlug($slug);
                 $histoire->setAuteur($auteur);
                 $histoire->setDateCreation($date); 
                 // Dans tous les cas, on persist le memorial
@@ -164,21 +166,20 @@ class BelleHistoireController extends AbstractController
 
     }
 
-    #[Route('/comment/remove/{idHistoire}/{id}', name: 'remove_comment')]
-    #[ParamConverter("histoire", options: ["mapping" => ["idHistoire" => "id"]])]
+    #[Route('/comment/remove/{slug}/{id}', name: 'remove_comment')]
+    #[ParamConverter("histoire", options: ["mapping" => ["slug" => "slug"]])]
     #[ParamConverter("commentaire", options: ["mapping" => ["id" => "id"]])]
-    public function removeComment(CommentBelleHistoireRepository $cbhr, CommentBelleHistoire $comment, BelleHistoire $histoire)
+    public function removeComment(CommentBelleHistoireRepository $cbhr, CommentBelleHistoire $comment, BelleHistoire $histoire, BelleHistoireRepository $bhr)
     {
         $comment = $cbhr->find($comment->getId());
 
         // Seuls l'admin OU l'auteur du commentaire peuvent l'effacer
         if($this->getUser() && ( $this->getUser() == $comment->getAuteur() || $this->isGranted('ROLE_ADMIN'))){
-            $histoire = $histoire->getId();
             $cbhr->remove($comment, $flush = true);
-
+            $histoire = $bhr->find($histoire->getId());
             return $this->redirectToRoute(
                 'show_histoire',
-                ['id' => $histoire]
+                ['slug' => $histoire->getSlug()]
             );            
         }
 

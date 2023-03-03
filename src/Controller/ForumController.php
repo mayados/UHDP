@@ -8,6 +8,7 @@ use App\Form\PostType;
 use App\Form\TopicType;
 use App\Repository\PostRepository;
 use App\Repository\TopicRepository;
+use App\Service\SluggerService;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +34,7 @@ class ForumController extends AbstractController
 
     }
 
-    #[Route('/topic/{id}', name: 'show_topic')]
+    #[Route('/topic/{slug}', name: 'show_topic')]
     public function showTopic(ManagerRegistry $doctrine, TopicRepository $tr, Topic $topic, Request $request): Response
     {
         if($this->getUser()){
@@ -58,7 +59,7 @@ class ForumController extends AbstractController
 
                     return $this->redirectToRoute(
                         'show_topic',
-                        ['id' => $topic->getId()]
+                        ['slug' => $topic->getSlug()]
                     );
                 }
 
@@ -80,8 +81,8 @@ class ForumController extends AbstractController
     }
 
     #[Route('/forum/add', name: 'add_topic')]
-    #[Route('/forum/edit/{id}', name: 'edit_topic')]
-    public function add(ManagerRegistry $doctrine, Topic $topic = null, Request $request): Response
+    #[Route('/forum/edit/{slug}', name: 'edit_topic')]
+    public function add(ManagerRegistry $doctrine, Topic $topic = null, Request $request, SluggerService $sluggerService): Response
     {
 
         // Il faut être un utilisateur connecté pour accéder à l'edit ou à la création
@@ -114,11 +115,14 @@ class ForumController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $topic = $form->getData();   
                 $firstComment = $form->get('firstComment')->getData();
+                $titre = $form->get('titre')->getData();
+                $slug = $sluggerService->slugElement($titre);
                 $post->setTexte($firstComment);
                 $post->setAuteur($auteurTopic);
                 $post->setTopic($topic);
                 $post->setDateCreation($date);
                 $topic->addPost($post);
+                $topic->setSlug($slug);
                 $topic->setAuteur($auteurTopic);
                 $topic->setDateCreation($date); 
                 $topic->setVerrouillage(0);
@@ -141,7 +145,7 @@ class ForumController extends AbstractController
 
     }
 
-    #[Route('/topic/remove/{id}', name: 'remove_topic')]
+    #[Route('/topic/remove/{slug}', name: 'remove_topic')]
     public function removeTopic(TopicRepository $tr, Topic $topic)
     {
 
@@ -157,25 +161,25 @@ class ForumController extends AbstractController
 
     }
 
-    #[Route('/post/remove/{idTopic}/{id}', name: 'remove_post')]
-    #[ParamConverter("topic", options: ["mapping" => ["idTopic" => "id"]])]
+    #[Route('/post/remove/{slug}/{id}', name: 'remove_post', requirements: ['id' => '\d+'])]
+    #[ParamConverter("topic", options: ["mapping" => ["slug" => "slug"]])]
     #[ParamConverter("post", options: ["mapping" => ["id" => "id"]])]
-    public function removePost(PostRepository $pr, Post $post, Topic $topic)
+    public function removePost(PostRepository $pr, Post $post, Topic $topic, TopicRepository $tr)
     {
-
         if ($this->getUser() && ($this->getUser() == $post->getAuteur() || $this->isGranted('ROLE_ADMIN'))) {
             $post = $pr->find($post->getId());
-            $topic = $topic->getId();
-            $pr->remove($post, $flush = true);
 
+            $pr->remove($post, $flush = true);
+            
+            $topic = $tr->find($topic->getId());
             return $this->redirectToRoute(
                 'show_topic',
-                ['id' => $topic]
+                ['slug' => $topic->getSlug()]
             );
         }
 
         return $this->redirectToRoute('app_login');
-    }
+    }    
 
     #[Route('/topic/verrouillage/{id}', name: 'verrouillage_topic')]
     public function verrouillageTopic(Topic $topic, TopicRepository $tr, ManagerRegistry $doctrine)
