@@ -27,7 +27,7 @@
                 {% for topic in topics %}
                 <div class="topic">
                     <td>
-                        <a href="{{path('show_topic', {'id': topic.id}) }}">{{ topic.titre }}</a>                    
+                        <a href="{{path('show_topic', {'slug': topic.slug}) }}">{{ topic.titre }}</a>                    
                     </td>
                     <td>
                         0

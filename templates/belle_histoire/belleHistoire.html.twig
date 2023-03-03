@@ -22,7 +22,7 @@
             {% if histoire.auteur != null %}
                 {% if app.user == histoire.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
                     <a href="{{ path('remove_histoire', {'id': histoire.id}) }}">Supprimer l'histoire</a>
-                    <a href="{{ path('edit_histoire', {'titre': histoire.titre}) }}">Edit l'histoire</a>
+                    <a href="{{ path('edit_histoire', {'slug': histoire.slug}) }}">Edit l'histoire</a>
                 {% endif %}
             {% endif %}
         </section>
@@ -38,7 +38,7 @@
                             <p>(Utilisateur supprimé)</p>
                         {% endif %}
                         {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-                            <a href="{{ path('remove_comment', {'idHistoire': histoire.id, 'id': commentaire.id}) }}">Delete</a>
+                            <a href="{{ path('remove_comment', {'slug': histoire.slug, 'id': commentaire.id}) }}">Delete</a>
                         {% endif %}
                     </footer>
                 </article>

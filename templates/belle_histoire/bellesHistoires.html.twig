@@ -41,7 +41,7 @@
                         <p>Utilisateur supprimé</p>
                     {% endif %}
 
-                    <a href="{{path('show_histoire', {'id': histoire.id}) }}">Voir l'histoire</a>                    
+                    <a href="{{path('show_histoire', {'slug': histoire.slug}) }}">Voir l'histoire</a>                    
                 </div>
             </article>
         {% endfor %}        

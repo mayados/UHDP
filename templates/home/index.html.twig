@@ -44,7 +44,7 @@
                     <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">    
                     <figcaption>{{ histoire.titre }}</figcaption>                
                 </figure>
-                <a href="{{path('show_histoire', {'id': histoire.id}) }}">Voir l'histoire</a>
+                <a href="{{path('show_histoire', {'slug': histoire.slug}) }}">Voir l'histoire</a>
             </div>
         {% endfor %}
     </section>

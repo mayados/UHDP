@@ -9,8 +9,8 @@
         <h1>{{ topic.titre }}</h1>
 
         {% if app.user == topic.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-            <a href="{{path('remove_topic', {'id': topic.id}) }}">Supprimer le topic</a>
-            <a href="{{ path('edit_topic', {'id': topic.id}) }}">Edit</a>
+            <a href="{{path('remove_topic', {'slug': topic.slug}) }}">Supprimer le topic</a>
+            <a href="{{ path('edit_topic', {'slug': topic.slug}) }}">Edit</a>
             {% if topic.isVerrouillage %}
                 <a href="{{ path('verrouillage_topic', {'id': topic.id}) }}">Déverouiller le topic</a> 
             {% else %}
@@ -34,7 +34,7 @@
                     <p>{{ post.texte }}</p>                
                 </div>
                 {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-                    <a href="{{path('remove_post', {'id': post.id, 'idTopic': topic.id}) }}">Delete</a>
+                    <a href="{{path('remove_post', {'id': post.id, 'slug': topic.slug}) }}">Delete</a>
                 {% endif %}
             </article>
         {% endfor %}        
