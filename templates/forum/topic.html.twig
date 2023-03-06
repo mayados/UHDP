@@ -18,7 +18,7 @@
             {% endif %}
         {% endif %}
 
-        {% for post in topic.posts %}
+        {% for post in posts %}
             <article class="post">
                 <div class="user-post-infos">
                     <figure>
@@ -62,5 +62,8 @@
             <p>Le topic est verrouillé, vous ne pouvez plus écrire de message</p>
         {% endif %}        
     </section>
+    <div class="pagination">
+        {{ knp_pagination_render(posts) }}
+    </div>
 </div>
 {% endblock %}
