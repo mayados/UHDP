@@ -43,6 +43,7 @@ class MemorialType extends AbstractType
             ->add('dateNaissance', DateType::class, [
                 // Pour avoir un mini calendrier à l'affichage
                 'widget' => 'single_text',
+                'required' => false,
                 'label' =>  'Date de naissance',
                 'constraints' => [
                      /* Il ne serait pas logique de pouvoir sélectionner une date supérieure à la date actuelle
