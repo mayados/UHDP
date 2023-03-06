@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -69,6 +70,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
+    #[ORM\Column(options: ['default' => 'CURRENT_TIMESTAMP'])]
+    private ?\DateTimeImmutable $dateInscription = null;
+
     public function __construct()
     {
         $this->memoriaux = new ArrayCollection();
@@ -77,6 +81,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->posts = new ArrayCollection();
         $this->commentaires = new ArrayCollection();
         $this->bellesHistoires = new ArrayCollection();
+        $this->dateInscription = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -376,6 +381,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getDateInscription(): ?\DateTimeImmutable
+    {
+        return $this->dateInscription;
+    }
+
+    public function setDateInscription(\DateTimeImmutable $dateInscription): self
+    {
+        $this->dateInscription = $dateInscription;
+
+        return $this;
+    }    
+
     public function __toString(){
         return $this->pseudo;
     }
