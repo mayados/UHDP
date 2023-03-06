@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\BelleHistoire;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @extends ServiceEntityRepository<BelleHistoire>
@@ -16,7 +18,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class BelleHistoireRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private PaginatorInterface $paginatorInterface)
     {
         parent::__construct($registry, BelleHistoire::class);
     }
@@ -37,6 +39,18 @@ class BelleHistoireRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findPaginatedHistoires($page): PaginationInterface
+    {
+        $data = $this->createQueryBuilder('h')
+        ->addOrderBy('h.dateCreation', 'DESC')
+        ->getQuery()
+        ->getResult();
+
+        $histoires = $this->paginatorInterface->paginate($data,$page,3);
+
+        return $histoires;
     }
 
 //    /**

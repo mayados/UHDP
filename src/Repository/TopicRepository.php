@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Topic;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @extends ServiceEntityRepository<Topic>
@@ -16,7 +18,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TopicRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private PaginatorInterface $paginatorInterface)
     {
         parent::__construct($registry, Topic::class);
     }
@@ -37,6 +39,18 @@ class TopicRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findPaginatedTopics($page): PaginationInterface
+    {
+        $data = $this->createQueryBuilder('t')
+        ->addOrderBy('t.dateCreation', 'DESC')
+        ->getQuery()
+        ->getResult();
+
+        $topics = $this->paginatorInterface->paginate($data,$page,3);
+
+        return $topics;
     }
 
 //    /**

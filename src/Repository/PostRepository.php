@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @extends ServiceEntityRepository<Post>
@@ -16,7 +18,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PostRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private PaginatorInterface $paginatorInterface)
     {
         parent::__construct($registry, Post::class);
     }
@@ -37,6 +39,20 @@ class PostRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findPaginatedPosts($page,$topic): PaginationInterface
+    {
+        $data = $this->createQueryBuilder('p')
+        ->where('p.topic = :topic')
+        ->setParameter('topic', $topic)
+        ->addOrderBy('p.dateCreation', 'ASC')
+        ->getQuery()
+        ->getResult();
+
+        $posts = $this->paginatorInterface->paginate($data,$page,3);
+
+        return $posts;
     }
 
 //    /**

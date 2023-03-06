@@ -3,8 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\AnimalMemorial;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\CategorieAnimal;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<AnimalMemorial>
@@ -16,9 +19,10 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class AnimalMemorialRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private PaginatorInterface $paginatorInterface )
     {
         parent::__construct($registry, AnimalMemorial::class);
+
     }
 
     public function save(AnimalMemorial $entity, bool $flush = false): void
@@ -37,6 +41,34 @@ class AnimalMemorialRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findPaginatedMemoriaux(int $page): PaginationInterface
+    {
+        // On crée une fonction ici car la logique ne doit pas se retouver majoritairement dans le controller, il est avant tout fait pour rediriger sur les vues
+        $data = $this->createQueryBuilder('m')
+        ->addOrderBy('m.dateCreation', 'DESC')
+        ->getQuery()
+        ->getResult();
+
+        $memoriaux = $this->paginatorInterface->paginate($data,$page,3);
+
+        return $memoriaux;
+    }
+
+    public function findPaginatedMemoriauxByCategorie(int $page,$categorie): PaginationInterface
+    {
+        // On crée une fonction ici car la logique ne doit pas se retouver majoritairement dans le controller, il est avant tout fait pour rediriger sur les vues
+        $data = $this->createQueryBuilder('m')
+        ->where('m.categorieAnimal = :categorie')
+        ->setParameter('categorie', $categorie)
+        ->addOrderBy('m.dateCreation', 'DESC')
+        ->getQuery()
+        ->getResult();
+
+        $memoriaux = $this->paginatorInterface->paginate($data,$page,3);
+
+        return $memoriaux;
     }
 
 //    /**
