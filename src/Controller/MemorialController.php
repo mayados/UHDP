@@ -10,25 +10,27 @@ use App\Entity\CategorieAnimal;
 use App\Service\UploaderService;
 use App\Repository\PhotoRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use App\Repository\AnimalMemorialRepository;
 use App\Repository\CategorieAnimalRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\HttpClient\GEOHttpClient as GEOHttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use App\HttpClient\GEOHttpClient as GEOHttpClient;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class MemorialController extends AbstractController
 {
     #[Route('/memoriaux', name: 'app_memoriaux')]
-    public function index(AnimalMemorialRepository $amr, CategorieAnimalRepository $car): Response
+    public function index(AnimalMemorialRepository $amr, CategorieAnimalRepository $car, Request $request): Response
     {
-        $listeMemoriaux = $amr->findBy([],['dateCreation' => 'DESC']);
+        // On fait passer le numéro de la page, récupéré grâce à Request (voir fichier de config KNP pour le nom 'page')
+        $listeMemoriaux = $amr->findPaginatedMemoriaux($request->query->getInt('page',1));
 
         $categories = $car->findAll();
 
@@ -39,10 +41,11 @@ class MemorialController extends AbstractController
     }
 
     #[Route('/categorie/{id}', name: 'app_categorie')]
-    public function memoriauxParCategorie(AnimalMemorialRepository $amr, CategorieAnimalRepository $car, CategorieAnimal $categorie): Response
+    public function memoriauxParCategorie(AnimalMemorialRepository $amr, CategorieAnimalRepository $car, CategorieAnimal $categorie, Request $request): Response
     {
-        $memoriaux = $amr->findBy(['categorieAnimal' => $categorie->getId()],['dateCreation' => 'DESC']);
-        $categorieMemorial = $car->find($categorie->getId());
+
+       $categorieMemorial = $car->find($categorie->getId());        
+        $memoriaux = $amr->findPaginatedMemoriauxByCategorie($request->query->getInt('page',1),$categorieMemorial);
 
         return $this->render('memorial/listeParCategorie.html.twig', [
             'memoriaux' => $memoriaux,

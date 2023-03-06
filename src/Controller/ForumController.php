@@ -19,11 +19,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class ForumController extends AbstractController
 {
     #[Route('/forum', name: 'app_forum')]
-    public function index(TopicRepository $tr): Response
+    public function index(TopicRepository $tr, Request $request): Response
     {
 
         if($this->getUser()){
-            $topics = $tr->findBy([],['dateCreation' => 'DESC']);
+            $topics = $tr->findPaginatedTopics($request->query->getInt('page',1));
             
             return $this->render('forum/index.html.twig', [
                 'topics' => $topics,
@@ -35,48 +35,52 @@ class ForumController extends AbstractController
     }
 
     #[Route('/topic/{slug}', name: 'show_topic')]
-    public function showTopic(ManagerRegistry $doctrine, TopicRepository $tr, Topic $topic, Request $request): Response
+    public function showTopic(ManagerRegistry $doctrine, TopicRepository $tr, Topic $topic, PostRepository $pr, Request $request): Response
     {
-        if($this->getUser()){
-            $topic = $tr->find($topic->getId());
-
-            // Si l'utilisateur est connecté et vérifié
-            if ($this->getUser()->isVerified()) {
-                $post = new Post();
-                $date = new \DateTime();
-                $form = $this->createForm(PostType::class, $post);
-                $form->handleRequest($request);
-
-                if ($form->isSubmitted() && $form->isValid()) {
-                    $post = $form->getData();
-                    $post->setAuteur($this->getUser());
-                    $post->setTopic($topic);
-                    $post->setDateCreation($date);
-                    $topic->addPost($post);
-                    $entityManager = $doctrine->getManager();
-                    $entityManager->persist($post);
-                    $entityManager->flush();
-
-                    return $this->redirectToRoute(
-                        'show_topic',
-                        ['slug' => $topic->getSlug()]
-                    );
-                }
-
-                return $this->render('forum/topic.html.twig', [
-                    'topic' => $topic,
-                    'formAddPost' => $form->createView(),
-                ]);
-            }
-
-            // S'il y a un utilisateur et qu'il n'est pas vérifié on renvoie à la vue sans le form du post
-            return $this->render('forum/topic.html.twig', [
-                'topic' => $topic,
-            ]);            
+        if(!$this->getUser()){
+            // Si le user n'est pas connecté on redirige vers le login car il n'a pas le droit d'accès à cette page
+            return $this->redirectToRoute('app_login');
         }
 
-        // Si le user n'est pas connecté on redirige vers le login car il n'a pas le droit d'accès à cette page
-        return $this->redirectToRoute('app_login');
+         $topic = $tr->find($topic->getId());
+        $posts = $pr->findPaginatedPosts($request->query->getInt('page',1),$topic);    
+
+        // Si l'utilisateur est connecté et vérifié
+        if ($this->getUser()->isVerified()) {
+            
+            $post = new Post();
+            $date = new \DateTime();
+            $form = $this->createForm(PostType::class, $post);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $post = $form->getData();
+                $post->setAuteur($this->getUser());
+                $post->setTopic($topic);
+                $post->setDateCreation($date);
+                $topic->addPost($post);
+                $entityManager = $doctrine->getManager();
+                $entityManager->persist($post);
+                $entityManager->flush();
+
+                return $this->redirectToRoute(
+                    'show_topic',
+                    ['slug' => $topic->getSlug()]
+                );
+            }
+
+            return $this->render('forum/topic.html.twig', [
+                'topic' => $topic,
+                'formAddPost' => $form->createView(),
+                'posts' => $posts,
+            ]);
+        }
+
+        // S'il y a un utilisateur et qu'il n'est pas vérifié on renvoie à la vue sans le form du post
+        return $this->render('forum/topic.html.twig', [
+            'topic' => $topic,
+            'posts' => $posts,
+        ]);            
 
     }
 

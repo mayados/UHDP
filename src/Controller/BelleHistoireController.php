@@ -20,10 +20,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class BelleHistoireController extends AbstractController
 {
     #[Route('/bellesHistoires', name: 'app_belles_histoires')]
-    public function index(BelleHistoireRepository $bhr): Response
+    public function index(BelleHistoireRepository $bhr, Request $request): Response
     {
 
-        $listeHistoires = $bhr->findBy([],['dateCreation' => 'DESC']);
+        $listeHistoires = $bhr->findPaginatedHistoires($request->query->getInt('page',1));
 
         return $this->render('belle_histoire/bellesHistoires.html.twig', [
             'listeHistoires' => $listeHistoires,
