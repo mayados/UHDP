@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Photo;
+use App\Data\SearchData;
 use App\Form\SearchType;
 use App\Form\MemorialType;
 use App\Entity\AnimalMemorial;
@@ -33,12 +34,16 @@ class MemorialController extends AbstractController
         $categories = $car->findAll();
 
         // On veut également mettre un système de recherche dans la vue 
-        $form = $this->createForm(SearchType::class);
+        $searchData = new SearchData();
+        //  ON range les infos dans l'objet searchData
+        $form = $this->createForm(SearchType::class, $searchData);
 
         $form->handleRequest($request);
+            // dd($searchData);        
         if($form->isSubmitted() && $form->isValid()){
-            $q = $form->get('q')->getData();
-            $memoriaux = $amr->findBySearch($request->query->getInt('page',1),$q);
+
+            $searchData->page = $request->query->getInt('page',1);
+            $memoriaux = $amr->findBySearch($searchData);
 
             return $this->render('memorial/listeMemoriaux.html.twig',[
             'categories' => $categories,   
@@ -194,6 +199,7 @@ class MemorialController extends AbstractController
             return $this->render('memorial/add.html.twig', [
                 'formAddMemorial' => $form->createView(),
                 'edit' => $edit,
+                'memorial' => $memorial
             ]);            
         }
 
