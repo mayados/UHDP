@@ -18,7 +18,11 @@ doctrine:
 
         dql:
             string_functions:
-                JSON_EXTRACT: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonExtract                
+                JSON_EXTRACT: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonExtract 
+            datetime_functions:
+                MONTH: DoctrineExtensions\Query\Mysql\Month
+                DAY: DoctrineExtensions\Query\Mysql\Day  
+                YEAR: DoctrineExtensions\Query\Mysql\Year            
 
 when@test:
     doctrine:
