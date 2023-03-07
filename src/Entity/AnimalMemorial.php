@@ -34,7 +34,7 @@ class AnimalMemorial
     #[Assert\LessThanOrEqual('today')]
     private ?\DateTimeInterface $dateNaissance = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: false)]
     #[Assert\LessThanOrEqual('today')]
     private ?\DateTimeInterface $dateDeces = null;
 
