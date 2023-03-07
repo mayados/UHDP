@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Photo;
+use App\Form\SearchType;
 use App\Form\MemorialType;
 use App\Entity\AnimalMemorial;
 use App\Form\GaleriePhotoType;
@@ -29,14 +30,28 @@ class MemorialController extends AbstractController
     #[Route('/memoriaux', name: 'app_memoriaux')]
     public function index(AnimalMemorialRepository $amr, CategorieAnimalRepository $car, Request $request): Response
     {
-        // On fait passer le numéro de la page, récupéré grâce à Request (voir fichier de config KNP pour le nom 'page')
-        $listeMemoriaux = $amr->findPaginatedMemoriaux($request->query->getInt('page',1));
-
         $categories = $car->findAll();
 
+        // On veut également mettre un système de recherche dans la vue 
+        $form = $this->createForm(SearchType::class);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $q = $form->get('q')->getData();
+            $memoriaux = $amr->findBySearch($request->query->getInt('page',1),$q);
+
+            return $this->render('memorial/listeMemoriaux.html.twig',[
+            'categories' => $categories,   
+             'memoriaux' => $memoriaux,   
+             'formSearch' => $form->createView(),
+            ]);
+
+        }
+
         return $this->render('memorial/listeMemoriaux.html.twig', [
-            'listeMemoriaux' => $listeMemoriaux,
+            'memoriaux' => $amr->findPaginatedMemoriaux($request->query->getInt('page',1)),
             'categories' => $categories,
+            'formSearch' => $form->createView(),
         ]);
     }
 
@@ -44,12 +59,28 @@ class MemorialController extends AbstractController
     public function memoriauxParCategorie(AnimalMemorialRepository $amr, CategorieAnimalRepository $car, CategorieAnimal $categorie, Request $request): Response
     {
 
-       $categorieMemorial = $car->find($categorie->getId());        
-        $memoriaux = $amr->findPaginatedMemoriauxByCategorie($request->query->getInt('page',1),$categorieMemorial);
+        $categorieMemorial = $car->find($categorie->getId());        
+
+        // On veut également mettre un système de recherche dans la vue 
+        $form = $this->createForm(SearchType::class);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $q = $form->get('q')->getData();
+            $memoriaux = $amr->findBySearch($request->query->getInt('page',1),$q);
+
+            return $this->render('memorial/listeParCategorie.html.twig',[
+            'categorie' => $categorieMemorial,   
+             'memoriaux' => $memoriaux,   
+             'formSearch' => $form->createView(),
+            ]);
+
+        }
 
         return $this->render('memorial/listeParCategorie.html.twig', [
-            'memoriaux' => $memoriaux,
+            'memoriaux' => $amr->findPaginatedMemoriauxByCategorie($request->query->getInt('page',1),$categorieMemorial),
             'categorie' => $categorieMemorial,
+            'formSearch' => $form->createView(),
         ]);
     }
 
