@@ -19,9 +19,13 @@
             <p>Veuillez vous inscrire ou vous connecter pour pouvoir créer un mémorial</p>
         {% endif %}        
     </section>
-
+    <div class="recherche">
+        {{ form_start(formSearch) }}
+        {{ form_widget(formSearch.q, {'attr': {'placeholder': 'Rechercher un mémorial dans la catégorie'}}) }}
+        {{ form_row(formSearch.submit) }}
+        {{ form_end(formSearch) }}
+    </div>
     <section class="memoriaux">
-
         <h1>Les mémoriaux des {{ categorie.nom }}</h1>
         {% if categorie.animaux | length > 0 %}
             {% for memorial in memoriaux %}

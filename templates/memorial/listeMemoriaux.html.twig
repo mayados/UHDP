@@ -24,11 +24,19 @@
             <p>Veuillez vous inscrire ou vous connecter pour pouvoir créer un mémorial</p>
         {% endif %}
     </section>
+    <div class="recherche">
+        {{ form_start(formSearch) }}
+            {{ form_row(formSearch.q) }}
+            {{ form_row(formSearch.categories) }}
+            {{ form_row(formSearch.sexe) }}
+            {{ form_row(formSearch.submit) }}
 
+        {{ form_end(formSearch) }}
+    </div>
     <section class="memoriaux">
 
         <h1>Les mémoriaux</h1>
-        {% for memorial in listeMemoriaux %}
+        {% for memorial in memoriaux %}
             <div class="memorial">
                 <h2>{{ memorial.nom }}</h2>
                 {% if memorial.photo == null %}
@@ -45,7 +53,7 @@
         {% endfor %}        
     </section>
     <div class="pagination">
-        {{ knp_pagination_render(listeMemoriaux) }}
+        {{ knp_pagination_render(memoriaux) }}
     </div>
 </div>
 {% endblock %}
