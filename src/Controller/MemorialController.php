@@ -67,7 +67,7 @@ class MemorialController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $q = $form->get('q')->getData();
-            $memoriaux = $amr->findBySearch($request->query->getInt('page',1),$q);
+            $memoriaux = $amr->findSearchByCategorie($request->query->getInt('page',1),$q,$categorieMemorial);
 
             return $this->render('memorial/listeParCategorie.html.twig',[
             'categorie' => $categorieMemorial,   
