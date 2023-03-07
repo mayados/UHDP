@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Data\SearchData;
 use App\Entity\AnimalMemorial;
 use App\Entity\CategorieAnimal;
 use Doctrine\Persistence\ManagerRegistry;
@@ -70,6 +71,59 @@ class AnimalMemorialRepository extends ServiceEntityRepository
 
         return $memoriaux;
     }
+
+    // On doit retourner Pagination interface car les résultats de la recherche doivent être paginés
+    public function findBySearch(SearchData $searchData): PaginationInterface
+    {
+        $data = $this->createQueryBuilder('m')
+        ->select('c','m')
+        // On joint l'entité Categorie qui est dans la colonne categorieAnimal et on lui donne l'alias c
+        ->join('m.categorieAnimal', 'c')
+        ->addOrderBy('m.dateCreation', 'DESC');
+
+        if(!empty($searchData->q)){
+            $data = $data
+            ->andWhere('m.nom LIKE :q')
+            ->setParameter('q',"%{$searchData->q}%");
+        }
+
+        if(!empty($searchData->categories)){
+            $data = $data 
+            // On veut les résultats où l'id de la catégorie du mémorial et dans la liste des catégories de la recherche
+            ->andWhere('c.id IN (:categories)')
+            ->setParameter('categories', $searchData->categories);
+        }
+
+        if(!empty($searchData->sexe)){
+            $data = $data
+            ->andWhere('m.sexe = :sexe')
+            ->setParameter('sexe', $searchData->sexe);
+        }
+
+        $data = $data
+        ->getQuery()
+        ->getResult();
+
+        $memoriaux = $this->paginatorInterface->paginate($data,$searchData->page,3);
+        return $memoriaux;
+    }
+
+    // On veut obtenir le résultat par catégorie, car nous sommes dans une catégorie précise
+    public function findSearchByCategorie(int $page, string $q, $categorie): PaginationInterface
+    {
+        $data = $this->createQueryBuilder('m')
+        ->where('m.categorieAnimal = :categorie')
+        ->andWhere('m.nom LIKE :q')
+        ->setParameters(['q' => "%$q%", 'categorie' => $categorie])
+        ->addOrderBy('m.dateCreation', 'DESC')
+        ->getQuery()
+        ->getResult();
+
+        $memoriaux = $this->paginatorInterface->paginate($data,$page,3);
+        return $memoriaux;
+
+    }
+
 
 //    /**
 //     * @return AnimalMemorial[] Returns an array of AnimalMemorial objects
