@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -39,12 +40,23 @@ class SearchType extends AbstractType
                     'Femelle' => 'Femelle',
                 ],
                 'expanded' => true,
-                // 'multiple' => true,
-                'constraints' => [
-                    new Assert\Choice(['choices' => ['Inconnu','Male','Femelle'], 'message' => 'Veuillez choisir un genre valide']),                    
-                ]
-
+                'multiple' => true,
             ])
+            ->add('dateDeces', DateType::class, [
+                // Pour avoir un mini calendrier à l'affichage
+                'widget' => 'choice',
+                'label' =>  'Date de décès',
+                'format' => 'dd/MM/yyyy',
+                'constraints' => [
+                    // Il ne serait pas logique de pouvoir sélectionner une date supérieure à la date actuelle
+                    new Assert\LessThanOrEqual(['value' => 'today', 'message' => 'La date de décès ne peut pas être supérieure à la date actuelle']),
+                ]
+            ])  
+            // ->add('dateDeces', DateType::class, [
+            //     'placeholder' => [
+            //         'month' => 'Month', 'year' => 'Year',
+            //     ],
+            // ])
             ->add('submit', SubmitType::class)
         ;
     }
