@@ -55,8 +55,10 @@ class MemorialType extends AbstractType
                 // Pour avoir un mini calendrier à l'affichage
                 'widget' => 'single_text',
                 'label' =>  'Date de décès',
+                'required' => true,
                 'constraints' => [
                     // Il ne serait pas logique de pouvoir sélectionner une date supérieure à la date actuelle
+                    new Assert\NotBlank(['message' => 'La date de décès ne peut pas être vide']), 
                     new Assert\LessThanOrEqual(['value' => 'today', 'message' => 'La date de décès ne peut pas être supérieure à la date actuelle']),
                 ]
             ])
