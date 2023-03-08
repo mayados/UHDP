@@ -1,0 +1,13 @@
+<div class="memorial-card">
+    <h2>{{ memorial.nom }}</h2>
+    {% if memorial.photo == null %}
+        <p>Pas de photo</p>
+    {% else %}
+        <figure>
+            <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">                        
+        </figure>
+    {% endif %}
+    {# le filtre slice permet d'afficher un certain nombre de caractères => Ici, on prend du caractère 0 à 20 #}
+    <p>{{ memorial.presentation|slice(0, 20) }}...</p>
+    <a href="{{path('show_memorial', {'id': memorial.id}) }}">Voir le Memorial</a>
+</div>
