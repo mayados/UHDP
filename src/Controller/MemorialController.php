@@ -25,6 +25,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class MemorialController extends AbstractController
 {
@@ -44,7 +45,13 @@ class MemorialController extends AbstractController
 
             $searchData->page = $request->query->getInt('page',1);
             $memoriaux = $amr->findBySearch($searchData);
-
+            // On vérifie si on est en AJAX
+            if($request->isXmlHttpRequest()){
+                // Si c'est le cas on renvoie du JSON
+                return new JsonResponse([
+                    'content' => $this->renderView('_partials/_memoriaux.html.twig', ['memoriaux' => $memoriaux])
+                ]);
+            }
             return $this->render('memorial/listeMemoriaux.html.twig',[
             'categories' => $categories,   
              'memoriaux' => $memoriaux,   
