@@ -10,9 +10,11 @@ class SearchData
 
     public $categories = [];
 
-    public $sexe ;
+    public $sexe = [];
 
-    public $dateDeces ;
+    public $anneeDeces ;
+
+    public $moisDeces;
 }
 
 ?>
