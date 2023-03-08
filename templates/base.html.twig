@@ -10,7 +10,8 @@
         {% endblock %}
 
         {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
+        {# Ajouter defer pour éviter que le script ne s'éxecute avant le chargement du document #}
+         <script src="{{ asset('js/script.js')}}" type='module' defer></script>
         {% endblock %}
     </head>
     <body>
