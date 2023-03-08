@@ -96,16 +96,24 @@ class AnimalMemorialRepository extends ServiceEntityRepository
 
         if(!empty($searchData->sexe)){
             $data = $data
-            ->andWhere('m.sexe = :sexe')
+            ->andWhere('m.sexe IN (:sexe)')
             ->setParameter('sexe', $searchData->sexe);
         }
 
-        if(!empty($searchData->dateDeces)){
+        if(!empty($searchData->anneeDeces)){
             $data = $data
-            ->andWhere('DAY(m.dateDeces) = DAY(:deces)')
-            ->andWhere('MONTH(m.dateDeces) = MONTH(:deces)')
-            ->andWhere('YEAR(m.dateDeces) = YEAR(:deces)')
-            ->setParameter('deces', $searchData->dateDeces);
+            // ->andWhere('DAY(m.dateDeces) = DAY(:deces)')
+            // ->andWhere('MONTH(m.dateDeces) = MONTH(:deces)')
+            ->andWhere('YEAR(m.dateDeces) = :deces')
+            ->setParameter('deces', $searchData->anneeDeces);
+        }
+
+        if(!empty($searchData->moisDeces)){
+            $data = $data
+            // ->andWhere('DAY(m.dateDeces) = DAY(:deces)')
+            // ->andWhere('MONTH(m.dateDeces) = MONTH(:deces)')
+            ->andWhere('MONTH(m.dateDeces) = :moisDeces')
+            ->setParameter('moisDeces', $searchData->moisDeces);
         }
 
         $data = $data
