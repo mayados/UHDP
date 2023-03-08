@@ -39,7 +39,7 @@ class MemorialController extends AbstractController
         $form = $this->createForm(SearchType::class, $searchData);
 
         $form->handleRequest($request);
-            // dd($searchData->sexe);        
+            // dd($searchData);        
         if($form->isSubmitted() && $form->isValid()){
 
             $searchData->page = $request->query->getInt('page',1);
