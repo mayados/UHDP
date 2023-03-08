@@ -23,7 +23,7 @@ class SearchType extends AbstractType
                 'label' => false,
                 // 'required' => false,
                 'attr' => [
-                'placeholder' => 'Rechercher un mémorial'                 
+                'placeholder' => 'Rechercher un mémorial' ,               
                 ]
             ])
             ->add('categories', EntityType::class,[
@@ -43,28 +43,16 @@ class SearchType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
             ])
-            // ->add('dateDeces', DateType::class, [
-            //     // Pour avoir un mini calendrier à l'affichage
-            //     'widget' => 'single_text',
-            //     'input' => 'datetime_immutable',
-            //     'label' =>  'Date de décès',
-            //     'format' => 'dd/MM/yyyy',
-            //     'constraints' => [
-            //         // Il ne serait pas logique de pouvoir sélectionner une date supérieure à la date actuelle
-            //         new Assert\LessThanOrEqual(['value' => 'today', 'message' => 'La date de décès ne peut pas être supérieure à la date actuelle']),
-            //     ]
-            // ])  
             ->add('anneeDeces', ChoiceType::class, [
-                // 'widget' => 'choice',
-                // 'days' => range(date('d'),31),
-                // 'months' => range(date('m'),12),
                 'choices' => $this->buildYearChoices(),
-                // 'placeholder' => '',
+                'placeholder' => '',
                 'required' => false,
-                // 'empty_data' => '',
             ])
             ->add('moisDeces', ChoiceType::class, [
                 'choices' => $this->buildMonthChoices(),
+                'placeholder' => 'test',
+                'required' => false,
+
             ])
             ->add('submit', SubmitType::class)
         ;
@@ -77,9 +65,32 @@ class SearchType extends AbstractType
         return array_combine(range($yearsAfter, $yearsBefore), range($yearsAfter, $yearsBefore));
     }
 
+    // public function buildMonthChoices() {
+    //     $month = date('m', mktime(0, 0, 0, 1, 1, 2023));
+    //     // dd($month);
+    //     return array(range(date($month),12));
+    // }
+
     public function buildMonthChoices() {
-        $month = date('m', mktime(0, 0, 0, 1, 1, 2023));
-        return array(range(date($month),12));
+        $months = [
+            'Janvier' => date('m', mktime(0, 0, 0, 1, 1, 2023)),
+            'Février' => date('m', mktime(0, 0, 0, 2, 1, 2023)),
+            'Mars' => date('m', mktime(0, 0, 0, 3, 1, 2023)),
+            'Avril' => date('m', mktime(0, 0, 0, 4, 1, 2023)),
+            'Mai' => date('m', mktime(0, 0, 0, 5, 1, 2023)),
+            'Juin' => date('m', mktime(0, 0, 0, 6, 1, 2023)),
+            'Juillet' => date('m', mktime(0, 0, 0, 7, 1, 2023)),
+            'Aout' => date('m', mktime(0, 0, 0, 8, 1, 2023)),
+            'Septembre' => date('m', mktime(0, 0, 0, 9, 1, 2023)),
+            'Octobre' => date('m', mktime(0, 0, 0, 10, 1, 2023)),
+            'Novembre' => date('m', mktime(0, 0, 0, 11, 1, 2023)),
+            'Decembre' => date('m', mktime(0, 0, 0, 12, 1, 2023)),
+        ];
+        
+        // A revoir, car avec mktime les valeurs attribuées aux mois mois vont changées au cours du temps, sauf avec valeur fixe ?
+
+        // dd($months);
+       return $months;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
