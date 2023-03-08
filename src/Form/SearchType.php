@@ -21,6 +21,7 @@ class SearchType extends AbstractType
         $builder
             ->add('q', TextType::class, [
                 'label' => false,
+                // 'required' => false,
                 'attr' => [
                 'placeholder' => 'Rechercher un mémorial'                 
                 ]
@@ -42,23 +43,43 @@ class SearchType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
             ])
-            ->add('dateDeces', DateType::class, [
-                // Pour avoir un mini calendrier à l'affichage
-                'widget' => 'choice',
-                'label' =>  'Date de décès',
-                'format' => 'dd/MM/yyyy',
-                'constraints' => [
-                    // Il ne serait pas logique de pouvoir sélectionner une date supérieure à la date actuelle
-                    new Assert\LessThanOrEqual(['value' => 'today', 'message' => 'La date de décès ne peut pas être supérieure à la date actuelle']),
-                ]
-            ])  
             // ->add('dateDeces', DateType::class, [
-            //     'placeholder' => [
-            //         'month' => 'Month', 'year' => 'Year',
-            //     ],
-            // ])
+            //     // Pour avoir un mini calendrier à l'affichage
+            //     'widget' => 'single_text',
+            //     'input' => 'datetime_immutable',
+            //     'label' =>  'Date de décès',
+            //     'format' => 'dd/MM/yyyy',
+            //     'constraints' => [
+            //         // Il ne serait pas logique de pouvoir sélectionner une date supérieure à la date actuelle
+            //         new Assert\LessThanOrEqual(['value' => 'today', 'message' => 'La date de décès ne peut pas être supérieure à la date actuelle']),
+            //     ]
+            // ])  
+            ->add('anneeDeces', ChoiceType::class, [
+                // 'widget' => 'choice',
+                // 'days' => range(date('d'),31),
+                // 'months' => range(date('m'),12),
+                'choices' => $this->buildYearChoices(),
+                // 'placeholder' => '',
+                'required' => false,
+                // 'empty_data' => '',
+            ])
+            ->add('moisDeces', ChoiceType::class, [
+                'choices' => $this->buildMonthChoices(),
+            ])
             ->add('submit', SubmitType::class)
         ;
+    }
+
+    public function buildYearChoices() {
+        $distance = 30;
+        $yearsBefore = date('Y', mktime(0, 0, 0, date("m"), date("d"), date("Y") - $distance));
+        $yearsAfter = date('Y', mktime(0, 0, 0, date("m"), date("d"), date("Y")));
+        return array_combine(range($yearsAfter, $yearsBefore), range($yearsAfter, $yearsBefore));
+    }
+
+    public function buildMonthChoices() {
+        $month = date('m', mktime(0, 0, 0, 1, 1, 2023));
+        return array(range(date($month),12));
     }
 
     public function configureOptions(OptionsResolver $resolver): void
