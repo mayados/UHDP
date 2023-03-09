@@ -71,16 +71,25 @@ class MemorialController extends AbstractController
     public function memoriauxParCategorie(AnimalMemorialRepository $amr, CategorieAnimalRepository $car, CategorieAnimal $categorie, Request $request): Response
     {
 
-        $categorieMemorial = $car->find($categorie->getId());        
+        $categorieMemorial = $car->find($categorie->getId()); 
 
         // On veut également mettre un système de recherche dans la vue 
-        $form = $this->createForm(SearchType::class);
+        $searchData = new SearchData();
+        // On veut également mettre un système de recherche dans la vue 
+        $form = $this->createForm(SearchType::class,$searchData);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            $q = $form->get('q')->getData();
-            $memoriaux = $amr->findSearchByCategorie($request->query->getInt('page',1),$q,$categorieMemorial);
-
+        // dd($searchData);            
+            $memoriaux = $amr->findSearchByCategorie($searchData,$categorieMemorial);
+            // On vérifie si on est en AJAX
+            if($request->isXmlHttpRequest()){
+                // Si c'est le cas on renvoie du JSON
+                return new JsonResponse([
+                    'content' => $this->renderView('_partials/_memoriauxCategorie.html.twig', ['memoriaux' => $memoriaux,
+                    'categorie'=>$categorieMemorial,])
+                ]);
+            }
             return $this->render('memorial/listeParCategorie.html.twig',[
             'categorie' => $categorieMemorial,   
              'memoriaux' => $memoriaux,   
