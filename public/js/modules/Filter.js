@@ -27,6 +27,10 @@ export default class Filter {
       this.form.querySelectorAll('select').forEach(select => {
         select.addEventListener('change', this.loadForm.bind(this))
       })
+      // On sélectionne les input Texte du formulaire
+      this.form.querySelectorAll('input[type = text]').forEach(select => {
+        select.addEventListener('input', this.loadForm.bind(this))
+      })
     }
 
     async loadForm(){
