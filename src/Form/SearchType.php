@@ -21,7 +21,8 @@ class SearchType extends AbstractType
         $builder
             ->add('q', TextType::class, [
                 'label' => false,
-                // 'required' => false,
+                'required' => false,
+                'empty_data' => '',
                 'attr' => [
                 'placeholder' => 'Rechercher un mémorial' ,               
                 ]
@@ -44,7 +45,7 @@ class SearchType extends AbstractType
                 'multiple' => true,
             ])
             ->add('anneeDeces', ChoiceType::class, [
-                'choices' => $this->buildYearChoices(),
+                'choices' => $this->buildYearChoices() ,
                 'placeholder' => '',
                 'required' => false,
             ])
@@ -72,25 +73,44 @@ class SearchType extends AbstractType
     // }
 
     public function buildMonthChoices() {
+
         $months = [
-            'Janvier' => date('m', mktime(0, 0, 0, 1, 1, 2023)),
-            'Février' => date('m', mktime(0, 0, 0, 2, 1, 2023)),
-            'Mars' => date('m', mktime(0, 0, 0, 3, 1, 2023)),
-            'Avril' => date('m', mktime(0, 0, 0, 4, 1, 2023)),
-            'Mai' => date('m', mktime(0, 0, 0, 5, 1, 2023)),
-            'Juin' => date('m', mktime(0, 0, 0, 6, 1, 2023)),
-            'Juillet' => date('m', mktime(0, 0, 0, 7, 1, 2023)),
-            'Aout' => date('m', mktime(0, 0, 0, 8, 1, 2023)),
-            'Septembre' => date('m', mktime(0, 0, 0, 9, 1, 2023)),
-            'Octobre' => date('m', mktime(0, 0, 0, 10, 1, 2023)),
-            'Novembre' => date('m', mktime(0, 0, 0, 11, 1, 2023)),
-            'Decembre' => date('m', mktime(0, 0, 0, 12, 1, 2023)),
+            'Janvier' => $this->monthToDate(1),
+            'Février' => $this->monthToDate(2),
+            'Mars' => $this->monthToDate(3),
+            'Avril' => $this->monthToDate(4),
+            'Mai' => $this->monthToDate(5),
+            'Juin' => $this->monthToDate(6),
+            'Juillet' => $this->monthToDate(7),
+            'Aout' => $this->monthToDate(8),
+            'Septembre' => $this->monthToDate(9),
+            'Octobre' => $this->monthToDate(10),
+            'Novembre' => $this->monthToDate(11),
+            'Decembre' => $this->monthToDate(12)
         ];
+        // $months = [
+        //     'Janvier' => date('m', mktime(0, 0, 0, 1, 1, 2023)),
+        //     'Février' => date('m', mktime(0, 0, 0, 2, 1, 2023)),
+        //     'Mars' => date('m', mktime(0, 0, 0, 3, 1, 2023)),
+        //     'Avril' => date('m', mktime(0, 0, 0, 4, 1, 2023)),
+        //     'Mai' => date('m', mktime(0, 0, 0, 5, 1, 2023)),
+        //     'Juin' => date('m', mktime(0, 0, 0, 6, 1, 2023)),
+        //     'Juillet' => date('m', mktime(0, 0, 0, 7, 1, 2023)),
+        //     'Aout' => date('m', mktime(0, 0, 0, 8, 1, 2023)),
+        //     'Septembre' => date('m', mktime(0, 0, 0, 9, 1, 2023)),
+        //     'Octobre' => date('m', mktime(0, 0, 0, 10, 1, 2023)),
+        //     'Novembre' => date('m', mktime(0, 0, 0, 11, 1, 2023)),
+        //     'Decembre' => date('m', mktime(0, 0, 0, 12, 1, 2023)),
+        // ];
         
         // A revoir, car avec mktime les valeurs attribuées aux mois mois vont changées au cours du temps, sauf avec valeur fixe ?
 
         // dd($months);
        return $months;
+    }
+
+    public function monthToDate($month){
+        return date('m', mktime(0, 0, 0, $month, 1, 2023));
     }
 
     public function configureOptions(OptionsResolver $resolver): void
