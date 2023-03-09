@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<div class="container-page">
+<div class="container-page js-filter">
 
     <section id="categorie">
         {{ categorie.nom }}        
@@ -20,35 +20,19 @@
         {% endif %}        
     </section>
     <div class="recherche">
-        {{ form_start(formSearch) }}
-        {{ form_widget(formSearch.q, {'attr': {'placeholder': 'Rechercher un mémorial dans la catégorie'}}) }}
-        {{ form_row(formSearch.submit) }}
+        {{ form_start(formSearch, {attr: {class: 'js-filter-form'}}) }}
+            {{ form_widget(formSearch.q, {attr: {'placeholder': 'Rechercher un mémorial dans la catégorie'}}) }}
+            {{ form_widget(formSearch.categories, {'attr': {'style': 'display:none'}}) }}
+            {{ form_row(formSearch.sexe) }}
+            {{ form_row(formSearch.anneeDeces) }}
+            {{ form_row(formSearch.moisDeces) }}
+            {{ form_row(formSearch.submit) }}        
         {{ form_end(formSearch) }}
     </div>
-    <section class="memoriaux">
-        <h1>Les mémoriaux des {{ categorie.nom }}</h1>
-        {% if categorie.animaux | length > 0 %}
-            {% for memorial in memoriaux %}
-                <div class="memorial">
-                    <h2>{{ memorial.nom }}</h2>
-                    {% if memorial.photo == null %}
-                        <p>Pas de photo</p>
-                    {% else %}
-
-                    <figure>
-                        <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">
-                    </figure>
-                    {% endif %}
-                    {# le filtre slice permet d'afficher un certain nombre de caractères => Ici, on prend du caractère 0 à 20 #}
-                    <p>{{ memorial.presentation|slice(0, 20) }}...</p>
-                    <a href="{{path('show_memorial', {'id': memorial.id}) }}">Voir le profil</a>
-                </div>
-            {% endfor %}
-        {% else %}
-                <p>Aucun mémorial pour le moment..</p>
-        {% endif %}        
+    <section class="memoriaux js-filter-content">
+        {% include '_partials/_memoriauxCategorie.html.twig'  %}
     </section>
-    <div class="pagination">
+    <div class="pagination js-filter-pagination">
         {{ knp_pagination_render(memoriaux) }}
     </div>
 </div>
