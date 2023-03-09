@@ -140,8 +140,7 @@ class AnimalMemorialRepository extends ServiceEntityRepository
             $data = $data
             ->andWhere('m.nom LIKE :q')
             ->andWhere('c.id = :categorie')
-            ->setParameter(
-               'q', "%{$searchData->q}%" );
+            ->setParameter('q', "%{$searchData->q}%" );
         }
 
         if(!empty($searchData->sexe)){
@@ -149,6 +148,9 @@ class AnimalMemorialRepository extends ServiceEntityRepository
             ->andWhere('m.sexe IN (:sexe)')
             ->andWhere('c.id = :categorie')
             ->setParameter('sexe', $searchData->sexe);
+        }else{
+            $data = $data 
+            ->andWhere('c.id = :categorie');
         }
 
         if(!empty($searchData->anneeDeces)){
@@ -162,22 +164,12 @@ class AnimalMemorialRepository extends ServiceEntityRepository
             $data = $data
             ->andWhere('MONTH(m.dateDeces) = :moisDeces')
             ->andWhere('c.id = :categorie')
-            ->setParameter(
-                'moisDeces', $searchData->moisDeces);
+            ->setParameter('moisDeces', $searchData->moisDeces);
         }
 
         $data = $data
         ->getQuery()
         ->getResult();
-
-
-        // $data = $this->createQueryBuilder('m')
-        // ->where('m.categorieAnimal = :categorie')
-        // ->andWhere('m.nom LIKE :q')
-        // ->setParameters(['q' => "%$q%", 'categorie' => $categorie])
-        // ->addOrderBy('m.dateCreation', 'DESC')
-        // ->getQuery()
-        // ->getResult();
 
         $memoriaux = $this->paginatorInterface->paginate($data,$searchData->page,3);
         return $memoriaux;
