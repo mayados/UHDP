@@ -1,0 +1,7 @@
+<h1>Les mémoriaux des {{ categorie.nom }}</h1>
+    {% if categorie.animaux | length > 0 %}
+            {% include '_partials/_memoriaux.html.twig'  %}
+               
+    {% else %}
+        <p>Aucun mémorial pour le moment..</p>
+    {% endif %}    
