@@ -51,7 +51,7 @@ class SearchType extends AbstractType
             ])
             ->add('moisDeces', ChoiceType::class, [
                 'choices' => $this->buildMonthChoices(),
-                'placeholder' => 'test',
+                'placeholder' => '',
                 'required' => false,
 
             ])
