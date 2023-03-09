@@ -19,9 +19,14 @@ export default class Filter {
     }
 
     bindEvents(){
-      // Faire également un querySelectorAll pour les select
+      // On sélectionne les inputs (on pourrait cinler le type checkbox, mais nos inputs sont que des checkbox)
       this.form.querySelectorAll('input').forEach(input => {
         input.addEventListener('change', this.loadForm.bind(this))
+      })
+      // On sélectionne les select du formulaire
+      this.form.querySelectorAll('select').forEach(select => {
+        select.addEventListener('change', this.loadForm.bind(this))
+        console.log(select.value)
       })
     }
 
