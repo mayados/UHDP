@@ -125,17 +125,61 @@ class AnimalMemorialRepository extends ServiceEntityRepository
     }
 
     // On veut obtenir le résultat par catégorie, car nous sommes dans une catégorie précise
-    public function findSearchByCategorie(int $page, string $q, $categorie): PaginationInterface
+    public function findSearchByCategorie(SearchData $searchData, $categorie): PaginationInterface
     {
+
+        // On a déja la catégorie, donc on veut trouver un memorial où m.categorie = $categorie
         $data = $this->createQueryBuilder('m')
-        ->where('m.categorieAnimal = :categorie')
-        ->andWhere('m.nom LIKE :q')
-        ->setParameters(['q' => "%$q%", 'categorie' => $categorie])
+        ->select('c','m')
+        // On joint l'entité Categorie qui est dans la colonne categorieAnimal et on lui donne l'alias c
+        ->join('m.categorieAnimal', 'c')
         ->addOrderBy('m.dateCreation', 'DESC')
+        ->setParameter('categorie', $categorie);
+
+        if(!empty($searchData->q)){
+            $data = $data
+            ->andWhere('m.nom LIKE :q')
+            ->andWhere('c.id = :categorie')
+            ->setParameter(
+               'q', "%{$searchData->q}%" );
+        }
+
+        if(!empty($searchData->sexe)){
+            $data = $data
+            ->andWhere('m.sexe IN (:sexe)')
+            ->andWhere('c.id = :categorie')
+            ->setParameter('sexe', $searchData->sexe);
+        }
+
+        if(!empty($searchData->anneeDeces)){
+            $data = $data
+            ->andWhere('YEAR(m.dateDeces) = :deces')
+            ->andWhere('c.id = :categorie')
+            ->setParameter('deces', $searchData->anneeDeces);
+        }
+
+        if(!empty($searchData->moisDeces)){
+            $data = $data
+            ->andWhere('MONTH(m.dateDeces) = :moisDeces')
+            ->andWhere('c.id = :categorie')
+            ->setParameter(
+                'moisDeces', $searchData->moisDeces);
+        }
+
+        $data = $data
         ->getQuery()
         ->getResult();
 
-        $memoriaux = $this->paginatorInterface->paginate($data,$page,3);
+
+        // $data = $this->createQueryBuilder('m')
+        // ->where('m.categorieAnimal = :categorie')
+        // ->andWhere('m.nom LIKE :q')
+        // ->setParameters(['q' => "%$q%", 'categorie' => $categorie])
+        // ->addOrderBy('m.dateCreation', 'DESC')
+        // ->getQuery()
+        // ->getResult();
+
+        $memoriaux = $this->paginatorInterface->paginate($data,$searchData->page,3);
         return $memoriaux;
 
     }
