@@ -26,7 +26,6 @@ export default class Filter {
       // On sélectionne les select du formulaire
       this.form.querySelectorAll('select').forEach(select => {
         select.addEventListener('change', this.loadForm.bind(this))
-        console.log(select.value)
       })
     }
 
@@ -35,6 +34,7 @@ export default class Filter {
       // On crée une nouvelle URL à partir de ce qu'on retrouve dans le formulaire
       // Si cet attribut n'existe pas, on récupère l'url courante
       const url = new URL(this.form.getAttribute('action')|| window.location.href) 
+      console.log(url)
       const params = new URLSearchParams()
       data.forEach((value, key) => {
         params.append(key, value)
@@ -55,6 +55,7 @@ export default class Filter {
       if(response.status >= 200 && response.status < 300){
         const data = await response.json()
         this.content.innerHTML = data.content
+        console.log(data)
       }else{
         console.error(response)
       }
