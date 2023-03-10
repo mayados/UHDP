@@ -73,7 +73,7 @@ class AnimalMemorialRepository extends ServiceEntityRepository
     }
 
     // On doit retourner Pagination interface car les résultats de la recherche doivent être paginés
-    public function findBySearch(SearchData $searchData): PaginationInterface
+    public function findBySearch(SearchData $searchData,int $page): PaginationInterface
     {
         $data = $this->createQueryBuilder('m')
         ->select('c','m')
@@ -120,12 +120,12 @@ class AnimalMemorialRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
 
-        $memoriaux = $this->paginatorInterface->paginate($data,$searchData->page,3);
+        $memoriaux = $this->paginatorInterface->paginate($data,$page,3);
         return $memoriaux;
     }
 
     // On veut obtenir le résultat par catégorie, car nous sommes dans une catégorie précise
-    public function findSearchByCategorie(SearchData $searchData, $categorie): PaginationInterface
+    public function findSearchByCategorie(SearchData $searchData, $categorie, int $page): PaginationInterface
     {
 
         // On a déja la catégorie, donc on veut trouver un memorial où m.categorie = $categorie
@@ -171,7 +171,7 @@ class AnimalMemorialRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
 
-        $memoriaux = $this->paginatorInterface->paginate($data,$searchData->page,3);
+        $memoriaux = $this->paginatorInterface->paginate($data,$page,3);
         return $memoriaux;
 
     }
