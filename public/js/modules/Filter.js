@@ -31,6 +31,25 @@ export default class Filter {
       this.form.querySelectorAll('input[type = text]').forEach(select => {
         select.addEventListener('input', this.loadForm.bind(this))
       })
+      // Pagination lors d'un clic
+      // this.pagination.querySelectorAll('a').forEach(a => {
+      //   a.addEventListener("click", e => {
+      //     e.preventDefault()
+      //     this.loadUrl(a.getAttribute('href'))
+      //     console.log('click pagination')
+      //   })
+      // })
+
+      // Quand on clique sur la pagination, si l'évènement a lieu sur une balise a, on effectue la requête en passant en url l'attribute du lien
+        this.pagination.addEventListener("click", e => {
+          if(e.target.tagName === 'a'){
+            e.preventDefault()
+            // console.log('click pagination')
+            this.loadUrl(a.getAttribute('href'))
+                        
+          }
+        })
+
     }
 
     async loadForm(){
@@ -49,7 +68,8 @@ export default class Filter {
 
     // On convertit en AJAX
     async loadUrl(url){
-      const response = await fetch(url, {
+      const ajaxUrl = url + '&ajax=1'
+      const response = await fetch(ajaxUrl, {
         headers: {
           //  Permet de différencier une requête classique d'une requête AJAX
           'X-Requested-With': 'XMLHttpRequest'
@@ -59,7 +79,11 @@ export default class Filter {
       if(response.status >= 200 && response.status < 300){
         const data = await response.json()
         this.content.innerHTML = data.content
-        console.log(data)
+        this.pagination.innerHTML = data.pagination    
+        // Pour que l'utilisateur puisse retourner directement en arrière et n'ai pas à repasser par tous les filtres
+        history.replaceState({}, '', url)
+
+        // console.log(data)
       }else{
         console.error(response)
       }
