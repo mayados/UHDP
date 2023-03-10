@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello{% endblock %}
+{% block title %}{{ categorie.nom }}{% endblock %}
 
 {% block body %}
 
@@ -33,7 +33,7 @@
         {% include '_partials/_memoriauxCategorie.html.twig'  %}
     </section>
     <div class="pagination js-filter-pagination">
-        {{ knp_pagination_render(memoriaux) }}
+        {% include '_partials/_pagination.html.twig'  %}
     </div>
 </div>
 {% endblock %}
