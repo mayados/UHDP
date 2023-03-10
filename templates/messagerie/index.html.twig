@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messagerie{% endblock %}
+
+{% block body %}
+<div class="container-page">
+    <h1>Messagerie</h1>
+
+    <h2>Ecrire un nouveau message</h2>
+    {{ form_start(form) }}
+    {{ form_end(form) }}
+    <h2>Conversations</h2>
+    {% for conversation in conversations %}
+        <p>{{ conversation.destinataire }}</p>
+    {% endfor %}
+</div>
+{% endblock %}

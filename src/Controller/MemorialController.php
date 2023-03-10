@@ -47,7 +47,7 @@ class MemorialController extends AbstractController
             // $searchData->page = $request->query->getInt('page',1);
             $memoriaux = $amr->findBySearch($searchData,$page);
             // On vérifie si on est en AJAX
-            if($request->get('ajax')){
+            if($request->isXmlHttpRequest()){
                 // Si c'est le cas on renvoie du JSON
                 return new JsonResponse([
                     'content' => $this->renderView('_partials/_memoriaux.html.twig', ['memoriaux' => $memoriaux]),
@@ -86,7 +86,7 @@ class MemorialController extends AbstractController
         // dd($searchData);            
             $memoriaux = $amr->findSearchByCategorie($searchData,$categorieMemorial,$page);
             // On vérifie si on est en AJAX
-            if($request->get('ajax')){
+            if($request->isXmlHttpRequest()){
                 // Si c'est le cas on renvoie du JSON
                 return new JsonResponse([
                     'content' => $this->renderView('_partials/_memoriauxCategorie.html.twig', ['memoriaux' => $memoriaux, 'categorie'=>$categorieMemorial]),

@@ -68,8 +68,8 @@ export default class Filter {
 
     // On convertit en AJAX
     async loadUrl(url){
-      const ajaxUrl = url + '&ajax=1'
-      const response = await fetch(ajaxUrl, {
+      // const ajaxUrl = url + '&ajax=1'
+      const response = await fetch(url, {
         headers: {
           //  Permet de différencier une requête classique d'une requête AJAX
           'X-Requested-With': 'XMLHttpRequest'
