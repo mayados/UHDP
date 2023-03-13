@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Message;
 use App\Form\MessageType;
+use App\Repository\UserRepository;
 use App\Repository\MessageRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,10 +44,11 @@ class MessagerieController extends AbstractController
         ]);
     }
 
-    #[Route('/conversation/{id}', name: 'app_messagerie')]
-    public function showConversation(ManagerRegistry $doctrine, Request $request, MessageRepository $mr): Response
-    {
-
-
-    }
+    // #[Route('/conversation/{id}', name: 'app_messagerie')]
+    // public function showConversation(ManagerRegistry $doctrine, Request $request, MessageRepository $mr, User $user, UserRepository $ur): Response
+    // {
+    //     $user = $ur->find($user->getId());
+    //     $me = $this->getUser();
+    //     $messages = $mr->findMessagesByConversation($me,$user);
+    // }
 }
