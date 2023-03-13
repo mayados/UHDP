@@ -41,12 +41,16 @@ class MessageRepository extends ServiceEntityRepository
 
     public function findConversations($user)
     {
+
+        // je veux tous les messages où je suis expéditeur OU tous les messages où je suis destinataire
         return $this->createQueryBuilder('m')
         ->select('m')
-        ->join('m.expediteur', 'e')
+        ->join('m.expediteur','e')
         ->distinct()
         ->andWhere('e = :user')
+        ->orWhere('m.destinataire = :user')
         ->setParameter('user', $user)
+        // ->groupBy('m.expediteur')
         ->orderBy('m.dateCreation', 'ASC')
         ->getQuery()
         ->getResult()
