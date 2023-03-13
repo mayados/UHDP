@@ -41,4 +41,11 @@ class MessagerieController extends AbstractController
             'conversations' => $conversations
         ]);
     }
+
+    #[Route('/conversation/{id}', name: 'app_messagerie')]
+    public function showConversation(ManagerRegistry $doctrine, Request $request, MessageRepository $mr): Response
+    {
+
+
+    }
 }
