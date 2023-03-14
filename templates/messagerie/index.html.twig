@@ -11,12 +11,12 @@
     {{ form_end(form) }}
     <h2>Conversations</h2>
     {% for conversation in conversations %}
-        {# {% if conversation.destinataire == app.user.id %}
-            <p>{{ conversation.expediteur_pseudo }}</p>
+        {% if conversation.destinataire == app.user.id %}
+            <a href="{{path('app_conversation', {'id' : conversation.expediteur}) }}">{{ conversation.expediteur_pseudo }}</a>
         {% else %}
-            <p>{{ conversation.destinataire_pseudo }}</p>
-        {% endif %} #}
-        {{ dump(conversation) }}
+            <a href="{{path('app_conversation', {'id' : conversation.destinataire}) }}"">{{ conversation.destinataire_pseudo }}</a>
+        {% endif %}
+        {# {{ dump(conversation) }} #}
        
     {% endfor %}
 </div>
