@@ -11,11 +11,13 @@
     {{ form_end(form) }}
     <h2>Conversations</h2>
     {% for conversation in conversations %}
-        {% if conversation.destinataire == app.user %}
-            <p>{{ conversation.expediteur }}</p>
+        {# {% if conversation.destinataire == app.user.id %}
+            <p>{{ conversation.expediteur_pseudo }}</p>
         {% else %}
-            <p>{{ conversation.destinataire }}</p>
-        {% endif %}
+            <p>{{ conversation.destinataire_pseudo }}</p>
+        {% endif %} #}
+        {{ dump(conversation) }}
+       
     {% endfor %}
 </div>
 {% endblock %}
