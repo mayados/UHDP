@@ -12,9 +12,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class MessagerieController extends AbstractController
 {
+
     #[Route('/messagerie', name: 'app_messagerie')]
     public function index(ManagerRegistry $doctrine, Request $request, MessageRepository $mr): Response
     {
@@ -44,11 +46,63 @@ class MessagerieController extends AbstractController
         ]);
     }
 
-    // #[Route('/conversation/{id}', name: 'app_messagerie')]
-    // public function showConversation(ManagerRegistry $doctrine, Request $request, MessageRepository $mr, User $user, UserRepository $ur): Response
-    // {
-    //     $user = $ur->find($user->getId());
-    //     $me = $this->getUser();
-    //     $messages = $mr->findMessagesByConversation($me,$user);
-    // }
+    // Requirements pour spécifier que l'on attend un digit
+    #[Route('/messagerie/conversation/{id}', name: 'app_conversation', requirements:['id' => '\d+'])]
+    public function showConversation(ManagerRegistry $doctrine, Request $request, MessageRepository $mr, User $user, UserRepository $ur): Response
+    {
+        $user = $ur->find($user->getId());
+        $me = $this->getUser();
+        $messages = $mr->findMessagesByConversation($me,$user);
+
+        $message = new Message();
+        $form = $this->createForm(MessageType::class, $message);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $message = $form->getData();
+            $message->setExpediteur($this->getUser());
+            $message->setDestinataire($user);
+            $message->setIsRead(false);
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($message);
+            $entityManager->flush();
+
+            return $this->redirectToRoute(
+                'app_conversation',
+                ['id' => $user->getId()]
+            );
+        }
+
+        return $this->render('messagerie/conversation.html.twig', [
+            'form' => $form->createView(),
+            'messages' => $messages
+        ]);
+    }
+
+    // Utiliser le paramConverter
+    #[Route('/messagerie/remove/{idConversation}/{id}', name: 'remove_message', requirements:['id' => '\d+'])]
+    #[ParamConverter("user", options: ["mapping" => ["idConversation" => "id"]])]
+    #[ParamConverter("message", options: ["mapping" => ["id" => "id"]])]
+    public function deleteMessage(ManagerRegistry $doctrine, Request $request, User $user, MessageRepository $mr,Message $message, UserRepository $ur): Response
+    {
+
+        $user = $ur->find($user->getId());
+        // On trouve l'id du message et on le delete grâce à la méthode du User
+        $message = $mr->find($message->getId());
+
+        // On doit obtenir doctrine
+        $entityManager = $doctrine->getManager();
+  
+        $current = $ur->find($this->getUser());
+        // On aura besoin de doctrine, car les choses vont changer en bdd
+        $current->removeMessagesEnvoye($message, $flush = true);
+        $entityManager->flush();
+
+        return $this->redirectToRoute(
+            'app_conversation',
+            ['id' => $user->getId()]
+        );
+
+
+    }
 }
