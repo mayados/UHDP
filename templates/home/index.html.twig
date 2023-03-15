@@ -2,9 +2,15 @@
 
 {% block title %}Accueil{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/base.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+{% endblock %}
+
 {% block body %}
 
 <div class="container-page">
+    {# <div id="decoration"></div> #}
     <section id="bienvenue">
         {% if app.user and app.user.roles.0 == "ROLE_USER" %}
             <h1>Contents de vous revoir {{ app.user.pseudo }} !</h1>
@@ -24,27 +30,32 @@
     </section>
 
     <section id="derniers-memoriaux">
-        <h3>Derniers mémoriaux</h3>
-        {% for memorial in derniersMemoriaux %}
-            <div class="memorial-recent">
-                <figure>
-                    <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">
-                    <figcaption>{{ memorial.nom }}</figcaption>                    
-                </figure>
-                <a href="{{path('show_memorial', {'id': memorial.id}) }}">Voir le Memorial</a>
-            </div>
-        {% endfor %}
+        <h2>Derniers mémoriaux</h2>
+        <div id="container-memoriaux-recents">
+            {% for memorial in derniersMemoriaux %}
+                <div class="memorial-recent">
+                    <a href="{{path('show_memorial', {'id': memorial.id}) }}">
+                        <figure>
+                            <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">        
+                        </figure>       
+                        <p>{{ memorial.nom }}</p>          
+                    </a>
+                    
+                </div>
+            {% endfor %}            
+        </div>
     </section>
 
     <section id="dernieres-belles-histoires">
-        <h3>Dernières belles histoires</h3>
+        <h2>Dernières belles histoires</h2>
         {% for histoire in dernieresHistoires %}
             <div class="histoire-recente">
-                <figure>
-                    <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">    
-                    <figcaption>{{ histoire.titre }}</figcaption>                
-                </figure>
-                <a href="{{path('show_histoire', {'slug': histoire.slug}) }}">Voir l'histoire</a>
+                <a href="{{path('show_histoire', {'slug': histoire.slug}) }}">
+                    <figure>
+                        <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">                
+                    </figure>
+                    <p>{{ histoire.titre }}</p> 
+                </a>
             </div>
         {% endfor %}
     </section>
