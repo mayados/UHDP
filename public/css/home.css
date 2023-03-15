@@ -1,0 +1,75 @@
+h1{
+    padding-top: 6vh;
+    text-align: center;
+    font-size: var(--h1);
+}
+
+h2{
+    font-size: var(--h2);
+    text-align: center;
+}
+
+/* #bienvenue{
+    
+} */
+
+/* #decoration{
+    height: 50vh;
+    width: 100vw;
+    position: absolute;
+    background-image: linear-gradient(to right top, #27fff5, #80fff6, #b0fff8, #d7fffa, #f9fffe);
+    z-index: -1;
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 1%;
+} */
+
+#bienvenue{
+    min-height: 50vh;
+    width: 100vw;
+    background-image: linear-gradient(to right top, #27fff5, #80fff6, #b0fff8, #d7fffa, #f9fffe);
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 1%;
+}
+
+#derniers-memoriaux,
+#dernieres-belles-histoires{
+    padding: 50px 30px 50px 30px;
+}
+
+#container-memoriaux-recents{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.memorial-recent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px 10px 0px 0px;    
+    overflow: hidden;
+    padding: 10px 10px 20px 10px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+.memorial-recent,
+figure{
+    border: 2px solid black;    
+}
+
+.memorial-recent p{
+    text-align: center;
+    font-size: var(--figcaption);
+    font-weight: bold;
+    padding-top: 1.7rem;
+}
+
+img{
+    height: 300px;
+    width: 300px;
+    object-fit: cover;
+}
+
+.memorial-recent:hover{
+    filter: grayscale();
+}
