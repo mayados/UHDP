@@ -2,11 +2,17 @@
 
 {% block title %}Mémoriaux{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/base.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/memorial.css') }}">
+{% endblock %}
+
 {% block body %}
 
 <div class="container-page js-filter">
 
     <section id="categories">
+        {# Voir pour mettre juste les 3 catégories et les mettre en sous-menu pour enlever cette section #}
         <ul class="categorie-elements"></ul>        
             {% for categorie in categories %}
                 <li>
@@ -27,10 +33,7 @@
     <div class="recherche">
         {% include '_partials/_filter.html.twig' with {formSearch:formSearch} only %}
     </div>
-    <section class="memoriaux js-filter-content">
-        <h1>Les mémoriaux</h1>
-        {% include '_partials/_memoriaux.html.twig' %}
-    </section>
+    {% include '_partials/_memoriaux.html.twig' %}            
     <div class="pagination js-filter-pagination">
         {% include '_partials/_pagination.html.twig'  %}
     </div>

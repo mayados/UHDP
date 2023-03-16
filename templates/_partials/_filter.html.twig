@@ -1,8 +1,12 @@
 {{ form_start(formSearch, {attr: {class: 'js-filter-form'}}) }}
-    {{ form_row(formSearch.q) }}
+    <div class="form-search">
+        {{ form_row(formSearch.q) }}        
+    </div>
+    <div class="form-elements">
     {{ form_row(formSearch.categories) }}
     {{ form_row(formSearch.sexe) }}
     {{ form_row(formSearch.anneeDeces) }}
-    {{ form_row(formSearch.moisDeces) }}
+    {{ form_row(formSearch.moisDeces) }}        
+    </div>
     {# {{ form_row(formSearch.submit) }} #}
 {{ form_end(formSearch) }}

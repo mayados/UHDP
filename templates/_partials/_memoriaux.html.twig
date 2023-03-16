@@ -1,3 +1,8 @@
-{% for memorial in memoriaux %}
-    {% include '_partials/_memorialCard.html.twig' with {memorial:memorial} only %}
-{% endfor %}    
+<section class="memoriaux js-filter-content">
+    <h1>Les mémoriaux</h1>
+    <div class="container-memoriaux">
+        {% for memorial in memoriaux %}
+            {% include '_partials/_memorialCard.html.twig' with {memorial:memorial} only %}
+        {% endfor %}    
+    </div>
+</section>
