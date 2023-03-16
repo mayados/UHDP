@@ -9,26 +9,25 @@ h2{
     text-align: center;
 }
 
-/* #bienvenue{
-    
-} */
-
-/* #decoration{
-    height: 50vh;
-    width: 100vw;
-    position: absolute;
-    background-image: linear-gradient(to right top, #27fff5, #80fff6, #b0fff8, #d7fffa, #f9fffe);
-    z-index: -1;
-    border-bottom-left-radius: 50%;
-    border-bottom-right-radius: 1%;
-} */
-
 #bienvenue{
-    min-height: 50vh;
+    height: 95vh;
     width: 100vw;
     background-image: linear-gradient(to right top, #27fff5, #80fff6, #b0fff8, #d7fffa, #f9fffe);
     border-bottom-left-radius: 50%;
     border-bottom-right-radius: 1%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+}
+
+#uhdp-description{
+    height: 500px;
+    width: 50%;
+    text-align: justify;
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
 }
 
 #derniers-memoriaux,
@@ -37,28 +36,44 @@ h2{
     padding: 50px 30px 50px 30px;
 }
 
-#container-memoriaux-recents{
+#container-memoriaux-recents,
+#container-histoires-recentes{
+    min-height: 50vh;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 3%;
 }
 
-.memorial-recent{
+.memorial-recent ,
+.histoire-recente{
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex-wrap: wrap;
     border-radius: 10px 10px 0px 0px;    
-    overflow: hidden;
-    padding: 10px 10px 20px 10px;
+    padding: 20px 10px 20px 10px;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
     transition: 1s;
+    width: 350px;
+    border: 2px solid black;      
 }
 
-.memorial-recent,
+.histoire-recente a,
+.memorial-recent a {
+    height: 100%;
+    width: 300px;
+}
+
 figure{
-    border: 2px solid black;    
+    height: 300px;
+    width: 300px;
+    border: 2px solid black;  
+    border-radius: 5px;
 }
 
+.histoire-recente p,
 .memorial-recent p{
     text-align: center;
     font-size: var(--figcaption);
@@ -67,14 +82,51 @@ figure{
 }
 
 img{
-    height: 300px;
-    width: 300px;
+    height: 100%;
+    width: 100%;
     object-fit: cover;
 }
 
+.histoire-recente:hover,
 .memorial-recent:hover{
     filter: grayscale();
     transform: scale(1.05);
 }
 
+/* SECTIONS EXPLICATIONS */
+#explications-memoriaux,
+#explications-histoires{
+    height: 60vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    position: relative;      
+}
 
+#explications-memoriaux{
+    border-bottom: 2px solid black; 
+}
+
+#explications-memoriaux .texte,
+#explications-histoires .texte{
+    width:50%;
+    font-size: 1.4rem;
+    text-align: justify;
+}
+
+#explications-memoriaux #pissenlit{
+    position: absolute;
+    height: 20vh;
+    width: 100px;
+    right: 10%;
+    bottom: 0;
+}
+
+#explications-histoires #book{
+    position: absolute;
+    height: 20%;
+    width: 220px;
+    left: 10%;
+    top: 25%;
+}
