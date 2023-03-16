@@ -12,19 +12,18 @@
 <div class="container-page">
     {# <div id="decoration"></div> #}
     <section id="bienvenue">
-        {% if app.user and app.user.roles.0 == "ROLE_USER" %}
-            <h1>Contents de vous revoir {{ app.user.pseudo }} !</h1>
-        {% elseif app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-            <h1>Bon retour à notre cher(e) admin {{ app.user.pseudo }} ! </h1>
-        {% elseif not app.user %} 
-            <h1>Bienvenue sur Une histoire de pattes !</h1>     
-        {% endif %}
+    {% if app.user and app.user.roles.0 == "ROLE_USER" %}
+        <h1>Contents de vous revoir {{ app.user.pseudo }} !</h1>
+    {% elseif app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+         <h1>Bon retour à notre cher(e) admin {{ app.user.pseudo }} ! </h1>
+    {% elseif not app.user %} 
+        <h1>Bienvenue sur Une histoire de pattes !</h1>     
+    {% endif %}
 
-        {% if not app.user %}
         <article id="uhdp-description">
             <p>Une Histoire De Pattes est Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sapien pellentesque habitant morbi tristique senectus et netus et. Amet consectetur adipiscing elit duis tristique sollicitudin. Pulvinar proin gravida hendrerit lectus a. Venenatis tellus in metus vulputate eu scelerisque felis imperdiet. Placerat duis ultricies lacus sed. Pharetra massa massa ultricies mi quis hendrerit dolor magna. Tortor id aliquet lectus proin nibh nisl condimentum id venenatis. Vitae elementum curabitur vitae nunc sed velit. Id aliquet risus feugiat in ante. Nisl condimentum id venenatis a condimentum vitae sapien. Enim praesent elementum facilisis leo. Neque volutpat ac tincidunt vitae semper quis lectus. Orci nulla pellentesque dignissim enim sit. Cras tincidunt lobortis feugiat vivamus. Elementum tempus egestas sed sed risus pretium quam vulputate dignissim. Posuere morbi leo urna molestie at elementum eu facilisis sed. Urna cursus eget nunc scelerisque viverra mauris in aliquam.</p>
         </article>
-        {% elseif app.user and not app.user.isVerified %}
+        {% if app.user and not app.user.isVerified %}
             <p>N'oubliez pas de cliquer sur le lien envoyé sur votre adresse mail pour accéder à toutes les fonctionnalités !</p>
         {% endif %}        
     </section>
@@ -44,20 +43,39 @@
                 </div>
             {% endfor %}            
         </div>
+     
     </section>
-
+    <section  id="explications-memoriaux">
+        <div class="texte">
+            <p>Les mémoriaux permettent à votre animal d'avoir un espace à lui, afin qu'il ne soit pas oublié et pour faire connaître son petit bout de vie à d'autres personnes. Le mémorial permet également de raconter votre histoire, en tant qu'amis, pour rendre hommage à cette relation spéciale.<br>
+            Vous pouvez d'ailleurs en créer plusieurs.<br>
+            Prêt à <a href="{{path('add_memorial') }}">créer un mémorial</a> ?
+            </p>            
+        </div>
+        <img id="pissenlit" src="{{ asset('img/pissenlit.png') }}" alt="">
+    </section>   
     <section id="dernieres-belles-histoires">
         <h2>Dernières belles histoires</h2>
-        {% for histoire in dernieresHistoires %}
-            <div class="histoire-recente">
-                <a href="{{path('show_histoire', {'slug': histoire.slug}) }}">
-                    <figure>
-                        <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">                
-                    </figure>
-                    <p>{{ histoire.titre }}</p> 
-                </a>
+            <div id="container-histoires-recentes">
+                {% for histoire in dernieresHistoires %}
+                    <div class="histoire-recente">
+                        <a href="{{path('show_histoire', {'slug': histoire.slug}) }}">
+                            <figure>
+                                <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">                
+                            </figure>
+                            <p>{{ histoire.titre }}</p> 
+                        </a>
+                    </div>
+                {% endfor %}                
             </div>
-        {% endfor %}
     </section>
+    <section  id="explications-histoires">
+        <div class="texte">
+            <p>Les belles histoires sont des histoires vraies : le héros est un animal, peu importe son espèce. Cela peut être une histoire connue ou non, ou l'histoire d'un animal que vous avez croisé à titre personnel.<br>
+            Prêt à <a href="{{path('add_memorial') }}">raconter une belle histoire</a> ?
+            </p>            
+        </div>
+        <img id="book" src="{{ asset('img/book.png') }}" alt="">
+    </section>   
 </div>
 {% endblock %}
