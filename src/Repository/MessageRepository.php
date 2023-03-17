@@ -123,6 +123,20 @@ class MessageRepository extends ServiceEntityRepository
        return $query->getResult();
     }
 
+    // Le but va être de récupérer les messages non lus pour pouvoir les mettre sous forme de notification
+    public function findNonLus($user)
+    {
+        return $this->createQueryBuilder('m')  
+        ->select('count(m.is_read)')
+        ->where('m.destinataire = :user')  
+        ->andWhere('m.is_read = 0')    
+        ->setParameter('user',$user)
+        ->getQuery()
+        ->getResult()
+       ;
+
+    }
+
 //    /**
 //     * @return Message[] Returns an array of Message objects
 //     */
