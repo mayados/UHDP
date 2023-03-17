@@ -22,6 +22,7 @@ class MessagerieController extends AbstractController
     {
 
         $user = $this->getUser();
+        $nonLus = $mr->findNonLus($user);        
         $conversations = $mr->findConversations($user);
 
         $message = new Message();
@@ -42,7 +43,8 @@ class MessagerieController extends AbstractController
 
         return $this->render('messagerie/index.html.twig', [
             'form' => $form->createView(),
-            'conversations' => $conversations
+            'conversations' => $conversations,
+            'nonLus' => $nonLus
         ]);
     }
 
@@ -97,6 +99,8 @@ class MessagerieController extends AbstractController
         // On aura besoin de doctrine, car les choses vont changer en bdd
         $current->removeMessagesEnvoye($message, $flush = true);
         $entityManager->flush();
+
+        $this->addFlash('notice', 'Le message a été supprimé');
 
         return $this->redirectToRoute(
             'app_conversation',
