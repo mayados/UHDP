@@ -6,18 +6,25 @@
 <div class="container-page">
     <h1>Messagerie</h1>
 
-    <h2>Ecrire un nouveau message</h2>
+    <p>Messages non lus :
+        {% for nonlu in nonLus %}
+            {{nonlu.1}}
+        {% endfor %}        
+    </p>
+
+    {# <h2>Ecrire un nouveau message</h2>
     {{ form_start(form) }}
-    {{ form_end(form) }}
+    {{ form_end(form) }} #}
     <h2>Conversations</h2>
     {% for conversation in conversations %}
-        {% if conversation.destinataire == app.user.id %}
-            <a href="{{path('app_conversation', {'id' : conversation.expediteur}) }}">{{ conversation.expediteur_pseudo }}</a>
-        {% else %}
-            <a href="{{path('app_conversation', {'id' : conversation.destinataire}) }}"">{{ conversation.destinataire_pseudo }}</a>
-        {% endif %}
-        {# {{ dump(conversation) }} #}
-       
+        <div class="conversation">
+            {% if conversation.destinataire == app.user.id %}
+                <a href="{{path('app_conversation', {'id' : conversation.expediteur}) }}">{{ conversation.expediteur_pseudo }}</a>
+            {% else %}
+                <a href="{{path('app_conversation', {'id' : conversation.destinataire}) }}"">{{ conversation.destinataire_pseudo }}</a>
+            {% endif %}
+            {# {{ dump(conversation) }} #}            
+        </div>
     {% endfor %}
 </div>
 {% endblock %}
