@@ -18,6 +18,27 @@
     </head>
     <body>
         <header>
+            {% if app.session.flashBag.has('success') %}
+                {% for msg in app.flashes('success') %}        
+                    <div class="alert-success">
+                        {{ msg }}
+                    </div>
+                {% endfor %}             
+            {% endif %}
+            {% if app.session.flashBag.has('notice') %}
+                {% for msg in app.flashes('notice') %}        
+                    <div class="alert-notice">
+                        {{ msg }}
+                    </div>
+                {% endfor %}             
+            {% endif %}
+            {% if app.session.flashBag.has('warning') %}
+                {% for msg in app.flashes('warning') %}        
+                    <div class="alert-warning">
+                        {{ msg }}
+                    </div>
+                {% endfor %}             
+            {% endif %}
             <nav>
                 <ul id="nav-menu">
                     <li>
@@ -74,7 +95,8 @@
                 </ul>
             </nav>
         </header>
-            {% block body %}{% endblock %}            
+            {% block body %}
+            {% endblock %}            
         <footer>
             {# <ul>
                 <li>CGU</li>
