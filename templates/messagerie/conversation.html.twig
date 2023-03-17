@@ -13,7 +13,7 @@
             <a href="{{path('app_conversation', {'id' : conversation.destinataire}) }}"">{{ conversation.destinataire_pseudo }}</a>
         {% endif %} #}
         <div class="message">
-            <p>{{ message.texte }} ({{ message.expediteur }})</p>
+            <p>{{ message.texte|raw }} ({{ message.expediteur }})</p>
             <a href="{{path('remove_message', {'idConversation' : message.destinataire.id, 'id': message.id}) }}">Supprimer le message</a>
         </div>
         {# {{ dump(conversation) }} #}

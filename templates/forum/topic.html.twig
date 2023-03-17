@@ -31,7 +31,7 @@
                     </figure>           
                 </div>
                 <div class="post-texte">
-                    <p>{{ post.texte }}</p>                
+                    <p>{{ post.texte|raw }}</p>                
                 </div>
                 {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
                     <a href="{{path('remove_post', {'id': post.id, 'slug': topic.slug}) }}">Delete</a>

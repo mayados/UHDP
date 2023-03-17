@@ -12,7 +12,7 @@
                 <p>Pas de photo</p>
             {% else %}
             <figure>
-                <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">            
+                {# <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">             #}
             </figure>
             {% endif %}
             <p>Date de création {{ histoire.dateCreation | date('d-m-Y') }}</p>
@@ -30,7 +30,7 @@
             <h2>Commentaires</h2>
             {% for commentaire in histoire.commentaires %}
                 <article class="commentaire">
-                    <p>{{ commentaire.texte }} 
+                    <p>{{ commentaire.texte|raw }} 
                     <footer>
                         {% if commentaire.auteur != null %}
                             ({{ commentaire.auteur }})</p>
