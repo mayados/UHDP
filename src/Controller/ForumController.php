@@ -134,6 +134,7 @@ class ForumController extends AbstractController
                 $entityManager->persist($topic);
                 $entityManager->flush();
 
+                ($edit)?$this->addFlash('success', "Le topic a été modifié avec succès"):$this->addFlash('success', "Le topic a été créé avec succès");
 
                 return $this->redirectToRoute('app_forum');
             }
@@ -158,6 +159,8 @@ class ForumController extends AbstractController
             $topic = $tr->find($topic->getId());
             $tr->remove($topic, $flush = true);
 
+            $this->addFlash('notice', 'Le topic a été supprimé');
+
             return $this->redirectToRoute('app_forum');            
         }
 
@@ -176,6 +179,9 @@ class ForumController extends AbstractController
             $pr->remove($post, $flush = true);
             
             $topic = $tr->find($topic->getId());
+
+            $this->addFlash('notice', 'Le commentaire a été supprimé');
+
             return $this->redirectToRoute(
                 'show_topic',
                 ['slug' => $topic->getSlug()]
@@ -202,6 +208,8 @@ class ForumController extends AbstractController
             }
 
             $entityManager->flush();
+
+            $this->addFlash('notice' ,'Le topic est verrouillé');
 
             return $this->redirectToRoute(
                 'show_topic',

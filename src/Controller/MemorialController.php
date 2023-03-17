@@ -54,6 +54,7 @@ class MemorialController extends AbstractController
                     'pagination' => $this->renderView('_partials/_pagination.html.twig', ['memoriaux' => $memoriaux])
                 ]);
             }
+
             return $this->render('memorial/listeMemoriaux.html.twig',[
             'categories' => $categories,   
              'memoriaux' => $memoriaux,   
@@ -137,6 +138,7 @@ class MemorialController extends AbstractController
                     $entityManager->flush();                                  
                 }
 
+                $this->addFlash('success', 'La galerie a été alimentée avec succès');
 
                 return $this->redirectToRoute(
                     'show_memorial',
@@ -211,6 +213,7 @@ class MemorialController extends AbstractController
                 $entityManager->persist($memorial);
                 $entityManager->flush();
 
+                ($edit)?$this->addFlash('success', 'Le mémorial a été modifié avec succès'):$this->addFlash('success', 'Le mémorial a été créé avec succès');
 
                 return $this->redirectToRoute('app_memoriaux');
             }
@@ -259,6 +262,8 @@ class MemorialController extends AbstractController
                 peuvent être ajoutées),grâce au Orphean Removal*/
             $amr->remove($memorial, $flush = true);
 
+            $this->addFlash('notice', 'Le mémorial a été supprimé');
+
             return $this->redirectToRoute("app_memoriaux");            
         }
 
@@ -277,6 +282,8 @@ class MemorialController extends AbstractController
                 $folder = 'imgGalerie';
                 $uploaderService->delete($photo->getPhoto(),$folder);
                 $pr->remove($photo, $flush = true);
+
+                $this->addFlash('notice', 'La photo a été supprimée de la galerie');
 
                 return $this->redirectToRoute(
                     'show_memorial',

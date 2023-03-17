@@ -129,6 +129,7 @@ class BelleHistoireController extends AbstractController
                 $entityManager->persist($histoire);
                 $entityManager->flush();
 
+                ($edit)?$this->addFlash('success', "L'histoire a été modifiée avec succès"):$this->addFlash('success', "L'histoire a été créée avec succès");
 
                 return $this->redirectToRoute('app_belles_histoires');
             }
@@ -159,6 +160,8 @@ class BelleHistoireController extends AbstractController
     
             $bhr->remove($histoire, $flush = true);
 
+            $this->addFlash('notice', "L'histoire a été supprimée");
+
             return $this->redirectToRoute('app_belles_histoires');            
         }
         
@@ -177,6 +180,9 @@ class BelleHistoireController extends AbstractController
         if($this->getUser() && ( $this->getUser() == $comment->getAuteur() || $this->isGranted('ROLE_ADMIN'))){
             $cbhr->remove($comment, $flush = true);
             $histoire = $bhr->find($histoire->getId());
+
+            $this->addFlash('notice', "Le commentaire a été supprimé");
+
             return $this->redirectToRoute(
                 'show_histoire',
                 ['slug' => $histoire->getSlug()]

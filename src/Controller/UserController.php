@@ -109,6 +109,8 @@ class UserController extends AbstractController
                 $entityManager->persist($user);
                 $entityManager->flush();
 
+                $this->addFlash('success','Votre image de profil a bien été modifiée');
+
                 return $this->redirectToRoute('my_profile',);
         }
 
@@ -132,6 +134,8 @@ class UserController extends AbstractController
                 $entityManager = $doctrine->getManager();
                 $entityManager->persist($user);
                 $entityManager->flush();
+
+                $this->addFlash('success', 'Votre mot de passe a bien été modifié');
 
                 return $this->redirectToRoute(
                     'show_profile',
@@ -178,6 +182,8 @@ class UserController extends AbstractController
         $request->getSession()->invalidate();
         $this->container->get('security.token_storage')->setToken(null);
         $ur->remove($user, $flush = true);
+
+        $this->addFlash('notice','Votre compte a été supprimé');
 
         return $this->redirectToRoute('app_logout');
     }

@@ -89,6 +89,8 @@ class AdminController extends AbstractController
 
         $entityManager->flush();
 
+        $this->addFlash('notice',"L'utilisateur a été banni");
+
         return $this->redirectToRoute(
             'show_profile',
             ['id' => $user->getId()]
