@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class MemorialType extends AbstractType
@@ -91,25 +91,25 @@ class MemorialType extends AbstractType
                     ])
                 ]
             ])
-            ->add('presentation', TextareaType::class, [
+            ->add('presentation', CKEditorType::class, [
                 'label' => 'Présentation',
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'La présentation ne peut pas être nulle']),
                 ]
             ])
-            ->add('chosesAimees', TextareaType::class, [
+            ->add('chosesAimees', CKEditorType::class, [
                 'label' => "Ce qu'il / elle aimait",
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'Cette section ne peut pas être nulle']),
                 ]
             ])
-            ->add('chosesDetestees', TextareaType::class, [
+            ->add('chosesDetestees', CKEditorType::class, [
                 'label' => "Ce qu'il / elle détestait",
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'Cette section ne peut pas être nulle']),
                 ]
             ])
-            ->add('histoire', TextareaType::class, [
+            ->add('histoire', CKEditorType::class, [
                 'label' => "Votre histoire / amitié",
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'Cette section ne peut pas être nulle']),
