@@ -20,31 +20,19 @@ class MessagerieController extends AbstractController
     #[Route('/messagerie', name: 'app_messagerie')]
     public function index(ManagerRegistry $doctrine, Request $request, MessageRepository $mr): Response
     {
+        return $this->render('messagerie/index.html.twig');
+    }
 
-        $user = $this->getUser();
-        $nonLus = $mr->findNonLus($user);        
-        $conversations = $mr->findConversations($user);
+    #[Route('/messagerie/envoyes', name: 'sent_messages')]
+    public function sentMessages(ManagerRegistry $doctrine, Request $request, MessageRepository $mr): Response
+    {
 
-        $message = new Message();
-        $form = $this->createForm(MessageType::class, $message);
-        $form->handleRequest($request);
+        $user = $this->getUser(); 
+        // $conversations = $mr->findConversations($user);
+         $messages = $mr->findSentMessages($user);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $message = $form->getData();
-            $message->setExpediteur($this->getUser());
-            $message->setIsRead(false);
-            $entityManager = $doctrine->getManager();
-            $entityManager->persist($message);
-            $entityManager->flush();
-
-            return $this->redirectToRoute(
-                'app_messagerie');
-        }
-
-        return $this->render('messagerie/index.html.twig', [
-            'form' => $form->createView(),
-            'conversations' => $conversations,
-            'nonLus' => $nonLus
+        return $this->render('messagerie/sentMessages.html.twig', [
+            'messages' => $messages
         ]);
     }
 
@@ -55,6 +43,15 @@ class MessagerieController extends AbstractController
         $user = $ur->find($user->getId());
         $me = $this->getUser();
         $messages = $mr->findMessagesByConversation($me,$user);
+        // Lorsque l'on va sur la conversation, on note tous les messages en lu
+        foreach($messages as $message){
+            if($message->getDestinataire() === $me){
+                $message->setIsRead(1);
+                $entityManager = $doctrine->getManager();
+                $entityManager->persist($message);
+                $entityManager->flush();                
+            }
+        }
 
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
