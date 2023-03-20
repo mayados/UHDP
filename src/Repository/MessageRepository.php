@@ -39,69 +39,53 @@ class MessageRepository extends ServiceEntityRepository
         }
     }
 
-    public function findConversations($user)
+    // public function findConversations($user)
+    // {
+
+    //     // fonctionne, mais affiche des doublons car les deux requêtes ne sont pas séparées
+    //     $qb =  $this->createQueryBuilder('m')
+    //     ->join('m.destinataire','md')  
+    //     ->join('m.expediteur', 'me')      
+    //     ->select(['m','md','md.pseudo as destinataire_pseudo','me.pseudo as expediteur_pseudo','md.id as destinataire','me.id as expediteur'])
+    //     ->where('m.expediteur = 1')    
+    //     ->orWhere('m.destinataire = 1')    
+    //     ->distinct(true)
+    //     ->groupBy('destinataire')
+    //     // ->addGroupBy('expediteur')
+    //    ;
+    //    $query = $qb->getQuery();
+    //    return $query->getResult();
+    // }
+
+    public function findSentMessages($user)
     {
 
-        //je veux tous les messages où je suis expéditeur OU tous les messages où je suis destinataire
-    //     return $this->createQueryBuilder('m')
-    //     ->select('m')
-    //     ->join('m.expediteur','e')
-    //     ->distinct()
-    //     ->andWhere('e = :user')
-    //     ->orWhere('m.destinataire = :user')
-    //     ->setParameter('user', $user)
-    //     // ->groupBy('m.expediteur')
-    //     ->orderBy('m.dateCreation', 'ASC')
-    //     ->getQuery()
-    //     ->getResult()
+    //     $em = $this->getEntityManager();
+    //     $sub = $em->createQueryBuilder();
+    //     $qb = $sub;
+    //     $qb->select(['me.texte'])
+    //     ->from('App\Entity\User','u')
+    //     ->where('u.id = :user')
+    //     ->setParameter('user',$user)
+    //     ->join('u.messagesEnvoyes','me')   
+    //     ->orderBy('me.id','DESC')
+    //     ->distinct(true)        
     //    ;
+    //    $query = $sub->getQuery();
+    //    return $query->getResult();
 
-        // fonctionne, mais il faut séparer les requêtes
         $qb =  $this->createQueryBuilder('m')
         ->join('m.destinataire','md')  
         ->join('m.expediteur', 'me')      
-        ->select(['m','md','md.pseudo as destinataire_pseudo','me.pseudo as expediteur_pseudo','md.id as destinataire','me.id as expediteur'])
-        ->where('m.expediteur = 1')    
-        ->orWhere('m.destinataire = 1')    
+        ->select(['m'])
+        ->where('m.expediteur = :user')  
+        ->setParameter('user',$user)   
         ->distinct(true)
-        ->groupBy('destinataire')
-        // ->addGroupBy('expediteur')
+        ->orderBy('m.dateCreation','DESC')
        ;
        $query = $qb->getQuery();
        return $query->getResult();
 
-        // Essai requête séparée
-        // $em = $this->getEntityManager();
-        // $sub = $em->createQueryBuilder();
-
-        // //Requête en deux temps
-        // // Je ne reçois que l'expéditeur, pas les messages que j'ai envoyés
-        // // $qb est égal à la création d'une requête + la connexion à Doctrine
-        // $qb = $sub;
-        // $qb->select(['m','md','me.pseudo as expediteur_pseudo','md.pseudo as destinataire_pseudo','md.id as destinataire','me.id as expediteur'])
-        // ->from('App\Entity\Message', 'm')
-        // ->join('m.expediteur', 'me') 
-        // ->join('m.destinataire', 'md') 
-        // ->where('m.expediteur = :user') 
-        // // ->orWhere('m.destinataire = :user') 
-        // ->setParameter('user',$user)
-        // ->groupBy('destinataire');
-        // // ->addGroupBy('expediteur');
-        // // Il faudra que je vérifie si l'expéditeur n'est pas dans le résultat précédent des destinataires
-        
-        // $sub = $em->createQueryBuilder();
-        // $sub->select(['mess','messe.pseudo as expediteur_pseudo','messd.id as destinataire','messe.id as expediteur'])
-        // // On donne l'allias mess à l'entité Message
-        // ->from('App\Entity\Message', 'mess')
-        // ->join('mess.expediteur', 'messe') 
-        // ->join('mess.destinataire', 'messd') 
-        // ->where('mess.destinataire = :user')
-        // ->setParameter('user',$user)
-        // ->andWhere($sub->expr()->notIn('destinataire', $qb->getDQL()))
-        // // Requête préparée -> on protège contre l'injection SQL
-    // ;
-    // $query = $sub->getQuery();
-    //     return $query->getResult();
     }
 
     public function findMessagesByConversation($me,$user)
@@ -110,6 +94,9 @@ class MessageRepository extends ServiceEntityRepository
             'me' => $me, 
             'user' => $user
         );
+
+        $em = $this->getEntityManager();
+        $sub = $em->createQueryBuilder();
         //Je dois retrouver tous les messages où je suis expédteur et l'autre destinataire OU tous les messages où je suis destinataire et l'autre expéditeur
         $qb =  $this->createQueryBuilder('m')  
         ->select(['m'])
@@ -121,6 +108,7 @@ class MessageRepository extends ServiceEntityRepository
        ;
        $query = $qb->getQuery();
        return $query->getResult();
+    
     }
 
     // Le but va être de récupérer les messages non lus pour pouvoir les mettre sous forme de notification
