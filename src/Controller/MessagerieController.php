@@ -20,62 +20,105 @@ class MessagerieController extends AbstractController
     #[Route('/messagerie', name: 'app_messagerie')]
     public function index(ManagerRegistry $doctrine, Request $request, MessageRepository $mr): Response
     {
-        return $this->render('messagerie/index.html.twig');
+        if($this->getUser()){
+            $user = $this->getUser();
+
+            $messagesNonLus = $mr->findUnreadMessages($user);
+
+            return $this->render('messagerie/index.html.twig', [
+
+                'messagesNonLus' => $messagesNonLus,
+            ]);            
+        }
+
+        $this->addFlash('warning', 'Il faut être connecté pour accéder à la messagerie');
+        return $this->redirectToRoute('app_login'); 
     }
 
     #[Route('/messagerie/envoyes', name: 'sent_messages')]
     public function sentMessages(ManagerRegistry $doctrine, Request $request, MessageRepository $mr): Response
     {
 
-        $user = $this->getUser(); 
-        // $conversations = $mr->findConversations($user);
-         $messages = $mr->findSentMessages($user);
+        if($this->getUser()){
+            $user = $this->getUser(); 
+            // $conversations = $mr->findConversations($user);
+            $messages = $mr->findSentMessages($user);
 
-        return $this->render('messagerie/sentMessages.html.twig', [
-            'messages' => $messages
-        ]);
+            return $this->render('messagerie/sentMessages.html.twig', [
+                'messages' => $messages
+            ]);            
+        }
+
+        $this->addFlash('warning', 'Il faut être connecté pour accéder à la messagerie');
+        return $this->redirectToRoute('app_login'); 
+
+    }
+
+    #[Route('/messagerie/reçus', name: 'received_messages')]
+    public function receivedMessages(ManagerRegistry $doctrine, Request $request, MessageRepository $mr): Response
+    {
+
+        if($this->getUser()){
+            $user = $this->getUser(); 
+            // $conversations = $mr->findConversations($user);
+            $messages = $mr->findReceivedMessages($user);
+
+            return $this->render('messagerie/receivedMessages.html.twig', [
+                'messages' => $messages
+            ]);
+        }
+        $this->addFlash('warning', 'Il faut être connecté pour accéder à la messagerie');
+        return $this->redirectToRoute('app_login'); 
+
     }
 
     // Requirements pour spécifier que l'on attend un digit
     #[Route('/messagerie/conversation/{id}', name: 'app_conversation', requirements:['id' => '\d+'])]
     public function showConversation(ManagerRegistry $doctrine, Request $request, MessageRepository $mr, User $user, UserRepository $ur): Response
     {
-        $user = $ur->find($user->getId());
-        $me = $this->getUser();
-        $messages = $mr->findMessagesByConversation($me,$user);
-        // Lorsque l'on va sur la conversation, on note tous les messages en lu
-        foreach($messages as $message){
-            if($message->getDestinataire() === $me){
-                $message->setIsRead(1);
+
+        if($this->getUser()){
+            $user = $ur->find($user->getId());
+            $me = $this->getUser();
+            $messages = $mr->findMessagesByConversation($me,$user);
+            // Lorsque l'on va sur la conversation, on note tous les messages en lu
+            foreach($messages as $message){
+                if($message->getDestinataire() === $me){
+                    $message->setIsRead(1);
+                    $entityManager = $doctrine->getManager();
+                    $entityManager->persist($message);
+                    $entityManager->flush();                
+                }
+            }
+
+            $message = new Message();
+            $form = $this->createForm(MessageType::class, $message);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $message = $form->getData();
+                $message->setExpediteur($this->getUser());
+                $message->setDestinataire($user);
+                $message->setIsRead(false);
                 $entityManager = $doctrine->getManager();
                 $entityManager->persist($message);
-                $entityManager->flush();                
+                $entityManager->flush();
+
+                return $this->redirectToRoute(
+                    'app_conversation',
+                    ['id' => $user->getId()]
+                );
             }
+
+            return $this->render('messagerie/conversation.html.twig', [
+                'form' => $form->createView(),
+                'messages' => $messages
+            ]);
         }
 
-        $message = new Message();
-        $form = $this->createForm(MessageType::class, $message);
-        $form->handleRequest($request);
+        $this->addFlash('warning', 'Il faut être connecté pour accéder à la messagerie');
+        return $this->redirectToRoute('app_login'); 
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $message = $form->getData();
-            $message->setExpediteur($this->getUser());
-            $message->setDestinataire($user);
-            $message->setIsRead(false);
-            $entityManager = $doctrine->getManager();
-            $entityManager->persist($message);
-            $entityManager->flush();
-
-            return $this->redirectToRoute(
-                'app_conversation',
-                ['id' => $user->getId()]
-            );
-        }
-
-        return $this->render('messagerie/conversation.html.twig', [
-            'form' => $form->createView(),
-            'messages' => $messages
-        ]);
     }
 
     // Utiliser le paramConverter
@@ -85,25 +128,29 @@ class MessagerieController extends AbstractController
     public function deleteMessage(ManagerRegistry $doctrine, Request $request, User $user, MessageRepository $mr,Message $message, UserRepository $ur): Response
     {
 
-        $user = $ur->find($user->getId());
-        // On trouve l'id du message et on le delete grâce à la méthode du User
-        $message = $mr->find($message->getId());
+        if($this->getUser() && ($this->getUser() == $message->getExpediteur()))
+        {
+            $user = $ur->find($user->getId());
+            // On trouve l'id du message et on le delete grâce à la méthode du User
+            $message = $mr->find($message->getId());
 
-        // On doit obtenir doctrine
-        $entityManager = $doctrine->getManager();
-  
-        $current = $ur->find($this->getUser());
-        // On aura besoin de doctrine, car les choses vont changer en bdd
-        $current->removeMessagesEnvoye($message, $flush = true);
-        $entityManager->flush();
+            // On doit obtenir doctrine
+            $entityManager = $doctrine->getManager();
+    
+            $current = $ur->find($this->getUser());
+            // On aura besoin de doctrine, car les choses vont changer en bdd
+            $current->removeMessagesEnvoye($message, $flush = true);
+            $entityManager->flush();
 
-        $this->addFlash('notice', 'Le message a été supprimé');
+            $this->addFlash('notice', 'Le message a été supprimé');
 
-        return $this->redirectToRoute(
-            'app_conversation',
-            ['id' => $user->getId()]
-        );
+            return $this->redirectToRoute(
+                'app_conversation',
+                ['id' => $user->getId()]
+            );            
+        }
 
-
+        $this->addFlash('warning', 'Il faut être connecté pour accéder à la messagerie');
+        return $this->redirectToRoute('app_login'); 
     }
 }
