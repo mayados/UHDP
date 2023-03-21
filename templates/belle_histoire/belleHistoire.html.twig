@@ -2,6 +2,11 @@
 
 {% block title %}{{histoire.titre}}{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/base.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/belleHistoire.css') }}">
+{% endblock %}
+
 {% block body %}
 
 <div class="container-page">
@@ -26,6 +31,7 @@
                 {% endif %}
             {% endif %}
         </section>
+        {% include "_partials/_likeHistoire.html.twig" %}
         <section id="comment-histoire">
             <h2>Commentaires</h2>
             {% for commentaire in histoire.commentaires %}

@@ -17,7 +17,7 @@
         {% endblock %}
     </head>
     <body>
-        <header>
+        <header id="header-main">
             {% if app.session.flashBag.has('success') %}
                 {% for msg in app.flashes('success') %}        
                     <div class="alert-success">
