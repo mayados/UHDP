@@ -4,7 +4,7 @@
 
 {% block body %}
 <div class="container-page">
-    <h1>Messages envoyés</h1>
+    <h1>Messages Reçus</h1>
 
     <a href="#">Messages Reçus</a>
     <a href="#">Messages envoyés</a>
@@ -12,10 +12,11 @@
 
     {% for message in messages %}
     <div>
-        <p>A : {{ message.destinataire }}</p>
+        {# {{dump(message)}}<br> #}
+        <p>De :{{ message.expediteur }}</p>
         <p>{{ message.texte }}</p>
-        <p>{{ message.dateCreation| date('d-m-Y') }}</p>
-        <br>
+        <p>{{ message.dateCreation | date('d-m-Y')}}</p>
+       <br>
     </div>
 
     {# Vérifier if destinataire not in app.user.messagesRecus expediteur id #}
