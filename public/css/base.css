@@ -34,7 +34,7 @@ a{
 }
 
                                     /*************  HEADER ET MENU DE NAVIGATION  ************/
-header{
+#header-main{
     background-color: var(--nav);
     width: 100vw;
     height: 5vh;
