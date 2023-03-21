@@ -47,9 +47,13 @@ class BelleHistoire
     #[ORM\Column(length: 255, unique:true)]
     private ?string $slug = null;
 
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'bellesHistoiresLiked')]
+    private Collection $likes;
+
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -159,9 +163,43 @@ class BelleHistoire
         return $this;
     } 
 
+    /**
+     * @return Collection<int, User>
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(User $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes->add($like);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(User $like): self
+    {
+        $this->likes->removeElement($like);
+
+        return $this;
+    }    
+
+    public function isLikedByUser(User $user):  bool{
+        return $this->likes->contains($user);
+    }
+
+    public function howManyLikes():  int{
+        return count($this->likes);
+    }
+
     public function __toString()
     {
         return $this->titre;
     }
+
+
 
 }
