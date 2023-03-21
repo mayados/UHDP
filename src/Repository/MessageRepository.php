@@ -77,10 +77,26 @@ class MessageRepository extends ServiceEntityRepository
         $qb =  $this->createQueryBuilder('m')
         ->join('m.destinataire','md')  
         ->join('m.expediteur', 'me')      
-        ->select(['m'])
+        ->select(['m.texte','m.dateCreation','md.pseudo as destinataire'])
         ->where('m.expediteur = :user')  
         ->setParameter('user',$user)   
-        ->distinct(true)
+        // ->distinct(true)
+        ->orderBy('m.dateCreation','DESC')
+       ;
+       $query = $qb->getQuery();
+       return $query->getResult();
+
+    }
+
+    public function findreceivedMessages($user)
+    {
+
+        $qb =  $this->createQueryBuilder('m')
+        ->join('m.destinataire','md')  
+        ->join('m.expediteur', 'me')      
+        ->select(['m.texte','me.pseudo as expediteur','m.dateCreation'])
+        ->where('m.destinataire = :user')  
+        ->setParameter('user',$user)   
         ->orderBy('m.dateCreation','DESC')
        ;
        $query = $qb->getQuery();
@@ -109,6 +125,19 @@ class MessageRepository extends ServiceEntityRepository
        $query = $qb->getQuery();
        return $query->getResult();
     
+    }
+
+    public function findUnreadMessages($user)
+    {
+        return $this->createQueryBuilder('m')  
+        ->join('m.expediteur', 'me')    
+        ->select('m.texte, me.pseudo as expediteur','m.dateCreation')
+        ->where('m.destinataire = :user')  
+        ->andWhere('m.is_read = 0')    
+        ->setParameter('user',$user)
+        ->getQuery()
+        ->getResult()
+       ;
     }
 
     // Le but va être de récupérer les messages non lus pour pouvoir les mettre sous forme de notification
