@@ -24,11 +24,11 @@ class Message
     private ?bool $is_read = null;
 
     #[ORM\ManyToOne(inversedBy: 'messagesEnvoyes')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete:"SET NULL")]
     private ?User $expediteur = null;
 
     #[ORM\ManyToOne(inversedBy: 'messagesRecus')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete:"SET NULL")]
     private ?User $destinataire = null;
 
     public function __construct()
