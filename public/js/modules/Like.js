@@ -23,6 +23,9 @@ export default class Like {
         
         event.preventDefault();
         const url = new URL(this.href|| window.location.href);
+        // Avant la promesse, on sélectionne l'icone actuelle
+        const icone = this.querySelector('i');
+        const span = this.querySelector('span');        
         console.log(url)
         fetch(url.pathname + "?", {
             headers: {
@@ -31,19 +34,23 @@ export default class Like {
             // method: 'GET'
         })
             .then(response => response.json())
-            .then(json => {
-                console.log(this)
-                const nb = json.nbLike;
-                const span = this.querySelector('span');
+            .then(response => {
+
+              // On vérifie dans quel cas on est 
+              if(icone.classList.contains('unlikedPaw')){
+                console.log("j'aime")
+                icone.classList.replace('unlikedPaw','likedPaw')
+              }else{
+                console.log("je n'aime plus")
+                 icone.classList.replace('likedPaw','unlikedPaw')
+              }
+                // console.log(this)
+                const nb = response.nbLike;
+
                 this.dataset.nb = nb;
                 span.innerHTML = nb + ' patounes'
 
-                const unLiked = this.querySelector('i.unlikedPaw');
-                console.log(unLiked)
-                const liked = this.querySelector('i.likedPaw');
-                // console.log(liked)
-                // // liked.style.color = "magenta";
-                // unLiked.style.display = "magenta";
+                // Reste à catch les exceptions
             })
       }
 
