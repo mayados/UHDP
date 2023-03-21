@@ -79,6 +79,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'destinataire', targetEntity: Message::class, orphanRemoval: true)]
     private Collection $messagesRecus;
 
+    #[ORM\ManyToMany(targetEntity: BelleHistoire::class, mappedBy: 'likes')]
+    private Collection $bellesHistoiresLiked;
+
     public function __construct()
     {
         $this->memoriaux = new ArrayCollection();
@@ -90,6 +93,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->dateInscription = new \DateTimeImmutable();
         $this->messagesEnvoyes = new ArrayCollection();
         $this->messagesRecus = new ArrayCollection();
+        $this->bellesHistoiresLiked = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -456,6 +460,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($messagesRecu->getDestinataire() === $this) {
                 $messagesRecu->setDestinataire(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BelleHistoire>
+     */
+    public function getBellesHistoiresLiked(): Collection
+    {
+        return $this->bellesHistoiresLiked;
+    }
+
+    public function addBellesHistoiresLiked(BelleHistoire $bellesHistoiresLiked): self
+    {
+        if (!$this->bellesHistoiresLiked->contains($bellesHistoiresLiked)) {
+            $this->bellesHistoiresLiked->add($bellesHistoiresLiked);
+            $bellesHistoiresLiked->addLike($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBellesHistoiresLiked(BelleHistoire $bellesHistoiresLiked): self
+    {
+        if ($this->bellesHistoiresLiked->removeElement($bellesHistoiresLiked)) {
+            $bellesHistoiresLiked->removeLike($this);
         }
 
         return $this;
