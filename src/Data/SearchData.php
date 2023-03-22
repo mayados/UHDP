@@ -15,6 +15,8 @@ class SearchData
     public $anneeDeces ;
 
     public $moisDeces;
+
+    public $jourDeces;
 }
 
 ?>

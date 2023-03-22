@@ -55,6 +55,11 @@ class SearchType extends AbstractType
                 'required' => false,
 
             ])
+            ->add('jourDeces',ChoiceType::class,[
+                'choices' => range(0,31),
+                'placeholder' => '',
+                'required' => false,
+            ])
             // ->add('submit', SubmitType::class)
         ;
     }
