@@ -116,6 +116,14 @@ class AnimalMemorialRepository extends ServiceEntityRepository
             ->setParameter('moisDeces', $searchData->moisDeces);
         }
 
+        if(!empty($searchData->jourDeces)){
+            $data = $data
+            // ->andWhere('DAY(m.dateDeces) = DAY(:deces)')
+            // ->andWhere('MONTH(m.dateDeces) = MONTH(:deces)')
+            ->andWhere('DAY(m.dateDeces) = :jourDeces')
+            ->setParameter('jourDeces', $searchData->jourDeces);
+        }
+
         $data = $data
         ->getQuery()
         ->getResult();
