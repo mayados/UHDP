@@ -62,31 +62,43 @@ export default class Filter {
       data.forEach((value, key) => {
         params.append(key, value)
       })
-      return this.loadUrl(url.pathname + '?' + params.toString())
+      // return this.loadUrl(url.pathname + '?' + params.toString())
      
-    }
-
-    // On convertit en AJAX
-    async loadUrl(url){
-      // const ajaxUrl = url + '&ajax=1'
-      const response = await fetch(url, {
+      fetch(url.pathname + '?' + params.toString(), {
         headers: {
           //  Permet de différencier une requête classique d'une requête AJAX
           'X-Requested-With': 'XMLHttpRequest'
         }
       })
-      // On vérifie si la requête a un statut situé entre 200 et 300, si c'est le cas tout se passe bien
-      if(response.status >= 200 && response.status < 300){
+      .then(async(response) =>{
         const data = await response.json()
         this.content.innerHTML = data.content
         this.pagination.innerHTML = data.pagination    
         // Pour que l'utilisateur puisse retourner directement en arrière et n'ai pas à repasser par tous les filtres
         history.replaceState({}, '', url)
+      })
+      .catch(e => alert(e));
 
-        // console.log(data)
-      }else{
-        console.error(response)
-      }
     }
+
+    // On convertit en AJAX
+    // Async renvoie une promesse avec la valeur renvoyée, sinon s'il y a une exception elle sera rompue
+    // async loadUrl(url){
+      // const ajaxUrl = url + '&ajax=1'
+      // await permet de stopper l'exécution de la fonction asynchrone pour attendre la résolution de la promesse passée
+
+      // On vérifie si la requête a un statut situé entre 200 et 300, si c'est le cas tout se passe bien
+    //   if(response.status >= 200 && response.status < 300){
+    //     const data = await response.json()
+    //     this.content.innerHTML = data.content
+    //     this.pagination.innerHTML = data.pagination    
+    //     // Pour que l'utilisateur puisse retourner directement en arrière et n'ai pas à repasser par tous les filtres
+    //     history.replaceState({}, '', url)
+
+    //     // console.log(data)
+    //   }else{
+    //     console.error(response)
+    //   }
+    // }
 
 }
