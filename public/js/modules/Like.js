@@ -54,10 +54,8 @@ export default class Like {
                 }else{
                   span.innerHTML = nb + ' patounes'
                 }
-                
-
                 // Reste à catch les exceptions
-            })
+            }).catch(e => alert(e));
       }
 
   }
