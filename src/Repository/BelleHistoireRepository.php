@@ -44,6 +44,8 @@ class BelleHistoireRepository extends ServiceEntityRepository
     public function findPaginatedHistoires($page): PaginationInterface
     {
         $data = $this->createQueryBuilder('h')
+        ->where('h.etat LIKE :state')
+        ->setParameter('state','%STATE_APPROUVED%')
         ->addOrderBy('h.dateCreation', 'DESC')
         ->getQuery()
         ->getResult();
@@ -53,28 +55,76 @@ class BelleHistoireRepository extends ServiceEntityRepository
         return $histoires;
     }
 
-//    /**
-//     * @return BelleHistoire[] Returns an array of BelleHistoire objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('b.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findMyWaitings($user)
+    {
 
-//    public function findOneBySomeField($value): ?BelleHistoire
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $parameters = [
+            'user' => $user,
+            'state' => "%STATE_WAITING%"
+        ];
+
+        return $this->createQueryBuilder('h')
+        ->select('h.id','h.slug','h.titre')
+        ->where('h.etat LIKE :state')
+        ->andWhere('h.auteur = :user')
+        ->setParameters($parameters)
+        ->orderBy('h.dateCreation', 'DESC')
+        ->getQuery()
+        ->getResult();
+    }
+
+    public function findMyDrafts($user)
+    {
+
+        $parameters = [
+            'user' => $user,
+            'state' => "%STATE_DRAFT%",
+        ];
+
+        return $this->createQueryBuilder('h')
+        ->select(['h.id','h.slug','h.titre'])
+        ->where('h.etat LIKE :state')
+        ->andWhere('h.auteur = :user')
+        ->setParameters($parameters)
+        ->addOrderBy('h.dateCreation', 'DESC')
+        ->getQuery()
+        ->getResult();
+    }
+
+    public function findMyApprouved($user)
+    {
+
+        $parameters = [
+            'user' => $user,
+            'state' => "%STATE_APPROUVED%",
+        ];
+
+        return $this->createQueryBuilder('h')
+        ->select(['h.id','h.slug','h.titre'])
+        ->where('h.etat LIKE :state')
+        ->andWhere('h.auteur = :user')
+        ->setParameters($parameters)
+        ->addOrderBy('h.dateCreation', 'DESC')
+        ->getQuery()
+        ->getResult();
+    }
+
+    public function findMyDisapprouved($user)
+    {
+
+        $parameters = [
+            'user' => $user,
+            'state' => "%STATE_DISAPPROUVED%",
+        ];
+
+        return $this->createQueryBuilder('h')
+        ->select(['h.id','h.slug','h.titre'])
+        ->where('h.etat LIKE :state')
+        ->andWhere('h.auteur = :user')
+        ->setParameters($parameters)
+        ->addOrderBy('h.dateCreation', 'DESC')
+        ->getQuery()
+        ->getResult();
+    }
+
 }
