@@ -24,6 +24,7 @@ export default class Like {
         event.preventDefault();
         const url = new URL(this.href|| window.location.href);
         // Avant la promesse, on sélectionne l'icone actuelle
+        console.log(this)
         const icone = this.querySelector('i');
         const span = this.querySelector('span');        
         console.log(url)
@@ -48,7 +49,12 @@ export default class Like {
                 const nb = response.nbLike;
 
                 this.dataset.nb = nb;
-                span.innerHTML = nb + ' patounes'
+                if(span.classList.contains('pensee')){
+                  span.innerHTML = nb + ' pensées envoyées'
+                }else{
+                  span.innerHTML = nb + ' patounes'
+                }
+                
 
                 // Reste à catch les exceptions
             })
