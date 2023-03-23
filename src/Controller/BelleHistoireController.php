@@ -31,6 +31,21 @@ class BelleHistoireController extends AbstractController
 
     }
 
+    #[Route('/bellesHistoires/publier/{slug}', name: 'publish_histoire')]
+    public function publishHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire ,Request $request,ManagerRegistry $doctrine): Response
+    {
+
+        $histoire->setEtat('STATE_WAITING');
+        $entityManager = $doctrine->getManager();
+        $entityManager->persist($histoire);
+        $entityManager->flush();      
+
+        $this->addFlash('notice', "L'histoire a été soumise à la modération. Elle sera traitée dans les plus brefs délais");
+
+        return $this->redirectToRoute('my_profile');
+
+    }
+
     #[Route('/bellesHistoires/histoire/{slug}', name: 'show_histoire')]
     public function showHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire, ManagerRegistry $doctrine, Request $request): Response
     {
@@ -63,14 +78,11 @@ class BelleHistoireController extends AbstractController
                 'histoire' => $histoire,
                 'formAddComment' => $form->createView(),
             ]);
-
         }
 
         return $this->render('belle_histoire/belleHistoire.html.twig', [
             'histoire' => $histoire,
         ]);
-
-        
     }
 
     #[Route('/bellesHistoires/add', name: 'add_histoire')]
