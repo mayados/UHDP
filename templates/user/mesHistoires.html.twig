@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes histoires{% endblock %}
+
+{% block body %}
+
+<div class="container-page">
+    <section id="infos-mon-profil">
+        <h1>Histoires en attente</h1> 
+        {% for histoire in histoiresWaiting %}
+
+            <div class="histoire-user">
+                <p>{{ histoire.titre }}</p>
+                {# <a href="{{path('show_histoire', {'id': histoire.id}) }}">Voir</a> #}
+            </div>
+        {% endfor %}
+    </section>
+
+    <section id="mes-memoriaux">
+        <h2>Brouillons</h2>
+        {% for histoire in histoiresDraft %}
+            <div class="histoire-user">
+                <p>{{ histoire.titre }}</p>
+                {# <a href="{{path('show_histoire', {'id': histoire.id}) }}">Voir</a> #}
+            </div>
+        {% endfor %}
+    </section>
+    <section id="mes-histoires">
+        <h2>Belles histoires publiées</h2>
+        {% for histoire in histoiresApprouved %}
+            <div class="histoire-user">
+                <p>{{ histoire.titre }}</p>
+                {# <a href="{{path('show_histoire', {'id': histoire.id}) }}">Voir</a> #}
+            </div>
+        {% endfor %}
+    </section>
+    <section id="mes-topics">
+        <h2>Histoires désapprouvées</h2>
+        {% for histoire in histoiresDisapprouved %}
+            <div class="histoire-user">
+                <p>{{ histoire.titre }}</p>
+                {# <a href="{{path('show_histoire', {'id': histoire.id}) }}">Voir</a> #}
+            </div>
+        {% endfor %}
+    </section>
+</div>
+{% endblock %}
