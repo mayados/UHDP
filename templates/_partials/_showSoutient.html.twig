@@ -1,0 +1,15 @@
+
+<div class="showSoutient-content">
+    {% if app.user %}
+        <a class="like-button" href="{{path('app_showSoutient', {id: memorial.id})}}">
+        {% endif %}
+        {% if app.user in memorial.soutients %}
+            <i class="fa-solid fa-hand-holding-heart likedPaw"></i>
+        {% else %}
+            <i class="fa-solid fa-hand-holding-heart unlikedPaw"></i>
+        {% endif %}
+        <span class="pensee">{{ memorial.soutients|length }} pensées envoyées</span>
+        {% if app.user %}
+        </a>
+    {% endif %}
+</div>

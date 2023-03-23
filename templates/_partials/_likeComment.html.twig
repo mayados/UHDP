@@ -1,0 +1,15 @@
+
+<div class="likeComment-content">
+    {% if app.user %}
+        <a class="like-button" href="{{path('app_likeComment', {id: commentaire.id})}}">
+        {% endif %}
+        {% if app.user in commentaire.likes %}
+            <i id="likedPaw" class="fa-solid fa-paw likedPaw"></i>
+        {% else %}
+            <i id="unlikedPaw" class="fa-solid fa-paw unlikedPaw"></i>
+        {% endif %}
+        <span>{{ commentaire.likes|length }} patounes</span>
+        {% if app.user %}
+        </a>
+    {% endif %}
+</div>

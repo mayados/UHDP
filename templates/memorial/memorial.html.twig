@@ -2,6 +2,11 @@
 
 {% block title %}{{ memorial.nom }}{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/base.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/memorial.css') }}">
+{% endblock %}
+
 {% block body %}
 
 <div class="container-page">
@@ -25,7 +30,7 @@
               {{ memorial.lieu }}   
             </p>      
         </div>
-
+        {% include "_partials/_showSoutient.html.twig" %}
         <div id="memorial-description">
             <h2>Présentation</h2>
             <p>

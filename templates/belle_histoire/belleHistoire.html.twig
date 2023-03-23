@@ -47,6 +47,7 @@
                             <a href="{{ path('remove_comment', {'slug': histoire.slug, 'id': commentaire.id}) }}">Delete</a>
                         {% endif %}
                     </footer>
+                    {% include "_partials/_likeComment.html.twig" %}
                 </article>
             {% endfor %}    
         </section>             
