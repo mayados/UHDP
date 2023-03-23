@@ -76,6 +76,31 @@ class UserController extends AbstractController
 
     }
 
+    #[Route('/mesHistoires', name: 'my_histoires')]
+    public function showMyHistoires(BelleHistoireRepository $bhr, Request $request): Response
+    {
+        if(!$this->getUser()){
+            return $this->redirectToRoute('app_login'); 
+        }
+
+        $user = $this->getUser();
+         
+        $histoiresWaiting = $bhr->findMyWaitings($user);               
+        $histoiresDraft = $bhr->findMyDrafts($user);               
+        $histoiresApprouved = $bhr->findMyApprouved($user);               
+        $histoiresDisapprouved = $bhr->findMyDisapprouved($user);               
+
+
+        return $this->render('user/mesHistoires.html.twig', [
+            'user' => $user,
+            'histoiresWaiting' => $histoiresWaiting,
+            'histoiresDraft' => $histoiresDraft,
+            'histoiresApprouved' => $histoiresApprouved,
+            'histoiresDisapprouved' => $histoiresDisapprouved
+        ]); 
+
+    }
+
 
     #[Route('/user/parametres', name: 'edit_profile')]
     public function editProfile(UploaderService $uploaderService, Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $hasher)
