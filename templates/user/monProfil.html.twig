@@ -32,25 +32,32 @@
     </section>
     <section id="mes-histoires">
         <h2>Mes belles histoires</h2>
-        {% for histoire in histoires %}
-        <div class="histoire-user">
-            <h3>{{ histoire.titre }}</h3>
-            <figure>
-                <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="">
-            </figure>
-            <a href="{{path('show_histoire', {'id': histoire.id}) }}">Voir</a>
-        </div>
-        {% endfor %}
+        {% if histoires %}
+            {% for histoire in histoires %}
+            <div class="histoire-user">
+                <h3>{{ histoire.titre }}</h3>
+                <figure>
+                    <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="">
+                </figure>
+                <a href="{{path('show_histoire', {'slug': histoire.slug}) }}">Voir</a>
+            </div>
+            {% endfor %}
+    {% else %}
+        <p>Pas de topics</p>
+    {% endif %}       
     </section>
     <section id="mes-topics">
         <h2>Mes topics</h2>
-        {% for topic in topics %}
-        <div class="topic-user">
-            <h3>{{ topic.titre }}</h3>
-            <a href="{{path('show_topic', {'id': topic.id}) }}">Voir</a>
-        </div>
-            
-        {% endfor %}
+        {% if topics %}
+            {% for topic in topics %}
+            <div class="topic-user">
+                <h3>{{ topic.titre }}</h3>
+                <a href="{{path('show_topic', {'slug': topic.slug}) }}">Voir</a>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>Pas de topics</p>
+        {% endif %}
     </section>
 </div>
 {% endblock %}
