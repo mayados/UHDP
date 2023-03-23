@@ -79,9 +79,13 @@ class AnimalMemorial
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateCreation = null;
 
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'memoriauxSoutenus')]
+    private Collection $soutients;
+
     public function __construct()
     {
         $this->photos = new ArrayCollection();
+        $this->soutients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -264,10 +268,6 @@ class AnimalMemorial
         return $this;
     }
 
-    public function __toString(){
-        return $this->nom;
-    }
-
     public function getDateCreation(): ?\DateTimeInterface
     {
         return $this->dateCreation;
@@ -279,4 +279,40 @@ class AnimalMemorial
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getSoutients(): Collection
+    {
+        return $this->soutients;
+    }
+
+    public function addSoutient(User $soutient): self
+    {
+        if (!$this->soutients->contains($soutient)) {
+            $this->soutients->add($soutient);
+        }
+
+        return $this;
+    }
+
+    public function removeSoutient(User $soutient): self
+    {
+        $this->soutients->removeElement($soutient);
+
+        return $this;
+    }
+
+    public function isSupportedByUser(User $user):  bool{
+        return $this->soutients->contains($user);
+    }
+
+    public function howManySupports():  int{
+        return count($this->soutients);
+    }
+
+    public function __toString(){
+        return $this->nom;
+    }    
 }
