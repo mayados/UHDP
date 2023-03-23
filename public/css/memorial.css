@@ -104,3 +104,16 @@
     width: 100%;
     object-fit: cover;
 }
+
+
+                                                            /**********  PAGE MEMORIAL **************/
+
+.showSoutient-content .unlikedPaw{
+    font-size: 1rem;
+    color: gray;
+}
+
+.showSoutient-content .likedPaw{
+    font-size: 1rem;
+    color: blue;
+}

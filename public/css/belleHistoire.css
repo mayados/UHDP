@@ -1,9 +1,19 @@
-.unlikedPaw{
+.like-content .unlikedPaw{
     font-size: 7rem;
     color: gray;
 }
 
-.likedPaw {
+.like-content .likedPaw {
     font-size: 7rem;
     color: blue; 
+}
+
+.likeComment-content .unlikedPaw{
+    font-size: 1rem;
+    color: gray;
+}
+
+.likeComment-content .likedPaw{
+    font-size: 1rem;
+    color: blue;
 }
