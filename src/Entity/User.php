@@ -82,6 +82,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: BelleHistoire::class, mappedBy: 'likes')]
     private Collection $bellesHistoiresLiked;
 
+    #[ORM\ManyToMany(targetEntity: CommentBelleHistoire::class, mappedBy: 'likes')]
+    private Collection $likedComments;
+
+    #[ORM\ManyToMany(targetEntity: AnimalMemorial::class, mappedBy: 'soutients')]
+    private Collection $memoriauxSoutenus;
+
     public function __construct()
     {
         $this->memoriaux = new ArrayCollection();
@@ -94,6 +100,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->messagesEnvoyes = new ArrayCollection();
         $this->messagesRecus = new ArrayCollection();
         $this->bellesHistoiresLiked = new ArrayCollection();
+        $this->likedComments = new ArrayCollection();
+        $this->memoriauxSoutenus = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -487,6 +495,60 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->bellesHistoiresLiked->removeElement($bellesHistoiresLiked)) {
             $bellesHistoiresLiked->removeLike($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CommentBelleHistoire>
+     */
+    public function getLikedComments(): Collection
+    {
+        return $this->likedComments;
+    }
+
+    public function addLikedComment(CommentBelleHistoire $likedComment): self
+    {
+        if (!$this->likedComments->contains($likedComment)) {
+            $this->likedComments->add($likedComment);
+            $likedComment->addLike($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLikedComment(CommentBelleHistoire $likedComment): self
+    {
+        if ($this->likedComments->removeElement($likedComment)) {
+            $likedComment->removeLike($this);
+        }
+
+        return $this;
+    }    
+
+    /**
+     * @return Collection<int, AnimalMemorial>
+     */
+    public function getMemoriauxSoutenus(): Collection
+    {
+        return $this->memoriauxSoutenus;
+    }
+
+    public function addMemoriauxSoutenu(AnimalMemorial $memoriauxSoutenu): self
+    {
+        if (!$this->memoriauxSoutenus->contains($memoriauxSoutenu)) {
+            $this->memoriauxSoutenus->add($memoriauxSoutenu);
+            $memoriauxSoutenu->addSoutient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMemoriauxSoutenu(AnimalMemorial $memoriauxSoutenu): self
+    {
+        if ($this->memoriauxSoutenus->removeElement($memoriauxSoutenu)) {
+            $memoriauxSoutenu->removeSoutient($this);
         }
 
         return $this;
