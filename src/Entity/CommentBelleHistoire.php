@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CommentBelleHistoireRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -29,6 +31,14 @@ class CommentBelleHistoire
     #[ORM\ManyToOne(inversedBy: 'commentaires')]
     #[ORM\JoinColumn(nullable: false)]
     private ?BelleHistoire $belleHistoire = null;
+
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'likedComments')]
+    private Collection $likes;
+
+    public function __construct()
+    {
+        $this->likes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -81,5 +91,37 @@ class CommentBelleHistoire
         $this->belleHistoire = $belleHistoire;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(User $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes->add($like);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(User $like): self
+    {
+        $this->likes->removeElement($like);
+
+        return $this;
+    }
+
+    public function isLikedByUser(User $user):  bool{
+        return $this->likes->contains($user);
+    }
+
+    public function howManyLikes():  int{
+        return count($this->likes);
     }
 }
