@@ -14,6 +14,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[UniqueEntity(fields: ['titre'], message: 'Il y a déjà une histoire avec ce titre')]
 class BelleHistoire
 {
+
+    const STATES = ['STATE_DRAFT', 'STATE_WAINTING', 'STATE_APPROUVED', 'STATE_DISAPPROUVED'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -49,6 +52,9 @@ class BelleHistoire
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'bellesHistoiresLiked')]
     private Collection $likes;
+
+    #[ORM\Column(length: 30)]
+    private ?string $etat = BelleHistoire::STATES[0];
 
     public function __construct()
     {
@@ -117,6 +123,18 @@ class BelleHistoire
     public function setAuteur(?User $auteur): self
     {
         $this->auteur = $auteur;
+
+        return $this;
+    }
+
+    public function getEtat(): ?string
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(string $etat): self
+    {
+        $this->etat = $etat;
 
         return $this;
     }
@@ -199,7 +217,4 @@ class BelleHistoire
     {
         return $this->titre;
     }
-
-
-
 }
