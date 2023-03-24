@@ -51,15 +51,21 @@ class BelleHistoire
     private ?string $slug = null;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'bellesHistoiresLiked')]
+    #[ORM\JoinTable(name: 'histoire_likes')]
     private Collection $likes;
 
     #[ORM\Column(length: 30)]
     private ?string $etat = BelleHistoire::STATES[0];
 
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'histoiresFavorites')]
+    #[ORM\JoinTable(name: 'favoris_user')]
+    private Collection $favoris;
+
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
         $this->likes = new ArrayCollection();
+        $this->favoris = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -213,8 +219,37 @@ class BelleHistoire
         return count($this->likes);
     }
 
+    /**
+     * @return Collection<int, User>
+     */
+    public function getFavoris(): Collection
+    {
+        return $this->favoris;
+    }
+
+    public function addFavori(User $favori): self
+    {
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris->add($favori);
+        }
+
+        return $this;
+    }
+
+    public function removeFavori(User $favori): self
+    {
+        $this->favoris->removeElement($favori);
+
+        return $this;
+    }
+
+    public function isFavoritedByUser(User $user):  bool{
+        return $this->favoris->contains($user);
+    }
+
     public function __toString()
     {
         return $this->titre;
     }
+
 }
