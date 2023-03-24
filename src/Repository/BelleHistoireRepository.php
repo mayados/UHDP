@@ -41,6 +41,18 @@ class BelleHistoireRepository extends ServiceEntityRepository
         }
     }
 
+    public function findLastHistoires()
+    {
+        return $this->createQueryBuilder('h')
+        ->select('h.slug','h.titre','h.photo')
+        ->where('h.etat LIKE :state')
+        ->setParameter('state','%STATE_APPROUVED%')
+        ->addOrderBy('h.dateCreation', 'DESC')
+        ->setMaxResults(4)
+        ->getQuery()
+        ->getResult();
+    }
+
     public function findPaginatedHistoires($page): PaginationInterface
     {
         $data = $this->createQueryBuilder('h')
