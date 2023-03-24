@@ -4,22 +4,25 @@
 
 {% block body %}
 <div class="container-page">
-    <h1>Conversation</h1>
-
-    {% for message in messages %}
-        {# {% if conversation.destinataire == app.user.id %}
-            <a href="{{path('app_conversation', {'id' : conversation.expediteur}) }}">{{ conversation.expediteur_pseudo }}</a>
-        {% else %}
-            <a href="{{path('app_conversation', {'id' : conversation.destinataire}) }}"">{{ conversation.destinataire_pseudo }}</a>
-        {% endif %} #}
-        <div class="message">
-            <p>{{ message.texte|raw }} ({{ message.expediteur }})</p>
-            <a href="{{path('remove_message', {'idConversation' : message.destinataire.id, 'id': message.id}) }}">Supprimer le message</a>
-        </div>
-        {# {{ dump(conversation) }} #}
-       {# {{ dump(message) }} #}
-    {% endfor %}
-
+    <h1>{{ user.pseudo }}</h1>
+    {% if messages %}
+        {% for message in messages %}
+            {# {% if conversation.destinataire == app.user.id %}
+                <a href="{{path('app_conversation', {'id' : conversation.expediteur}) }}">{{ conversation.expediteur_pseudo }}</a>
+            {% else %}
+                <a href="{{path('app_conversation', {'id' : conversation.destinataire}) }}"">{{ conversation.destinataire_pseudo }}</a>
+            {% endif %} #}
+            <div class="message">
+                <p>{{ message.texte|raw }} ({{ message.expediteur }})</p>
+                <a href="{{path('remove_message', {'idConversation' : message.destinataire.id, 'id': message.id}) }}">Supprimer le message</a>
+            </div>
+            <br>
+            {# {{ dump(conversation) }} #}
+        {# {{ dump(message) }} #}
+        {% endfor %}
+    {% else %}
+            <p>Démarrez dès à présent une conversation avec {{ user.pseudo }}</p>
+    {% endif %}
     {{ form_start(form) }}
         {{ form_row(form.texte) }}
         {# On cache le champ ici car il est setté dans le controller. On ne l'enlève pas du form car on en a besoin dans la messagerie #}
