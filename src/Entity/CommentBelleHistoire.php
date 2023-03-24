@@ -33,6 +33,7 @@ class CommentBelleHistoire
     private ?BelleHistoire $belleHistoire = null;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'likedComments')]
+    #[ORM\JoinTable(name: 'comment_likes')]
     private Collection $likes;
 
     public function __construct()
