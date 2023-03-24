@@ -35,15 +35,20 @@ class BelleHistoireController extends AbstractController
     public function publishHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire ,Request $request,ManagerRegistry $doctrine): Response
     {
 
-        $histoire->setEtat('STATE_WAITING');
-        $entityManager = $doctrine->getManager();
-        $entityManager->persist($histoire);
-        $entityManager->flush();      
+        if($this->getUser() && ($this->getUser() === $histoire->getAuteur())){
+            $histoire->setEtat('STATE_WAITING');
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($histoire);
+            $entityManager->flush();      
 
-        $this->addFlash('notice', "L'histoire a été soumise à la modération. Elle sera traitée dans les plus brefs délais");
+            $this->addFlash('notice', "L'histoire a été soumise à la modération. Elle sera traitée dans les plus brefs délais");
 
-        return $this->redirectToRoute('my_profile');
+            return $this->redirectToRoute('my_histoires');            
+        }
 
+        $this->addFlash('notice', "Vous devez être connecté pour publier une histoire");
+
+        return $this->redirectToRoute('app_home');
     }
 
     #[Route('/bellesHistoires/histoire/{slug}', name: 'show_histoire')]
@@ -96,9 +101,14 @@ class BelleHistoireController extends AbstractController
             $edit = false;
             // EDIT : seul l'auteur de l'histoire peut la modifier
             if($histoire && ($this->getUser() == $histoire->getAuteur())){
-                $edit = true;
-                $date = $histoire->getDateCreation();
-                $auteur = $histoire->getAuteur();
+                if($histoire->getEtat() === 'STATE_DRAFT' || $histoire->getEtat() === 'STATE_APPROUVED'){
+                    $edit = true;
+                    $date = $histoire->getDateCreation();
+                    $auteur = $histoire->getAuteur();                    
+                }else{
+                    $this->addFlash('warning', "Seules les histoires publiées ou à l'état de brouillon peuvent être éditées");
+                    return $this->redirectToRoute('my_histoires');
+                }
             }elseif(!$histoire && $this->getUser()->isVerified()){
                 $histoire = new BelleHistoire();
                 $date = new \DateTime();          
@@ -143,7 +153,7 @@ class BelleHistoireController extends AbstractController
 
                 ($edit)?$this->addFlash('success', "L'histoire a été modifiée avec succès"):$this->addFlash('success', "L'histoire a été créée avec succès");
 
-                return $this->redirectToRoute('app_belles_histoires');
+                return $this->redirectToRoute('my_histoires');
             }
 
             return $this->render('belle_histoire/add.html.twig', [
