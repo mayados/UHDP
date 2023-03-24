@@ -14,7 +14,7 @@ class HomeController extends AbstractController
     public function index(AnimalMemorialRepository $amr, BelleHistoireRepository $bhr): Response
     {
         $derniersMemoriaux = $amr->findBy([],['dateCreation' => 'DESC'],4);
-        $dernieresHistoires = $bhr->findBy([],['dateCreation' => 'DESC'],4);
+        $dernieresHistoires = $bhr->findLastHistoires();
 
         return $this->render('home/index.html.twig', [
             'derniersMemoriaux' => $derniersMemoriaux,
