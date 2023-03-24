@@ -35,47 +35,31 @@ class MessagerieController extends AbstractController
         return $this->redirectToRoute('app_login'); 
     }
 
-    #[Route('/messagerie/envoyes', name: 'sent_messages')]
-    public function sentMessages(ManagerRegistry $doctrine, Request $request, MessageRepository $mr): Response
+    #[Route('/messagerie/nonClasses', name: 'app_nonClasses')]
+    public function findNonClasses(ManagerRegistry $doctrine, Request $request, MessageRepository $mr): Response
     {
-
         if($this->getUser()){
-            $user = $this->getUser(); 
-            // $conversations = $mr->findConversations($user);
-            $messages = $mr->findSentMessages($user);
+            $user = $this->getUser();
 
-            return $this->render('messagerie/sentMessages.html.twig', [
-                'messages' => $messages
+            $nonClasses = $mr->findConversationsNonClassees($user);
+
+            return $this->render('messagerie/nonClasses.html.twig', [
+
+                'nonClasses' => $nonClasses,
             ]);            
         }
 
         $this->addFlash('warning', 'Il faut être connecté pour accéder à la messagerie');
         return $this->redirectToRoute('app_login'); 
-
-    }
-
-    #[Route('/messagerie/reçus', name: 'received_messages')]
-    public function receivedMessages(ManagerRegistry $doctrine, Request $request, MessageRepository $mr): Response
-    {
-
-        if($this->getUser()){
-            $user = $this->getUser(); 
-            // $conversations = $mr->findConversations($user);
-            $messages = $mr->findReceivedMessages($user);
-
-            return $this->render('messagerie/receivedMessages.html.twig', [
-                'messages' => $messages
-            ]);
-        }
-        $this->addFlash('warning', 'Il faut être connecté pour accéder à la messagerie');
-        return $this->redirectToRoute('app_login'); 
-
     }
 
     // Requirements pour spécifier que l'on attend un digit
     #[Route('/messagerie/conversation/{id}', name: 'app_conversation', requirements:['id' => '\d+'])]
     public function showConversation(ManagerRegistry $doctrine, Request $request, MessageRepository $mr, User $user, UserRepository $ur): Response
     {
+
+        // Gérer le cas de redirection quand le User essaie d'aller à une conversation avec lui-même = pour qu'il ne s'écrive pas
+
 
         if($this->getUser()){
             $user = $ur->find($user->getId());
@@ -112,7 +96,8 @@ class MessagerieController extends AbstractController
 
             return $this->render('messagerie/conversation.html.twig', [
                 'form' => $form->createView(),
-                'messages' => $messages
+                'messages' => $messages,
+                'user' => $user,
             ]);
         }
 
