@@ -39,71 +39,7 @@ class MessageRepository extends ServiceEntityRepository
         }
     }
 
-    // public function findConversations($user)
-    // {
-
-    //     // fonctionne, mais affiche des doublons car les deux requêtes ne sont pas séparées
-    //     $qb =  $this->createQueryBuilder('m')
-    //     ->join('m.destinataire','md')  
-    //     ->join('m.expediteur', 'me')      
-    //     ->select(['m','md','md.pseudo as destinataire_pseudo','me.pseudo as expediteur_pseudo','md.id as destinataire','me.id as expediteur'])
-    //     ->where('m.expediteur = 1')    
-    //     ->orWhere('m.destinataire = 1')    
-    //     ->distinct(true)
-    //     ->groupBy('destinataire')
-    //     // ->addGroupBy('expediteur')
-    //    ;
-    //    $query = $qb->getQuery();
-    //    return $query->getResult();
-    // }
-
-    public function findSentMessages($user)
-    {
-
-    //     $em = $this->getEntityManager();
-    //     $sub = $em->createQueryBuilder();
-    //     $qb = $sub;
-    //     $qb->select(['me.texte'])
-    //     ->from('App\Entity\User','u')
-    //     ->where('u.id = :user')
-    //     ->setParameter('user',$user)
-    //     ->join('u.messagesEnvoyes','me')   
-    //     ->orderBy('me.id','DESC')
-    //     ->distinct(true)        
-    //    ;
-    //    $query = $sub->getQuery();
-    //    return $query->getResult();
-
-        $qb =  $this->createQueryBuilder('m')
-        ->join('m.destinataire','md')  
-        ->join('m.expediteur', 'me')      
-        ->select(['m.texte','m.dateCreation','md.pseudo as destinataire'])
-        ->where('m.expediteur = :user')  
-        ->setParameter('user',$user)   
-        // ->distinct(true)
-        ->orderBy('m.dateCreation','DESC')
-       ;
-       $query = $qb->getQuery();
-       return $query->getResult();
-
-    }
-
-    public function findreceivedMessages($user)
-    {
-
-        $qb =  $this->createQueryBuilder('m')
-        ->join('m.destinataire','md')  
-        ->join('m.expediteur', 'me')      
-        ->select(['m.texte','me.pseudo as expediteur','m.dateCreation'])
-        ->where('m.destinataire = :user')  
-        ->setParameter('user',$user)   
-        ->orderBy('m.dateCreation','DESC')
-       ;
-       $query = $qb->getQuery();
-       return $query->getResult();
-
-    }
-
+    // Les messages d'une conversation
     public function findMessagesByConversation($me,$user)
     {
         $parameters = array(
@@ -131,10 +67,12 @@ class MessageRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('m')  
         ->join('m.expediteur', 'me')    
-        ->select('m.texte, me.pseudo as expediteur','m.dateCreation')
+        ->select('me.pseudo as expediteur','me.id as idExp')
         ->where('m.destinataire = :user')  
         ->andWhere('m.is_read = 0')    
         ->setParameter('user',$user)
+        ->orderBy('m.dateCreation','DESC')
+        ->groupBy('m.expediteur')
         ->getQuery()
         ->getResult()
        ;
@@ -154,28 +92,50 @@ class MessageRepository extends ServiceEntityRepository
 
     }
 
-//    /**
-//     * @return Message[] Returns an array of Message objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findConversationsNonClassees($user)
+    {
+        // Aller dans la collection de messages reçus où is_read = 1 ET où l'expediteur n'est pas dans la liste des destinataires
+        // Je dois sélectionner tous mes destinataires
+        // Je trouve ceux qui ne sont pas dans cette liste ET où je suis destinataire ET is_read = 1
+        // return $this->createQueryBuilder('m')  
+        // ->join('m.expediteur', 'me')    
+        // ->where('m.destinataire = :user')  
+        // ->andWhere('m.is_read = 1')    
+        // ->setParameter('user',$user)
+        // ->getQuery()
+        // ->getResult()
+    //    ;
 
-//    public function findOneBySomeField($value): ?Message
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+
+    $em = $this->getEntityManager();
+    $sub = $em->createQueryBuilder();
+
+    //Requête en deux temps
+
+    $qb = $sub;
+    $qb->select('md.id')
+    ->from('App\Entity\Message', 'm')
+    ->leftJoin('m.destinataire', 'md')
+    ->where('m.expediteur = :user')
+    ->andWhere('m.is_read = 1');
+    // ->setParameter('user',$user);
+    
+    $sub = $em->createQueryBuilder();
+    /* Sélectionner tous les users qui ne sont pas (NOT IN) le résultat précédent
+    => On obtient les stagiaires non inscrits pour une session définie */
+    $sub->select('u.pseudo','u.id')
+    // On donne l'allias st à l'entité Stagiaire
+    ->from('App\Entity\User', 'u')
+    ->leftJoin('u.messagesEnvoyes', 'me')
+    // Où expr() est un expressionBuilder (sert à utiliser les conditions comme notIn)  les users dont l'id n'est pas dans la requête précédente 
+    ->where($sub->expr()->notIn('u.id', $qb->getDQL()))
+    ->andWhere('me.destinataire = :user')
+    ->setParameter('user',$user);
+    // ->orderBy('u.pseudo');
+
+    $query = $sub->getQuery();
+    return $query->getResult();
+
+    }
+
 }
