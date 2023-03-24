@@ -88,6 +88,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: AnimalMemorial::class, mappedBy: 'soutients')]
     private Collection $memoriauxSoutenus;
 
+    #[ORM\ManyToMany(targetEntity: BelleHistoire::class, mappedBy: 'favoris')]
+    private Collection $histoiresFavorites;
+
     public function __construct()
     {
         $this->memoriaux = new ArrayCollection();
@@ -102,6 +105,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->bellesHistoiresLiked = new ArrayCollection();
         $this->likedComments = new ArrayCollection();
         $this->memoriauxSoutenus = new ArrayCollection();
+        $this->histoiresFavorites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -549,6 +553,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->memoriauxSoutenus->removeElement($memoriauxSoutenu)) {
             $memoriauxSoutenu->removeSoutient($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BelleHistoire>
+     */
+    public function getHistoiresFavorites(): Collection
+    {
+        return $this->histoiresFavorites;
+    }
+
+    public function addHistoiresFavorite(BelleHistoire $histoiresFavorite): self
+    {
+        if (!$this->histoiresFavorites->contains($histoiresFavorite)) {
+            $this->histoiresFavorites->add($histoiresFavorite);
+            $histoiresFavorite->addFavori($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistoiresFavorite(BelleHistoire $histoiresFavorite): self
+    {
+        if ($this->histoiresFavorites->removeElement($histoiresFavorite)) {
+            $histoiresFavorite->removeFavori($this);
         }
 
         return $this;
