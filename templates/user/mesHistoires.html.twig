@@ -21,8 +21,10 @@
         {% for histoire in histoiresDraft %}
             <div class="histoire-user">
                 <p>{{ histoire.titre }}</p>
-                {# <a href="{{path('show_histoire', {'id': histoire.id}) }}">Voir</a> #}
+                <a href="{{path('edit_histoire', {'slug': histoire.slug}) }}">Editer</a>                
+                <a href="{{path('publish_histoire', {'slug': histoire.slug}) }}">Publier</a>
             </div>
+            <br>
         {% endfor %}
     </section>
     <section id="mes-histoires">
@@ -30,7 +32,8 @@
         {% for histoire in histoiresApprouved %}
             <div class="histoire-user">
                 <p>{{ histoire.titre }}</p>
-                {# <a href="{{path('show_histoire', {'id': histoire.id}) }}">Voir</a> #}
+                <a href="{{path('show_histoire', {'slug': histoire.slug}) }}">Voir</a>
+                <a href="{{path('edit_histoire', {'slug': histoire.slug}) }}">Editer</a> 
             </div>
         {% endfor %}
     </section>
