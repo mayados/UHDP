@@ -17,3 +17,12 @@
     font-size: 1rem;
     color: blue;
 }
+
+#favoris-content .likedStar{
+    font-size: 1rem;
+    color: yellow;
+}
+
+#favoris-content .unlikedStar{
+    font-size: 1rem;
+}

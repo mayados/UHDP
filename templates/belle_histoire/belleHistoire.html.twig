@@ -11,13 +11,14 @@
 
 <div class="container-page">
     <article id="histoire">
+        {% include "_partials/_favorisHistoire.html.twig" %}
         <header>
             <h1>{{histoire.titre}}</h1>
             {% if histoire.photo == null %}
                 <p>Pas de photo</p>
             {% else %}
             <figure>
-                {# <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">             #}
+                <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">            
             </figure>
             {% endif %}
             <p>Date de création {{ histoire.dateCreation | date('d-m-Y') }}</p>

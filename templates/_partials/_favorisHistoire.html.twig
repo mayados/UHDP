@@ -1,0 +1,14 @@
+
+<div id="favoris-content">
+    {% if app.user %}
+        <a class="favoris-button" href="{{path('app_favorisHistoire', {id: histoire.id})}}">
+    {% endif %}
+        {% if app.user in histoire.favoris %}
+            <i class="fa-solid fa-star likedStar"></i>
+        {% else %}
+            <i class="fa-regular fa-star unlikedStar"></i>
+        {% endif %}
+    {% if app.user %}
+        </a>
+    {% endif %}
+</div>
