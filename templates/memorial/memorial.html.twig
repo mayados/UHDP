@@ -62,7 +62,7 @@
         <div id="container-photos">
             {% if memorial.auteur != null %}
                 {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-                    <h4>Ajouter une photo à la galerie</h4>
+                    <h3>Ajouter une photo à la galerie</h3>
                     {{ form_start(formAddPhotoGalerie) }}    
                     {{ form_end(formAddPhotoGalerie) }}
                 {% endif %}
@@ -80,6 +80,28 @@
                     {% endif %}
                 </div>
             {% endfor %}            
+        </div>
+    </section>
+
+    <section id="condoleances">
+        <h2>Condoléances</h2>
+        {% if app.user %}
+            <h3>Ajouter un message de condoléances</h3>
+            {{ form_start(formCondoleance) }}    
+            {{ form_end(formCondoleance) }}
+        {% endif %}
+        <div id="container-condoleances">
+            <div class="condoleance-memorial">
+                <p>L'équipe d'Une Histoire de Pattes se joint à vous dans vos peines et vous adresse de sincères condoléances.</p>
+            </div>
+            {% if memorial.condoleances| length > 0 %}
+                {% for condoleance in memorial.condoleances %}
+                    <div class="condoleance-memorial">
+                        <p>{{ condoleance.texte| raw }}</p>
+                        <p>({{ condoleance.auteur }})</p>
+                    </div>
+                {% endfor %}   
+            {% endif %}
         </div>
     </section>
 </div>
