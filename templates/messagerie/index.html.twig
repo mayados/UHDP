@@ -7,9 +7,9 @@
     <h1>Messagerie</h1>
 
     <a href="{{ path('app_messagerie') }}">Accueil messagerie</a>
-    <a href="#">Correspondants</a>
+    <a href="{{ path('app_correspondants') }}">Correspondants</a>
     {# Dans nos classés, nous auront les personnes dont nous avons lus les messages mais n'avons pas répondu = ils ne sont pas dans notre collection de destinataires #}
-    <a href="#">Non classés</a>
+    <a href="{{ path('app_nonClasses') }}">Non classés</a>
  
     {% if messagesNonLus %}
         <h2>Messages non lus de {{ messagesNonLus| length }} personnes:</h2>
