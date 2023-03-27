@@ -31,6 +31,9 @@ class Message
     #[ORM\JoinColumn(nullable: true, onDelete:"SET NULL")]
     private ?User $destinataire = null;
 
+    #[ORM\Column]
+    private ?bool $isSignaled = false;
+
     public function __construct()
     {
         $this->dateCreation = new \DateTimeImmutable();
@@ -103,5 +106,17 @@ class Message
 
     public function __toString(){
         return $this->texte;
+    }
+
+    public function isIsSignaled(): ?bool
+    {
+        return $this->isSignaled;
+    }
+
+    public function setIsSignaled(bool $isSignaled): self
+    {
+        $this->isSignaled = $isSignaled;
+
+        return $this;
     }
 }
