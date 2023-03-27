@@ -2,15 +2,14 @@
 
 {% block title %}Accueil{% endblock %}
 
-{% block stylesheets %}
+{# {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/base.css') }}">
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
-{% endblock %}
+{% endblock %} #}
 
 {% block body %}
 
 <div class="container-page">
-    {# <div id="decoration"></div> #}
     <section id="bienvenue">
     {% if app.user and app.user.roles.0 == "ROLE_USER" %}
         <h1>Contents de vous revoir {{ app.user.pseudo }} !</h1>
