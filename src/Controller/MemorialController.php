@@ -6,13 +6,14 @@ use App\Entity\Photo;
 use App\Data\SearchData;
 use App\Form\SearchType;
 use App\Form\MemorialType;
+use App\Entity\Condoleance;
+use App\Form\CondoleanceType;
 use App\Entity\AnimalMemorial;
 use App\Form\GaleriePhotoType;
 use App\Entity\CategorieAnimal;
-use App\Entity\Condoleance;
-use App\Form\CondoleanceType;
 use App\Service\UploaderService;
 use App\Repository\PhotoRepository;
+use App\Repository\CondoleanceRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Repository\AnimalMemorialRepository;
@@ -21,13 +22,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\HttpClient\GEOHttpClient as GEOHttpClient;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class MemorialController extends AbstractController
 {
@@ -291,6 +292,29 @@ class MemorialController extends AbstractController
         }
 
         return $this->redirectToRoute('app_login'); 
+
+    }
+
+    #[Route('/condoleance/remove/{idMemorial}/{id}', name: 'remove_condoleance')]
+    #[ParamConverter("memorial", options: ["mapping" => ["idMemorial" => "id"]])]
+    #[ParamConverter("condoleance", options: ["mapping" => ["id" => "id"]])]
+    public function removeCondoleance(CondoleanceRepository $cr, Condoleance $condoleance, AnimalMemorial $memorial, AnimalMemorialRepository $amr)
+    {
+        $condoleance = $cr->find($condoleance->getId());
+
+        if($this->getUser() && ( $this->getUser() == $condoleance->getAuteur())){
+            $cr->remove($condoleance, $flush = true);
+            $memorial = $amr->find($memorial->getId());
+
+            $this->addFlash('notice', "La condoléance a été supprimée");
+
+            return $this->redirectToRoute(
+                'show_memorial',
+                ['id' => $memorial->getId()]
+            );            
+        }
+
+        return $this->redirectToRoute('app_login');
 
     }
 
