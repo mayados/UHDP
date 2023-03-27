@@ -91,6 +91,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: BelleHistoire::class, mappedBy: 'favoris')]
     private Collection $histoiresFavorites;
 
+    #[ORM\OneToMany(mappedBy: 'auteur', targetEntity: Condoleance::class)]
+    private Collection $condoleances;
+
     public function __construct()
     {
         $this->memoriaux = new ArrayCollection();
@@ -106,6 +109,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->likedComments = new ArrayCollection();
         $this->memoriauxSoutenus = new ArrayCollection();
         $this->histoiresFavorites = new ArrayCollection();
+        $this->condoleances = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -585,8 +589,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @return Collection<int, Condoleance>
+     */
+    public function getCondoleances(): Collection
+    {
+        return $this->condoleances;
+    }
+
+    public function addCondoleance(Condoleance $condoleance): self
+    {
+        if (!$this->condoleances->contains($condoleance)) {
+            $this->condoleances->add($condoleance);
+            $condoleance->setAuteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCondoleance(Condoleance $condoleance): self
+    {
+        if ($this->condoleances->removeElement($condoleance)) {
+            // set the owning side to null (unless already changed)
+            if ($condoleance->getAuteur() === $this) {
+                $condoleance->setAuteur(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function __toString(){
         return $this->pseudo;
-    }
+    }   
 
 }

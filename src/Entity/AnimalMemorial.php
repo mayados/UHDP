@@ -82,10 +82,14 @@ class AnimalMemorial
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'memoriauxSoutenus')]
     private Collection $soutients;
 
+    #[ORM\OneToMany(mappedBy: 'memorial', targetEntity: Condoleance::class)]
+    private Collection $condoleances;
+
     public function __construct()
     {
         $this->photos = new ArrayCollection();
         $this->soutients = new ArrayCollection();
+        $this->condoleances = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -312,7 +316,38 @@ class AnimalMemorial
         return count($this->soutients);
     }
 
+    /**
+     * @return Collection<int, Condoleance>
+     */
+    public function getCondoleances(): Collection
+    {
+        return $this->condoleances;
+    }
+
+    public function addCondoleance(Condoleance $condoleance): self
+    {
+        if (!$this->condoleances->contains($condoleance)) {
+            $this->condoleances->add($condoleance);
+            $condoleance->setMemorial($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCondoleance(Condoleance $condoleance): self
+    {
+        if ($this->condoleances->removeElement($condoleance)) {
+            // set the owning side to null (unless already changed)
+            if ($condoleance->getMemorial() === $this) {
+                $condoleance->setMemorial(null);
+            }
+        }
+
+        return $this;
+    }    
+
     public function __toString(){
         return $this->nom;
-    }    
+    }
+
 }
