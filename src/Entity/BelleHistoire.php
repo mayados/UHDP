@@ -61,6 +61,10 @@ class BelleHistoire
     #[ORM\JoinTable(name: 'favoris_user')]
     private Collection $favoris;
 
+    #[ORM\ManyToOne(inversedBy: 'belleHistoires')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?GenreHistoire $genre = null;
+
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
@@ -245,6 +249,18 @@ class BelleHistoire
 
     public function isFavoritedByUser(User $user):  bool{
         return $this->favoris->contains($user);
+    }
+
+    public function getGenre(): ?GenreHistoire
+    {
+        return $this->genre;
+    }
+
+    public function setGenre(?GenreHistoire $genre): self
+    {
+        $this->genre = $genre;
+
+        return $this;
     }
 
     public function __toString()
