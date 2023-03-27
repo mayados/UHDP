@@ -1,5 +1,5 @@
 h1{
-    padding-top: 6vh;
+    /* padding: 6vh 0 50px 0; */
     text-align: center;
     font-size: var(--h1);
 }
@@ -12,13 +12,14 @@ h2{
 #bienvenue{
     height: 95vh;
     width: 100vw;
-    background-image: linear-gradient(to right top, #27fff5, #80fff6, #b0fff8, #d7fffa, #f9fffe);
+    background-color: var(--couleurPrincipale);
     border-bottom-left-radius: 50%;
     border-bottom-right-radius: 1%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 50px;
+    /* gap: 50px; */
+    border: 2px solid red;
 }
 
 #uhdp-description{
