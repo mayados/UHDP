@@ -9,6 +9,8 @@ use App\Form\MemorialType;
 use App\Entity\AnimalMemorial;
 use App\Form\GaleriePhotoType;
 use App\Entity\CategorieAnimal;
+use App\Entity\Condoleance;
+use App\Form\CondoleanceType;
 use App\Service\UploaderService;
 use App\Repository\PhotoRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -113,32 +115,20 @@ class MemorialController extends AbstractController
     public function showMemorial(ManagerRegistry $doctrine, AnimalMemorialRepository $amr, UploaderService $uploaderService, AnimalMemorial $memorial, Request $request, SluggerInterface $slugger): Response
     {
         $memorial = $amr->find($memorial->getId());
-            $galerie = new Photo();
-            $form = $this->createForm(GaleriePhotoType::class, $galerie);        
-        // On vérifie que le user courant est le créateur du mémorial, sinon on ne peut pas accéder au formulaire d'ajout de photo
-        if($this->getUser() && $this->getUser()== $memorial->getAuteur()){
-            // On souhaite insérer le formulaire d'ajout d'image à la galerie photo directement dans la page du mémorial
-            // Dans un premier temps on persist dans la bdd de Photos le nom des fichiers
-            // Puis on add chaque image grâce à la méthode de l'entity AnimalMemorial (qui contient un collectionType)
+        $galerie = new Photo();
+        $form = $this->createForm(GaleriePhotoType::class, $galerie);    
+        $condoleance = new Condoleance();
+        $condoleanceForm = $this->createForm(CondoleanceType::class,$condoleance);
 
-            $form->handleRequest($request); 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $galerie = $form->getData();  
-                $galerie->setMemorial($memorial);
-                $images = $form->get('images')->getData();
-
-                foreach($images as $image){
-                    $folder = "imgGalerie";
-                    $fichier = $uploaderService->add($image,$folder);
-                    $photo= new Photo();
-                    $photo->setPhoto($fichier);
-                    $memorial->addPhoto($photo);  
-                    $entityManager = $doctrine->getManager();
-                    $entityManager->persist($photo);
-                    $entityManager->flush();                                  
-                }
-
-                $this->addFlash('success', 'La galerie a été alimentée avec succès');
+        if($this->getUser()){
+            $condoleanceForm->handleRequest($request); 
+            if ($condoleanceForm->isSubmitted() && $condoleanceForm->isValid()) {
+                $condoleance = $condoleanceForm->getData();
+                $condoleance->setMemorial($memorial);
+                $condoleance->setAuteur($this->getUser());
+                $entityManager = $doctrine->getManager();
+                $entityManager->persist($condoleance);
+                $entityManager->flush();   
 
                 return $this->redirectToRoute(
                     'show_memorial',
@@ -146,15 +136,48 @@ class MemorialController extends AbstractController
                 );
             }
 
-            return $this->render('memorial/memorial.html.twig', [
-                'memorial' => $memorial,
-                'formAddPhotoGalerie' => $form->createView(),
-            ]);            
-        }
+            // On vérifie que le user courant est le créateur du mémorial, sinon on ne peut pas accéder au formulaire d'ajout de photo
+            if($this->getUser()== $memorial->getAuteur()){
+                // On souhaite insérer le formulaire d'ajout d'image à la galerie photo directement dans la page du mémorial
+                // Dans un premier temps on persist dans la bdd de Photos le nom des fichiers
+                // Puis on add chaque image grâce à la méthode de l'entity AnimalMemorial (qui contient un collectionType)
 
+                $form->handleRequest($request); 
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $galerie = $form->getData();  
+                    $galerie->setMemorial($memorial);
+                    $images = $form->get('images')->getData();
+
+                    foreach($images as $image){
+                        $folder = "imgGalerie";
+                        $fichier = $uploaderService->add($image,$folder);
+                        $photo= new Photo();
+                        $photo->setPhoto($fichier);
+                        $memorial->addPhoto($photo);  
+                        $entityManager = $doctrine->getManager();
+                        $entityManager->persist($photo);
+                        $entityManager->flush();                                  
+                    }
+
+                    $this->addFlash('success', 'La galerie a été alimentée avec succès');
+
+                    return $this->redirectToRoute(
+                        'show_memorial',
+                        ['id' => $memorial->getId()]
+                    );
+                }
+
+                return $this->render('memorial/memorial.html.twig', [
+                    'memorial' => $memorial,
+                    'formAddPhotoGalerie' => $form->createView(),
+                    'formCondoleance' => $condoleanceForm->createView(),
+                ]);            
+            }
+        }
         return $this->render('memorial/memorial.html.twig',[
                 'memorial' => $memorial,
                 'formAddPhotoGalerie' => $form->createView(),
+                'formCondoleance' => $condoleanceForm->createView(),
         ]);
 
     }
