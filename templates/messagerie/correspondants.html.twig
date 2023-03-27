@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Correspondants{% endblock %}
+
+{% block body %}
+<div class="container-page">
+    <h1>Correspondants</h1>
+
+    <a href="{{ path('app_messagerie') }}">Accueil messagerie</a>
+    <a href="{{ path('app_correspondants') }}">Correspondants</a>
+    {# Dans nos classés, nous auront les personnes dont nous avons lus les messages mais n'avons pas répondu = ils ne sont pas dans notre collection de destinataires #}
+    <a href="{{ path('app_nonClasses') }}">Non classés</a>
+
+    {% for correspondant in correspondants %}
+    <div>
+        <br>
+        <p>{{ correspondant.pseudo }}</p>
+    </div>
+        
+    {% endfor %}
+
+</div>
+{% endblock %}
