@@ -3,8 +3,10 @@
 namespace App\Form;
 
 use App\Entity\BelleHistoire;
+use App\Entity\GenreHistoire;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -48,6 +50,13 @@ class HistoireType extends AbstractType
                         'maxSize' => '300k',
                         'maxSizeMessage' => "Image trop lourde, veuillez en sélectionner une autre.",
                     ])
+                ]
+            ])
+            ->add('genre', EntityType::class, [
+                'label' => 'Genre',
+                'class' => GenreHistoire::class,
+                'constraints' => [
+                    new Assert\NotNull(['message' => 'Le genre ne peut pas être nul']),
                 ]
             ])
             ->add('submit', SubmitType::class)
