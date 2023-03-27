@@ -116,15 +116,12 @@ class MessageRepository extends ServiceEntityRepository
     $qb->select('md.id')
     ->from('App\Entity\Message', 'm')
     ->leftJoin('m.destinataire', 'md')
-    ->where('m.expediteur = :user')
-    ->andWhere('m.is_read = 1');
+    ->where('m.expediteur = :user');
     // ->setParameter('user',$user);
     
     $sub = $em->createQueryBuilder();
-    /* Sélectionner tous les users qui ne sont pas (NOT IN) le résultat précédent
-    => On obtient les stagiaires non inscrits pour une session définie */
+    /* Sélectionner tous les users qui ne sont pas (NOT IN) le résultat précédent*/
     $sub->select('u.pseudo','u.id')
-    // On donne l'allias st à l'entité Stagiaire
     ->from('App\Entity\User', 'u')
     ->leftJoin('u.messagesEnvoyes', 'me')
     // Où expr() est un expressionBuilder (sert à utiliser les conditions comme notIn)  les users dont l'id n'est pas dans la requête précédente 
@@ -136,6 +133,20 @@ class MessageRepository extends ServiceEntityRepository
     $query = $sub->getQuery();
     return $query->getResult();
 
+    }
+
+    public function findCorrespondants($user)
+    {
+        return $this->createQueryBuilder('m')
+            ->leftJoin('m.destinataire','md')
+            ->select('md.pseudo as pseudo','md.id')
+            ->where('m.expediteur = :user')
+            ->setParameter('user',$user)
+            ->groupBy('pseudo')
+            ->orderBy('m.dateCreation','DESC')
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
 }
