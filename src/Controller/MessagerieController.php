@@ -53,6 +53,41 @@ class MessagerieController extends AbstractController
         return $this->redirectToRoute('app_login'); 
     }
 
+    #[Route('/messagerie/correspondants', name: 'app_correspondants')]
+    public function findCorrespondants(ManagerRegistry $doctrine, Request $request, MessageRepository $mr): Response
+    {
+        if($this->getUser()){
+            $user = $this->getUser();
+
+            $correspondants = $mr->findCorrespondants($user);
+
+            return $this->render('messagerie/correspondants.html.twig', [
+
+                'correspondants' => $correspondants,
+            ]);            
+        }
+
+        $this->addFlash('warning', 'Il faut être connecté pour accéder à la messagerie');
+        return $this->redirectToRoute('app_login'); 
+    }
+
+    #[Route('/messagerie/signal/{id}', name: 'message_signal', requirements:['id' => '\d+'])]
+    public function signalMessage(ManagerRegistry $doctrine, Request $request, MessageRepository $mr, Message $message): Response
+    {
+        // Il faudra faire en sorte que l'utilisateur ne puisse pas signaler son propre message
+
+        $message->setIsSignaled(true);
+        $entityManager = $doctrine->getManager();
+        $entityManager->persist($message);
+        $entityManager->flush();   
+
+        $expediteur =$message->getExpediteur()->getId();
+
+        $this->addFlash('success', 'Le message a été signalé');
+        return $this->redirectToRoute('app_conversation',
+        ['id' => $expediteur]); 
+    }
+
     // Requirements pour spécifier que l'on attend un digit
     #[Route('/messagerie/conversation/{id}', name: 'app_conversation', requirements:['id' => '\d+'])]
     public function showConversation(ManagerRegistry $doctrine, Request $request, MessageRepository $mr, User $user, UserRepository $ur): Response
