@@ -17,4 +17,21 @@ document.addEventListener('DOMContentLoaded', () => {
     if(favorisElements){
         new Favoris(favorisElements);
     }
+
+    const recherche = document.querySelector('.recherche');
+    const searchLink = document.querySelector('.search-link');
+    const close = document.querySelector('.close');
+
+
+    searchLink.addEventListener('click', e =>{
+        e.preventDefault();
+        recherche.classList.add('visible');
+        searchLink.style.display='none'
+    })
+
+    close.addEventListener('click', e =>{
+        e.preventDefault();
+        recherche.classList.remove('visible');
+        searchLink.style.display='inline-block'
+    })
 })
