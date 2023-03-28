@@ -2,10 +2,10 @@
 
 {% block title %}Mémoriaux{% endblock %}
 
-{% block stylesheets %}
+{# {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/base.css') }}">
     <link rel="stylesheet" href="{{ asset('css/memorial.css') }}">
-{% endblock %}
+{% endblock %} #}
 
 {% block body %}
 
@@ -20,7 +20,7 @@
             {% endfor %}
         </ul>        
     </section>
-    <section class="creation">
+    <section class="interraction">
         {% if app.user and app.user.isVerified %}
             <a href="{{ path('add_memorial') }}">Créer un mémorial</a>
         {% elseif app.user and not app.user.isVerified %}
@@ -28,6 +28,7 @@
         {% else %}
             <p>Veuillez vous inscrire ou vous connecter pour pouvoir créer un mémorial</p>
         {% endif %}
+            <a class="search-link" href="#">Rechercher un mémorial <i class="fa-solid fa-magnifying-glass"></i></a>
     </section>
     <div class="recherche">
         {% include '_partials/_filter.html.twig' with {formSearch:formSearch} only %}
