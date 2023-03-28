@@ -129,6 +129,126 @@ nav{
                                         /********************  HOME ********************/
 
 
+#bienvenue{
+    min-height: 70vh;
+    width: 100vw;
+    background-image: url('../img/beige_shape.png');
+    background-repeat: no-repeat;
+    background-size: 100% 98%;
+    padding-bottom: 5%;
+}
+
+ /* #bienvenue #bienvenue-sides{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 2.5% 0 2.5%;
+    gap: 20px;
+}
+
+#uhdp-description{
+    flex: 1.3;
+    min-height: 500px;
+    text-align: justify;
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+    padding: 20px 0 20px 20px;
+}  */
+
+#bienvenue #carousel{
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+#bienvenue .carousel-elements{
+    display: flex;
+    /* justify-content: center; */
+}
+
+#bienvenue #carousel .element{
+    position: relative;
+    flex: 1 0 100%;
+    display: flex;
+    align-items: center;
+}
+
+#bienvenue #carousel .element .over-carousel{
+    flex-direction: column;
+    align-items: center;
+}
+
+#bienvenue #carousel .element .over-carousel h1{
+    text-align: inherit;
+    padding: 0;
+    font-size: 4rem;      
+}
+
+#bienvenue #carousel .element .over-carousel p{
+    font-size: 3rem;
+}
+
+#bienvenue #carousel .element .over-carousel,
+#bienvenue #carousel .element figure{
+    display: flex;
+    justify-content: center;  
+    flex: 1; 
+    /* max-height: 70vh;  */
+}
+
+#bienvenue #carousel .element figure{
+    /* border: 1px solid green; */
+}
+
+#bienvenue #carousel figure img{
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+    
+} 
+
+/* #bienvenue .over-carousel{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+} */
+
+#nav-droite,
+#nav-gauche{
+    position: absolute;
+    top: 50%;
+    /* transform: translateY(-50%); */
+    font-size: 3rem;
+}
+
+#nav-droite{
+    right: 20px;
+    rotate: 90deg;    
+}
+
+#nav-gauche{
+    left: 20px;
+    rotate: -90deg;
+}
+
+#nav-droite:hover,
+#nav-gauche:hover{
+    cursor: pointer;
+}
+
+/* #bienvenue-sides figure{
+    height: 500px;
+    flex: 1;
+}
+
+#bienvenue-sides figure img{
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+} */
+
 .title-lines{
     position: relative;
     width: 600px;
@@ -157,48 +277,6 @@ nav{
     position: absolute;
     top: 50%;
     right: 0;
-}
-
-
-
-#bienvenue{
-    min-height: 70vh;
-    width: 100vw;
-    background-image: url('../img/beige_shape.png');
-    background-repeat: no-repeat;
-    background-size: 100% 98%;
-    padding-bottom: 5%;
-}
-
-#bienvenue #bienvenue-sides{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* flex-wrap: wrap; */
-    margin: 0 2.5% 0 2.5%;
-    gap: 20px;
-}
-
-#uhdp-description{
-    flex: 1.3;
-    min-height: 500px;
-    /* width: 50%; */
-    text-align: justify;
-    display: flex;
-    align-items: center;
-    font-size: 1.4rem;
-    padding: 20px 0 20px 20px;
-}
-
-#bienvenue-sides figure{
-    height: 500px;
-    flex: 1;
-}
-
-#bienvenue-sides figure img{
-    height: 100%;
-    width: 100%;
-    object-fit: contain;
 }
 
 #derniers-memoriaux,
