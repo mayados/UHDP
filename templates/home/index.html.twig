@@ -99,14 +99,36 @@
         <h2 class="title-lines">Dernières belles histoires</h2>
             <div id="container-histoires-recentes">
                 {% for histoire in dernieresHistoires %}
-                    <div class="histoire-recente">
-                        <a href="{{path('show_histoire', {'slug': histoire.slug}) }}">
+                    <article class="histoire-recente">
+                        {# <a href="{{path('show_histoire', {'slug': histoire.slug}) }}">
                             <figure>
                                 <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">                
                             </figure>
                             <p>{{ histoire.titre }}</p> 
-                        </a>
-                    </div>
+                        </a> #}
+                        <div class="hr-media">
+                            <figure>
+                                <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">                
+                            </figure>
+                        </div>
+                        <div class="hr-content">
+                            <div class="hr-infos">
+                                <p>genre</p>
+                                <p>Date de création</p>
+                                <p>Nb j'aime</p>
+                            </div>
+                            <div class="hr-texte">
+                                <h3>{{ histoire.titre }}</h3>
+                                {# <p>Description histoire</p> #}
+                            </div>
+                            <div class="hr-auteur">
+                                <figure>
+                                    <img src="" alt="">
+                                </figure>
+                                <p>auteur histoire</p>
+                            </div>
+                        </div>
+                    </article>
                 {% endfor %}                
             </div>
     </section>
