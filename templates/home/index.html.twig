@@ -19,16 +19,22 @@
         <h1>Bienvenue sur Une histoire de pattes !</h1>     
     {% endif %}
 
+    <div id="bienvenue-sides">
         <article id="uhdp-description">
             <p>Une Histoire De Pattes est Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sapien pellentesque habitant morbi tristique senectus et netus et. Amet consectetur adipiscing elit duis tristique sollicitudin. Pulvinar proin gravida hendrerit lectus a. Venenatis tellus in metus vulputate eu scelerisque felis imperdiet. Placerat duis ultricies lacus sed. Pharetra massa massa ultricies mi quis hendrerit dolor magna. Tortor id aliquet lectus proin nibh nisl condimentum id venenatis. Vitae elementum curabitur vitae nunc sed velit. Id aliquet risus feugiat in ante. Nisl condimentum id venenatis a condimentum vitae sapien. Enim praesent elementum facilisis leo. Neque volutpat ac tincidunt vitae semper quis lectus. Orci nulla pellentesque dignissim enim sit. Cras tincidunt lobortis feugiat vivamus. Elementum tempus egestas sed sed risus pretium quam vulputate dignissim. Posuere morbi leo urna molestie at elementum eu facilisis sed. Urna cursus eget nunc scelerisque viverra mauris in aliquam.</p>
-        </article>
+        </article>  
+        <figure>
+            <img src="{{ asset('img/dog-bg.png') }}" alt="">
+        </figure>      
+    </div>
+
         {% if app.user and not app.user.isVerified %}
-            <p>N'oubliez pas de cliquer sur le lien envoyé sur votre adresse mail pour accéder à toutes les fonctionnalités !</p>
+            <span>N'oubliez pas de cliquer sur le lien envoyé sur votre adresse mail pour accéder à toutes les fonctionnalités !</span>
         {% endif %}        
     </section>
 
     <section id="derniers-memoriaux">
-        <h2>Derniers mémoriaux</h2>
+        <h2 class="title-lines">Derniers mémoriaux</h2>
         <div id="container-memoriaux-recents">
             {% for memorial in derniersMemoriaux %}
                 <div class="memorial-recent">
@@ -54,7 +60,7 @@
         <img id="pissenlit" src="{{ asset('img/pissenlit.png') }}" alt="">
     </section>   
     <section id="dernieres-belles-histoires">
-        <h2>Dernières belles histoires</h2>
+        <h2 class="title-lines">Dernières belles histoires</h2>
             <div id="container-histoires-recentes">
                 {% for histoire in dernieresHistoires %}
                     <div class="histoire-recente">
