@@ -11,12 +11,11 @@
     --nav: #FEFEFE;
     --navLink: #4B4B4B;
     --blanc: white;
-    --couleurPrincipale: white;
+    --couleurPrincipale: #71E2E2;
     --h1: 1.7rem;
     --h2: 1.4rem;
     --figcaption: 1.2rem;
 }
-
 
 li{
     list-style-type: none;
@@ -27,12 +26,44 @@ a{
     color: black;
 }
 
+h1{
+    padding-top: 6vh;
+    text-align: center;
+    font-size: var(--h1);
+    padding-bottom: 50px;
+}
+
+/* h2{
+    font-size: var(--h2);
+    text-align: center;
+} */
+
 .container-page{
     padding-top: 5vh;
     min-height: 100vh;
     position: relative;
     /* background-color: #F3F3F3; */
     background-color: #F6FDFF;
+}
+
+.pagination{
+    text-align: center;
+    padding: 50px 0;
+}
+
+.pagination .current,
+.pagination span a{
+    padding: 10px;
+    margin: 0 2px;
+
+}
+
+.pagination .current{
+    background-color: beige;
+}
+
+.pagination span a{
+    background-color: var(--couleurPrincipale);    
 }
 
                                     /*************  HEADER ET MENU DE NAVIGATION  ************/
@@ -96,22 +127,14 @@ nav{
 
 
                                         /********************  HOME ********************/
-h1{
-    padding-top: 6vh;
-    text-align: center;
-    font-size: var(--h1);
-    /* border: 1px solid green; */
-}
 
-h2{
-    font-size: var(--h2);
-    text-align: center;
-}
 
 .title-lines{
     position: relative;
     width: 600px;
     margin: 0 auto;
+    font-size: var(--h2);
+    text-align: center;
 } 
 
  .title-lines::before{
@@ -203,7 +226,7 @@ h2{
     border-radius: 10px 10px 0px 0px;    
     padding: 20px 10px 20px 10px;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
-    transition: 1s;
+    transition: 0.5s;
     width: 350px;
     border: 2px solid black;      
     background-color: white;
@@ -231,7 +254,8 @@ h2{
     padding-top: 1.7rem;
 }
 
-img{
+.histoire-recente img,
+.memorial-recent img{
     height: 100%;
     width: 100%;
     object-fit: cover;
@@ -240,22 +264,22 @@ img{
 .histoire-recente:hover,
 .memorial-recent:hover{
     filter: grayscale();
-    transform: scale(1.05);
+    /* transform: scale(1.05); */
 }
 
 /* SECTIONS EXPLICATIONS */
 #explications-memoriaux,
 #explications-histoires{
-    height: 60vh;
+    min-height: 30vh;
     width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center; 
-    position: relative;      
-}
-
-#explications-memoriaux{
-    border-bottom: 2px solid black; 
+    position: relative;
+    /* border: 1px solid blue;       */
+    background-image: url('../img/back2_blue2.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
 
 #explications-memoriaux .texte,
@@ -265,18 +289,158 @@ img{
     text-align: justify;
 }
 
-#explications-memoriaux #pissenlit{
-    position: absolute;
-    height: 20vh;
-    width: 100px;
-    right: 10%;
-    bottom: 0;
+
+                                                                /*************  VUES CONCERNANT LES MEMORIAUX **************/
+
+                                /* PAGE LISTE MEMORIAUX */
+
+/* SECTION CATEGORIES */
+#categories{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    padding: 20px 0;
 }
 
-#explications-histoires #book{
+/* SECTION INTERRACTION */
+.interraction{
+    text-align: center;
+    padding: 20px 0;
+}
+
+.interraction a{
+    background-color: var(--couleurPrincipale);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* SECTION RECHERCHE */
+.recherche{
+    border: 1px solid green;
+    display: none;
+}
+
+.recherche form{
+    border: 2px solid pink;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.recherche form .form-search{
+    border: 2px solid pink;
+}
+
+.recherche form .form-elements{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.visible{
+    display: block;
+}
+
+
+
+/* MEMORIAUX */
+
+/* .memoriaux{
+    border: 1px solid green;
+} */
+
+.container-memoriaux{
+    /* border: 2px solid blue; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5%;
+}
+
+.memorial-card{
+    border: 2px solid black;
+    width: 700px;
+    display: flex;
+    overflow: hidden;
+    border-radius: 5px;
+    margin-bottom: 20px;    
+    background-color: white;
+}
+
+.memorial-card a{
+    padding: 10px;
+    background-color: var(--couleurPrincipale);
+    border-radius: 5px;
+}
+
+.memorial-card .card-left{
+    /* border: 1px solid yellow; */
+    width: 300px;
+    text-align: center;
+}
+
+.memorial-card .card-right{
+    /* border: 1px solid red; */
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.memorial-card .card-right #bandeaux
+{
+    width: 60px;
+    height: 200px;
     position: absolute;
-    height: 20%;
-    width: 220px;
-    left: 10%;
-    top: 25%;
+    border: 1px solid green;
+    rotate: -45deg;
+    display: flex;
+    top: -90px;
+    right: 0;
+    
+}
+
+.memorial-card .card-right #bandeaux .bandeau{
+    width: 20px;
+    height: 100%;
+}
+
+.memorial-card .card-right #bandeau1{
+    background-color: rgb(243, 0, 0);
+}
+
+.memorial-card .card-right #bandeau2{
+    background-color: rgb(255, 196, 0);
+}
+
+.memorial-card .card-right #bandeau3{
+    background-color: rgb(1, 128, 255);
+}
+
+.memorial-card figure{
+    height: 250px;
+    width: 300px;
+    padding: 10px;
+}
+
+.memorial-card figure img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+
+                                                            /**********  PAGE MEMORIAL **************/
+
+.showSoutient-content .unlikedPaw{
+    font-size: 1rem;
+    color: gray;
+}
+
+.showSoutient-content .likedPaw{
+    font-size: 1rem;
+    color: blue;
 }
