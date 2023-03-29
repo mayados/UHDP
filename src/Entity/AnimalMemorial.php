@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Trait\DateCreationTrait;
 use App\Repository\AnimalMemorialRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,6 +13,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: AnimalMemorialRepository::class)]
 class AnimalMemorial
 {
+
+    use DateCreationTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -76,9 +80,6 @@ class AnimalMemorial
     #[ORM\JoinColumn(nullable: true, onDelete:"SET NULL")]
     private ?User $auteur = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $dateCreation = null;
-
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'memoriauxSoutenus')]
     private Collection $soutients;
 
@@ -87,6 +88,7 @@ class AnimalMemorial
 
     public function __construct()
     {
+        $this->dateCreation = new \DateTimeImmutable();
         $this->photos = new ArrayCollection();
         $this->soutients = new ArrayCollection();
         $this->condoleances = new ArrayCollection();
@@ -268,18 +270,6 @@ class AnimalMemorial
     public function setAuteur(?User $auteur): self
     {
         $this->auteur = $auteur;
-
-        return $this;
-    }
-
-    public function getDateCreation(): ?\DateTimeInterface
-    {
-        return $this->dateCreation;
-    }
-
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
-    {
-        $this->dateCreation = $dateCreation;
 
         return $this;
     }

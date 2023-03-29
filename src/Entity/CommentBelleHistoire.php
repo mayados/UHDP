@@ -2,16 +2,20 @@
 
 namespace App\Entity;
 
-use App\Repository\CommentBelleHistoireRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Trait\DateCreationTrait;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use App\Repository\CommentBelleHistoireRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CommentBelleHistoireRepository::class)]
 class CommentBelleHistoire
 {
+
+    use DateCreationTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -20,9 +24,6 @@ class CommentBelleHistoire
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank()]
     private ?string $texte = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $dateCreation = null;
 
     #[ORM\ManyToOne(inversedBy: 'commentaires')]
     #[ORM\JoinColumn(nullable: true, onDelete:"SET NULL")]
@@ -38,6 +39,7 @@ class CommentBelleHistoire
 
     public function __construct()
     {
+        $this->dateCreation = new \DateTimeImmutable();
         $this->likes = new ArrayCollection();
     }
 
@@ -54,18 +56,6 @@ class CommentBelleHistoire
     public function setTexte(string $texte): self
     {
         $this->texte = $texte;
-
-        return $this;
-    }
-
-    public function getDateCreation(): ?\DateTimeInterface
-    {
-        return $this->dateCreation;
-    }
-
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
-    {
-        $this->dateCreation = $dateCreation;
 
         return $this;
     }

@@ -2,14 +2,18 @@
 
 namespace App\Entity;
 
-use App\Repository\PostRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PostRepository;
+use App\Entity\Trait\DateCreationTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 class Post
 {
+
+    use DateCreationTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -19,9 +23,6 @@ class Post
     #[Assert\NotBlank()]
     private ?string $texte = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $dateCreation = null;
-
     #[ORM\ManyToOne(inversedBy: 'posts')]
     #[ORM\JoinColumn(nullable: true, onDelete:"SET NULL")]
     private ?User $auteur = null;
@@ -29,6 +30,11 @@ class Post
     #[ORM\ManyToOne(inversedBy: 'posts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Topic $topic = null;
+
+    public function __construct()
+    {
+        $this->dateCreation = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -43,18 +49,6 @@ class Post
     public function setTexte(string $texte): self
     {
         $this->texte = $texte;
-
-        return $this;
-    }
-
-    public function getDateCreation(): ?\DateTimeInterface
-    {
-        return $this->dateCreation;
-    }
-
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
-    {
-        $this->dateCreation = $dateCreation;
 
         return $this;
     }

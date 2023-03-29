@@ -2,13 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\CondoleanceRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Trait\DateCreationTrait;
+use App\Repository\CondoleanceRepository;
 
 #[ORM\Entity(repositoryClass: CondoleanceRepository::class)]
 class Condoleance
 {
+
+    use DateCreationTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -16,9 +20,6 @@ class Condoleance
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $texte = null;
-
-    #[ORM\Column(options: ['default' => 'CURRENT_TIMESTAMP'])]
-    private ?\DateTimeImmutable $dateCreation = null;
 
     #[ORM\ManyToOne(inversedBy: 'condoleances')]
     #[ORM\JoinColumn(nullable: true, onDelete:"SET NULL")]
@@ -46,18 +47,6 @@ class Condoleance
     public function setTexte(string $texte): self
     {
         $this->texte = $texte;
-
-        return $this;
-    }
-
-    public function getDateCreation(): ?\DateTimeImmutable
-    {
-        return $this->dateCreation;
-    }
-
-    public function setDateCreation(\DateTimeImmutable $dateCreation): self
-    {
-        $this->dateCreation = $dateCreation;
 
         return $this;
     }

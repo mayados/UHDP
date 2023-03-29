@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Trait\DateCreationTrait;
 use App\Repository\BelleHistoireRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,6 +17,8 @@ class BelleHistoire
 {
 
     const STATES = ['STATE_DRAFT', 'STATE_WAINTING', 'STATE_APPROUVED', 'STATE_DISAPPROUVED'];
+
+    use DateCreationTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -44,9 +47,6 @@ class BelleHistoire
     #[ORM\OneToMany(mappedBy: 'belleHistoire', targetEntity: CommentBelleHistoire::class, orphanRemoval: true)]
     private Collection $commentaires;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $dateCreation = null;
-
     #[ORM\Column(length: 255, unique:true)]
     private ?string $slug = null;
 
@@ -67,6 +67,7 @@ class BelleHistoire
 
     public function __construct()
     {
+        $this->dateCreation = new \DateTimeImmutable();
         $this->commentaires = new ArrayCollection();
         $this->likes = new ArrayCollection();
         $this->favoris = new ArrayCollection();
@@ -178,18 +179,6 @@ class BelleHistoire
 
         return $this;
     }
-
-    public function getDateCreation(): ?\DateTimeInterface
-    {
-        return $this->dateCreation;
-    }
-
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
-    {
-        $this->dateCreation = $dateCreation;
-
-        return $this;
-    } 
 
     /**
      * @return Collection<int, User>

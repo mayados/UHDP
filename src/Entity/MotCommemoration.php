@@ -2,14 +2,18 @@
 
 namespace App\Entity;
 
-use App\Repository\MotCommemorationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Trait\DateCreationTrait;
+use App\Repository\MotCommemorationRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MotCommemorationRepository::class)]
 class MotCommemoration
 {
+
+    use DateCreationTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -23,12 +27,14 @@ class MotCommemoration
     )]
     private ?string $mot = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $dateCreation = null;
-
     #[ORM\ManyToOne(inversedBy: 'motsCommemoration')]
     #[ORM\JoinColumn(nullable: true, onDelete:"SET NULL")]
     private ?User $auteur = null;
+
+    public function __construct()
+    {
+        $this->dateCreation = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -43,18 +49,6 @@ class MotCommemoration
     public function setMot(string $mot): self
     {
         $this->mot = $mot;
-
-        return $this;
-    }
-
-    public function getDateCreation(): ?\DateTimeInterface
-    {
-        return $this->dateCreation;
-    }
-
-    public function setDateCreation(\DateTimeInterface $dateCreation): self
-    {
-        $this->dateCreation = $dateCreation;
 
         return $this;
     }

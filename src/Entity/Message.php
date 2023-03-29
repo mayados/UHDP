@@ -2,13 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\MessageRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\MessageRepository;
+use App\Entity\Trait\DateCreationTrait;
 
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
 class Message
 {
+
+    use DateCreationTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -16,9 +20,6 @@ class Message
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $texte = null;
-
-    #[ORM\Column(options: ['default' => 'CURRENT_TIMESTAMP'])]
-    private ?\DateTimeImmutable $dateCreation = null;
 
     #[ORM\Column]
     private ?bool $is_read = null;
@@ -52,18 +53,6 @@ class Message
     public function setTexte(string $texte): self
     {
         $this->texte = $texte;
-
-        return $this;
-    }
-
-    public function getDateCreation(): ?\DateTimeImmutable
-    {
-        return $this->dateCreation;
-    }
-
-    public function setDateCreation(\DateTimeImmutable $dateCreation): self
-    {
-        $this->dateCreation = $dateCreation;
 
         return $this;
     }
