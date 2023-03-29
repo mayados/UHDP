@@ -7,7 +7,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
+
+#[IsGranted('ROLE_USER', statusCode: 404, message: 'Page non trouvée')]
 class FavorisController extends AbstractController
 {
     #[Route('/favoris/belleHistoire/{id}', name: 'app_favorisHistoire')]
