@@ -3,9 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\UserEditPasswordType;
 use App\Form\UserType;
 use App\Service\UploaderService;
+use App\Form\UserEditPasswordType;
 use App\Repository\UserRepository;
 use App\Repository\TopicRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -14,6 +14,7 @@ use App\Repository\AnimalMemorialRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -30,37 +31,27 @@ class UserController extends AbstractController
     // On accède juste à une page d'affichage d'informations, donc ici on peut passer l'id du user = donnée sensible (car on ne peut rien faire de mal dans l'url avec cette route)
     // Requirements ici sert à ce que le paramètre entré soit obligatoirement un digit
     #[Route('/user/{id}', name: 'show_profile', requirements: ['id' => '\d+'])]
+    #[Security("is_granted('ROLE_USER')")]
     public function showProfile(UserRepository $ur, User $user, AnimalMemorialRepository $amr, BelleHistoireRepository $bhr, TopicRepository $tr): Response
     {
-        // Il faut être connecté pour accéder à son profil ou à la page de profil d'un utilisateur
-        if($this->getUser()){
-            // En fonction de si le user est le même que le current ou non, on affiche des render différents
-            $user = $ur->find($user->getId());
-            $memoriaux = $amr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);               
-            $histoires = $bhr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);               
-            $topics = $tr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);               
+
+        $user = $ur->find($user->getId());
+        $memoriaux = $amr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);               
+        $histoires = $bhr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);               
+        $topics = $tr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);               
               
-                return $this->render('user/profil.html.twig', [
-                    'user' => $user,
-                    'memoriaux' => $memoriaux,
-                    'histoires' => $histoires,
-                    'topics' => $topics,
-                ]);            
-        
-        }
-
-        // Si le user n'est pas connecté, on dirige vers la page de login
-        return $this->redirectToRoute('app_login'); 
-
+        return $this->render('user/profil.html.twig', [
+            'user' => $user,
+            'memoriaux' => $memoriaux,
+            'histoires' => $histoires,
+            'topics' => $topics,
+        ]);            
     }
 
     #[Route('/monProfil', name: 'my_profile')]
+    #[Security("is_granted('ROLE_USER')")]
     public function showMyProfile(AnimalMemorialRepository $amr, BelleHistoireRepository $bhr, TopicRepository $tr)
     {
-        if(!$this->getUser()){
-            return $this->redirectToRoute('app_login'); 
-        }
-
         $user = $this->getUser();
 
         $memoriaux = $amr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);               
@@ -77,11 +68,9 @@ class UserController extends AbstractController
     }
 
     #[Route('/mesHistoires', name: 'my_histoires')]
+    #[Security("is_granted('ROLE_USER')")]
     public function showMyHistoires(BelleHistoireRepository $bhr, Request $request): Response
     {
-        if(!$this->getUser()){
-            return $this->redirectToRoute('app_login'); 
-        }
 
         $user = $this->getUser();
          
@@ -103,12 +92,9 @@ class UserController extends AbstractController
 
 
     #[Route('/user/parametres', name: 'edit_profile')]
+    #[Security("is_granted('ROLE_USER')")]
     public function editProfile(UploaderService $uploaderService, Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $hasher)
     {
-
-        if(!$this->getUser()){
-            return $this->redirectToRoute('app_login');
-        }
 
         $user = $this->getUser();
 
@@ -186,12 +172,9 @@ class UserController extends AbstractController
     }
 
     #[Route('/user/delete/account', name: 'suppr_account_user')]
+    #[Security("is_granted('ROLE_USER')")]
     public function deleteUserAccount(UserRepository $ur, UploaderService $uploaderService, Request $request)
     {
-
-        if(!$this->getUser()){
-            return $this->redirectToRoute('app_login');
-        }
 
         // Supprimer le compte et toutes les infos associées puis mise en place de l'anonymisation dans les vues
         $user = $this->getUser();

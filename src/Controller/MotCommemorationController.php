@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Repository\MotCommemorationRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MotCommemorationController extends AbstractController
@@ -59,17 +60,13 @@ class MotCommemorationController extends AbstractController
     }
 
     #[Route('/mot/commemoration/remove/mot/{id}', name: 'remove_mot')]
+    #[Security("is_granted('ROLE_USER') and user === mot.getAuteur()", message:"Accès non autorisé.")]
     public function removeMot(MotCommemorationRepository $mcr, MotCommemoration $mot)
     {
 
         $mot = $mcr->find($mot->getId());        
-        // Seuls l'auteur du mot OU un admin peut supprimer un mot
-        if($this->getUser() && ($this->getUser() == $mot->getAuteur() || $this->isGranted('ROLE_ADMIN'))){
-            $mcr->remove($mot, $flush = true);
-            return $this->redirectToRoute('app_mot_commemoration');            
-        }
-
-        return $this->redirectToRoute('app_login'); 
+        $mcr->remove($mot, $flush = true);
+        return $this->redirectToRoute('app_mot_commemoration');            
 
     }
 

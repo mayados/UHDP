@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 
-#[IsGranted('ROLE_USER', statusCode: 404, message: 'Page non trouvée')]
+#[IsGranted('ROLE_USER')]
 class FavorisController extends AbstractController
 {
     #[Route('/favoris/belleHistoire/{id}', name: 'app_favorisHistoire')]
