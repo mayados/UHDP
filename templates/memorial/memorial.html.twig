@@ -9,7 +9,7 @@
 
 {% block body %}
 
-<div class="container-page">
+<div class="container-page js-auto-refresh">
     <section id="memorial">
         <div id="memorial-infos">
             <h1>{{ memorial.nom }}</h1>
@@ -82,13 +82,11 @@
             {% endfor %}            
         </div>
     </section>
-
-    <section id="condoleances">
+    <section id="condoleances" class="js-auto-refresh-content">
         <h2>Condoléances</h2>
         {% if app.user %}
             <h3>Ajouter un message de condoléances</h3>
-            {{ form_start(formCondoleance) }}    
-            {{ form_end(formCondoleance) }}
+         {% include '_partials/_condoleances.html.twig' %}  
         {% endif %}
         <div id="container-condoleances">
             <div class="condoleance-memorial">
@@ -105,7 +103,8 @@
                     </div>
                 {% endfor %}   
             {% endif %}
-        </div>
+        </div>   
     </section>
+  
 </div>
 {% endblock %}

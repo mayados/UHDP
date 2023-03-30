@@ -132,6 +132,14 @@ class MemorialController extends AbstractController
                 $entityManager->persist($condoleance);
                 $entityManager->flush();   
 
+                if($request->isXmlHttpRequest()){
+                    // Si c'est le cas on renvoie du JSON
+                    return new JsonResponse([
+                        'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial]),
+                        // 'bloup'=> 'blou'
+                    ]);
+                }
+
                 return $this->redirectToRoute(
                     'show_memorial',
                     ['id' => $memorial->getId()]
