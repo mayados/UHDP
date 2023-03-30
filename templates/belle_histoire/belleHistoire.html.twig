@@ -22,6 +22,7 @@
             </figure>
             {% endif %}
             <p>Date de création {{ histoire.dateCreation | date('d-m-Y') }}</p>
+            {% include "_partials/_share.html.twig" %}
         </header>
         <section id="histoire-texte">
             <p>{{ histoire.texte }}</p>
