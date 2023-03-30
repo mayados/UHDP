@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\BelleHistoire;
 use App\Entity\GenreHistoire;
 use Symfony\Component\Form\AbstractType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\File;
@@ -13,7 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class HistoireType extends AbstractType
 {
@@ -27,7 +27,7 @@ class HistoireType extends AbstractType
                     new Assert\Length(['min' => 2, 'max' => 255, 'minMessage' => 'Le nom titre faire au moins {{ limit }} caractères', 'maxMessage' => 'Le titre ne peut pas faire plus de {{ limit }} caractères'])
                 ]
             ])
-            ->add('texte', TextareaType::class, [
+            ->add('texte', CKEditorType::class, [
                 'label' => 'Texte',
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'Le texte ne peut pas être nul']),
