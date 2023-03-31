@@ -21,7 +21,7 @@ export default class Submit {
      
         this.form.addEventListener('submit', e => {
             e.preventDefault();
-                CKEDITOR.instances.condoleance_texte.updateElement();
+            CKEDITOR.instances.condoleance_texte.updateElement();
           // CKEDITOR.replace('condoleance_texte')
           const textareaValue = CKEDITOR.instances.condoleance_texte.getData();
           // CKEDITOR.instances.condoleance_texte.updateElement();
