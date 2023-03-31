@@ -136,7 +136,7 @@ class MemorialController extends AbstractController
                     // Si c'est le cas on renvoie du JSON
                     return new JsonResponse([
                         'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial]),
-                        // 'bloup'=> 'blou'
+                        // 'bloup'=> 'blou',
                     ]);
                 }
 
