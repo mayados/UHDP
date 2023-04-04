@@ -44,7 +44,7 @@ class BelleHistoireRepository extends ServiceEntityRepository
     public function findLastHistoires()
     {
         return $this->createQueryBuilder('h')
-        ->select('h.slug','h.titre','h.photo')
+        // ->select('h.slug','h.titre','h.photo','h.genre','h.dateCreation')
         ->where('h.etat LIKE :state')
         ->setParameter('state','%STATE_APPROUVED%')
         ->addOrderBy('h.dateCreation', 'DESC')
