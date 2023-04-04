@@ -39,7 +39,7 @@ h1{
 } */
 
 .container-page{
-    padding-top: 5vh;
+    margin-top: 5vh;
     min-height: 100vh;
     position: relative;
     /* background-color: #F3F3F3; */
@@ -74,6 +74,8 @@ h1{
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     position: fixed;
     z-index: 999;
+    top: 0;
+    left: 0;
 }
 
 nav{
@@ -485,6 +487,26 @@ nav{
 
                                 /* PAGE LISTE MEMORIAUX */
 
+/* SECTION BANNIERE MEMORIAUX */
+#banniere-memoriaux{
+    height: 30vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../img/memoriaux_bg.jpg");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom;
+    /* filter: grayscale(1); */
+}
+
+#banniere-memoriaux h1{
+    color: white;
+    text-shadow: 1px 2px black;
+}
+
+
 /* SECTION CATEGORIES */
 #categories{
     display: flex;
@@ -640,6 +662,24 @@ nav{
                                                             /************  VUES CONCERNANT LES BELLES HISTOIRES *************/
                                                     
                     /****  PAGE BELLES HISTOIRES *****/
+
+#banniere-belle-histoire{
+    height: 30vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../img/banniere_belle_histoire2.jpg");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top;
+    /* filter: grayscale(1); */
+}
+
+#banniere-belle-histoire h1{
+    color: white;
+    text-shadow: 1px 2px black;
+}
 
 #container-histoires{
     min-height: 50vh;

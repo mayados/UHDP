@@ -5,7 +5,9 @@
 {% block body %}
 
 <div class="container-page">
-
+    <section id="banniere-belle-histoire">
+        <h1>Les belles histoires</h1>        
+    </section>
     <section class="creation">
         {% if app.user and app.user.isVerified %}
             <a href="{{ path('add_histoire') }}">Créer une belle histoire</a>
@@ -17,7 +19,7 @@
     </section>
 
     <section id="belles-histoires">
-        <h1>Les belles histoires</h1>
+
         <div id="container-histoires">
             {% for histoire in listeHistoires %}
                 {# <article class="histoire">
