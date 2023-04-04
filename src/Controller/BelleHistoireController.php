@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CommentBelleHistoireRepository;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -69,6 +70,17 @@ class BelleHistoireController extends AbstractController
                 $entityManager = $doctrine->getManager();
                 $entityManager->persist($commentaire);
                 $entityManager->flush();                                  
+
+                if($request->isXmlHttpRequest()){
+                    // Si c'est le cas on renvoie du JSON
+                    return new JsonResponse([
+                        'content' => $this->renderView('_partials/_commentaires.html.twig', ['histoire' => $histoire]),
+                        // 'like' => $this->renderView('_partials/_likeComment.html.twig',['histoire' => $histoire, 'commentaire' => $commentaire]),
+                        // 'like' => $this->renderView('_partials/_likeComment.html.twig', ['histoire' => $histoire]),
+                        // 'formCondoleance' => $this->renderView('_partials/_refreshForm.html.twig', ['formCondoleance' => $condoleanceForm->createView()])
+                        // 'bloup'=> 'blou',
+                    ]);
+                }
 
                 return $this->redirectToRoute(
                     'show_histoire',
