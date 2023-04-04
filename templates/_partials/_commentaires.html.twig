@@ -1,0 +1,16 @@
+{% for commentaire in histoire.commentaires %}
+<article class="commentaire">
+    <p>{{ commentaire.texte|raw }} 
+    <footer>
+        {% if commentaire.auteur != null %}
+            ({{ commentaire.auteur }})</p>
+        {% else %}
+            <p>(Utilisateur supprimé)</p>
+        {% endif %}
+        {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+            <a href="{{ path('remove_comment', {'slug': histoire.slug, 'id': commentaire.id}) }}">Delete</a>
+        {% endif %}
+    </footer>
+    {% include "_partials/_likeComment.html.twig" %}
+</article>
+{% endfor %}    

@@ -9,7 +9,7 @@
 
 {% block body %}
 
-<div class="container-page">
+<div class="container-page js-refresh-page">
     <article id="histoire">
         {% include "_partials/_favorisHistoire.html.twig" %}
         <header>
@@ -34,30 +34,11 @@
             {% endif %}
         </section>
         {% include "_partials/_likeHistoire.html.twig" %}
-        <section id="comment-histoire">
-            <h2>Commentaires</h2>
-            {% for commentaire in histoire.commentaires %}
-                <article class="commentaire">
-                    <p>{{ commentaire.texte|raw }} 
-                    <footer>
-                        {% if commentaire.auteur != null %}
-                            ({{ commentaire.auteur }})</p>
-                        {% else %}
-                            <p>(Utilisateur supprimé)</p>
-                        {% endif %}
-                        {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-                            <a href="{{ path('remove_comment', {'slug': histoire.slug, 'id': commentaire.id}) }}">Delete</a>
-                        {% endif %}
-                    </footer>
-                    {% include "_partials/_likeComment.html.twig" %}
-                </article>
-            {% endfor %}    
-        </section>             
         <section id="ajout-commentaire">
             <h2>Ajouter un commentaire</h2>        
             {% if app.user and app.user.isVerified %}
                 <div class="formulaire">
-                    {{ form_start(formAddComment) }}   
+                    {{ form_start(formAddComment, {attr: {class: 'js-submit-form'}}) }}   
                     <div class="form-element">
                         {{ form_row(formAddComment.texte) }}
                     </div> 
@@ -71,7 +52,13 @@
             {% else %}
                 <p>Veuillez vous inscrire ou vous connecter pour pouvoir commenter</p>
             {% endif %}            
-        </section>      
+        </section>             
+        <section id="comment-histoire" class="js-auto-refresh-content">
+            <h2>Commentaires</h2>
+                {% include "_partials/_commentaires.html.twig" %}
+                
+        </section>             
+ 
     </article>
 </div>
 {% endblock %}
