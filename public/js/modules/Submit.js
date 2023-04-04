@@ -21,12 +21,20 @@ export default class Submit {
      
         this.form.addEventListener('submit', e => {
             e.preventDefault();
-            CKEDITOR.instances.condoleance_texte.updateElement();
-          // CKEDITOR.replace('condoleance_texte')
-          const textareaValue = CKEDITOR.instances.condoleance_texte.getData();
+          let instanceName = ""
+          let instance = ""
+          let textareaValue =""
+          for(var i in CKEDITOR.instances){
+            instance = CKEDITOR.instances[i]
+            instanceName = CKEDITOR.instances[i].name
+            textareaValue = CKEDITOR.instances[i].getData();
 
+          }
+   
+            instance.updateElement();
+          // CKEDITOR.replace('condoleance_texte')
             const data = new FormData(this.form)
-            data.append('condoleance_texte',textareaValue)
+            data.append(instanceName,textareaValue)
 
             // On crée une nouvelle URL à partir de l'url courante
             const url = new URL(window.location.href) 
@@ -37,7 +45,7 @@ export default class Submit {
                 params.append(key, value)          
             })
 
-            fetch(url.pathname + '?' + params.toString(), {
+            fetch(url, {
                 headers: {
                   //  Permet de différencier une requête classique d'une requête AJAX
                   'X-Requested-With': 'XMLHttpRequest',
@@ -53,8 +61,8 @@ export default class Submit {
              console.log(response)
               const data = await response.json();
               this.content.innerHTML = data.content
-              CKEDITOR.instances.condoleance_texte.setData("")
-              console.log(data) 
+              instance.setData("")
+              // console.log(data.content) 
             })
             .catch(e => alert(e));
         })
