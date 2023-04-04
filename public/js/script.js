@@ -23,21 +23,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const recherche = document.querySelector('.recherche');
-    const searchLink = document.querySelector('.search-link');
-    const close = document.querySelector('.close');
+    if(recherche){
+        const searchLink = document.querySelector('.search-link');
+        const close = document.querySelector('.close');
 
 
-    searchLink.addEventListener('click', e =>{
-        e.preventDefault();
-        recherche.classList.add('visible');
-        searchLink.style.display='none'
-    })
+        searchLink.addEventListener('click', e =>{
+            e.preventDefault();
+            recherche.classList.add('visible');
+            searchLink.style.display='none'
+        })
 
-    close.addEventListener('click', e =>{
-        e.preventDefault();
-        recherche.classList.remove('visible');
-        searchLink.style.display='inline-block'
-    })
+        close.addEventListener('click', e =>{
+            e.preventDefault();
+            recherche.classList.remove('visible');
+            searchLink.style.display='inline-block'
+        })        
+    }
 
 })
 
