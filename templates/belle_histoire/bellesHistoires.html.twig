@@ -18,33 +18,67 @@
 
     <section id="belles-histoires">
         <h1>Les belles histoires</h1>
+        <div id="container-histoires">
+            {% for histoire in listeHistoires %}
+                {# <article class="histoire">
+                    <div class="histoire-left">
+                        <h2>{{ histoire.titre }}</h2>
+                        {% if histoire.photo == null %}
+                        <p>Pas de photo</p>
+                        {% else %}
+                        <figure>
+                            <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">                    
+                        </figure>
+                        {% endif %}                    
+                    </div>
+                    <div class="histoire-right">
+                        <p>{{ histoire.texte|slice(0, 100) }}...</p>
+                        {% if histoire.auteur != null %}
+                            <a href="#">
+                                <p>{{ histoire.auteur }}</p>  
+                            </a>
+                        {% else %}
+                            <p>Utilisateur supprimé</p>
+                        {% endif %}
 
-        {% for histoire in listeHistoires %}
-            <article class="histoire">
-                <div class="histoire-left">
-                    <h2>{{ histoire.titre }}</h2>
-                    {% if histoire.photo == null %}
-                    <p>Pas de photo</p>
-                    {% else %}
-                    <figure>
-                        <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">                    
-                    </figure>
-                    {% endif %}                    
-                </div>
-                <div class="histoire-right">
-                    <p>{{ histoire.texte|slice(0, 100) }}...</p>
-                    {% if histoire.auteur != null %}
-                        <a href="#">
-                            <p>{{ histoire.auteur }}</p>  
-                        </a>
-                    {% else %}
-                        <p>Utilisateur supprimé</p>
-                    {% endif %}
-
-                    <a href="{{path('show_histoire', {'slug': histoire.slug}) }}">Voir l'histoire</a>                    
-                </div>
-            </article>
-        {% endfor %}        
+                        <a href="{{path('show_histoire', {'slug': histoire.slug}) }}">Voir l'histoire</a>                    
+                    </div>
+                </article> #}
+                <article class="belle-histoire-card">
+                    {# <a href="{{path('show_histoire', {'slug': histoire.slug}) }}">
+                        <figure>
+                            <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">                
+                        </figure>
+                        <p>{{ histoire.titre }}</p> 
+                    </a> #}
+                    <div class="hr-media">
+                        <figure>
+                            <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">                
+                        </figure>
+                    </div>
+                    <div class="hr-content">
+                        <div class="hr-infos">
+                            <p>{{ histoire.genre }}</p>
+                            <p>{{ histoire.dateCreation|date('d-m-Y') }}</p>
+                            <p>{{ histoire.howManyLikes}}</p>
+                        </div>
+                        <div class="hr-texte">
+                            <h3>{{ histoire.titre }}</h3>
+                            <p>{{ histoire.texte|slice(0, 80) }}...</p>
+                        </div>
+                        <div class="hr-auteur">
+                            <figure>
+                                <img src="" alt="">
+                            </figure>
+                            <p>{{ histoire.auteur }}</p>
+                        </div>
+                    </div>
+                    <div class="share-content">
+                        <i class="fa-solid fa-share-nodes"></i>
+                    </div>
+                </article>
+            {% endfor %}        
+        </div>
     </section>
     <div class="pagination">
         {{ knp_pagination_render(listeHistoires) }}

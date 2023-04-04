@@ -113,20 +113,23 @@
                         </div>
                         <div class="hr-content">
                             <div class="hr-infos">
-                                <p>genre</p>
-                                <p>Date de création</p>
-                                <p>Nb j'aime</p>
+                                <p>{{ histoire.genre }}</p>
+                                <p>{{ histoire.dateCreation|date('d-m-Y') }}</p>
+                                <p>{{ histoire.howManyLikes}}</p>
                             </div>
                             <div class="hr-texte">
                                 <h3>{{ histoire.titre }}</h3>
-                                {# <p>Description histoire</p> #}
+                                <p>{{ histoire.texte|slice(0, 80) }}...</p>
                             </div>
                             <div class="hr-auteur">
                                 <figure>
                                     <img src="" alt="">
                                 </figure>
-                                <p>auteur histoire</p>
+                                <p>{{ histoire.auteur }}</p>
                             </div>
+                        </div>
+                        <div class="share-content">
+                            <i class="fa-solid fa-share-nodes"></i>
                         </div>
                     </article>
                 {% endfor %}                

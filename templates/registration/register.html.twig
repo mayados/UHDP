@@ -3,31 +3,34 @@
 {% block title %}Inscription{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
+    <div class="container-page login-page">
+        {% for flash_error in app.flashes('verify_email_error') %}
+            <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+        {% endfor %}
 
-    <div class="formulaire">
-        <h1>Inscription</h1>   
-             
-        {{ form_start(registrationForm) }}
-            <div class="form-element">
-                {{ form_row(registrationForm.email) }}                
-            </div>
-            <div class="form-element">
-                {{ form_row(registrationForm.pseudo) }}                
-            </div>
-            <div class="form-element">
-                {{ form_row(registrationForm.plainPassword, {
-                    label: 'Password'
-                }) }}
-            </div>
-            <div class="form-element">
-                {{ form_row(registrationForm.agreeTerms) }}                
-            </div>
-            <div class="form-element">
-                <button type="submit" class="btn">S'inscrire</button>                
-            </div>
-        {{ form_end(registrationForm) }}        
-        </div>
+        <div class="formulaire" id="form-register">
+            <h1>Inscription</h1>   
+                
+            {{ form_start(registrationForm) }}
+                <div class="form-element">
+                    {{ form_row(registrationForm.email) }}                
+                </div>
+                <div class="form-element">
+                    {{ form_row(registrationForm.pseudo) }}                
+                </div>
+                <div class="form-element">
+                    {{ form_row(registrationForm.plainPassword, {
+                        label: 'Password'
+                    }) }}
+                </div>
+                <div class="form-element" id="agree-terms-element">
+                    {{ form_row(registrationForm.agreeTerms) }}                
+                </div>
+                <div class="form-element">
+                    <button type="submit" class="btn">S'inscrire</button>                
+                </div>
+            {{ form_end(registrationForm) }}   
+            <p>Déjà inscrit ? <a href="#">Connectez-vous</a></p>     
+        </div>     
+    </div>
 {% endblock %}
