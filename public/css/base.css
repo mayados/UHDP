@@ -648,62 +648,52 @@ nav{
 
 /*****  PAGE MEMORIAL *****/
 
-#banniere-memorial{
-    min-height: 30vh;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;    
+.page-memorial{
+    padding: 5vh 10vw 0 10vw;
 }
 
-#banniere-img{
-    height: 25vh;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-image: url("../img/banniere_memoriaux.jpg");
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    /* filter: grayscale(1); */
-    border-radius: 15px;
-    background-color: beige;
-    z-index: 1;
+#header-memorial{
+    display: flex;  
+    gap: 10px;
 }
 
-#banniere-memorial figure{
-    width: 300px;
-    height: 300px;
-    border: 2px solid white;
+#header-memorial figure{
+    flex: 2;
+    height: 500px;
+    border: 1px solid rgb(214, 214, 214);
     z-index: 99;
-    margin-top: 10vh;
-    overflow: hidden;
-    border-radius: 300px;
+    border-radius: 5px; 
+    overflow: hidden;            
 }
 
-#banniere-memorial figure img{
+#header-memorial figure img{
     width: 100%;
     height: 100%;
     object-fit: cover;
-    z-index: 99;
+    border: 5px solid white;
+} 
+
+#memorial-infos{
+    /* border: 2px solid black; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex:1;
+    padding: 20px;
 }
 
 #memorial-title{
     text-align: inherit;
-}
-
-#memorial-infos{
-    border: 2px solid black;
+    padding: 0 0 2rem 0;
 }
 
 #memorial{
-    padding-top: 2vh;
+    margin-top: 3rem;
     border: 2px solid pink;
     display: flex;
     flex-direction: column;
     gap: 3rem;
+    text-align: justify;
 }
 
 #memorial h2{
@@ -840,8 +830,7 @@ nav{
 
 /* PAGE PRINCIPALE (index.html.twig) */
 
-.forum-page,
-.page-memorial{
+.forum-page{
     padding: 5vh 10vh 0 5vh;
 }
 
