@@ -4,10 +4,11 @@
 
 {% block body %}
 
-<div class="container-page">
+<div class="container-page forum-page">
+    <section id="banniere-topic">
+        <h1>{{ topic.titre }}</h1>        
+    </section>
     <section id="topic">
-        <h1>{{ topic.titre }}</h1>
-
         {% if app.user == topic.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
             <a href="{{path('remove_topic', {'slug': topic.slug}) }}">Supprimer le topic</a>
             <a href="{{ path('edit_topic', {'slug': topic.slug}) }}">Edit</a>
@@ -17,29 +18,36 @@
                 <a href="{{ path('verrouillage_topic', {'id': topic.id}) }}">Verouiller le topic</a>
             {% endif %}
         {% endif %}
-
+    </section>
+    <section id="posts">
         {% for post in posts %}
             <article class="post">
                 <div class="user-post-infos">
                     <figure>
-                        {% if post.auteur != null %}
+                        {% if post.auteur.photo != null %}
                             <img src="{{ asset('uploads/imgUser/'~ post.auteur.photo) }}" alt="profil de {{ post.auteur }}">
-                            <figcaption><a href="{{ path('show_profile', {'id': post.auteur.id}) }}">{{ post.auteur }}</a></figcaption>
+                        {% else %}
+                            <img src="{{ asset('img/default_user.png') }}" alt="">
+                        {% endif %}
+                    </figure>    
+                    <div class="infos-sup">
+                        {% if post.auteur != null %}
+                            <a href="{{ path('show_profile', {'id': post.auteur.id}) }}">{{ post.auteur }}</a>
                         {% else %}
                             <p>Utilisateur supprimé</p>
                         {% endif %}
-                    </figure>           
+                        <p>le {{ topic.dateCreation | date('d-m-Y') }} à {{ topic.dateCreation | date('H:i:s') }}</p>
+                    </div>       
                 </div>
                 <div class="post-texte">
                     <p>{{ post.texte|raw }}</p>                
                 </div>
-                {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-                    <a href="{{path('remove_post', {'id': post.id, 'slug': topic.slug}) }}">Delete</a>
-                {% endif %}
             </article>
-        {% endfor %}        
+        {% endfor %}          
     </section>
-
+    <div class="pagination">
+        {{ knp_pagination_render(posts) }}
+    </div>
     <section class="ajout-posts">
         {% if not topic.isVerrouillage %}
             <h2>Ajout de commentaires</h2>
@@ -62,8 +70,6 @@
             <p>Le topic est verrouillé, vous ne pouvez plus écrire de message</p>
         {% endif %}        
     </section>
-    <div class="pagination">
-        {{ knp_pagination_render(posts) }}
-    </div>
+
 </div>
 {% endblock %}

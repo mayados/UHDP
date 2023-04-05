@@ -10,8 +10,9 @@
         {% if memorial.condoleances| length > 0 %}
         {% for condoleance in memorial.condoleances %}
                 <div class="condoleance-memorial">
+                        <p>{{ condoleance.auteur }}</p>   
+                        <p>{{ condoleance.dateCreation| date('d-m-Y') }}</p>                     
                         <p>{{ condoleance.texte| raw }}</p>
-                        <p>({{ condoleance.auteur }})</p>
                         {% if app.user == condoleance.auteur %}
                                 <a href="{{path('remove_condoleance', {'idMemorial': memorial.id, 'id': condoleance.id}) }}">Supprimer</a>
                         {% endif %}

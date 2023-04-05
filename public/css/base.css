@@ -646,7 +646,69 @@ nav{
 }
 
 
-                                                            /**********  PAGE MEMORIAL **************/
+/*****  PAGE MEMORIAL *****/
+
+#banniere-memorial{
+    min-height: 30vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+}
+
+#banniere-img{
+    height: 25vh;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: url("../img/banniere_memoriaux.jpg");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    /* filter: grayscale(1); */
+    border-radius: 15px;
+    background-color: beige;
+    z-index: 1;
+}
+
+#banniere-memorial figure{
+    width: 300px;
+    height: 300px;
+    border: 2px solid white;
+    z-index: 99;
+    margin-top: 10vh;
+    overflow: hidden;
+    border-radius: 300px;
+}
+
+#banniere-memorial figure img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 99;
+}
+
+#memorial-title{
+    text-align: inherit;
+}
+
+#memorial-infos{
+    border: 2px solid black;
+}
+
+#memorial{
+    padding-top: 2vh;
+    border: 2px solid pink;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+#memorial h2{
+    padding-bottom: 1rem;
+}
 
 .showSoutient-content .unlikedPaw{
     font-size: 1rem;
@@ -656,6 +718,16 @@ nav{
 .showSoutient-content .likedPaw{
     font-size: 1rem;
     color: blue;
+}
+
+#condoleances form{
+    border: 3px solid red;
+    width: 50%;
+}
+
+.condoleance-memorial{
+    border-bottom: 0.5px solid gray;
+    padding: 10px;
 }
 
 
@@ -760,4 +832,117 @@ nav{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+
+
+                                                                /******* VUES CONCERNANT LE FORUM ********/
+
+/* PAGE PRINCIPALE (index.html.twig) */
+
+.forum-page,
+.page-memorial{
+    padding: 5vh 10vh 0 5vh;
+}
+
+#banniere-forum{
+    height: 30vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../img/banniere_belle_histoire2.jpg");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top;
+    /* filter: grayscale(1); */
+    border-radius: 15px;
+}
+
+#topics{
+    border: 2px solid red;
+}
+
+.topic{
+    padding: 20px;
+    border: 1px solid blue;
+    min-height: 10vh;
+    margin: 2vh 0 2vh 0;
+    display: flex;
+    justify-content: space-between;
+    /* align-items: center; */
+}
+
+.topic .topic-infos{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#topics .topic-infos figure{
+    width: 50px;
+    height: 50px;
+    background-color: green;
+}
+
+#topics .topic-infos figure img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.topic .topic-posts{
+    border: 1px solid orange;
+    background-color: gray;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* PAGE TOPIC */
+
+#banniere-topic{
+    height: 30vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-image: url("../img/banniere_belle_histoire2.jpg");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top; */
+    /* filter: grayscale(1); */
+    border-radius: 15px;
+    background-color: beige;
+}
+
+.post{
+    padding: 20px;
+    border: 2px solid blue;
+    background-color: var(--couleurPrincipale);
+    min-height: 10vh;
+    margin: 1vh 0 1vh 0;
+}
+
+.post .user-post-infos{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 2rem;
+}
+
+.post .user-post-infos figure{
+    width: 50px;
+    height: 50px;
+    background-color: green;
+}
+
+.post .user-post-infos figure img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }

@@ -4,8 +4,10 @@
 
 {% block body %}
 
-<div class="container-page">
-
+<div class="container-page forum-page">
+    <section id="banniere-forum">
+        <h1>Forum</h1>        
+    </section>
     <section class="creation">
         {% if app.user.isVerified %}
             <a href="{{ path('add_topic') }}">Créer un topic</a>
@@ -14,40 +16,31 @@
         {% endif %}        
     </section>
     <section id="topics">
-        <h1>Les topics</h1>
-
-        <table>
-            <tr>
-                <th>Titre</th>
-                <th>Messages</th>
-                <th>Date de création</th>
-                <th>Auteur</th>
-            </tr>
             {% if topics | length > 0 %}
                 {% for topic in topics %}
-                <div class="topic">
-                    <td>
-                        <a href="{{path('show_topic', {'slug': topic.slug}) }}">{{ topic.titre }}</a>                    
-                    </td>
-                    <td>
-                        0
-                    </td>
-                    <td>
-                        {{ topic.dateCreation | date('d-m-Y') }}
-                    </td>
-                    <td>
-                        {% if topic.auteur != null %}
-                            <a href="#">{{ topic.auteur }}</a>
-                        {% else %}
-                            <p>Utilisateur supprimé</p>
-                        {% endif %}
-                    </td>
-                </div>
+                    <div class="topic">
+                        <div class="topic-infos">
+                            <figure>
+                                <img src="{{ asset('img/default_user.png') }}" alt="">
+                            </figure>
+                            <div class="title-infos">
+                                <a href="{{path('show_topic', {'slug': topic.slug}) }}">{{ topic.titre }}</a>
+                                {% if topic.auteur != null %}                              
+                                    <p>Créé par <a href="#">{{ topic.auteur }}</a> le {{ topic.dateCreation | date('d-m-Y') }}</p> 
+                                {% else %}
+                                <p>Créé par utilisateur supprimé le {{ topic.dateCreation | date('d-m-Y') }}</p>
+                                {% endif %}    
+                            </div>
+                        </div>
+                        <div class="topic-posts">
+                            <i class="fa-regular fa-comment"></i>
+                            <p>0</p>
+                        </div>                 
+                    </div>
                 {% endfor %}    
             {% else %}
                 <p>Pas de topics pour le moment..</p>
             {% endif %}              
-        </table>
     </section>
     <div class="pagination">
         {{ knp_pagination_render(topics) }}
