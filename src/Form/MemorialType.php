@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Image;
 
 class MemorialType extends AbstractType
 {
@@ -80,7 +81,7 @@ class MemorialType extends AbstractType
                 'constraints' => [
                     /* On ne peut pas définir la validation des champs non mappés 
                     en utilisant des annontaions dans l'entité, On utilise donc les classes de contrainte php */
-                    new File([
+                    new Image([
                         'mimeTypes' => [
                             'image/jpeg',
                             'image/png',
