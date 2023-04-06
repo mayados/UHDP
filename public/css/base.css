@@ -242,10 +242,6 @@ nav{
     /* max-height: 70vh;  */
 }
 
-#bienvenue #carousel .element figure{
-    /* border: 1px solid green; */
-}
-
 #bienvenue #carousel figure img{
     height: 100%;
     width: 100%;
@@ -565,84 +561,59 @@ nav{
 
 .container-memoriaux{
     /* border: 2px solid blue; */
+    min-height: 50vh;
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
     justify-content: center;
-    gap: 5%;
+    flex-wrap: wrap;
+    gap: 3%;
+    padding-top: 40px;
 }
 
 .memorial-card{
-    border: 2px solid black;
-    width: 700px;
-    display: flex;
-    overflow: hidden;
-    border-radius: 5px;
-    margin-bottom: 20px;    
-    background-color: white;
-}
-
-.memorial-card a{
-    padding: 10px;
-    background-color: var(--couleurPrincipale);
-    border-radius: 5px;
-}
-
-.memorial-card .card-left{
-    /* border: 1px solid yellow; */
-    width: 300px;
-    text-align: center;
-}
-
-.memorial-card .card-right{
-    /* border: 1px solid red; */
-    width: 400px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    position: relative;
+    flex-wrap: wrap;
+    border-radius: 10px 10px 0px 0px;    
+    padding: 20px 10px 20px 10px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    transition: 0.5s;
+    width: 350px;
+    border: 2px solid rgb(194, 194, 194);      
+    background-color: white;
+    margin-top: 50px;
 }
 
-.memorial-card .card-right #bandeaux
-{
-    width: 60px;
-    height: 200px;
-    position: absolute;
-    border: 1px solid green;
-    rotate: -45deg;
-    display: flex;
-    top: -90px;
-    right: 0;
-    
-}
-
-.memorial-card .card-right #bandeaux .bandeau{
-    width: 20px;
+.memorial-card a {
     height: 100%;
-}
-
-.memorial-card .card-right #bandeau1{
-    background-color: rgb(243, 0, 0);
-}
-
-.memorial-card .card-right #bandeau2{
-    background-color: rgb(255, 196, 0);
-}
-
-.memorial-card .card-right #bandeau3{
-    background-color: rgb(1, 128, 255);
+    width: 300px;
 }
 
 .memorial-card figure{
-    height: 250px;
+    height: 300px;
     width: 300px;
-    padding: 10px;
+    border: 2px solid rgb(194, 194, 194);      
+
+    border-radius: 5px;
 }
 
-.memorial-card figure img{
+.memorial-card p{
+    text-align: center;
+    font-size: var(--figcaption);
+    font-weight: bold;
+    padding-top: 1.7rem;
+}
+
+.memorial-card img{
     height: 100%;
     width: 100%;
     object-fit: cover;
+}
+
+.memorial-card:hover{
+    filter: grayscale();
+    /* transform: scale(1.05); */
 }
 
 
