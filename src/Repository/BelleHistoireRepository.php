@@ -62,7 +62,7 @@ class BelleHistoireRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
 
-        $histoires = $this->paginatorInterface->paginate($data,$page,3);
+        $histoires = $this->paginatorInterface->paginate($data,$page,12);
 
         return $histoires;
     }

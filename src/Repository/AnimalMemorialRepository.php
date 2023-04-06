@@ -52,7 +52,7 @@ class AnimalMemorialRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
 
-        $memoriaux = $this->paginatorInterface->paginate($data,$page,6);
+        $memoriaux = $this->paginatorInterface->paginate($data,$page,16);
 
         return $memoriaux;
     }
@@ -128,7 +128,7 @@ class AnimalMemorialRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
 
-        $memoriaux = $this->paginatorInterface->paginate($data,$page,6);
+        $memoriaux = $this->paginatorInterface->paginate($data,$page,16);
         return $memoriaux;
     }
 
@@ -179,7 +179,7 @@ class AnimalMemorialRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
 
-        $memoriaux = $this->paginatorInterface->paginate($data,$page,6);
+        $memoriaux = $this->paginatorInterface->paginate($data,$page,16);
         return $memoriaux;
 
     }
