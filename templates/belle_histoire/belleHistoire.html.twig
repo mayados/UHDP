@@ -14,12 +14,21 @@
         {% include "_partials/_favorisHistoire.html.twig" %}
         <header>
             <h1>{{histoire.titre}}</h1>
-            {% if histoire.photo == null %}
+            {# {% if histoire.photo == null %}
                 <p>Pas de photo</p>
             {% else %}
             <figure>
                 <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">            
             </figure>
+            {% endif %} #}
+            {% if histoire.auteur == 'Antoine' %}
+            <figure>
+                <img src="{{histoire.photo}}" alt="photo de l'histoire">            
+            </figure>
+            {% else %}
+                <figure>
+                    <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">            
+                </figure>
             {% endif %}
             <p>Date de création {{ histoire.dateCreation | date('d-m-Y') }}</p>
             {% include "_partials/_share.html.twig" %}

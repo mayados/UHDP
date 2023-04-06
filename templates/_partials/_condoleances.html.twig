@@ -6,6 +6,7 @@
 <div id="container-condoleances" class="js-auto-refresh-content">
         <div class="condoleance-memorial">
                 <p>L'équipe d'Une Histoire de Pattes se joint à vous dans vos peines et vous adresse de sincères condoléances.</p>
+                <p>{{ memorial.dateCreation| date('d-m-Y') }}</p>  
         </div>
         {% if memorial.condoleances| length > 0 %}
         {% for condoleance in memorial.condoleances %}

@@ -8,6 +8,11 @@
     <section id="banniere-belle-histoire">
         <h1>Les belles histoires</h1>        
     </section>
+    <section id="genres-histoires">
+        {% for genre in genres %}
+            <a href="">{{ genre.nom }}</a>
+        {% endfor %}
+    </section>    
     <section class="creation">
         {% if app.user and app.user.isVerified %}
             <a href="{{ path('add_histoire') }}">Créer une belle histoire</a>
@@ -19,43 +24,16 @@
     </section>
 
     <section id="belles-histoires">
-
         <div id="container-histoires">
             {% for histoire in listeHistoires %}
-                {# <article class="histoire">
-                    <div class="histoire-left">
-                        <h2>{{ histoire.titre }}</h2>
-                        {% if histoire.photo == null %}
-                        <p>Pas de photo</p>
-                        {% else %}
-                        <figure>
-                            <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">                    
-                        </figure>
-                        {% endif %}                    
-                    </div>
-                    <div class="histoire-right">
-                        <p>{{ histoire.texte|slice(0, 100) }}...</p>
-                        {% if histoire.auteur != null %}
-                            <a href="#">
-                                <p>{{ histoire.auteur }}</p>  
-                            </a>
-                        {% else %}
-                            <p>Utilisateur supprimé</p>
-                        {% endif %}
-
-                        <a href="{{path('show_histoire', {'slug': histoire.slug}) }}">Voir l'histoire</a>                    
-                    </div>
-                </article> #}
                 <article class="belle-histoire-card">
-                    {# <a href="{{path('show_histoire', {'slug': histoire.slug}) }}">
-                        <figure>
-                            <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">                
-                        </figure>
-                        <p>{{ histoire.titre }}</p> 
-                    </a> #}
                     <div class="hr-media">
                         <figure>
-                            <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">                
+                            {% if histoire.auteur.id != 416 %}
+                            <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire"> 
+                            {% else %} 
+                            <img src="{{histoire.photo}}" alt="photo de l'histoire"> 
+                            {% endif %}
                         </figure>
                     </div>
                     <div class="hr-content">
@@ -65,14 +43,14 @@
                             <p>{{ histoire.howManyLikes}}</p>
                         </div>
                         <div class="hr-texte">
-                            <h3>{{ histoire.titre }}</h3>
+                            <h3><a href="{{path('show_histoire', {'slug': histoire.slug}) }}">{{ histoire.titre }}</a></h3>
                             <p>{{ histoire.texte|slice(0, 80) }}...</p>
                         </div>
                         <div class="hr-auteur">
                             <figure>
                                 <img src="" alt="">
                             </figure>
-                            <p>{{ histoire.auteur }}</p>
+                            <p>Auteur : {{ histoire.auteur }}</p>
                         </div>
                     </div>
                     <div class="share-content">

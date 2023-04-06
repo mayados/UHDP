@@ -660,7 +660,7 @@ nav{
 
 #memorial{
     margin-top: 3rem;
-    border: 2px solid pink;
+    /* border: 2px solid pink; */
     display: flex;
     flex-direction: column;
     gap: 3rem;
@@ -669,6 +669,35 @@ nav{
 
 #memorial h2{
     padding-bottom: 1rem;
+}
+
+#galerie-photo,
+#condoleances{
+    text-align: center;
+    padding: 5rem 0 5rem 0;
+}
+
+#galerie-photo h2,
+#condoleances h2{
+    padding-bottom: 2rem;
+}
+
+#condoleances{
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    margin-bottom: 5vh;
+}
+
+#container-condoleances{
+    min-height: 5vh;
+}
+
+.condoleance-memorial{
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+   border-bottom: 0.5px solid gray;
+    padding: 20px 10px 20px 10px;    
 }
 
 .showSoutient-content .unlikedPaw{
@@ -686,15 +715,36 @@ nav{
     width: 50%;
 }
 
-.condoleance-memorial{
-    border-bottom: 0.5px solid gray;
-    padding: 10px;
-}
-
 
                                                             /************  VUES CONCERNANT LES BELLES HISTOIRES *************/
                                                     
                     /****  PAGE BELLES HISTOIRES *****/
+
+#genres-histoires{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+    height: 5rem;
+}
+
+#genres-histoires a{
+    background-color: var(--couleurPrincipale);
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+}
+
+#genres-histoires a:hover{
+    color: var(--couleurPrincipale);
+    border: 1px solid var(--couleurPrincipale);
+    background-color: white;
+}
+
+.creation{
+    text-align: center;
+}
 
 #banniere-belle-histoire{
     height: 30vh;

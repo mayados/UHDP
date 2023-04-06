@@ -85,19 +85,22 @@
                     {{ form_end(formAddPhotoGalerie) }}
                 {% endif %}
             {% endif %}
-
-            {% for image in memorial.photos %}
-                <div class="image-galerie">
-                    <figure>
-                        <img src="{{ asset('uploads/imgGalerie/'~ image.photo) }}" alt="photo de l'animal">                        
-                    </figure>
-                    {% if memorial.auteur != null %}
-                        {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-                            <a href="{{path('remove_photo', {'idMemorial': memorial.id, 'id': image.id}) }}">Supprimer la photo</a>
+            {% if memorial.photos|length > 0 %}
+                {% for image in memorial.photos %}
+                    <div class="image-galerie">
+                        <figure>
+                            <img src="{{ asset('uploads/imgGalerie/'~ image.photo) }}" alt="photo de l'animal">                        
+                        </figure>
+                        {% if memorial.auteur != null %}
+                            {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+                                <a href="{{path('remove_photo', {'idMemorial': memorial.id, 'id': image.id}) }}">Supprimer la photo</a>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                </div>
-            {% endfor %}            
+                    </div>
+                {% endfor %} 
+            {% else %} 
+                    <p>La galerie ne contient aucune photo pour le moment</p>
+            {% endif %}
         </div>
     </section>
     <section id="condoleances">
