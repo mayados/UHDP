@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CommentBelleHistoireRepository;
+use App\Repository\GenreHistoireRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,13 +23,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class BelleHistoireController extends AbstractController
 {
     #[Route('/bellesHistoires', name: 'app_belles_histoires')]
-    public function index(BelleHistoireRepository $bhr, Request $request): Response
+    public function index(BelleHistoireRepository $bhr, GenreHistoireRepository $ghr, Request $request): Response
     {
 
+        $genres = $ghr->findAll();
         $listeHistoires = $bhr->findPaginatedHistoires($request->query->getInt('page',1));
 
         return $this->render('belle_histoire/bellesHistoires.html.twig', [
             'listeHistoires' => $listeHistoires,
+            'genres' => $genres
         ]);
 
     }
