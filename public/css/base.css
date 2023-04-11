@@ -746,7 +746,7 @@ nav{
     text-align: center;
 }
 
-#banniere-belle-histoire{
+#banniere-belles-histoires{
     height: 30vh;
     display: flex;
     justify-content: center;
@@ -759,7 +759,7 @@ nav{
     /* filter: grayscale(1); */
 }
 
-#banniere-belle-histoire h1{
+#banniere-belles-histoires h1{
     color: white;
     text-shadow: 1px 2px black;
 }
@@ -844,6 +844,104 @@ nav{
     justify-content: center;
     align-items: center;
 }
+
+                            /* BELLE HISTOIRE PAGE */
+#banniere-belle-histoire{
+    height: 30vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../img/banniere_belle_histoire2.jpg");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top;
+    /* filter: grayscale(1); */
+}
+
+#banniere-belle-histoire h1{
+    color: white;
+    text-shadow: 1px 2px black;
+}
+
+#histoire{
+    padding-top: 1%;
+}
+
+#histoire figure{
+    width: 400px;
+    height: 400px;
+}
+
+#histoire figure img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+#histoire header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#histoire header #histoire-interraction{
+    display: flex;
+    gap: 20px;
+    padding: 10px;
+}
+
+#histoire header #histoire-interraction .fa-paw,
+#histoire header #histoire-interraction .fa-star{
+    font-size: 1.2rem;    
+}
+
+#histoire header #histoire-interraction .share{
+    display: flex;
+    font-size: 1.2rem;
+    gap: 20px;
+}
+
+#histoire-texte{
+    padding: 2%;
+    text-align: justify;
+}
+
+#ajout-commentaire,
+#comment-histoire{
+    padding: 2%;
+}
+
+#comment-histoire .commentaire{
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 5px;
+}
+
+#comment-histoire .commentaire,
+#comment-histoire .commentaire .commentaire-content .comment-infos
+{
+    gap: 7px;
+    display: flex;
+    align-items: center;
+}
+
+
+#comment-histoire .commentaire .commentaire-photo figure{
+    height: 50px;
+    width: 50px;
+}
+
+#comment-histoire .commentaire .commentaire-photo figure img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+
+/* #histoire header .fa-paw{
+    font-size: 1rem;
+} */
 
 
 

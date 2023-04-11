@@ -10,10 +10,12 @@
 {% block body %}
 
 <div class="container-page js-refresh-page">
+    <section id="banniere-belle-histoire">
+        <h1>{{ histoire.titre }}</h1>
+    </section>
     <article id="histoire">
-        {% include "_partials/_favorisHistoire.html.twig" %}
+
         <header>
-            <h1>{{histoire.titre}}</h1>
             {# {% if histoire.photo == null %}
                 <p>Pas de photo</p>
             {% else %}
@@ -30,8 +32,12 @@
                     <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">            
                 </figure>
             {% endif %}
-            <p>Date de création {{ histoire.dateCreation | date('d-m-Y') }}</p>
-            {% include "_partials/_share.html.twig" %}
+            <div id="histoire-interraction">
+                <p>Date de création {{ histoire.dateCreation | date('d-m-Y') }}</p>
+                {% include "_partials/_favorisHistoire.html.twig" %}            
+                {% include "_partials/_share.html.twig" %}
+                {% include "_partials/_likeHistoire.html.twig" %}                     
+            </div>
         </header>
         <section id="histoire-texte">
             <p>{{ histoire.texte }}</p>
@@ -42,7 +48,11 @@
                 {% endif %}
             {% endif %}
         </section>
-        {% include "_partials/_likeHistoire.html.twig" %}
+        <section id="comment-histoire" class="js-auto-refresh-content">
+            <h2>Commentaires</h2>
+                {% include "_partials/_commentaires.html.twig" %}
+                
+        </section>             
         <section id="ajout-commentaire">
             <h2>Ajouter un commentaire</h2>        
             {% if app.user and app.user.isVerified %}
@@ -62,11 +72,7 @@
                 <p>Veuillez vous inscrire ou vous connecter pour pouvoir commenter</p>
             {% endif %}            
         </section>             
-        <section id="comment-histoire" class="js-auto-refresh-content">
-            <h2>Commentaires</h2>
-                {% include "_partials/_commentaires.html.twig" %}
-                
-        </section>             
+        
  
     </article>
 </div>
