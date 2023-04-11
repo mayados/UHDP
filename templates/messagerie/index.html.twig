@@ -4,25 +4,29 @@
 
 {% block body %}
 <div class="container-page">
-    <h1>Messagerie</h1>
-
-    <a href="{{ path('app_messagerie') }}">Accueil messagerie</a>
-    <a href="{{ path('app_correspondants') }}">Correspondants</a>
-    {# Dans nos classés, nous auront les personnes dont nous avons lus les messages mais n'avons pas répondu = ils ne sont pas dans notre collection de destinataires #}
-    <a href="{{ path('app_nonClasses') }}">Non classés</a>
- 
-    {% if messagesNonLus %}
-        <h2>Messages non lus de {{ messagesNonLus| length }} personnes:</h2>
-        {# Voir si on ne fait pas un group By pour afficher les conversations ayant des nouveaux messages #}
-        {% for message in messagesNonLus %}
-            <div>
-                <a href="{{ path('app_conversation', {id:message.idExp}) }}">{{ message.expediteur }}</a>            
-            </div>
-            <br>     
-        {% endfor %}  
-    {% else %}
-        <h2>Non lus :</h2>
-        <p>Rien à afficher</p>
-    {% endif %}
+    <section class="banniere-messagerie">
+        <h1>Messagerie</h1>        
+    </section>
+    <section class="messagerie-links">
+        {# <a href="{{ path('app_messagerie') }}">Accueil messagerie</a> #}
+        <a href="{{ path('app_correspondants') }}">Correspondants</a>
+        {# Dans nos classés, nous auront les personnes dont nous avons lus les messages mais n'avons pas répondu = ils ne sont pas dans notre collection de destinataires #}
+        <a href="{{ path('app_nonClasses') }}">Invitations par message</a>        
+    </section>
+    <section class="messagerie-content">
+        {% if messagesNonLus %}
+            <h2>Messages non lus de {{ messagesNonLus| length }} personnes:</h2>
+            {# Voir si on ne fait pas un group By pour afficher les conversations ayant des nouveaux messages #}
+            {% for message in messagesNonLus %}
+                <div>
+                    <a href="{{ path('app_conversation', {id:message.idExp}) }}">{{ message.expediteur }}</a>            
+                </div>
+                <br>     
+            {% endfor %}  
+        {% else %}
+            <h2>Messages non lus :</h2>
+            <p>Rien à afficher</p>
+        {% endif %}        
+    </section>
 </div>
 {% endblock %}

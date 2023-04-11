@@ -4,22 +4,23 @@
 
 {% block body %}
 <div class="container-page">
-    <h1>Non classés</h1>
-
-    <a href="{{ path('app_messagerie') }}">Accueil messagerie</a>
-    <a href="{{ path('app_correspondants') }}">Correspondants</a>
-    {# Dans nos classés, nous auront les personnes dont nous avons lus les messages mais n'avons pas répondu = ils ne sont pas dans notre collection de destinataires #}
-    <a href="{{ path('app_nonClasses') }}">Non classés</a>
-
-    {% for contact in nonClasses %}
-    <div>
-        {# {{dump(contact)}}<br> #}
-        <a href="{{ path('app_conversation', {id:contact.id}) }}">{{ contact.pseudo }}</a>
-    </div>
-
-    {# Vérifier if destinataire not in app.user.messagesRecus expediteur id #}
-        
-    {% endfor %}
-
+    <section class="banniere-messagerie">
+        <h1>Messagerie</h1>
+    </section>
+    <section class="messagerie-links">
+        <a href="{{ path('app_messagerie') }}">Accueil messagerie</a>
+        <a href="{{ path('app_correspondants') }}">Correspondants</a>
+        {# Dans nos classés, nous auront les personnes dont nous avons lus les messages mais n'avons pas répondu = ils ne sont pas dans notre collection de destinataires #}  
+    </section>
+    <section class="messagerie-content">
+        <h2>Invitations par message</h2>
+        {% for contact in nonClasses %}
+        <div>
+            {# {{dump(contact)}}<br> #}
+            <a href="{{ path('app_conversation', {id:contact.id}) }}">{{ contact.pseudo }}</a>
+        </div>
+        {# Vérifier if destinataire not in app.user.messagesRecus expediteur id #}
+        {% endfor %}        
+    </section>
 </div>
 {% endblock %}
