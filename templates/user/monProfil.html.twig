@@ -5,16 +5,21 @@
 {% block body %}
 
 <div class="container-page">
+    <div id="banniere-mon-profil">
+        <div class="profil-picture">
+            <figure>
+                {% if not user.photo %}
+                    <img src="{{ asset('img/default_user.png') }}" alt="">
+                {% else %}
+                    <img src="{{ asset('uploads/imgUserProfil/'~ user.photo) }}" alt="">   
+                {% endif %} 
+                <figcaption>{{ user.pseudo }}</figcaption>
+            </figure>                 
+        </div>
+    </div>
     <section id="infos-mon-profil">
         <h1>Mon profil</h1>
-        <figure>
-            {% if not user.photo %}
-                <img src="{{ asset('img/default_user.png') }}" alt="">
-            {% else %}
-                <img src="{{ asset('uploads/imgUserProfil/'~ user.photo) }}" alt="">   
-            {% endif %} 
-            <figcaption>{{ user.pseudo }}</figcaption>
-        </figure>     
+
         <a href="{{ path('edit_profile') }}">Paramètres du profil</a>   
     </section>
 
