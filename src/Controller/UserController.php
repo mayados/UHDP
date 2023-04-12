@@ -55,13 +55,21 @@ class UserController extends AbstractController
         $user = $this->getUser();
 
         $memoriaux = $amr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);               
-        $histoires = $bhr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);               
+        // $histoires = $bhr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);
+        $histoiresWaiting = $bhr->findMyWaitings($user);               
+        $histoiresDraft = $bhr->findMyDrafts($user);               
+        $histoiresApprouved = $bhr->findMyApprouved($user);               
+        $histoiresDisapprouved = $bhr->findMyDisapprouved($user);                     
         $topics = $tr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);  
 
         return $this->render('user/monProfil.html.twig', [
             'user' => $user,
             'memoriaux' => $memoriaux,
-            'histoires' => $histoires,
+            // 'histoires' => $histoires,
+            'histoiresWaiting' => $histoiresWaiting,
+            'histoiresDraft' => $histoiresDraft,
+            'histoiresApprouved' => $histoiresApprouved,
+            'histoiresDisapprouved' => $histoiresDisapprouved,
             'topics' => $topics,
         ]); 
 
