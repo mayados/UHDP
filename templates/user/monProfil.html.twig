@@ -13,16 +13,19 @@
                 {% else %}
                     <img src="{{ asset('uploads/imgUserProfil/'~ user.photo) }}" alt="">   
                 {% endif %} 
-                <figcaption>{{ user.pseudo }}</figcaption>
             </figure>                 
         </div>
     </div>
     <section id="infos-mon-profil">
-        <h1>Mon profil</h1>
-
-        <a href="{{ path('edit_profile') }}">Paramètres du profil</a>   
+        <h1>{{ user.pseudo }}</h1>
+        <a href="{{ path('edit_profile') }}"><i class="fa-solid fa-gear"></i></a>   
     </section>
-
+    <section id="rubriques">
+        <a id="mesMemoriauxLink" href="#">Mémoriaux</a>
+        <a id="mesHistoiresLink" href="#">Belles histoires</a>
+        <a id="mesTopicsLink" href="#">Topics</a>
+        <a id="mesFavorisLink" href="#">Favoris</a>
+    </section>
     <section id="mes-memoriaux">
         <h2>Mes mémoriaux</h2>
         {% for memorial in memoriaux %}
@@ -36,21 +39,46 @@
         {% endfor %}
     </section>
     <section id="mes-histoires">
-        <h2>Mes belles histoires</h2>
-        {% if histoires %}
-            {% for histoire in histoires %}
-            <div class="histoire-user">
-                <h3>{{ histoire.titre }}</h3>
-                <figure>
-                    <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="">
-                </figure>
-                <a href="{{path('show_histoire', {'slug': histoire.slug}) }}">Voir</a>
-            </div>
+         <section id="histoires-en-attente">
+            <h2>Mes belles histoires</h2>
+            {% for histoire in histoiresWaiting %}
+
+                <div class="histoire-user">
+                    <p>{{ histoire.titre }}</p>
+                </div>
             {% endfor %}
-    {% else %}
-        <p>Pas de topics</p>
-    {% endif %}       
+        </section> 
+         <section id="histoires-brouillon">
+            <h2>Brouillons</h2>
+            {% for histoire in histoiresDraft %}
+                <div class="histoire-user">
+                    <p>{{ histoire.titre }}</p>
+                    <a href="{{path('edit_histoire', {'slug': histoire.slug}) }}">Editer</a>                
+                    <a href="{{path('publish_histoire', {'slug': histoire.slug}) }}">Publier</a>
+                </div>
+                <br>
+            {% endfor %}
+        </section> 
+         <section id="histoires-publiees">
+            <h2>Belles histoires publiées</h2>
+            {% for histoire in histoiresApprouved %}
+                <div class="histoire-user">
+                    <p>{{ histoire.titre }}</p>
+                    <a href="{{path('show_histoire', {'slug': histoire.slug}) }}">Voir</a>
+                    <a href="{{path('edit_histoire', {'slug': histoire.slug}) }}">Editer</a> 
+                </div>
+            {% endfor %}
+        </section> 
+         <section id="histoires_desapprouvees">
+            <h2>Histoires désapprouvées</h2>
+            {% for histoire in histoiresDisapprouved %}
+                <div class="histoire-user">
+                    <p>{{ histoire.titre }}</p>
+                </div>
+            {% endfor %}     
+        </section>     
     </section>
+
     <section id="mes-topics">
         <h2>Mes topics</h2>
         {% if topics %}
@@ -63,6 +91,12 @@
         {% else %}
             <p>Pas de topics</p>
         {% endif %}
+    </section>
+    <section id="mes-favoris">
+        <h2>Mes favoris</h2>
+        {% for histoire in user.getHistoiresFavorites %}
+            <p>{{ histoire.titre }}</p>
+        {% endfor %}
     </section>
 </div>
 {% endblock %}
