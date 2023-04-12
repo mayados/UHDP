@@ -41,5 +41,49 @@ document.addEventListener('DOMContentLoaded', () => {
         })        
     }
 
+    let mesMemoriauxLink = document.querySelector('#mesMemoriauxLink');
+    let mesHistoiresLink = document.querySelector('#mesHistoiresLink');    
+    let mesTopicsLink = document.querySelector('#mesTopicsLink');    
+    let mesFavorisLink = document.querySelector('#mesFavorisLink');    
+    if(mesMemoriauxLink || mesHistoiresLink || mesTopicsLink){
+        let mesMemoriaux = document.querySelector('#mes-memoriaux');
+        let mesHistoires = document.querySelector('#mes-histoires');        
+        let mesTopics = document.querySelector('#mes-topics');        
+        let mesFavoris = document.querySelector('#mes-favoris');        
+        // console.log('uhuh')
+        mesMemoriauxLink.addEventListener('click',e =>{
+            e.preventDefault();
+            mesMemoriaux.style.display='block';
+            mesHistoires.style.display='none';
+            mesTopics.style.display='none';
+            mesFavoris.style.display='none';
+        })
+
+        mesHistoiresLink.addEventListener('click',e =>{
+            e.preventDefault();
+            mesHistoires.style.display='block';
+            mesMemoriaux.style.display='none';
+            mesTopics.style.display='none';
+            mesFavoris.style.display='none';
+        })        
+
+        mesTopicsLink.addEventListener('click',e =>{
+            e.preventDefault();
+            mesTopics.style.display='block';
+            mesMemoriaux.style.display='none';
+            mesHistoires.style.display='none';
+            mesFavoris.style.display='none';
+        })        
+
+        mesFavorisLink.addEventListener('click',e =>{
+            e.preventDefault();
+            mesFavoris.style.display='block';
+            mesTopics.style.display='none';
+            mesMemoriaux.style.display='none';
+            mesHistoires.style.display='none';
+        })        
+    }
+
+
 })
 
