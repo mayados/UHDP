@@ -32,7 +32,6 @@ class MemorialType extends AbstractType
             ])
             ->add('sexe', ChoiceType::class, [
                 'choices' => [
-                    'Inconnu' => 'Inconnu',
                     'Male' => 'Male',
                     'Femelle' => 'Femelle',
                 ],
