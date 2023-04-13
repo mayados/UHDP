@@ -31,7 +31,7 @@ class AnimalMemorial
     private ?string $nom = null;
 
     #[ORM\Column(length: 10, nullable: true)]
-    #[Assert\Choice(['Inconnu','Male','Femelle'])]
+    #[Assert\Choice(['Male','Femelle'])]
     private ?string $sexe = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
