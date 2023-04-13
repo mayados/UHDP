@@ -106,8 +106,14 @@
     <section id="condoleances">
         <h2>Condoléances</h2>
         {% if app.user %}
-            <h3>Ajouter un message de condoléances</h3>
-            {% include '_partials/_refreshForm.html.twig' %}  
+        <div id="ajout-message">
+            <p >Ajouter un message de condoléances <i class="fa-solid fa-pen"></i></p>
+        </div>
+
+            <div id="container-form-condoleances">
+                {% include '_partials/_refreshForm.html.twig' %}                  
+            </div>
+
         {% endif %}
         {% include '_partials/_condoleances.html.twig' %} 
     </section>

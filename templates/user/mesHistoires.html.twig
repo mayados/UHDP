@@ -5,46 +5,98 @@
 {% block body %}
 
 <div class="container-page">
-    <section id="infos-mon-profil">
-        <h1>Histoires en attente</h1> 
-        {% for histoire in histoiresWaiting %}
-
-            <div class="histoire-user">
-                <p>{{ histoire.titre }}</p>
-                {# <a href="{{path('show_histoire', {'id': histoire.id}) }}">Voir</a> #}
-            </div>
-        {% endfor %}
+    <section id="banniere-belle-histoire">
+        <h1>Mes belles histoires</h1>
     </section>
-
-    <section id="mes-memoriaux">
-        <h2>Brouillons</h2>
-        {% for histoire in histoiresDraft %}
-            <div class="histoire-user">
-                <p>{{ histoire.titre }}</p>
-                <a href="{{path('edit_histoire', {'slug': histoire.slug}) }}">Editer</a>                
-                <a href="{{path('publish_histoire', {'slug': histoire.slug}) }}">Publier</a>
-            </div>
-            <br>
-        {% endfor %}
+    <div class="back">
+        <a href="{{path('my_profile') }}"><i class="fa-solid fa-arrow-left-long"></i> Retourner au profil</a>        
+    </div>
+    <section class="rubriques">
+        <a id="mesBrouillonsLink" href="">Brouillons ({{ histoiresDraft|length }})</a>
+        <a  id="mesAttentesLink" href="">En attente ({{ histoiresWaiting|length }})</a>
+        <a id="mesPublieesLink" href="#">Publiées ({{ histoiresApprouved|length }})</a>
+        <a id="mesDesapprouveesLink" href="#">Désapprouvées ({{ histoiresDisapprouved|length }})</a>
     </section>
     <section id="mes-histoires">
-        <h2>Belles histoires publiées</h2>
-        {% for histoire in histoiresApprouved %}
-            <div class="histoire-user">
-                <p>{{ histoire.titre }}</p>
-                <a href="{{path('show_histoire', {'slug': histoire.slug}) }}">Voir</a>
-                <a href="{{path('edit_histoire', {'slug': histoire.slug}) }}">Editer</a> 
-            </div>
-        {% endfor %}
-    </section>
-    <section id="mes-topics">
-        <h2>Histoires désapprouvées</h2>
-        {% for histoire in histoiresDisapprouved %}
-            <div class="histoire-user">
-                <p>{{ histoire.titre }}</p>
-                {# <a href="{{path('show_histoire', {'id': histoire.id}) }}">Voir</a> #}
-            </div>
-        {% endfor %}
-    </section>
+        <section id="histoires-en-attente" class="contenu-histoires-rubriques">
+           <h2>Histoires en attente</h2>
+           {% if histoiresWaiting|length > 0 %}
+               {% for histoire in histoiresWaiting %}
+                   <div class="histoire-user">
+                       <p>{{ histoire.titre }}</p>
+                   </div>
+               {% endfor %}
+           {% else %}
+                   <p class="nothing">Rien à afficher</p>
+           {% endif %}
+       </section> 
+        <section id="histoires-brouillon" class="contenu-histoires-rubriques">
+           <h2>Histoires en brouillons</h2>
+           {% if histoiresDraft|length > 0 %}
+               {% for histoire in histoiresDraft %}
+                   <div class="histoire-user">
+                       <p>{{ histoire.titre }}</p>
+                       <a href="{{path('edit_histoire', {'slug': histoire.slug}) }}">Editer</a>                
+                       <a href="{{path('publish_histoire', {'slug': histoire.slug}) }}">Publier</a>
+                   </div>
+                   <br>
+               {% endfor %}
+           {% else %}
+                   <p class="nothing">Rien à afficher</p>
+           {% endif %}
+       </section> 
+        <section id="histoires-publiees" class="contenu-histoires-rubriques">
+           <h2>Histoires publiées</h2>
+           <div class="container-mes-approuvees">
+               {% if histoiresApprouved|length > 0 %}
+                   {% for histoire in histoiresApprouved %}
+                       <article class="belle-histoire-card">
+                           <div class="hr-media">
+                               <figure>
+                                   <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire"> 
+                               </figure>
+                           </div>
+                           <div class="hr-content">
+                               <div class="hr-infos">
+                                   <p>{{ histoire.genre }}</p>
+                                   <p>{{ histoire.dateCreation|date('d-m-Y') }}</p>
+                                   <p>{{ histoire.howManyLikes}}</p>
+                               </div>
+                               <div class="hr-texte">
+                                   <h3><a href="{{path('show_histoire', {'slug': histoire.slug}) }}">{{ histoire.titre }}</a></h3>
+                                   <p>{{ histoire.texte|slice(0, 80) }}...</p>
+                               </div>
+                               <div class="hr-auteur">
+                                   <figure>
+                                       <img src="" alt="">
+                                   </figure>
+                                   <p>Auteur : {{ histoire.auteur }}</p>
+                               </div>
+                           </div>
+                           <div class="share-content">
+                               <i class="fa-solid fa-share-nodes"></i>
+                           </div>
+                       </article>
+                       {# <a href="{{path('show_histoire', {'slug': histoire.slug}) }}">Voir</a>
+                       <a href="{{path('edit_histoire', {'slug': histoire.slug}) }}">Editer</a>  #}
+                   {% endfor %}    
+               {% else %}            
+                       <p class="nothing">Rien à afficher</p>
+               {% endif %}
+           </div>
+       </section> 
+        <section id="histoires_desapprouvees" class="contenu-histoires-rubriques">
+           <h2>Histoires désapprouvées</h2>
+           {% if histoiresDisapprouved|length > 0 %}
+               {% for histoire in histoiresDisapprouved %}
+                   <div class="histoire-user">
+                       <p>{{ histoire.titre }}</p>
+                   </div>
+               {% endfor %}    
+           {% else %} 
+                   <p class="nothing">Rien à afficher</p>
+           {% endif %}
+       </section>     
+   </section>
 </div>
 {% endblock %}

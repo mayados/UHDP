@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<div class="container-page">
+<div class="container-page profil-page">
     <div id="banniere-mon-profil">
         <div class="profil-picture">
             <figure>
@@ -20,65 +20,21 @@
         <h1>{{ user.pseudo }}</h1>
         <a href="{{ path('edit_profile') }}"><i class="fa-solid fa-gear"></i></a>   
     </section>
-    <section id="rubriques">
-        <a id="mesMemoriauxLink" href="#">Mémoriaux</a>
-        <a id="mesHistoiresLink" href="#">Belles histoires</a>
-        <a id="mesTopicsLink" href="#">Topics</a>
-        <a id="mesFavorisLink" href="#">Favoris</a>
+    <section class="rubriques">
+        <a  href="{{path('my_histoires') }}">Gérer mes Belles histoires</a>
     </section>
     <section id="mes-memoriaux">
         <h2>Mes mémoriaux</h2>
-        {% for memorial in memoriaux %}
-        <div class="memorial-user">
-            <h3>{{ memorial.nom }}</h3>              
-            <figure>
-                <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="">
-            </figure>
-            <a href="{{path('show_memorial', {'id': memorial.id}) }}">Voir</a>
+        <div class="container-memoriaux">
+            {% if memoriaux|length > 0 %}
+                {% for memorial in memoriaux %}
+                    {% include '_partials/_memorialCard.html.twig' with {memorial:memorial} only %}
+                {% endfor %}   
+            {% else %}    
+                <p>Pas de mémoriaux créés</p>
+            {% endif %}
         </div>
-        {% endfor %}
     </section>
-    <section id="mes-histoires">
-         <section id="histoires-en-attente">
-            <h2>Mes belles histoires</h2>
-            {% for histoire in histoiresWaiting %}
-
-                <div class="histoire-user">
-                    <p>{{ histoire.titre }}</p>
-                </div>
-            {% endfor %}
-        </section> 
-         <section id="histoires-brouillon">
-            <h2>Brouillons</h2>
-            {% for histoire in histoiresDraft %}
-                <div class="histoire-user">
-                    <p>{{ histoire.titre }}</p>
-                    <a href="{{path('edit_histoire', {'slug': histoire.slug}) }}">Editer</a>                
-                    <a href="{{path('publish_histoire', {'slug': histoire.slug}) }}">Publier</a>
-                </div>
-                <br>
-            {% endfor %}
-        </section> 
-         <section id="histoires-publiees">
-            <h2>Belles histoires publiées</h2>
-            {% for histoire in histoiresApprouved %}
-                <div class="histoire-user">
-                    <p>{{ histoire.titre }}</p>
-                    <a href="{{path('show_histoire', {'slug': histoire.slug}) }}">Voir</a>
-                    <a href="{{path('edit_histoire', {'slug': histoire.slug}) }}">Editer</a> 
-                </div>
-            {% endfor %}
-        </section> 
-         <section id="histoires_desapprouvees">
-            <h2>Histoires désapprouvées</h2>
-            {% for histoire in histoiresDisapprouved %}
-                <div class="histoire-user">
-                    <p>{{ histoire.titre }}</p>
-                </div>
-            {% endfor %}     
-        </section>     
-    </section>
-
     <section id="mes-topics">
         <h2>Mes topics</h2>
         {% if topics %}
@@ -89,14 +45,18 @@
             </div>
             {% endfor %}
         {% else %}
-            <p>Pas de topics</p>
+            <p>Rien à afficher</p>
         {% endif %}
     </section>
     <section id="mes-favoris">
         <h2>Mes favoris</h2>
-        {% for histoire in user.getHistoiresFavorites %}
-            <p>{{ histoire.titre }}</p>
-        {% endfor %}
+        {% if user.getHistoiresFavorites|length > 0  %}
+            {% for histoire in user.getHistoiresFavorites %}
+                <p>{{ histoire.titre }}</p>
+            {% endfor %}
+        {% else %}
+            <p>Rien en favoris pour le moment</p>
+        {% endif %}
     </section>
 </div>
 {% endblock %}

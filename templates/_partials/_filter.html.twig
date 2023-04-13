@@ -2,11 +2,22 @@
     <div class="form-search">
         {{ form_row(formSearch.q) }}        
     </div>
-    <div class="form-elements">
-    {{ form_row(formSearch.categories) }}
-    {{ form_row(formSearch.sexe) }}
-    {{ form_row(formSearch.anneeDeces) }}
-    {{ form_row(formSearch.moisDeces) }}        
+    <div class="form-container-flex-check">
+        <div class="form-element">
+            {{ form_row(formSearch.categories) }}            
+        </div>            
+        <div class="form-element">
+            {{ form_row(formSearch.sexe) }}            
+        </div>
+        <div class="form-element">
+            {{ form_row(formSearch.anneeDeces) }}            
+        </div>
+        <div class="form-element">
+            {{ form_row(formSearch.moisDeces) }}               
+        </div>            
+        <div class="form-element">
+            {{ form_row(formSearch.jourDeces) }}               
+        </div>            
     </div>
     {# {{ form_row(formSearch.submit) }} #}
 {{ form_end(formSearch) }}
