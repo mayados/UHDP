@@ -112,7 +112,6 @@ class BelleHistoireRepository extends ServiceEntityRepository
         ];
 
         return $this->createQueryBuilder('h')
-        ->select(['h.id','h.slug','h.titre'])
         ->where('h.etat LIKE :state')
         ->andWhere('h.auteur = :user')
         ->setParameters($parameters)
