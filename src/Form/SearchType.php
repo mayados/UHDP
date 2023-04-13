@@ -24,7 +24,7 @@ class SearchType extends AbstractType
                 'required' => false,
                 'empty_data' => '',
                 'attr' => [
-                'placeholder' => 'Rechercher un mémorial' ,               
+                'placeholder' => "Nom de l'animal" ,               
                 ]
             ])
             ->add('categories', EntityType::class,[
@@ -37,28 +37,30 @@ class SearchType extends AbstractType
             ])
             ->add('sexe', ChoiceType::class, [
                 'choices' => [
-                    'Inconnu' => 'Inconnu',
                     'Male' => 'Male',
                     'Femelle' => 'Femelle',
                 ],
                 'expanded' => true,
                 'multiple' => true,
+                'label' => false,
             ])
             ->add('anneeDeces', ChoiceType::class, [
                 'choices' => $this->buildYearChoices() ,
                 'placeholder' => '',
                 'required' => false,
+                'label' => 'Année de décès ',
             ])
             ->add('moisDeces', ChoiceType::class, [
                 'choices' => $this->buildMonthChoices(),
                 'placeholder' => '',
                 'required' => false,
-
+                'label' => 'Mois de décès ',
             ])
             ->add('jourDeces',ChoiceType::class,[
                 'choices' => range(0,31),
                 'placeholder' => '',
                 'required' => false,
+                'label' => 'Jour de décès ',
             ])
             // ->add('submit', SubmitType::class)
         ;
