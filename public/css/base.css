@@ -350,6 +350,7 @@ nav{
     border: 2px solid black;      
     background-color: white;
     margin-bottom: 30px;
+    filter: grayscale();    
 }
 
 .memorial-recent a {
@@ -378,7 +379,7 @@ nav{
 }
 
 .memorial-recent:hover{
-    filter: grayscale();
+    filter: none;
     /* transform: scale(1.05); */
 }
 
@@ -526,25 +527,50 @@ nav{
 
 /* SECTION RECHERCHE */
 .recherche{
-    border: 1px solid green;
+    /* border: 1px solid green; */
     display: none;
+    position: relative;
+    padding: 1rem;
+    border-bottom: 1px dotted var(--couleurPrincipale);
 }
 
 .recherche form{
-    border: 2px solid pink;
+    /* border: 2px solid pink; */
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .recherche form .form-search{
-    border: 2px solid pink;
+    /* border: 2px solid pink; */
+    padding: 1rem 1rem 3rem 1rem;
 }
 
-.recherche form .form-elements{
+.recherche form .form-search #search_q{
+    /* border: 2px solid pink; */
+    height: 2rem;
+    padding-left: 0.3rem;
+}
+
+.form-container-flex-check{
+    width: 100vw;
     display: flex;
-    justify-content: space-between;
-    width: 100%;
+    justify-content: space-evenly;
+}
+
+#search_categories_1,
+#search_categories_2,
+#search_categories_3,
+#search_sexe_0,
+#search_sexe_1{
+    margin-left: 0.9rem;
+}
+
+.close{
+    position: absolute;
+    top: 5px;
+    right: 1rem;
+    font-size: 1.3rem;
 }
 
 .visible{
@@ -687,6 +713,13 @@ nav{
     margin-bottom: 5vh;
 }
 
+#condoleances #ajout-message{
+    cursor: pointer;
+    padding: 10px 20px 10px 20px;
+    border: 1px solid blue;
+    width: 300px;
+}
+
 #container-condoleances{
     min-height: 5vh;
 }
@@ -710,9 +743,15 @@ nav{
     color: blue;
 }
 
+#container-form-condoleances{
+    border: 3px solid red;   
+    width: 80%; 
+    margin: 0 auto;
+    display: none;
+}
+
 #condoleances form{
-    border: 3px solid red;
-    width: 50%;
+    width: 100%;
 }
 
 
@@ -1095,6 +1134,11 @@ nav{
 
         /*** PAGE MON PROFIL *****/
 
+.profil-page{
+    background-color: #FAE5D3;
+    /* background-color: #D3FFF9; */
+}
+
 #banniere-mon-profil{
     height: 20vh;
     display: flex;
@@ -1140,21 +1184,63 @@ nav{
     font-size: 1.5rem;
 }
 
-#rubriques{
+.rubriques{
     /* display: flex;
     justify-content: center; */
     text-align: center;
 }
 
-#rubriques a{
-    background-color: yellow;
+.rubriques a{
+    background-color: #D3FFF9;
+    border-radius: 5px;
     padding: 5px 10px 5px 10px;
-
 }
 
 #mes-memoriaux,
-#mes-histoires,
 #mes-topics,
 #mes-favoris{
+    text-align: center;
+    padding: 3rem 0 3rem 0;    
+}
+
+
+
+/* PAGE MES HISTOIRES */
+
+.back{
+    text-align: center;
+    padding: 1rem 1rem 3rem 1rem;
+}
+
+#mes-histoires{
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    text-align: center;
+    padding: 3rem 0 3rem 0;    
+}
+
+#histoires-brouillon,
+#histoires-en-attente,       
+#histoires-publiees,        
+#histoires_desapprouvees{
     display: none;
+} 
+
+.container-mes-approuvees{
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 3%;
+    padding-top: 40px;
+}
+
+.contenu-histoires-rubriques{
+    min-height: 10vh;
+}
+
+.nothing{
+    padding: 2rem;
 }
