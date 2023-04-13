@@ -41,46 +41,58 @@ document.addEventListener('DOMContentLoaded', () => {
         })        
     }
 
-    let mesMemoriauxLink = document.querySelector('#mesMemoriauxLink');
-    let mesHistoiresLink = document.querySelector('#mesHistoiresLink');    
-    let mesTopicsLink = document.querySelector('#mesTopicsLink');    
-    let mesFavorisLink = document.querySelector('#mesFavorisLink');    
-    if(mesMemoriauxLink || mesHistoiresLink || mesTopicsLink){
-        let mesMemoriaux = document.querySelector('#mes-memoriaux');
-        let mesHistoires = document.querySelector('#mes-histoires');        
-        let mesTopics = document.querySelector('#mes-topics');        
-        let mesFavoris = document.querySelector('#mes-favoris');        
-        // console.log('uhuh')
-        mesMemoriauxLink.addEventListener('click',e =>{
+    const message = document.querySelector('#ajout-message');
+    if(message){
+        const formulaireCondoleances = document.querySelector('#container-form-condoleances');
+        const close = document.querySelector('.close');
+
+        message.addEventListener('click', e =>{
             e.preventDefault();
-            mesMemoriaux.style.display='block';
-            mesHistoires.style.display='none';
-            mesTopics.style.display='none';
-            mesFavoris.style.display='none';
+            formulaireCondoleances.style.display='block';
+            message.style.display='none'
+        })
+    }
+
+    let mesBrouillonsLink = document.querySelector('#mesBrouillonsLink');
+    let mesAttentesLink = document.querySelector('#mesAttentesLink');    
+    let mesPublieesLink = document.querySelector('#mesPublieesLink');    
+    let mesDesapprouveesLink = document.querySelector('#mesDesapprouveesLink');    
+    if(mesBrouillonsLink || mesAttentesLink || mesPublieesLink || mesDesapprouveesLink){
+        let mesBrouillons = document.querySelector('#histoires-brouillon');
+        let mesAttentes = document.querySelector('#histoires-en-attente');        
+        let mesPubliees = document.querySelector('#histoires-publiees');        
+        let mesDesapprouvees = document.querySelector('#histoires_desapprouvees');        
+        // console.log('uhuh')
+        mesBrouillonsLink.addEventListener('click',e =>{
+            e.preventDefault();
+            mesBrouillons.style.display='block';
+            mesAttentes.style.display='none';
+            mesPubliees.style.display='none';
+            mesDesapprouvees.style.display='none';
         })
 
-        mesHistoiresLink.addEventListener('click',e =>{
+        mesAttentesLink.addEventListener('click',e =>{
             e.preventDefault();
-            mesHistoires.style.display='block';
-            mesMemoriaux.style.display='none';
-            mesTopics.style.display='none';
-            mesFavoris.style.display='none';
+            mesAttentes.style.display='block';
+            mesBrouillons.style.display='none';
+            mesPubliees.style.display='none';
+            mesDesapprouvees.style.display='none';
         })        
 
-        mesTopicsLink.addEventListener('click',e =>{
+        mesPublieesLink.addEventListener('click',e =>{
             e.preventDefault();
-            mesTopics.style.display='block';
-            mesMemoriaux.style.display='none';
-            mesHistoires.style.display='none';
-            mesFavoris.style.display='none';
+            mesBrouillons.style.display='none';
+            mesAttentes.style.display='none';
+            mesPubliees.style.display='block';
+            mesDesapprouvees.style.display='none';
         })        
 
-        mesFavorisLink.addEventListener('click',e =>{
+        mesDesapprouveesLink.addEventListener('click',e =>{
             e.preventDefault();
-            mesFavoris.style.display='block';
-            mesTopics.style.display='none';
-            mesMemoriaux.style.display='none';
-            mesHistoires.style.display='none';
+            mesBrouillons.style.display='none';
+            mesAttentes.style.display='none';
+            mesPubliees.style.display='none';
+            mesDesapprouvees.style.display='block';
         })        
     }
 
