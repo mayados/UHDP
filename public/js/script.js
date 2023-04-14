@@ -51,6 +51,30 @@ document.addEventListener('DOMContentLoaded', () => {
             formulaireCondoleances.style.display='block';
             message.style.display='none'
         })
+
+        close.addEventListener('click', e =>{
+            e.preventDefault();
+            formulaireCondoleances.style.display='none';
+            message.style.display='block'
+        })        
+    }
+
+    const addPhoto = document.querySelector('#ajout-photo');
+    if(addPhoto){
+        const formPhoto = document.querySelector('#form-photo');
+        const close = document.querySelector('.close-form');
+
+        addPhoto.addEventListener('click', e =>{
+            e.preventDefault();
+            formPhoto.style.display='block';
+            addPhoto.style.display='none'
+        })
+
+        close.addEventListener('click', e =>{
+            e.preventDefault();
+            formPhoto.style.display='none';
+            addPhoto.style.display='block'
+        })        
     }
 
     let mesBrouillonsLink = document.querySelector('#mesBrouillonsLink');
@@ -97,5 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-})
 
+
+})
