@@ -485,16 +485,22 @@ nav{
                                 /* PAGE LISTE MEMORIAUX */
 
 /* SECTION BANNIERE MEMORIAUX */
+.page-memoriaux{
+ 
+}
+
 #banniere-memoriaux{
     height: 30vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url("../img/memoriaux_bg.jpg");
-    background-attachment: fixed;
+    background-image: url("../img/banniere_blue.png");
+    background-size: 100% 98%;
+    padding-bottom: 5%;
+    /* background-attachment: fixed; */
     background-repeat: no-repeat;
-    background-size: cover;
-    background-position: bottom;
+    /* background-size: cover;
+    background-position: bottom; */
     /* filter: grayscale(1); */
 }
 
@@ -566,7 +572,8 @@ nav{
     margin-left: 0.9rem;
 }
 
-.close{
+.close,
+.close-form{
     position: absolute;
     top: 5px;
     right: 1rem;
@@ -650,8 +657,11 @@ nav{
 }
 
 #header-memorial{
+    padding: 1rem;
     display: flex;  
     gap: 10px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    background-color: white;    
 }
 
 #header-memorial figure{
@@ -691,10 +701,20 @@ nav{
     flex-direction: column;
     gap: 3rem;
     text-align: justify;
+    padding: 2rem;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    background-color: white;    
 }
 
 #memorial h2{
     padding-bottom: 1rem;
+}
+
+#galerie-photo{
+    padding: 2rem;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    background-color: white;  
+    margin: 3rem 0 3rem 0;
 }
 
 #galerie-photo,
@@ -710,14 +730,33 @@ nav{
 
 #condoleances{
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    background-color: white;    
     margin-bottom: 5vh;
 }
 
+#ajout-photo,
 #condoleances #ajout-message{
-    cursor: pointer;
     padding: 10px 20px 10px 20px;
-    border: 1px solid blue;
-    width: 300px;
+    border: 2px solid white;
+    background-color: var(--couleurPrincipale);
+    color: white;
+    min-width: 250px;
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+#ajout-photo p,
+#condoleances #ajout-message p{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#ajout-photo:hover,
+#condoleances #ajout-message:hover{
+    background-color: white;
+    border: 2px solid var(--couleurPrincipale);
+    color: var(--couleurPrincipale);
+    cursor: pointer;
 }
 
 #container-condoleances{
@@ -729,7 +768,7 @@ nav{
     display: flex;
     align-items: center;
     justify-content: flex-start;
-   border-bottom: 0.5px solid gray;
+    border-bottom: 0.5px solid gray;
     padding: 20px 10px 20px 10px;    
 }
 
@@ -743,16 +782,34 @@ nav{
     color: blue;
 }
 
+#form-photo,
 #container-form-condoleances{
-    border: 3px solid red;   
     width: 80%; 
     margin: 0 auto;
     display: none;
+    position: relative;
 }
 
 #condoleances form{
     width: 100%;
 }
+
+#condoleance_submit{
+    border-radius: 3px;
+    margin-top: 1rem;
+    padding: 5px 10px 5px 10px;
+    background-color: white;
+    color: var(--couleurPrincipale);
+    border: 1px solid var(--couleurPrincipale);
+}
+
+#condoleance_submit:hover{
+    cursor: pointer;
+    background-color: var(--couleurPrincipale);
+    color: white;
+    border: 1px solid white;
+}
+
 
 
                                                             /************  VUES CONCERNANT LES BELLES HISTOIRES *************/
