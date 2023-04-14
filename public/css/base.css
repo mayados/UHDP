@@ -486,7 +486,7 @@ nav{
 
 /* SECTION BANNIERE MEMORIAUX */
 .page-memoriaux{
- 
+    background-image: url('../img/spirales_sans_fond.png');
 }
 
 #banniere-memoriaux{
@@ -654,6 +654,7 @@ nav{
 
 .page-memorial{
     padding: 5vh 10vw 0 10vw;
+    background-image: url('../img/stars_motifs.png');
 }
 
 #header-memorial{
@@ -816,6 +817,10 @@ nav{
                                                     
                     /****  PAGE BELLES HISTOIRES *****/
 
+.page-belles-histoires{
+    background-image: url('../img/ronds.png');
+}
+
 #genres-histoires{
     display: flex;
     justify-content: center;
@@ -847,11 +852,10 @@ nav{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url("../img/banniere_belle_histoire2.jpg");
-    background-attachment: fixed;
+    background-image: url("../img/beige_shape.png");
+    background-size: 100% 98%;
+    padding-bottom: 5%;
     background-repeat: no-repeat;
-    background-size: cover;
-    background-position: top;
     /* filter: grayscale(1); */
 }
 
@@ -879,6 +883,7 @@ nav{
     transition: 1s;
     margin-bottom: 30px;
     position: relative;
+    background-color: #F6FDFF;
 }
 
 .belle-histoire-card:hover{
@@ -947,11 +952,15 @@ nav{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url("../img/banniere_belle_histoire2.jpg");
+    background-image: url("../img/banniere_blue.png");
+    background-size: 100% 98%;
+    padding-bottom: 5%;
+    background-repeat: no-repeat;
+    /* background-image: url("../img/banniere_belle_histoire2.jpg");
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: top;
+    background-position: top; */
     /* filter: grayscale(1); */
 }
 
@@ -962,6 +971,7 @@ nav{
 
 #histoire{
     padding-top: 1%;
+    border: 1px solid green;
 }
 
 #histoire figure{
