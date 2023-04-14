@@ -80,9 +80,14 @@
         <div id="container-photos">
             {% if memorial.auteur != null %}
                 {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-                    <h3>Ajouter une photo à la galerie</h3>
-                    {{ form_start(formAddPhotoGalerie) }}    
-                    {{ form_end(formAddPhotoGalerie) }}
+                    <div id="ajout-photo">
+                        <p>Ajouter des photos à la galerie <i class="fa-solid fa-file-circle-plus"></i></p>                  
+                    </div>
+                    <div id="form-photo">
+                        <a class="close-form" href="#"><i class="fa-solid fa-xmark"></i></a>
+                        {{ form_start(formAddPhotoGalerie) }}    
+                        {{ form_end(formAddPhotoGalerie) }}                    
+                    </div>
                 {% endif %}
             {% endif %}
             {% if memorial.photos|length > 0 %}
@@ -111,6 +116,7 @@
         </div>
 
             <div id="container-form-condoleances">
+                <a class="close" href="#"><i class="fa-solid fa-xmark"></i></a>
                 {% include '_partials/_refreshForm.html.twig' %}                  
             </div>
 
