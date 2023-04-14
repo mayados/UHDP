@@ -17,7 +17,7 @@ class GaleriePhotoType extends AbstractType
     {
         $builder
             ->add('images', FileType::class, [
-                'label' => "Image de l'animal",
+                'label' => false,
                 // Signifie que ce champ n'est pas associé à une propriété de l'entité AnimalMemorial
                 'mapped' => false,
                 'required' => true,
@@ -39,7 +39,9 @@ class GaleriePhotoType extends AbstractType
                     )
                 ]
             ])
-            ->add('submit', SubmitType::class)
+            ->add('submit', SubmitType::class,[
+                'label' => 'Ajouter',             
+            ])
             // ->add('memorial')
         ;
     }

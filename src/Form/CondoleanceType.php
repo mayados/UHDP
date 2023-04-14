@@ -20,7 +20,9 @@ class CondoleanceType extends AbstractType
                 new Assert\NotBlank(['message' => 'Le message de condoléance ne peut pas être vide']),
             ]
         ])
-        ->add('submit', SubmitType::class)
+        ->add('submit', SubmitType::class, [
+            'label' => 'Envoyer',
+        ])
         ;
     }
 
