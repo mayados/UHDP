@@ -3,7 +3,7 @@
 {% block title %}Inscription{% endblock %}
 
 {% block body %}
-    <div class="container-page login-page">
+    <div class="container-page form-page">
         {% for flash_error in app.flashes('verify_email_error') %}
             <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
         {% endfor %}
