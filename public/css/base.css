@@ -971,7 +971,11 @@ nav{
 
 #histoire{
     padding-top: 1%;
-    border: 1px solid green;
+}
+
+#histoire-content{
+    /* box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -3px, rgba(0, 0, 0, 0.3) 0px 1px 3px -3px; */
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 3px 5px -1px;
 }
 
 #histoire figure{
@@ -985,7 +989,7 @@ nav{
     object-fit: cover;
 }
 
-#histoire header{
+#histoire-content-header{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -995,10 +999,8 @@ nav{
 #histoire-interraction{
     display: flex;
     justify-content: space-evenly;
-    /* padding-left: 2%; */
     width: 300px;
-    margin: 0 auto;
-    border: 1px solid orange;
+    margin: 3rem auto 1rem auto;
 }
 
 #histoire-interraction .fa-paw,
@@ -1017,44 +1019,45 @@ nav{
     text-align: justify;
 }
 
-/* #ajout-commentaire,
-#comment-histoire{
-    padding: 2%;
+#ajout-commentaire-form{
+    display: none;
+    position: relative;
+    padding: 1rem;
+    border: 1px solid gray;
+    border-radius: 5px;
 }
 
-#comment-histoire .commentaire{
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    padding: 5px;
-}
-
-#comment-histoire .commentaire,
-#comment-histoire .commentaire .commentaire-content .comment-infos
-{
-    gap: 7px;
+#ajout-commentaire-form #form-comment-infos{
     display: flex;
     align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
 }
 
-
-#comment-histoire .commentaire .commentaire-photo figure{
-    height: 50px;
-    width: 50px;
+#ajout-commentaire-form .form-submit-comment{
+    display: flex;
+    justify-content: center;
+    margin: 1rem;
 }
 
-#comment-histoire .commentaire .commentaire-photo figure img{
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-} */
+#ajout-commentaire-form .form-submit-comment #comment_histoire_submit{
+    padding: 5px 10px 5px 10px;
+    background-color: var(--couleurPrincipale);
+    color: white;
+    border: 2px solid white;
+    border-radius: 3px;
+}
 
+#ajout-commentaire-form .form-submit-comment #comment_histoire_submit:hover{
+    background-color: white;
+    color: var(--couleurPrincipale);
+    border: 2px solid var(--couleurPrincipale);
+    cursor: pointer;
+}
 
-/* #histoire header .fa-paw{
-    font-size: 1rem;
-} */
-
-#ajout-commentaire-form,
+#histoire-ajout-commentaires,
 #comment-histoire{
-    margin: 0 auto;
+    margin: 2rem auto;
     width: 70%;    
 }
 
@@ -1067,7 +1070,8 @@ nav{
     gap: 1rem;
 }
 
-#ajout-commentaire div figure{
+#ajout-commentaire div figure,
+#ajout-commentaire-form #form-comment-infos figure{
     height: 40px;
     width: 40px;
     border-radius: 50%;
@@ -1097,7 +1101,8 @@ nav{
 }
 
 #comment-histoire .commentaire figure img,
-#ajout-commentaire div figure img{
+#ajout-commentaire div figure img,
+#ajout-commentaire-form #form-comment-infos figure img{
     height: 100%;
     width: 100%;
     object-fit: cover;
@@ -1368,4 +1373,71 @@ nav{
 
 .nothing{
     padding: 2rem;
+}
+
+                                                                /******* VUES CONCERNANT LE MUR DE COMMEMORATION ********/
+
+.page-mur{
+    background-image: url('../img/clouds.png');
+}
+
+#banniere-mur-commemoration{
+    height: 30vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../img/banniere_blue.png");
+    background-size: 100% 98%;
+    padding-bottom: 5%;
+    background-repeat: no-repeat;
+}
+
+#mur-content{
+    width: 80%;
+    margin: 0 auto;   
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;     
+    background-color: rgb(250, 250, 250);    
+    padding: 1rem;        
+}
+
+#ajout-mot{
+    text-align: center;
+    margin: 1rem 0 2rem 0;
+    position: relative;
+}
+
+#ajout-mot-link,
+#mot_submit{
+    padding: 10px 5px 10px 5px;
+    border: 2px solid white;
+    background-color: var(--couleurPrincipale);    
+    border-radius: 5px;
+}
+
+#ajout-mot-link:hover,
+#mot_submit:hover{
+    background-color: white;
+    color: var(--couleurPrincipale);
+    border: 2px solid var(--couleurPrincipale);
+    cursor: pointer;
+}
+
+#ajout-mot-form{
+    display: none;
+    padding: 1rem;
+}
+
+#mur-commemoration .mot{
+    padding: 1rem;
+    border: 1px solid green;
+}
+
+#mur-commemoration .mot-infos{
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+#mot_submit{
+    margin-top: 1rem;
 }
