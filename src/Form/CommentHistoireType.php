@@ -19,9 +19,12 @@ class CommentHistoireType extends AbstractType
             ->add('texte', CKEditorType::class, [
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'Le commentaire ne peut pas être nul']),
-                ]
+                ],
+                'label' => false,
             ])
-            ->add('submit', SubmitType::class)
+            ->add('submit', SubmitType::class, [
+                'label' => 'Publier',
+            ])
         ;
     }
 
