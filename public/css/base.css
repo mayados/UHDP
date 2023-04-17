@@ -992,18 +992,21 @@ nav{
     justify-content: center;
 }
 
-#histoire header #histoire-interraction{
+#histoire-interraction{
     display: flex;
-    gap: 20px;
-    padding: 10px;
+    justify-content: space-evenly;
+    /* padding-left: 2%; */
+    width: 300px;
+    margin: 0 auto;
+    border: 1px solid orange;
 }
 
-#histoire header #histoire-interraction .fa-paw,
-#histoire header #histoire-interraction .fa-star{
+#histoire-interraction .fa-paw,
+#histoire-interraction .fa-star{
     font-size: 1.2rem;    
 }
 
-#histoire header #histoire-interraction .share{
+#histoire-interraction .share{
     display: flex;
     font-size: 1.2rem;
     gap: 20px;
@@ -1014,7 +1017,7 @@ nav{
     text-align: justify;
 }
 
-#ajout-commentaire,
+/* #ajout-commentaire,
 #comment-histoire{
     padding: 2%;
 }
@@ -1042,12 +1045,67 @@ nav{
     height: 100%;
     width: 100%;
     object-fit: cover;
-}
+} */
 
 
 /* #histoire header .fa-paw{
     font-size: 1rem;
 } */
+
+#ajout-commentaire-form,
+#comment-histoire{
+    margin: 0 auto;
+    width: 70%;    
+}
+
+#ajout-commentaire div{
+    padding: 1rem 1rem 1rem 1rem;
+    border: 1px solid gray;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+#ajout-commentaire div figure{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+#comment-histoire .commentaire{
+    /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+    padding: 2rem 1rem 2rem 1rem;
+    border-bottom: 1px solid rgb(200, 200, 200);
+}
+
+#comment-histoire .commentaire-header{
+    justify-content: space-between;
+}
+
+#comment-histoire .commentaire-header,
+#comment-histoire .commentaire-header-left,
+#comment-histoire .commentaire-header-right{
+    display: flex;
+    align-items: center;
+}
+
+#comment-histoire .commentaire figure{
+    height: 50px;
+    width: 50px;
+}
+
+#comment-histoire .commentaire figure img,
+#ajout-commentaire div figure img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+} 
+
+#comment-histoire .commentaire .commentaire-content{
+    padding-top: 1.5rem;
+}
 
 
 
