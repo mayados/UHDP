@@ -32,12 +32,7 @@
                     <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">            
                 </figure>
             {% endif %}
-            <div id="histoire-interraction">
-                <p>Date de création {{ histoire.dateCreation | date('d-m-Y') }}</p>
-                {% include "_partials/_favorisHistoire.html.twig" %}            
-                {% include "_partials/_share.html.twig" %}
-                {% include "_partials/_likeHistoire.html.twig" %}                     
-            </div>
+            <p>Date de création {{ histoire.dateCreation | date('d-m-Y') }}</p>
         </header>
         <section id="histoire-texte">
             <p>{{ histoire.texte }}</p>
@@ -48,12 +43,29 @@
                 {% endif %}
             {% endif %}
         </section>
+        <div id="histoire-interraction">
+            {% include "_partials/_favorisHistoire.html.twig" %}            
+            {% include "_partials/_share.html.twig" %}
+            {% include "_partials/_likeHistoire.html.twig" %}                     
+        </div>
         <section id="comment-histoire" class="js-auto-refresh-content">
             <h2>Commentaires</h2>
+            <a id="ajout-commentaire" href="#">
+                <div>
+                    <figure>
+                        {% if not app.user.photo %}
+                            <img src="{{ asset('img/default_user.png') }}" alt="">
+                        {% else %}
+                            <img src="{{ asset('uploads/imgUserProfil/'~ app.user.photo) }}" alt="">   
+                        {% endif %} 
+                    </figure>
+                    <p> {{ app.user.pseudo }} que pensez-vous de cette histoire ?</p>                    
+                </div>
+            </a>
                 {% include "_partials/_commentaires.html.twig" %}
                 
         </section>             
-        <section id="ajout-commentaire">
+        <section id="ajout-commentaire-form">
             <h2>Ajouter un commentaire</h2>        
             {% if app.user and app.user.isVerified %}
                 <div class="formulaire">

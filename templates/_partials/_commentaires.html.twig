@@ -1,5 +1,5 @@
 {% for commentaire in histoire.commentaires %}
-<article class="commentaire">
+{# <article class="commentaire">
     <div class="commentaire-photo">
         <figure>
             <img src="{{ asset('img/angel_dog.jpg') }}" alt="photo de l'histoire">    
@@ -21,5 +21,32 @@
         {% endif %}
     </footer>
     {% include "_partials/_likeComment.html.twig" %}
+</article> #}
+<article class="commentaire">
+    <div class="commentaire-header">
+        <div class="commentaire-header-left">
+            <figure>
+                <img src="{{ asset('img/angel_dog.jpg') }}" alt="photo de l'histoire">    
+            </figure>
+            <div class="comment-infos">
+                {% if commentaire.auteur != null %}
+                    <p>{{ commentaire.auteur }}</p></p>
+                {% else %}
+                    <p>(Utilisateur supprimé)</p>
+                {% endif %}     
+                <p>{{ commentaire.dateCreation | date('d-m-Y') }}</p>              
+            </div>                 
+        </div>
+        <div class="commentaire-header-right">
+            {% include "_partials/_likeComment.html.twig" %}   
+            {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+            <a href="{{ path('remove_comment', {'slug': histoire.slug, 'id': commentaire.id}) }}">Delete</a>
+        {% endif %}         
+        </div>
+    </div>
+
+    <div class="commentaire-content">
+        <p>{{ commentaire.texte|raw }}  
+    </div>
 </article>
 {% endfor %}    
