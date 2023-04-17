@@ -4,43 +4,48 @@
 
 {% block body %}
 
-<div class="container-page">
-    <section id="mur-commemoration">
-        <h1>Mur de commémoration</h1>
-
-        {% for mot in mots %}
-            <div class="mot">
-                <p>{{ mot.mot|raw }}
-                {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-                    {% if mot.auteur != null %}
-                        ({{ mot.auteur }}
-                    {% else %}
-                        <p>Utilisateur supprimé</p>
-                    {% endif %}
-                {% endif %}
-                {{ mot.dateCreation | date('d-m-Y') }})
-                <a href="{{ path('remove_mot', {'id': mot.id}) }}">Delete</a>
-                </p>
+<div class="container-page page-mur">
+    <section id="banniere-mur-commemoration">
+        <h1>Mur de commémoration</h1>        
+    </section>
+    <section id="mur-content">
+        <div id="ajout-mot">
+            <a id="ajout-mot-link" href="#">
+                Ajouter un mot de commémoration
+            </a>
+            <div id="ajout-mot-form">
+                <a class="close" href="#"><i class="fa-solid fa-xmark"></i></a>
+                {% if app.user and app.user.isVerified %}        
+                    {{ form_start(formAddMot) }}
+                        <div class="form-element">
+                            {{ form_row(formAddMot.mot) }}
+                        </div>
+                        <div class="form-element">
+                            {{ form_row(formAddMot.submit) }}
+                        </div>
+                    {{ form_end(formAddMot) }}                   
+                {% elseif app.user and not app.user.isVerified %}
+                    <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir ajouter un mot</p>
+                {% endif %}                
             </div>
-        {% endfor %}        
+        </div>    
+        <div id="mur-commemoration">
+            {% for mot in mots %}
+                <div class="mot">
+                    <p>{{ mot.mot|raw }}
+                    <div class="mot-infos">
+                        <p>{{ mot.dateCreation | date('d-m-Y') }} {{ mot.dateCreation | date('H:i:s') }}</p>
+                        <div class="mot-interractions">
+                            <a href="{{ path('remove_mot', {'id': mot.id}) }}"><i class="fa-solid fa-trash"></i></a>
+                            <a href=""><i class="fa-solid fa-flag"></i></a>                        
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}        
+            </div>
     </section>
 
-    <section id="ajout-mot">
-        {% if app.user and app.user.isVerified %}        
-        <h2>Ajouter un mot de commémoration</h2>
-            <div class="formulaire">
-                {{ form_start(formAddMot) }}
-                    <div class="form-element">
-                        {{ form_row(formAddMot.mot) }}
-                    </div>
-                    <div class="form-element">
-                        {{ form_row(formAddMot.submit) }}
-                    </div>
-                {{ form_end(formAddMot) }}                   
-                </div>
-        {% elseif app.user and not app.user.isVerified %}
-            <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir ajouter un mot</p>
-        {% endif %}
-    </section>
+
+
 </div>
 {% endblock %}

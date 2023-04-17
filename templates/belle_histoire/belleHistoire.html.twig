@@ -14,42 +14,44 @@
         <h1>{{ histoire.titre }}</h1>
     </section>
     <article id="histoire">
-
-        <header>
-            {# {% if histoire.photo == null %}
-                <p>Pas de photo</p>
-            {% else %}
-            <figure>
-                <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">            
-            </figure>
-            {% endif %} #}
-            {% if histoire.auteur == 'Antoine' %}
-            <figure>
-                <img src="{{histoire.photo}}" alt="photo de l'histoire">            
-            </figure>
-            {% else %}
+        <section id="histoire-content">
+            <div id="histoire-content-header">
+                {# {% if histoire.photo == null %}
+                    <p>Pas de photo</p>
+                {% else %}
                 <figure>
                     <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">            
                 </figure>
-            {% endif %}
-            <p>Date de création {{ histoire.dateCreation | date('d-m-Y') }}</p>
-        </header>
-        <section id="histoire-texte">
-            <p>{{ histoire.texte }}</p>
-            {% if histoire.auteur != null %}
-                {% if app.user == histoire.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-                    <a href="{{ path('remove_histoire', {'id': histoire.id}) }}">Supprimer l'histoire</a>
-                    <a href="{{ path('edit_histoire', {'slug': histoire.slug}) }}">Edit l'histoire</a>
+                {% endif %} #}
+                {% if histoire.auteur == 'Antoine' %}
+                <figure>
+                    <img src="{{histoire.photo}}" alt="photo de l'histoire">            
+                </figure>
+                {% else %}
+                    <figure>
+                        <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">            
+                    </figure>
                 {% endif %}
-            {% endif %}
+                <p>Date de création {{ histoire.dateCreation | date('d-m-Y') }}</p>
+                </div>
+            <div id="histoire-texte">
+                <p>{{ histoire.texte }}</p>
+                {% if histoire.auteur != null %}
+                    {% if app.user == histoire.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+                        <a href="{{ path('remove_histoire', {'id': histoire.id}) }}">Supprimer l'histoire</a>
+                        <a href="{{ path('edit_histoire', {'slug': histoire.slug}) }}">Edit l'histoire</a>
+                    {% endif %}
+                {% endif %}
+                <div id="histoire-interraction">
+                    {% include "_partials/_favorisHistoire.html.twig" %}            
+                    {% include "_partials/_share.html.twig" %}
+                    {% include "_partials/_likeHistoire.html.twig" %}                     
+                </div>            
+            </div>            
         </section>
-        <div id="histoire-interraction">
-            {% include "_partials/_favorisHistoire.html.twig" %}            
-            {% include "_partials/_share.html.twig" %}
-            {% include "_partials/_likeHistoire.html.twig" %}                     
-        </div>
-        <section id="comment-histoire" class="js-auto-refresh-content">
-            <h2>Commentaires</h2>
+
+
+        <section id="histoire-ajout-commentaires">
             <a id="ajout-commentaire" href="#">
                 <div>
                     <figure>
@@ -62,30 +64,40 @@
                     <p> {{ app.user.pseudo }} que pensez-vous de cette histoire ?</p>                    
                 </div>
             </a>
-                {% include "_partials/_commentaires.html.twig" %}
-                
-        </section>             
-        <section id="ajout-commentaire-form">
-            <h2>Ajouter un commentaire</h2>        
-            {% if app.user and app.user.isVerified %}
-                <div class="formulaire">
-                    {{ form_start(formAddComment, {attr: {class: 'js-submit-form'}}) }}   
-                    <div class="form-element">
-                        {{ form_row(formAddComment.texte) }}
-                    </div> 
-                    <div class="form-element">
-                        {{ form_row(formAddComment.submit) }}
+            <div id="ajout-commentaire-form"> 
+                {% if app.user and app.user.isVerified %}
+                    <div id="form-comment-infos">
+                        <figure>
+                        {% if not app.user.photo %}
+                            <img src="{{ asset('img/default_user.png') }}" alt="">
+                        {% else %}
+                            <img src="{{ asset('uploads/imgUserProfil/'~ app.user.photo) }}" alt="">   
+                        {% endif %} 
+                        </figure>
+                        <p> {{ app.user.pseudo }} que pensez-vous de cette histoire ?</p>   
                     </div>
-                    {{ form_end(formAddComment) }}                        
-                </div>
-            {% elseif app.user and not app.user.isVerified %}
-                <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir commenter</p>
-            {% else %}
-                <p>Veuillez vous inscrire ou vous connecter pour pouvoir commenter</p>
-            {% endif %}            
+                    <div class="formulaire">
+                        <a class="close" href="#"><i class="fa-solid fa-xmark"></i></a>
+                        {{ form_start(formAddComment, {attr: {class: 'js-submit-form'}}) }}   
+                        <div class="form-element">
+                            {{ form_row(formAddComment.texte) }}
+                        </div> 
+                        <div class="form-element form-submit-comment">
+                            {{ form_row(formAddComment.submit) }}
+                        </div>
+                        {{ form_end(formAddComment) }}                        
+                    </div>
+                {% elseif app.user and not app.user.isVerified %}
+                    <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir commenter</p>
+                {% else %}
+                    <p>Veuillez vous inscrire ou vous connecter pour pouvoir commenter</p>
+                {% endif %}            
+            </div>                 
+        </section>
+        <section id="comment-histoire" class="js-auto-refresh-content">
+            <h2>Commentaires</h2>           
+            {% include "_partials/_commentaires.html.twig" %}
         </section>             
-        
- 
     </article>
 </div>
 {% endblock %}
