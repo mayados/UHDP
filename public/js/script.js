@@ -77,6 +77,42 @@ document.addEventListener('DOMContentLoaded', () => {
         })        
     }
 
+    const addCommentaire = document.querySelector('#ajout-commentaire');
+    if(addCommentaire){
+        const formCommentaire = document.querySelector('#ajout-commentaire-form');
+        const close = document.querySelector('.close');
+
+        addCommentaire.addEventListener('click', e =>{
+            e.preventDefault();
+            formCommentaire.style.display='block';
+            addCommentaire.style.display='none'
+        })
+
+        close.addEventListener('click', e =>{
+            e.preventDefault();
+            formCommentaire.style.display='none';
+            addCommentaire.style.display='block'
+        })        
+    }
+
+    const addMot = document.querySelector('#ajout-mot-link');
+    if(addMot){
+        const formMot = document.querySelector('#ajout-mot-form');
+        const close = document.querySelector('.close');
+
+        addMot.addEventListener('click', e =>{
+            e.preventDefault();
+            formMot.style.display='block';
+            addMot.style.visibility='hidden'
+        })
+
+        close.addEventListener('click', e =>{
+            e.preventDefault();
+            formMot.style.display='none';
+            addMot.style.visibility='visible'
+        })        
+    }
+
     let mesBrouillonsLink = document.querySelector('#mesBrouillonsLink');
     let mesAttentesLink = document.querySelector('#mesAttentesLink');    
     let mesPublieesLink = document.querySelector('#mesPublieesLink');    
