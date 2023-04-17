@@ -35,7 +35,7 @@
                 <p>Date de création {{ histoire.dateCreation | date('d-m-Y') }}</p>
                 </div>
             <div id="histoire-texte">
-                <p>{{ histoire.texte }}</p>
+                <p>{{ histoire.texte|raw }}</p>
                 {% if histoire.auteur != null %}
                     {% if app.user == histoire.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
                         <a href="{{ path('remove_histoire', {'id': histoire.id}) }}">Supprimer l'histoire</a>
