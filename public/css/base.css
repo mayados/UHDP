@@ -196,7 +196,7 @@ nav{
 
 #bienvenue{
     min-height: 70vh;
-    width: 100vw;
+    width: 100%;
     background-image: url('../img/beige_shape.png');
     background-repeat: no-repeat;
     background-size: 100% 98%;
@@ -481,7 +481,7 @@ nav{
 #explications-memoriaux,
 #explications-histoires{
     min-height: 30vh;
-    width: 100vw;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center; 
@@ -1494,3 +1494,141 @@ nav{
 #mot_submit{
     margin-top: 1rem;
 }
+
+
+
+
+
+                                                        /********** RESPONSIVE **********/
+
+
+/* Large (min-width : 992px & max-width : 1200px) */  
+@media screen and (max-width: 1200px) {
+
+    /* COMMUN */
+    .container-page{
+        background-color: red;
+    }
+    
+    /* HOME */
+
+    #bienvenue{
+        padding-bottom: 3%;
+        min-height: 20vh;
+    }
+    
+    #bienvenue #carousel .element .over-carousel{
+        align-items: flex-start;
+        margin-left: 0.2rem;
+    }
+    
+    #bienvenue #carousel .element .over-carousel h1{
+        font-size: 2.9rem;      
+    }
+    
+    #bienvenue #carousel .element .over-carousel p{
+        font-size: 2rem;
+    }
+
+}
+
+
+
+/* Medium  (min-width : 768px & max-width : 992px) */
+@media screen and (max-width: 992px) {
+
+    .container-page{
+        background-color: orange;
+    }
+
+    /* HOME */
+
+    #bienvenue{
+        min-height: 90vh;
+    }
+
+    #bienvenue #carousel .element{
+        position: relative;
+        flex: 1 0 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    #bienvenue #carousel .element .over-carousel{
+        align-items: center;
+    }
+
+
+}
+
+
+
+
+
+
+/* Petits téléphones (min-width : 576px & max-width : 768px) */
+@media screen and (max-width: 768px) {
+
+    .container-page{
+        background-color: yellow;
+    }
+
+}
+
+
+
+
+
+/* Très petits téléphones (max-width : 576px) */
+@media screen and (max-width: 576px) {
+
+    .container-page{
+        background-color: green;
+    }
+
+    /* HOME */
+
+    #bienvenue{
+        min-height: 80vh;
+    }
+
+    #bienvenue #carousel .element .over-carousel{
+        text-align: center;
+    }
+
+    .title-lines{
+        position: relative;
+        width: 250px;
+        margin: 0 auto;
+        font-size: var(--h2);
+        text-align: center;
+    } 
+    
+     .title-lines::before{
+        display: none;
+    } 
+    
+     .title-lines::after{
+        display: none;
+    }
+
+    #explications-memoriaux,
+    #explications-histoires{
+        min-height: 50vh;
+    }
+
+    #explications-memoriaux .texte,
+    #explications-histoires .texte{
+        width:90%;
+        font-size: 1.3rem;
+    }
+
+}
+
+
+
+
+
+
+
