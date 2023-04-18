@@ -581,6 +581,13 @@ nav{
 .form-container-flex-check{
     width: 100vw;
     display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.form-container-flex-check #checks-container,
+.form-container-flex-check #selects-container{
+    display: flex;
     justify-content: space-evenly;
 }
 
@@ -590,7 +597,23 @@ nav{
 #search_sexe_0,
 #search_sexe_1{
     margin-left: 0.9rem;
+    margin-right: 1rem;
+    position: relative;
+    cursor: pointer;
 }
+
+/* #search_sexe input::before,
+#search_categories input::before{
+    content: '';
+    position: absolute;
+    height: 20px;
+    width: 25px;
+    background-color: white;
+    border: 1px solid gray;
+    top: -1px;
+    margin-right: 3rem;
+    border-radius: 3px;
+} */
 
 .close,
 .close-form{
@@ -1530,6 +1553,9 @@ nav{
         font-size: 2rem;
     }
 
+    /* PAGE LISTE MEMORIAUX */
+
+
 }
 
 
@@ -1559,6 +1585,45 @@ nav{
         align-items: center;
     }
 
+    /* PAGE MEMORIAL */
+    #header-memorial{
+        display: flex;  
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    #header-memorial figure{
+        flex: 2;
+        height: 500px;
+        border: 1px solid rgb(214, 214, 214);
+        z-index: 99;
+        border-radius: 5px; 
+        overflow: hidden;            
+    }
+    
+    #header-memorial figure img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border: 5px solid white;
+    } 
+    
+    #memorial-infos h2{
+        padding-bottom: 1rem;
+        text-align: center;
+    }
+
+    #memorial-infos{
+        /* border: 2px solid black; */
+        display: flex;
+        flex-direction: column;
+        justify-content: inherit;
+        gap: 0.5rem;
+        /* align-items: center; */
+        flex:1;
+        padding: 20px;
+    }
+
 
 }
 
@@ -1572,6 +1637,18 @@ nav{
 
     .container-page{
         background-color: yellow;
+    }
+
+    /* HOME */
+
+    #explications-memoriaux,
+    #explications-histoires{
+        min-height: 50vh;
+    }
+
+    #explications-memoriaux .texte,
+    #explications-histoires .texte{
+        width:90%;
     }
 
 }
@@ -1613,15 +1690,174 @@ nav{
         display: none;
     }
 
-    #explications-memoriaux,
-    #explications-histoires{
-        min-height: 50vh;
-    }
-
     #explications-memoriaux .texte,
     #explications-histoires .texte{
-        width:90%;
         font-size: 1.3rem;
+    }
+
+    /* PAGE LISTE MEMORIAUX */
+    .form-container-flex-check #checks-container,
+    .form-container-flex-check #selects-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    /* PAGE BELLES HISTOIRES */
+    .belle-histoire-card{
+        width: 330px;
+    }
+
+    /* PAGE BELLE HISTOIRE */
+
+    #histoire figure{
+        width: 350px;
+        height: 350px;
+    }
+
+    #histoire-interraction{
+        align-items: flex-end;
+        width: 95%;
+    }
+
+    #histoire-interraction .fa-paw,
+    #histoire-interraction .favoris-button .fa-star{
+        font-size: 2rem;    
+    }
+    
+    #histoire-interraction .share{
+        display: flex;
+        align-items: flex-start;
+        font-size: 2rem;
+        gap: 2rem;
+    }
+    
+    #histoire-texte{
+        padding: 4%;
+        font-size: 1.3rem;
+    }
+    
+    #ajout-commentaire-form #form-comment-infos{
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    #ajout-commentaire-form .form-submit-comment{
+        display: flex;
+        justify-content: center;
+        margin: 1rem;
+    }
+    
+    #ajout-commentaire-form .form-submit-comment #comment_histoire_submit{
+        padding: 5px 10px 5px 10px;
+        background-color: var(--couleurPrincipale);
+        color: white;
+        border: 2px solid white;
+        border-radius: 3px;
+    }
+    
+    #ajout-commentaire-form .form-submit-comment #comment_histoire_submit:hover{
+        background-color: white;
+        color: var(--couleurPrincipale);
+        border: 2px solid var(--couleurPrincipale);
+        cursor: pointer;
+    }
+    
+    #histoire-ajout-commentaires,
+    #comment-histoire{
+        margin: 2rem auto;
+        width: 95%;    
+    }
+    
+    #ajout-commentaire div{
+        padding: 1rem 1rem 1rem 1rem;
+        border: 1px solid gray;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    #ajout-commentaire div figure,
+    #ajout-commentaire-form #form-comment-infos figure{
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+    
+    #comment-histoire .commentaire{
+        /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+        padding: 2rem 1rem 2rem 1rem;
+        border-bottom: 1px solid rgb(200, 200, 200);
+    }
+    
+    #comment-histoire .commentaire-header{
+        justify-content: space-between;
+    }
+    
+    #comment-histoire .commentaire-header,
+    #comment-histoire .commentaire-header-left,
+    #comment-histoire .commentaire-header-right{
+        display: flex;
+        align-items: center;
+    }
+    
+    #comment-histoire .commentaire figure{
+        height: 50px;
+        width: 50px;
+    }
+    
+    #comment-histoire .commentaire figure img,
+    #ajout-commentaire div figure img,
+    #ajout-commentaire-form #form-comment-infos figure img{
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    } 
+    
+    #comment-histoire .commentaire .commentaire-content{
+        padding-top: 1.5rem;
+    }
+
+
+    /* PAGE FORUM */
+
+    .forum-page{
+        padding: 3vh 1vh 0 1vh;
+    }
+
+    .topic{
+        padding: 1rem 0.2rem 1rem 0.2rem;
+        border: 1px solid blue;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .topic .topic-infos{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    #topics .topic-infos .title-infos p{
+        margin-top: 1rem;
+    }
+
+    /* PAGE MES HISTOIRES */
+    .rubriques{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .rubriques a{
+        width: 300px;
     }
 
 }
