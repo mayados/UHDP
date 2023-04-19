@@ -18,6 +18,7 @@ class MessageType extends AbstractType
     {
         $builder
             ->add('texte', CKEditorType::class, [
+                'label' => false,
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'Le commentaire ne peut pas être nul']),
                 ]
@@ -26,7 +27,9 @@ class MessageType extends AbstractType
             ->add('destinataire', EntityType::class, [
                 'class' => User::class,
             ])
-            ->add('submit', SubmitType::class)
+            ->add('submit', SubmitType::class, [
+                'label' => 'Envoyer',
+            ])
         ;
     }
 
