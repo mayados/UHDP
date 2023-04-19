@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Utilisateurs bannis{% endblock %}
+
+{% block body %}
+
+<div class="container-page">
+
+    <div class="administration">
+        {% include '_partials/_adminnav.html.twig' %}
+        <main>
+            <h1>Utilisateurs bannis</h1>
+            {% for banni in utilisateursBannis %}
+                <div class="banni">
+                    <p>{{ banni.pseudo }}  </p>  
+                    <a href="{{ path('show_profile', {'id': banni.id}) }}">Voir le profil</a>      
+                </div>
+            {% endfor %}
+        </main>        
+    </div>
+    {# <div class="pagination js-filter-pagination">
+        {{ knp_pagination_render(utilisateursBannis) }}
+    </div> #}
+</div>
+{% endblock %}
