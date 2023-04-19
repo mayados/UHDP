@@ -1303,6 +1303,8 @@ nav{
 
                                                             /****** VUES CONCERNANT LA MESSAGERIE ******/
 
+/* MESSAGERIE ACCUEIL */
+
 .banniere-messagerie{
     height: 20vh;
     display: flex;
@@ -1335,6 +1337,71 @@ nav{
     padding: 1%;
 }
 
+/* PAGE CONVERSATION */
+
+#conv-return i{
+    font-size: 1.5rem;
+    padding: 2rem;
+}
+
+#correspondant-infos{
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 1rem;
+    width: 300px;
+    margin: 0 auto;
+}
+
+#correspondant-infos h1{
+    padding-top: inherit;
+    padding-bottom: inherit;
+}
+
+#correspondant-infos figure{
+    height: 50px;
+    width: 50px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+#correspondant-infos figure img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#messages-conversation{
+    border: 1px solid red;
+    margin: 2rem auto;
+    width: 90%;
+
+}
+
+#messages-conv-container{
+    padding-bottom: 2rem;
+    height: 50vh;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#messages-conv-container .mon-message,
+#messages-conv-container .correspondant-message{
+    padding: 0.5rem;
+}
+
+#messages-conv-container .mon-message{
+    border: 1px solid blue;
+    margin-left: 30%;
+    width: 70%;
+    margin-right: 0;
+}
+
+#messages-conv-container .correspondant-message{
+    border: 1px solid orange;
+}
 
                                                                 /****** VUES CONCERNANT LES USER ******/
 
