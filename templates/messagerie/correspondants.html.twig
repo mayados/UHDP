@@ -18,7 +18,7 @@
         {% for correspondant in correspondants %}
         <div>
             <br>
-            <p>{{ correspondant.pseudo }}</p>
+            <a href="{{path('app_conversation', {'id' : correspondant.id}) }}">{{ correspondant.pseudo }}</a>
         </div>
         {% endfor %}
     </section>
