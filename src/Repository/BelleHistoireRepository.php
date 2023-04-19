@@ -67,6 +67,54 @@ class BelleHistoireRepository extends ServiceEntityRepository
         return $histoires;
     }
 
+    public function findPaginatedPubliees($page): PaginationInterface
+    {
+        $data = $this->createQueryBuilder('h')
+        ->leftJoin('h.auteur','a')
+        ->select('h.titre','h.slug','h.dateCreation','a.id','a.pseudo')
+        ->where('h.etat LIKE :state')
+        ->setParameter('state','%STATE_APPROUVED%')
+        ->addOrderBy('h.dateCreation', 'DESC')
+        ->getQuery()
+        ->getResult();
+
+        $histoires = $this->paginatorInterface->paginate($data,$page,12);
+
+        return $histoires;
+    }
+
+    public function findPaginatedWaiting($page): PaginationInterface
+    {
+        $data = $this->createQueryBuilder('h')
+        ->leftJoin('h.auteur','a')
+        ->select('h.titre','h.slug','h.dateCreation','a.id','a.pseudo')
+        ->where('h.etat LIKE :state')
+        ->setParameter('state','%STATE_WAITING%')
+        ->addOrderBy('h.dateCreation', 'DESC')
+        ->getQuery()
+        ->getResult();
+
+        $histoires = $this->paginatorInterface->paginate($data,$page,12);
+
+        return $histoires;
+    }
+
+    public function findPaginatedDisapprouved($page): PaginationInterface
+    {
+        $data = $this->createQueryBuilder('h')
+        ->leftJoin('h.auteur','a')
+        ->select('h.titre','h.slug','h.dateCreation','a.id','a.pseudo')
+        ->where('h.etat LIKE :state')
+        ->setParameter('state','%STATE_DISAPPROUVED%')
+        ->addOrderBy('h.dateCreation', 'DESC')
+        ->getQuery()
+        ->getResult();
+
+        $histoires = $this->paginatorInterface->paginate($data,$page,12);
+
+        return $histoires;
+    }
+
     public function findMyWaitings($user)
     {
 
