@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Condoleance;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Condoleance>
@@ -16,7 +18,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CondoleanceRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private PaginatorInterface $paginatorInterface)
     {
         parent::__construct($registry, Condoleance::class);
     }
@@ -37,6 +39,21 @@ class CondoleanceRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findAdminPaginatedCondoleances(int $page): PaginationInterface
+    {
+        // On crée une fonction ici car la logique ne doit pas se retouver majoritairement dans le controller, il est avant tout fait pour rediriger sur les vues
+        $data = $this->createQueryBuilder('c')
+        ->leftJoin('c.auteur','a')
+        ->select('c.dateCreation','c.texte','a.id','a.pseudo')
+        ->addOrderBy('c.dateCreation', 'DESC')
+        ->getQuery()
+        ->getResult();
+
+        $condoleances = $this->paginatorInterface->paginate($data,$page,16);
+
+        return $condoleances;
     }
 
 //    /**

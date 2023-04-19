@@ -57,6 +57,21 @@ class AnimalMemorialRepository extends ServiceEntityRepository
         return $memoriaux;
     }
 
+    public function findAdminPaginatedMemoriaux(int $page): PaginationInterface
+    {
+        // On crée une fonction ici car la logique ne doit pas se retouver majoritairement dans le controller, il est avant tout fait pour rediriger sur les vues
+        $data = $this->createQueryBuilder('m')
+        ->leftJoin('m.auteur','a')
+        ->select('m.nom','a.id','a.pseudo','m.dateCreation','m.id','m.photo')
+        ->addOrderBy('m.dateCreation', 'DESC')
+        ->getQuery()
+        ->getResult();
+
+        $memoriaux = $this->paginatorInterface->paginate($data,$page,16);
+
+        return $memoriaux;
+    }
+
     public function findPaginatedMemoriauxByCategorie(int $page,$categorie): PaginationInterface
     {
         // On crée une fonction ici car la logique ne doit pas se retouver majoritairement dans le controller, il est avant tout fait pour rediriger sur les vues
