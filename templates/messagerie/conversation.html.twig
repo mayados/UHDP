@@ -21,13 +21,13 @@
                 {% for message in messages %}
                     {% if message.expediteur.id == app.user.id %}
                         <div class="mon-message">
-                            <p>{{ message.texte|raw }} ({{ message.expediteur }})</p>
-                            <a href="{{path('remove_message', {'idConversation' : message.destinataire.id, 'id': message.id}) }}">Supprimer le message</a>
+                            <p>{{ message.texte|raw }}</p>
+                            <a href="{{path('remove_message', {'idConversation' : message.destinataire.id, 'id': message.id}) }}"><i class="fa-solid fa-trash"></i></a>
                         </div>
                     {% else %}
                         <div class="correspondant-message">
-                            <p>{{ message.texte|raw }} ({{ message.expediteur }})</p>
-                            <a href="{{path('message_signal', {'id': message.id}) }}">Signaler le message</a>                
+                            <p>{{ message.texte|raw }}</p>
+                            <a href="{{path('message_signal', {'id': message.id}) }}"><i class="fa-solid fa-flag"></i></a>                
                         </div>
                     {% endif %}
                 {% endfor %}
