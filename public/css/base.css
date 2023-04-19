@@ -1379,7 +1379,7 @@ nav{
 }
 
 #messages-conv-container{
-    padding-bottom: 2rem;
+    padding: 1rem 1rem 2rem 1rem;
     height: 50vh;
     overflow: scroll;
     display: flex;
@@ -1396,11 +1396,12 @@ nav{
     border: 1px solid blue;
     margin-left: 30%;
     width: 70%;
-    margin-right: 0;
 }
 
 #messages-conv-container .correspondant-message{
     border: 1px solid orange;
+    margin-right: 30%;
+    width: 70%;
 }
 
                                                                 /****** VUES CONCERNANT LES USER ******/
