@@ -1,21 +1,13 @@
 <aside id="admin-nav">
     <article class="rubrique">
         <div class="card-header">
-            <h2>Catégories</h2>
-        </div>    
-        <div class="card-body">
-            <p>
-                <a href="{{ path('app_admin_categories') }}">Liste et ajout</a>
-            </p>            
-        </div>        
-    </article>
-    <article class="rubrique">
-        <div class="card-header">
             <h2>Mémoriaux</h2>            
         </div>
         <div class="card-body">
             <p>
-                <a href="#">Liste des mémoriaux</a>
+                <a href="{{ path('app_admin_memoriaux') }}">Liste des mémoriaux</a>
+                <a href="{{ path('app_admin_condoleances') }}">Messages de condoléances</a>
+                <a href="{{ path('app_admin_categories') }}">Catégories</a>  
             </p>            
         </div>
     </article>
@@ -26,6 +18,8 @@
         <div class="card-body">
             <p>
                 <a href="#">Liste des topics</a>
+                <a href="#">Topics déverrouillés</a>
+                <a href="#">Topics verrouillés</a>
                 <a href="#">Liste des posts</a>
             </p>            
         </div>
@@ -36,8 +30,11 @@
         </div>
         <div class="card-body">
             <p>
-                <a href="#">Liste des histoires</a>
+                <a href="#">Histoires publiées</a>
+                <a href="#">Histoires en attente</a>
+                <a href="#">Histoires désapprouvées</a>
                 <a href="#">Liste des commentaires</a>
+                <a href="#">Genres / ajout</a>
             </p>            
         </div>
     </article>
@@ -57,7 +54,19 @@
         </div>
         <div class="card-body">
             <p>
-                <a href="{{ path('app_admin_users') }}">Liste des utilisateurs</a>
+                <a href="{{ path('app_admin_users_bannis') }}">Utilisateurs bannis</a>
+                <a href="{{ path('app_admin_users_unbanned') }}">Utilisateurs non bannis</a>
+                <a href="#">Modérateurs</a>
+            </p>            
+        </div>
+    </article>
+    <article class="rubrique">
+        <div class="card-header">
+            <h2>Messagerie</h2>            
+        </div>
+        <div class="card-body">
+            <p>
+                <a href="#">Messages signalés</a>
             </p>            
         </div>
     </article>
