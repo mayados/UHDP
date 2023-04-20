@@ -21,7 +21,7 @@ class MemoriauxController extends AbstractController
     public function listeMemoriaux(AnimalMemorialRepository $amr, Request $request): Response
     {
 
-        return $this->render('admin/memoriaux.html.twig', [
+        return $this->render('admin/memoriaux/memoriaux.html.twig', [
             'memoriaux' => $amr->findAdminPaginatedMemoriaux($request->query->getInt('page',1)),
         ]);
     }
@@ -31,7 +31,7 @@ class MemoriauxController extends AbstractController
     public function listeCondoleances(CondoleanceRepository $cr, Request $request): Response
     {
 
-        return $this->render('admin/condoleances.html.twig', [
+        return $this->render('admin/memoriaux/condoleances.html.twig', [
             'condoleances' => $cr->findAdminPaginatedCondoleances($request->query->getInt('page',1)),
         ]);
     }
@@ -59,7 +59,7 @@ class MemoriauxController extends AbstractController
             );
         }
 
-        return $this->render('admin/categories.html.twig', [
+        return $this->render('admin/memoriaux/categories.html.twig', [
             'categories' => $categories,
             'formAddCategorie' => $form->createView(),
         ]);  
