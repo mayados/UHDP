@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use App\Repository\PostRepository;
 use App\Entity\Trait\DateCreationTrait;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -31,9 +33,14 @@ class Post
     #[ORM\JoinColumn(nullable: false)]
     private ?Topic $topic = null;
 
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'reportedPosts')]
+    #[ORM\JoinTable(name: 'posts_reports')]
+    private Collection $reports;
+
     public function __construct()
     {
         $this->dateCreation = new \DateTimeImmutable();
+        $this->reports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -73,6 +80,30 @@ class Post
     public function setTopic(?Topic $topic): self
     {
         $this->topic = $topic;
+
+        return $this;
+    }
+
+        /**
+     * @return Collection<int, User>
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(User $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports->add($report);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(User $report): self
+    {
+        $this->reports->removeElement($report);
 
         return $this;
     }

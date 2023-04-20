@@ -86,12 +86,17 @@ class AnimalMemorial
     #[ORM\OneToMany(mappedBy: 'memorial', targetEntity: Condoleance::class)]
     private Collection $condoleances;
 
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'reportedMemoriaux')]
+    #[ORM\JoinTable(name: 'memoriaux_reports')]
+    private Collection $reports;
+
     public function __construct()
     {
         $this->dateCreation = new \DateTimeImmutable();
         $this->photos = new ArrayCollection();
         $this->soutients = new ArrayCollection();
         $this->condoleances = new ArrayCollection();
+        $this->reports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -335,6 +340,31 @@ class AnimalMemorial
 
         return $this;
     }    
+
+    
+    /**
+     * @return Collection<int, User>
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(User $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports->add($report);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(User $report): self
+    {
+        $this->reports->removeElement($report);
+
+        return $this;
+    }
 
     public function __toString(){
         return $this->nom;

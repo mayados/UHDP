@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use App\Entity\Trait\DateCreationTrait;
 use App\Repository\CondoleanceRepository;
 
@@ -29,9 +31,14 @@ class Condoleance
     #[ORM\JoinColumn(nullable: false)]
     private ?AnimalMemorial $memorial = null;
 
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'reportedCondoleances')]
+    #[ORM\JoinTable(name: 'condoleances_reports')]
+    private Collection $reports;
+
     public function __construct()
     {
         $this->dateCreation = new \DateTimeImmutable();
+        $this->reports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -74,4 +81,29 @@ class Condoleance
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(User $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports->add($report);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(User $report): self
+    {
+        $this->reports->removeElement($report);
+
+        return $this;
+    }
+    
 }
