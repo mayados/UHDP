@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Message;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Message>
@@ -16,7 +18,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class MessageRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private PaginatorInterface $paginatorInterface)
     {
         parent::__construct($registry, Message::class);
     }
@@ -147,6 +149,19 @@ class MessageRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findPaginatedSignales($page): PaginationInterface
+    {
+        $data = $this->createQueryBuilder('m')
+        ->where('m.isSignaled = 1')
+        ->addOrderBy('m.dateCreation', 'ASC')
+        ->getQuery()
+        ->getResult();
+
+        $messagesSignales = $this->paginatorInterface->paginate($data,$page,12);
+
+        return $messagesSignales;
     }
 
 }

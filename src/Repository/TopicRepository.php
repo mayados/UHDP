@@ -53,6 +53,32 @@ class TopicRepository extends ServiceEntityRepository
         return $topics;
     }
 
+    public function findPaginatedVerrouilles($page): PaginationInterface
+    {
+        $data = $this->createQueryBuilder('t')
+        ->where('t.verrouillage = 1')
+        ->addOrderBy('t.dateCreation', 'DESC')
+        ->getQuery()
+        ->getResult();
+
+        $topicsVerrouilles = $this->paginatorInterface->paginate($data,$page,12);
+
+        return $topicsVerrouilles;
+    }
+
+    public function findPaginatedDeverrouilles($page): PaginationInterface
+    {
+        $data = $this->createQueryBuilder('t')
+        ->where('t.verrouillage = 0')
+        ->addOrderBy('t.dateCreation', 'DESC')
+        ->getQuery()
+        ->getResult();
+
+        $topicsDeverrouilles = $this->paginatorInterface->paginate($data,$page,12);
+
+        return $topicsDeverrouilles;
+    }
+
 //    /**
 //     * @return Topic[] Returns an array of Topic objects
 //     */
