@@ -1608,7 +1608,49 @@ nav{
 }
 
 
+                                                    /****** VUES CONCERNANT L ADMINISTRATION ********/
 
+/* PARTIAL ADMIN NAV */
+
+#admin-nav{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin: 1rem;
+    flex: 1;
+}
+
+#admin-nav .rubrique{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    width: 400px;
+}
+
+#admin-nav .rubrique .card-header{
+    background-color: rgb(214, 214, 214);
+    padding: 1rem 1rem 1rem 1rem;    
+    text-align: center;
+}
+
+#admin-nav .rubrique .card-body p{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem 1rem 1.5rem 1rem;    
+}
+
+/* COMMUN CLASSE ADMINISTRATION PAGE */
+.administration{
+    display: flex;
+}
+
+.main-administration{
+    flex: 3;
+}
+
+/* PAGE ACCUEIL ADMINISTRATION */
+#accueil-administration{
+    text-align: center;
+}
 
 
                                                         /********** RESPONSIVE **********/
