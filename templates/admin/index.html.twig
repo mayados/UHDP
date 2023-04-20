@@ -4,15 +4,12 @@
 
 {% block body %}
 
-<div class="container-page">
+<div class="container-page administration">
 
-    <div class="administration">
         {% include '_partials/_adminnav.html.twig' %}
-        <main>
+        <main id="accueil-administration" class="main-administration">
             <h1>Administration</h1>
             <p>Bienvenue {{ app.user.pseudo }}</p>
         </main>        
-    </div>
-
 </div>
 {% endblock %}

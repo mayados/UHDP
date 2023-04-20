@@ -1,6 +1,18 @@
 <aside id="admin-nav">
     <article class="rubrique">
         <div class="card-header">
+            <h2>Utilisateurs</h2>            
+        </div>
+        <div class="card-body">
+            <p>
+                <a href="{{ path('app_admin_users_bannis') }}">Utilisateurs bannis</a>
+                <a href="{{ path('app_admin_users_unbanned') }}">Utilisateurs non bannis</a>
+                <a href="#">Modérateurs</a>
+            </p>            
+        </div>
+    </article>
+    <article class="rubrique">
+        <div class="card-header">
             <h2>Mémoriaux</h2>            
         </div>
         <div class="card-body">
@@ -18,9 +30,9 @@
         <div class="card-body">
             <p>
                 <a href="#">Liste des topics</a>
-                <a href="#">Topics déverrouillés</a>
-                <a href="#">Topics verrouillés</a>
-                <a href="#">Liste des posts</a>
+                <a href="{{ path('app_admin_topics_deverrouilles') }}">Topics déverrouillés</a>
+                <a href="{{ path('app_admin_topics_verrouilles') }}">Topics verrouillés</a>
+                <a href="{{ path('app_admin_forum_posts') }}">Liste des posts</a>
             </p>            
         </div>
     </article>
@@ -33,8 +45,8 @@
                 <a href="{{ path('app_admin_histoires_publiees') }}">Histoires publiées</a>
                 <a href="{{ path('app_admin_histoires_attente') }}">Histoires en attente</a>
                 <a href="{{ path('app_admin_histoires_desapprouvees') }}">Histoires désapprouvées</a>
-                <a href="#">Liste des commentaires</a>
-                <a href="#">Genres / ajout</a>
+                <a href="{{ path('app_admin_histoires_commentaires') }}">Liste des commentaires</a>
+                <a href="{{ path('app_admin_histoires_genres') }}">Genres / ajout</a>
             </p>            
         </div>
     </article>
@@ -44,19 +56,7 @@
         </div>
         <div class="card-body">
             <p>
-                <a href="#">Liste des mots</a>
-            </p>            
-        </div>
-    </article>
-    <article class="rubrique">
-        <div class="card-header">
-            <h2>Utilisateurs</h2>            
-        </div>
-        <div class="card-body">
-            <p>
-                <a href="{{ path('app_admin_users_bannis') }}">Utilisateurs bannis</a>
-                <a href="{{ path('app_admin_users_unbanned') }}">Utilisateurs non bannis</a>
-                <a href="#">Modérateurs</a>
+                <a href="{{ path('app_admin_commemoration_mots') }}">Liste des mots</a>
             </p>            
         </div>
     </article>
@@ -66,7 +66,7 @@
         </div>
         <div class="card-body">
             <p>
-                <a href="#">Messages signalés</a>
+                <a href="{{ path('app_admin_messagerie_signales') }}">Messages signalés</a>
             </p>            
         </div>
     </article>

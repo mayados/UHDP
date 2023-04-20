@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Memoriaux{% endblock %}
+
+{% block body %}
+
+<div class="container-page administration">
+
+        {% include '_partials/_adminnav.html.twig' %}
+        <main class="main-administration">
+            <h1>Memoriaux</h1>
+            {% for memorial in memoriaux %}
+                <div>
+                    <p>{{ memorial.nom }}</p>
+                </div>
+            {% endfor %}
+            <div class="pagination js-filter-pagination">
+                {% include '_partials/_pagination.html.twig'  %}
+            </div>            
+        </main>        
+
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Histoires publiées{% endblock %}
+
+{% block body %}
+
+<div class="container-page administration">
+
+        {% include '_partials/_adminnav.html.twig' %}
+        <main class="main-administration">
+            <h1>Histoires publiées</h1>
+            {% for histoire in histoiresPubliees %}
+                <div>
+                    <p>{{ histoire.titre }} {{ histoire.pseudo }}  </p>     
+                </div>
+            {% endfor %}
+            <div class="pagination js-filter-pagination">
+                {{ knp_pagination_render(histoiresPubliees) }}
+            </div>            
+        </main>        
+
+</div>
+{% endblock %}

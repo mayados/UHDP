@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mots de commémoration{% endblock %}
+
+{% block body %}
+
+<div class="container-page administration">
+        {% include '_partials/_adminnav.html.twig' %}
+        <main class="main-administration">
+            <section id="categories-liste">
+                <h1>Liste des Mots</h1>
+
+                {% for mot in mots %}
+                    <div class="genre">
+                        <p>{{ mot.mot|raw }} ({{ mot.auteur }}) </p>  
+                        <a href="#">Supprimer</a>      
+                    </div>
+                {% endfor %}        
+            </section>              
+        </main>
+  
+</div>
+{% endblock %}

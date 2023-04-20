@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categories{% endblock %}
+
+{% block body %}
+
+<div class="container-page administration">
+        {% include '_partials/_adminnav.html.twig' %}
+        <main class="main-administration">
+            <section id="categories-liste">
+                <h1>Liste des catégories</h1>
+
+                {% for categorie in categories %}
+                    <div class="categorie">
+                        <p>{{ categorie.nom }}  </p>  
+                        <a href="{{ path('app_admin_remove_categorie', {'id': categorie.id}) }}">Supprimer</a>      
+                    </div>
+                {% endfor %}        
+            </section>
+
+            <section id="ajout-categorie">
+                <h2>Ajouter une catégorie</h2>
+
+                <div class="formulaire">
+                    {{form_start(formAddCategorie)}}
+                        <div class="form-element">
+                            {{ form_row(formAddCategorie.nom) }}
+                        </div>
+                        <div class="form-element">
+                            {{ form_row(formAddCategorie.submit) }}
+                        </div>
+                    {{form_end(formAddCategorie)}}              
+                </div>
+            </section>      
+        </main>
+  
+</div>
+{% endblock %}

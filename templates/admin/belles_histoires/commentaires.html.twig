@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commentaires{% endblock %}
+
+{% block body %}
+
+<div class="container-page administration">
+        {% include '_partials/_adminnav.html.twig' %}
+        <main class="main-administration">
+            <section id="categories-liste">
+                <h1>Liste des commentaires</h1>
+
+                {% for commentaire in commentaires %}
+                    <div class="genre">
+                        <p>{{ commentaire.texte|raw }} ({{ commentaire.auteur }}) </p>  
+                        <a href="#">Supprimer</a>      
+                    </div>
+                {% endfor %}        
+            </section>                
+        </main>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Genres{% endblock %}
+
+{% block body %}
+
+<div class="container-page administration">
+        {% include '_partials/_adminnav.html.twig' %}
+        <main class="main-administration">
+            <section id="categories-liste">
+                <h1>Liste des genres</h1>
+
+                {% for genre in genres %}
+                    <div class="genre">
+                        <p>{{ genre.nom }}  </p>  
+                        <a href="#">Supprimer</a>      
+                    </div>
+                {% endfor %}        
+            </section>
+
+            <section id="ajout-genre">
+                <h2>Ajouter un genre</h2>
+
+                <div class="formulaire">
+                    {{form_start(formAddGenre)}}
+                        <div class="form-element">
+                            {{ form_row(formAddGenre.nom) }}
+                        </div>
+                        <div class="form-element">
+                            {{ form_row(formAddGenre.submit) }}
+                        </div>
+                    {{form_end(formAddGenre)}}              
+                </div>
+            </section>   
+        </main>
+     
+</div>
+{% endblock %}
