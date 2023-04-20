@@ -17,11 +17,13 @@ class CategorieType extends AbstractType
         $builder
             ->add('nom', TextType::class, [
                 'constraints' => [
-                    new Assert\NotBlank(['message' => 'La catégorie doit avoir un nom']),
-                    new Assert\Length(['min' => 2, 'max' => 50, 'minMessage' => 'Le nom de catégorie doit faire au moins {{ limit }} caractères', 'maxMessage' => 'Le nom de catégorie ne peut pas faire plus de {{ limit }} caractères'])
+                    new Assert\NotBlank(['message' => 'Le genre doit avoir un nom']),
+                    new Assert\Length(['min' => 2, 'max' => 50, 'minMessage' => 'Le nom de genre doit faire au moins {{ limit }} caractères', 'maxMessage' => 'Le nom de genre ne peut pas faire plus de {{ limit }} caractères'])
                 ]
             ])
-            ->add('submit', SubmitType::class)
+            ->add('submit', SubmitType::class, [
+                'label' => 'Créer',
+            ])
         ;
     }
 
