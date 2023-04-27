@@ -65,17 +65,12 @@ class BelleHistoire
     #[ORM\JoinColumn(nullable: false)]
     private ?GenreHistoire $genre = null;
 
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'bellesHistoiresReported')]
-    #[ORM\JoinTable(name: 'histoire_reports')]
-    private Collection $reports;
-
     public function __construct()
     {
         $this->dateCreation = new \DateTimeImmutable();
         $this->commentaires = new ArrayCollection();
         $this->likes = new ArrayCollection();
         $this->favoris = new ArrayCollection();
-        $this->reports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -243,38 +238,6 @@ class BelleHistoire
 
     public function isFavoritedByUser(User $user):  bool{
         return $this->favoris->contains($user);
-    }
-
-    /**
-     * @return Collection<int, User>
-     */
-    public function getReports(): Collection
-    {
-        return $this->reports;
-    }
-
-    public function addReport(User $report): self
-    {
-        if (!$this->reports->contains($report)) {
-            $this->reports->add($report);
-        }
-
-        return $this;
-    }
-
-    public function removeReport(User $report): self
-    {
-        $this->reports->removeElement($report);
-
-        return $this;
-    }    
-
-    public function isReportedByUser(User $user):  bool{
-        return $this->reports->contains($user);
-    }
-
-    public function howManyReports():  int{
-        return count($this->reports);
     }
 
     public function getGenre(): ?GenreHistoire

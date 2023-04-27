@@ -37,15 +37,10 @@ class CommentBelleHistoire
     #[ORM\JoinTable(name: 'comment_likes')]
     private Collection $likes;
 
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'reportedComments')]
-    #[ORM\JoinTable(name: 'comment_reports')]
-    private Collection $reports;
-
     public function __construct()
     {
         $this->dateCreation = new \DateTimeImmutable();
         $this->likes = new ArrayCollection();
-        $this->reports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -121,35 +116,4 @@ class CommentBelleHistoire
         return count($this->likes);
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getReports(): Collection
-    {
-        return $this->reports;
-    }
-
-    public function addReport(User $report): self
-    {
-        if (!$this->reports->contains($report)) {
-            $this->reports->add($report);
-        }
-
-        return $this;
-    }
-
-    public function removeReport(User $report): self
-    {
-        $this->reports->removeElement($report);
-
-        return $this;
-    }
-
-    public function isReportedByUser(User $user):  bool{
-        return $this->reports->contains($user);
-    }
-
-    public function howManyReports():  int{
-        return count($this->reports);
-    }
 }

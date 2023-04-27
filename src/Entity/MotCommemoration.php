@@ -33,14 +33,9 @@ class MotCommemoration
     #[ORM\JoinColumn(nullable: true, onDelete:"SET NULL")]
     private ?User $auteur = null;
 
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'reportedMots')]
-    #[ORM\JoinTable(name: 'mots_reports')]
-    private Collection $reports;
-
     public function __construct()
     {
         $this->dateCreation = new \DateTimeImmutable();
-        $this->reports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -68,30 +63,6 @@ class MotCommemoration
     public function setAuteur(?User $auteur): self
     {
         $this->auteur = $auteur;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, User>
-     */
-    public function getReports(): Collection
-    {
-        return $this->reports;
-    }
-
-    public function addReport(User $report): self
-    {
-        if (!$this->reports->contains($report)) {
-            $this->reports->add($report);
-        }
-
-        return $this;
-    }
-
-    public function removeReport(User $report): self
-    {
-        $this->reports->removeElement($report);
 
         return $this;
     }
