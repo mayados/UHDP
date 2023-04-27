@@ -86,12 +86,16 @@ class AnimalMemorial
     #[ORM\OneToMany(mappedBy: 'memorial', targetEntity: Condoleance::class)]
     private Collection $condoleances;
 
+    #[ORM\OneToMany(mappedBy: 'memorial', targetEntity: ReportMemorial::class, orphanRemoval: true)]
+    private Collection $reports;
+
     public function __construct()
     {
         $this->dateCreation = new \DateTimeImmutable();
         $this->photos = new ArrayCollection();
         $this->soutients = new ArrayCollection();
         $this->condoleances = new ArrayCollection();
+        $this->reports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -338,6 +342,36 @@ class AnimalMemorial
 
     public function __toString(){
         return $this->nom;
+    }
+
+    /**
+     * @return Collection<int, ReportMemorial>
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(ReportMemorial $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports->add($report);
+            $report->setMemorial($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(ReportMemorial $report): self
+    {
+        if ($this->reports->removeElement($report)) {
+            // set the owning side to null (unless already changed)
+            if ($report->getMemorial() === $this) {
+                $report->setMemorial(null);
+            }
+        }
+
+        return $this;
     }
 
 }
