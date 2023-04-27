@@ -94,6 +94,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'auteur', targetEntity: Condoleance::class)]
     private Collection $condoleances;
 
+    #[ORM\OneToMany(mappedBy: 'signaleur', targetEntity: ReportMemorial::class, orphanRemoval: true)]
+    private Collection $reportedMemorials;
+
+    #[ORM\OneToMany(mappedBy: 'signaleur', targetEntity: ReportCondoleance::class, orphanRemoval: true)]
+    private Collection $reportedCondoleances;
+
+    #[ORM\OneToMany(mappedBy: 'signaleur', targetEntity: ReportHistoire::class, orphanRemoval: true)]
+    private Collection $reportedHistoires;
+
+    #[ORM\OneToMany(mappedBy: 'signaleur', targetEntity: ReportComment::class, orphanRemoval: true)]
+    private Collection $reportedComments;
+
+    #[ORM\OneToMany(mappedBy: 'signaleur', targetEntity: ReportPost::class, orphanRemoval: true)]
+    private Collection $reportedPosts;
+
+    #[ORM\OneToMany(mappedBy: 'signaleur', targetEntity: ReportTopic::class, orphanRemoval: true)]
+    private Collection $reportedTopics;
+
+    #[ORM\OneToMany(mappedBy: 'signaleur', targetEntity: ReportMot::class, orphanRemoval: true)]
+    private Collection $reportedMots;
+
     public function __construct()
     {
         $this->memoriaux = new ArrayCollection();
@@ -110,6 +131,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->memoriauxSoutenus = new ArrayCollection();
         $this->histoiresFavorites = new ArrayCollection();
         $this->condoleances = new ArrayCollection();
+        $this->reportedMemorials = new ArrayCollection();
+        $this->reportedCondoleances = new ArrayCollection();
+        $this->reportedHistoires = new ArrayCollection();
+        $this->reportedComments = new ArrayCollection();
+        $this->reportedPosts = new ArrayCollection();
+        $this->reportedTopics = new ArrayCollection();
+        $this->reportedMots = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -621,6 +649,216 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __toString(){
         return $this->pseudo;
+    }
+
+    /**
+     * @return Collection<int, ReportMemorial>
+     */
+    public function getReportedMemorials(): Collection
+    {
+        return $this->reportedMemorials;
+    }
+
+    public function addReportedMemorial(ReportMemorial $reportedMemorial): self
+    {
+        if (!$this->reportedMemorials->contains($reportedMemorial)) {
+            $this->reportedMemorials->add($reportedMemorial);
+            $reportedMemorial->setSignaleur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReportedMemorial(ReportMemorial $reportedMemorial): self
+    {
+        if ($this->reportedMemorials->removeElement($reportedMemorial)) {
+            // set the owning side to null (unless already changed)
+            if ($reportedMemorial->getSignaleur() === $this) {
+                $reportedMemorial->setSignaleur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReportCondoleance>
+     */
+    public function getReportedCondoleances(): Collection
+    {
+        return $this->reportedCondoleances;
+    }
+
+    public function addReportedCondoleance(ReportCondoleance $reportedCondoleance): self
+    {
+        if (!$this->reportedCondoleances->contains($reportedCondoleance)) {
+            $this->reportedCondoleances->add($reportedCondoleance);
+            $reportedCondoleance->setSignaleur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReportedCondoleance(ReportCondoleance $reportedCondoleance): self
+    {
+        if ($this->reportedCondoleances->removeElement($reportedCondoleance)) {
+            // set the owning side to null (unless already changed)
+            if ($reportedCondoleance->getSignaleur() === $this) {
+                $reportedCondoleance->setSignaleur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReportHistoire>
+     */
+    public function getReportedHistoires(): Collection
+    {
+        return $this->reportedHistoires;
+    }
+
+    public function addReportedHistoire(ReportHistoire $reportedHistoire): self
+    {
+        if (!$this->reportedHistoires->contains($reportedHistoire)) {
+            $this->reportedHistoires->add($reportedHistoire);
+            $reportedHistoire->setSignaleur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReportedHistoire(ReportHistoire $reportedHistoire): self
+    {
+        if ($this->reportedHistoires->removeElement($reportedHistoire)) {
+            // set the owning side to null (unless already changed)
+            if ($reportedHistoire->getSignaleur() === $this) {
+                $reportedHistoire->setSignaleur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReportComment>
+     */
+    public function getReportedComments(): Collection
+    {
+        return $this->reportedComments;
+    }
+
+    public function addReportedComment(ReportComment $reportedComment): self
+    {
+        if (!$this->reportedComments->contains($reportedComment)) {
+            $this->reportedComments->add($reportedComment);
+            $reportedComment->setSignaleur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReportedComment(ReportComment $reportedComment): self
+    {
+        if ($this->reportedComments->removeElement($reportedComment)) {
+            // set the owning side to null (unless already changed)
+            if ($reportedComment->getSignaleur() === $this) {
+                $reportedComment->setSignaleur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReportPost>
+     */
+    public function getReportedPosts(): Collection
+    {
+        return $this->reportedPosts;
+    }
+
+    public function addReportedPost(ReportPost $reportedPost): self
+    {
+        if (!$this->reportedPosts->contains($reportedPost)) {
+            $this->reportedPosts->add($reportedPost);
+            $reportedPost->setSignaleur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReportedPost(ReportPost $reportedPost): self
+    {
+        if ($this->reportedPosts->removeElement($reportedPost)) {
+            // set the owning side to null (unless already changed)
+            if ($reportedPost->getSignaleur() === $this) {
+                $reportedPost->setSignaleur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReportTopic>
+     */
+    public function getReportedTopics(): Collection
+    {
+        return $this->reportedTopics;
+    }
+
+    public function addReportedTopic(ReportTopic $reportedTopic): self
+    {
+        if (!$this->reportedTopics->contains($reportedTopic)) {
+            $this->reportedTopics->add($reportedTopic);
+            $reportedTopic->setSignaleur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReportedTopic(ReportTopic $reportedTopic): self
+    {
+        if ($this->reportedTopics->removeElement($reportedTopic)) {
+            // set the owning side to null (unless already changed)
+            if ($reportedTopic->getSignaleur() === $this) {
+                $reportedTopic->setSignaleur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReportMot>
+     */
+    public function getReportedMots(): Collection
+    {
+        return $this->reportedMots;
+    }
+
+    public function addReportedMot(ReportMot $reportedMot): self
+    {
+        if (!$this->reportedMots->contains($reportedMot)) {
+            $this->reportedMots->add($reportedMot);
+            $reportedMot->setSignaleur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReportedMot(ReportMot $reportedMot): self
+    {
+        if ($this->reportedMots->removeElement($reportedMot)) {
+            // set the owning side to null (unless already changed)
+            if ($reportedMot->getSignaleur() === $this) {
+                $reportedMot->setSignaleur(null);
+            }
+        }
+
+        return $this;
     }   
 
 }
