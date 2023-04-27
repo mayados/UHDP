@@ -31,9 +31,13 @@ class Condoleance
     #[ORM\JoinColumn(nullable: false)]
     private ?AnimalMemorial $memorial = null;
 
+    #[ORM\OneToMany(mappedBy: 'condoleance', targetEntity: ReportCondoleance::class, orphanRemoval: true)]
+    private Collection $reports;
+
     public function __construct()
     {
         $this->dateCreation = new \DateTimeImmutable();
+        $this->reports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -73,6 +77,36 @@ class Condoleance
     public function setMemorial(?AnimalMemorial $memorial): self
     {
         $this->memorial = $memorial;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReportCondoleance>
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(ReportCondoleance $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports->add($report);
+            $report->setCondoleance($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(ReportCondoleance $report): self
+    {
+        if ($this->reports->removeElement($report)) {
+            // set the owning side to null (unless already changed)
+            if ($report->getCondoleance() === $this) {
+                $report->setCondoleance(null);
+            }
+        }
 
         return $this;
     }

@@ -33,9 +33,13 @@ class MotCommemoration
     #[ORM\JoinColumn(nullable: true, onDelete:"SET NULL")]
     private ?User $auteur = null;
 
+    #[ORM\OneToMany(mappedBy: 'mot', targetEntity: ReportMot::class, orphanRemoval: true)]
+    private Collection $reports;
+
     public function __construct()
     {
         $this->dateCreation = new \DateTimeImmutable();
+        $this->reports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -63,6 +67,36 @@ class MotCommemoration
     public function setAuteur(?User $auteur): self
     {
         $this->auteur = $auteur;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReportMot>
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(ReportMot $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports->add($report);
+            $report->setMot($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(ReportMot $report): self
+    {
+        if ($this->reports->removeElement($report)) {
+            // set the owning side to null (unless already changed)
+            if ($report->getMot() === $this) {
+                $report->setMot(null);
+            }
+        }
 
         return $this;
     }

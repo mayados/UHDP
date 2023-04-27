@@ -33,9 +33,13 @@ class Post
     #[ORM\JoinColumn(nullable: false)]
     private ?Topic $topic = null;
 
+    #[ORM\OneToMany(mappedBy: 'post', targetEntity: ReportPost::class, orphanRemoval: true)]
+    private Collection $reports;
+
     public function __construct()
     {
         $this->dateCreation = new \DateTimeImmutable();
+        $this->reports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -81,5 +85,35 @@ class Post
 
     public function __toString(){
         return $this->texte;
+    }
+
+    /**
+     * @return Collection<int, ReportPost>
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(ReportPost $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports->add($report);
+            $report->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(ReportPost $report): self
+    {
+        if ($this->reports->removeElement($report)) {
+            // set the owning side to null (unless already changed)
+            if ($report->getPost() === $this) {
+                $report->setPost(null);
+            }
+        }
+
+        return $this;
     }
 }

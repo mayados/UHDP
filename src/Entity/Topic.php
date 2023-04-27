@@ -44,10 +44,14 @@ class Topic
     #[ORM\Column(length: 255, unique:true)]
     private ?string $slug = null;
 
+    #[ORM\OneToMany(mappedBy: 'topic', targetEntity: ReportTopic::class, orphanRemoval: true)]
+    private Collection $reports;
+
     public function __construct()
     {
         $this->dateCreation = new \DateTimeImmutable();
         $this->posts = new ArrayCollection();
+        $this->reports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -127,6 +131,36 @@ class Topic
             // set the owning side to null (unless already changed)
             if ($post->getTopic() === $this) {
                 $post->setTopic(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReportTopic>
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(ReportTopic $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports->add($report);
+            $report->setTopic($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(ReportTopic $report): self
+    {
+        if ($this->reports->removeElement($report)) {
+            // set the owning side to null (unless already changed)
+            if ($report->getTopic() === $this) {
+                $report->setTopic(null);
             }
         }
 

@@ -37,10 +37,14 @@ class CommentBelleHistoire
     #[ORM\JoinTable(name: 'comment_likes')]
     private Collection $likes;
 
+    #[ORM\OneToMany(mappedBy: 'commentaire', targetEntity: ReportComment::class, orphanRemoval: true)]
+    private Collection $reports;
+
     public function __construct()
     {
         $this->dateCreation = new \DateTimeImmutable();
         $this->likes = new ArrayCollection();
+        $this->reports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -114,6 +118,36 @@ class CommentBelleHistoire
 
     public function howManyLikes():  int{
         return count($this->likes);
+    }
+
+    /**
+     * @return Collection<int, ReportComment>
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(ReportComment $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports->add($report);
+            $report->setCommentaire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(ReportComment $report): self
+    {
+        if ($this->reports->removeElement($report)) {
+            // set the owning side to null (unless already changed)
+            if ($report->getCommentaire() === $this) {
+                $report->setCommentaire(null);
+            }
+        }
+
+        return $this;
     }
 
 }

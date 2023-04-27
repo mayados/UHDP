@@ -65,12 +65,16 @@ class BelleHistoire
     #[ORM\JoinColumn(nullable: false)]
     private ?GenreHistoire $genre = null;
 
+    #[ORM\OneToMany(mappedBy: 'histoire', targetEntity: ReportHistoire::class, orphanRemoval: true)]
+    private Collection $reports;
+
     public function __construct()
     {
         $this->dateCreation = new \DateTimeImmutable();
         $this->commentaires = new ArrayCollection();
         $this->likes = new ArrayCollection();
         $this->favoris = new ArrayCollection();
+        $this->reports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -255,6 +259,36 @@ class BelleHistoire
     public function __toString()
     {
         return $this->titre;
+    }
+
+    /**
+     * @return Collection<int, ReportHistoire>
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(ReportHistoire $report): self
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports->add($report);
+            $report->setHistoire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(ReportHistoire $report): self
+    {
+        if ($this->reports->removeElement($report)) {
+            // set the owning side to null (unless already changed)
+            if ($report->getHistoire() === $this) {
+                $report->setHistoire(null);
+            }
+        }
+
+        return $this;
     }
 
 }
