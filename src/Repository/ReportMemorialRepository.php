@@ -2,9 +2,11 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
+use App\Entity\AnimalMemorial;
 use App\Entity\ReportMemorial;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<ReportMemorial>
@@ -37,6 +39,25 @@ class ReportMemorialRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findSignaleurMemorial($user, $memorial){
+
+        // Renvoie un array 
+
+        $parameters = [
+            'user' => $user,
+            'memorial' => $memorial,
+        ];
+
+        return $this->createQueryBuilder('r')
+        ->where('r.signaleur = :user')
+        ->andWhere('r.memorial = :memorial')
+        ->setParameters($parameters)
+        ->getQuery()
+        // ->getResult()
+        ->getOneOrNullResult();
+
     }
 
 //    /**
