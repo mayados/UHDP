@@ -9,13 +9,28 @@
         {% include '_partials/_adminnav.html.twig' %}
         <main class="main-administration">
             <h1>Memoriaux</h1>
+            <table>
+                <tr>
+                    <th>Nom</th>
+                    <th>Auteur</th>
+                    <th>Actions</th>
+                </tr>
             {% for memorial in memoriaux %}
-                <div>
-                    <p>{{ memorial.nom }}</p>
-                </div>
+                <tr>
+                    <td>
+                        <p>{{ memorial.nom }}</p>                        
+                    </td>
+                    <td>
+                        <p>{{ memorial.pseudo }}</p>                        
+                    </td>
+                    <td>
+                        <a href="#">Preview</a>                       
+                    </td>
+                </tr>
             {% endfor %}
+            </table>
             <div class="pagination js-filter-pagination">
-                {% include '_partials/_pagination.html.twig'  %}
+                {{ knp_pagination_render(memoriaux) }}
             </div>            
         </main>        
 
