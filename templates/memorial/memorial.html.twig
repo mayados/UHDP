@@ -10,6 +10,7 @@
 {% block body %}
 
 <div class="container-page js-refresh-page page-memorial">
+    <a href="{{ path('app_report_memorial', {'id': memorial.id}) }}">Signaler le mémorial</a>
     <h1 id="memorial-title">En mémoire de {{ memorial.nom }}</h1>     
     <section id="header-memorial">
         <figure>
