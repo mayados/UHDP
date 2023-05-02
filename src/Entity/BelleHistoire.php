@@ -291,4 +291,8 @@ class BelleHistoire
         return $this;
     }
 
+    public function howManyReports():  int{
+        return count($this->reports);
+    }
+
 }
