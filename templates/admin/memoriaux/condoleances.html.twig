@@ -9,11 +9,31 @@
         {% include '_partials/_adminnav.html.twig' %}
         <main class="main-administration">
             <h1>Messages de condoléance</h1>
+            <table>
+                <tr>
+                    <th>Nom</th>
+                    <th>Auteur</th>
+                    <th>Mémorial</th>
+                    <th>Actions</th>
+                </tr>
             {% for condoleance in condoleances %}
-                <div>
-                    <p>{{ condoleance.texte|raw }}</p>
-                </div>
+                <tr>
+                    <td>
+                        {# Limiter le nombre de caractères à afficher avec le filtre twig #}
+                        <p>{{ condoleance.texte|raw }}</p>                        
+                    </td>
+                    <td>
+                        <p>{{ condoleance.pseudo }}</p>
+                    </td>
+                    <td>
+                        <p>{{ condoleance.nom }}</p>
+                    </td>
+                    <td>
+                        <a href="#">Voir</a>
+                    </td>
+                </tr>
             {% endfor %}
+            </table>
             <div class="pagination js-filter-pagination">
                 {{ knp_pagination_render(condoleances) }}
             </div>            
