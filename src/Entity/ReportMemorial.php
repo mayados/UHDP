@@ -64,4 +64,8 @@ class ReportMemorial
 
         return $this;
     }
+
+    public function __toString(){
+        return $this->dateCreation;
+    }
 }
