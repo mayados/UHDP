@@ -39,6 +39,25 @@ class ReportTopicRepository extends ServiceEntityRepository
         }
     }
 
+    public function findSignaleurTopic($user, $topic){
+
+        // Renvoie un array 
+
+        $parameters = [
+            'user' => $user,
+            'topic' => $topic,
+        ];
+
+        return $this->createQueryBuilder('r')
+        ->where('r.signaleur = :user')
+        ->andWhere('r.topic = topic')
+        ->setParameters($parameters)
+        ->getQuery()
+        // ->getResult()
+        ->getOneOrNullResult();
+
+    }
+
 //    /**
 //     * @return ReportTopic[] Returns an array of ReportTopic objects
 //     */

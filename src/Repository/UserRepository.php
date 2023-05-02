@@ -3,11 +3,13 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -19,7 +21,7 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private PaginatorInterface $paginatorInterface )
     {
         parent::__construct($registry, User::class);
     }
@@ -57,24 +59,31 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     // Trouver que les roles user pas les admin
-    public function findBannedUsersNotAdmin()
+    public function findBannedUsersNotAdmin(int $page): PaginationInterface
     {
-        return $this->createQueryBuilder('u')
+        $data = $this->createQueryBuilder('u')
             ->where("JSON_EXTRACT(u.roles, '$[0]') = 'ROLE_USER'")
             ->andWhere('u.bannir = 1')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
+        
+        $utilisateursBannis = $this->paginatorInterface->paginate($data,$page,20);
+
+        return $utilisateursBannis;
     }
 
-    public function findNotBannedUsersNotAdmin()
+    public function findNotBannedUsersNotAdmin(int $page): PaginationInterface
     {
-        return $this->createQueryBuilder('u')
+        $data =  $this->createQueryBuilder('u')
             ->where("JSON_EXTRACT(u.roles, '$[0]') = 'ROLE_USER'")
             ->andWhere('u.bannir = 0')
             ->getQuery()
             ->getResult()
         ;
+
+        $utilisateursNonBannis = $this->paginatorInterface->paginate($data,$page,20);
+
+        return $utilisateursNonBannis;
     }
 
 //    /**

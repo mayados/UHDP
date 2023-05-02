@@ -39,6 +39,25 @@ class ReportHistoireRepository extends ServiceEntityRepository
         }
     }
 
+    public function findSignaleurHistoire($user, $histoire){
+
+        // Renvoie un array 
+
+        $parameters = [
+            'user' => $user,
+            'histoire' => $histoire,
+        ];
+
+        return $this->createQueryBuilder('r')
+        ->where('r.signaleur = :user')
+        ->andWhere('r.histoire = :histoire')
+        ->setParameters($parameters)
+        ->getQuery()
+        // ->getResult()
+        ->getOneOrNullResult();
+
+    }
+
 //    /**
 //     * @return ReportHistoire[] Returns an array of ReportHistoire objects
 //     */

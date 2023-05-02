@@ -39,6 +39,25 @@ class ReportPostRepository extends ServiceEntityRepository
         }
     }
 
+    public function findSignaleurPost($user, $post){
+
+        // Renvoie un array 
+
+        $parameters = [
+            'user' => $user,
+            'post' => $post,
+        ];
+
+        return $this->createQueryBuilder('r')
+        ->where('r.signaleur = :user')
+        ->andWhere('r.post = :post')
+        ->setParameters($parameters)
+        ->getQuery()
+        // ->getResult()
+        ->getOneOrNullResult();
+
+    }
+
 //    /**
 //     * @return ReportPost[] Returns an array of ReportPost objects
 //     */

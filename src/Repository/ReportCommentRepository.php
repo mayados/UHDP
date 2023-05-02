@@ -39,6 +39,25 @@ class ReportCommentRepository extends ServiceEntityRepository
         }
     }
 
+    public function findSignaleurComment($user, $comment){
+
+        // Renvoie un array 
+
+        $parameters = [
+            'user' => $user,
+            'comment' => $comment,
+        ];
+
+        return $this->createQueryBuilder('r')
+        ->where('r.signaleur = :user')
+        ->andWhere('r.commentaire = :comment')
+        ->setParameters($parameters)
+        ->getQuery()
+        // ->getResult()
+        ->getOneOrNullResult();
+
+    }
+
 //    /**
 //     * @return ReportComment[] Returns an array of ReportComment objects
 //     */

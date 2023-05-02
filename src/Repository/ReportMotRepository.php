@@ -39,6 +39,25 @@ class ReportMotRepository extends ServiceEntityRepository
         }
     }
 
+    public function findSignaleurMot($user, $mot){
+
+        // Renvoie un array 
+
+        $parameters = [
+            'user' => $user,
+            'mot' => $mot,
+        ];
+
+        return $this->createQueryBuilder('r')
+        ->where('r.signaleur = :user')
+        ->andWhere('r.mot = :mot')
+        ->setParameters($parameters)
+        ->getQuery()
+        // ->getResult()
+        ->getOneOrNullResult();
+
+    }
+
 //    /**
 //     * @return ReportMot[] Returns an array of ReportMot objects
 //     */

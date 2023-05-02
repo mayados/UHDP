@@ -39,6 +39,25 @@ class ReportCondoleanceRepository extends ServiceEntityRepository
         }
     }
 
+    public function findSignaleurCondoleance($user, $condoleance){
+
+        // Renvoie un array 
+
+        $parameters = [
+            'user' => $user,
+            'condoleance' => $condoleance,
+        ];
+
+        return $this->createQueryBuilder('r')
+        ->where('r.signaleur = :user')
+        ->andWhere('r.condoleance = :condoleance')
+        ->setParameters($parameters)
+        ->getQuery()
+        // ->getResult()
+        ->getOneOrNullResult();
+
+    }
+
 //    /**
 //     * @return ReportCondoleance[] Returns an array of ReportCondoleance objects
 //     */
