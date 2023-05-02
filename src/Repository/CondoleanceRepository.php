@@ -46,12 +46,13 @@ class CondoleanceRepository extends ServiceEntityRepository
         // On crée une fonction ici car la logique ne doit pas se retouver majoritairement dans le controller, il est avant tout fait pour rediriger sur les vues
         $data = $this->createQueryBuilder('c')
         ->leftJoin('c.auteur','a')
-        ->select('c.dateCreation','c.texte','a.id','a.pseudo')
+        ->leftJoin('c.memorial','m')
+        ->select('c.dateCreation','c.texte','a.id','a.pseudo','m.nom')
         ->addOrderBy('c.dateCreation', 'DESC')
         ->getQuery()
         ->getResult();
 
-        $condoleances = $this->paginatorInterface->paginate($data,$page,16);
+        $condoleances = $this->paginatorInterface->paginate($data,$page,20);
 
         return $condoleances;
     }
