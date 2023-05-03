@@ -41,20 +41,43 @@ class CondoleanceRepository extends ServiceEntityRepository
         }
     }
 
-    public function findAdminPaginatedCondoleances(int $page): PaginationInterface
+    public function findPaginatedCondoleancesNonSignalees(int $page): PaginationInterface
     {
         // On crée une fonction ici car la logique ne doit pas se retouver majoritairement dans le controller, il est avant tout fait pour rediriger sur les vues
-        $data = $this->createQueryBuilder('c')
-        ->leftJoin('c.auteur','a')
-        ->leftJoin('c.memorial','m')
-        ->select('c.dateCreation','c.texte','a.id','a.pseudo','m.nom')
-        ->addOrderBy('c.dateCreation', 'DESC')
-        ->getQuery()
-        ->getResult();
+        // $data = $this->createQueryBuilder('c')
+        // ->leftJoin('c.auteur','a')
+        // ->leftJoin('c.memorial','m')
+        // ->select('c.dateCreation','c.texte','a.id','a.pseudo','m.nom')
+        // ->addOrderBy('c.dateCreation', 'DESC')
+        // ->getQuery()
+        // ->getResult();
 
+        // $condoleances = $this->paginatorInterface->paginate($data,$page,20);
+
+        // return $condoleances;
+
+        $em = $this->getEntityManager();
+        $sub = $em->createQueryBuilder();
+
+        //Requête en deux temps
+
+        $qb = $sub;
+        $qb->select('co.id')
+        ->from('App\Entity\ReportCondoleance', 'rc')
+        ->join('rc.condoleance', 'co');
+        
+        $sub = $em->createQueryBuilder();
+        $sub->select('c')
+        ->from('App\Entity\Condoleance', 'c')
+        ->where($sub->expr()->notIn('c.id', $qb->getDQL()))
+        // Nous trions du plus récent en premier au plus ancien
+        ->orderBy('c.dateCreation','DESC');
+
+        $query = $sub->getQuery();
+        $data = $query->getResult();
         $condoleances = $this->paginatorInterface->paginate($data,$page,20);
 
-        return $condoleances;
+        return $condoleances;  
     }
 
 //    /**

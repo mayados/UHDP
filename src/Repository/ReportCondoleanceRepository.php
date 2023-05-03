@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\ReportCondoleance;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<ReportCondoleance>
@@ -16,7 +18,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ReportCondoleanceRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private PaginatorInterface $paginatorInterface)
     {
         parent::__construct($registry, ReportCondoleance::class);
     }
@@ -55,6 +57,33 @@ class ReportCondoleanceRepository extends ServiceEntityRepository
         ->getQuery()
         // ->getResult()
         ->getOneOrNullResult();
+
+    }
+
+    public function findPaginatedSignalees(int $page): PaginationInterface
+    {
+
+        $em = $this->getEntityManager();
+        $sub = $em->createQueryBuilder();
+
+        //Requête en deux temps
+
+        $qb = $sub;
+        $qb->select('co.id')
+        ->from('App\Entity\ReportCondoleance', 'rc')
+        ->join('rc.condoleance', 'co');
+        
+        $sub = $em->createQueryBuilder();
+        $sub->select('c')
+        ->from('App\Entity\Condoleance', 'c')
+        ->where($sub->expr()->In('c.id', $qb->getDQL()))
+        ->addOrderBy('c.dateCreation', 'DESC');
+
+        $query = $sub->getQuery();
+        $data = $query->getResult();
+        $condoleances = $this->paginatorInterface->paginate($data,$page,20);
+
+        return $condoleances;  
 
     }
 

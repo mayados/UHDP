@@ -83,6 +83,53 @@ class BelleHistoireRepository extends ServiceEntityRepository
         return $histoires;
     }
 
+    public function findPaginatedPublieesNonSignalees($page): PaginationInterface
+    {
+        // $data = $this->createQueryBuilder('h')
+        // ->leftJoin('h.auteur','a')
+        // ->select('h.titre','h.slug','h.dateCreation','a.id','a.pseudo')
+        // ->where('h.etat LIKE :state')
+        // ->setParameter('state','%STATE_APPROUVED%')
+        // ->addOrderBy('h.dateCreation', 'DESC')
+        // ->getQuery()
+        // ->getResult();
+
+        // $histoires = $this->paginatorInterface->paginate($data,$page,12);
+
+        // return $histoires;
+
+        // Nous devons trouver les topics dont l'id ne se trouve pas dans l'entité ReportTopic
+
+        $em = $this->getEntityManager();
+        $sub = $em->createQueryBuilder();
+
+        //Requête en deux temps
+
+        $qb = $sub;
+        $qb->select('hi.id')
+        ->from('App\Entity\ReportHistoire', 'rh')
+        ->join('rh.histoire', 'hi');
+        
+        $sub = $em->createQueryBuilder();
+        /* Sélectionner tous les topics qui ne sont pas (NOT IN) le résultat précédent*/
+        $sub->select('h')
+        ->from('App\Entity\BelleHistoire', 'h')
+        ->where($sub->expr()->notIn('h.id', $qb->getDQL()))
+        ->andWhere('h.etat LIKE :state')
+        ->setParameter('state','%STATE_APPROUVED%')
+        ->addOrderBy('h.dateCreation', 'DESC')
+        ->getQuery()
+        ->getResult();
+
+
+        $query = $sub->getQuery();
+        $data = $query->getResult();
+        $histoiresPubliees = $this->paginatorInterface->paginate($data,$page,20);
+
+        return $histoiresPubliees;  
+
+    }
+
     public function findPaginatedWaiting($page): PaginationInterface
     {
         $data = $this->createQueryBuilder('h')

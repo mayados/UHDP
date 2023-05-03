@@ -57,19 +57,33 @@ class AnimalMemorialRepository extends ServiceEntityRepository
         return $memoriaux;
     }
 
-    public function findAdminPaginatedMemoriaux(int $page): PaginationInterface
+    public function findPaginatedMemoriauxNonSignales(int $page): PaginationInterface
     {
-        // On crée une fonction ici car la logique ne doit pas se retouver majoritairement dans le controller, il est avant tout fait pour rediriger sur les vues
-        $data = $this->createQueryBuilder('m')
-        ->leftJoin('m.auteur','a')
-        ->select('m.nom','a.id','a.pseudo','m.dateCreation','m.id','m.photo')
-        ->addOrderBy('m.dateCreation', 'DESC')
-        ->getQuery()
-        ->getResult();
 
+        // Nous devons trouver les mémoriaux dont l'id ne se trouve pas dans l'entité ReportMmeorial
+
+        $em = $this->getEntityManager();
+        $sub = $em->createQueryBuilder();
+
+        //Requête en deux temps
+
+        $qb = $sub;
+        $qb->select('me.id')
+        ->from('App\Entity\ReportMemorial', 'rm')
+        ->join('rm.memorial', 'me');
+        
+        $sub = $em->createQueryBuilder();
+        $sub->select('m')
+        ->from('App\Entity\AnimalMemorial', 'm')
+        ->where($sub->expr()->notIn('m.id', $qb->getDQL()))
+        // Nous trions du plus récent en premier au plus ancien
+        ->orderBy('m.dateCreation','DESC');
+
+        $query = $sub->getQuery();
+        $data = $query->getResult();
         $memoriaux = $this->paginatorInterface->paginate($data,$page,20);
 
-        return $memoriaux;
+        return $memoriaux;  
     }
 
     public function findPaginatedMemoriauxByCategorie(int $page,$categorie): PaginationInterface
