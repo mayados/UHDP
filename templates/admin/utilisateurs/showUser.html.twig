@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Visualisation utilisateur{% endblock %}
+
+{% block body %}
+
+<div class="container-page administration">
+
+    {% include '_partials/_adminnav.html.twig' %}
+    <main class="main-administration">
+        <h1>{{ user.pseudo }}</h1>
+
+        {{ form_start(formAddUser) }}
+        <div class="form-element">
+            {{ form_row(formAddUser.email) }}
+        </div>
+        <div class="form-element">
+            {{ form_row(formAddUser.roles) }}
+        </div>
+        <div class="form-element">
+            {{ form_row(formAddUser.plainPassword) }}
+        </div>
+        <div class="form-element">
+            {{ form_row(formAddUser.pseudo) }}
+        </div>
+        <div class="form-element">
+            {{ form_row(formAddUser.submit) }}
+        </div>
+    {{ form_end(formAddUser) }}    
+    </main>        
+</div>
+{% endblock %}
