@@ -65,4 +65,35 @@ class UsersController extends AbstractController
         ]);
     }
 
+    #[Route('/admin/users/show/{id}', name: 'app_admin_users_show')]
+    public function showUser(User $user, ManagerRegistry $doctrine, Request $request,UserPasswordHasherInterface $userPasswordHasher,): Response
+    {
+
+        $form = $this->createForm(AddUserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $form->getData();            
+            // encode the plain password
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                $user,
+                $form->get('plainPassword')->getData()
+            ));
+            $user->setBannir(false);
+            $user->setIsVerified(true);
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+
+            return $this->redirectToRoute('app_admin_users_show');
+        }
+
+        return $this->render('admin/utilisateurs/showUser.html.twig', [
+            'formAddUser' => $form->createView(),
+            'user' => $user,
+        ]);
+    }
+
 }
