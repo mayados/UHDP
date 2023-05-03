@@ -7,17 +7,7 @@
 <div class="container-page administration">
         {% include '_partials/_adminnav.html.twig' %}
         <main class="main-administration">
-            <section id="categories-liste">
-                <h1>Liste des catégories</h1>
-
-                {% for categorie in categories %}
-                    <div class="categorie">
-                        <p>{{ categorie.nom }}  </p>  
-                        <a href="{{ path('app_admin_remove_categorie', {'id': categorie.id}) }}">Supprimer</a>      
-                    </div>
-                {% endfor %}        
-            </section>
-
+            <h1>Catégories</h1>            
             <section id="ajout-categorie">
                 <h2>Ajouter une catégorie</h2>
 
@@ -31,7 +21,32 @@
                         </div>
                     {{form_end(formAddCategorie)}}              
                 </div>
-            </section>      
+            </section>                 
+            <section id="categories-liste">
+                <table>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Editer</th>
+                        <th>Supprimer</th>
+                    </tr>
+                {% for categorie in categories %}
+                    <tr class="categorie">
+                        <td>
+                            <p>{{ categorie.nom }}  </p>                             
+                        </td>
+                        <td>
+                            <a href="#">Editer</a> 
+                        </td>
+                        <td>
+                            <a href="{{ path('app_admin_remove_categorie', {'id': categorie.id}) }}">Supprimer</a>  
+                        </td>
+ 
+    
+                    </tr>
+                {% endfor %}    
+                </table>    
+            </section>
+
         </main>
   
 </div>
