@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Posts{% endblock %}
+{% block title %}Posts signalés{% endblock %}
 
 {% block body %}
 
@@ -8,9 +8,9 @@
         {% include '_partials/_adminnav.html.twig' %}
         <main class="main-administration">
             <section id="categories-liste">
-                <h1>Liste des Posts</h1>
+                <h1>Posts signalés</h1>
 
-                {% for post in posts %}
+                {% for post in postsSignales %}
                     <div class="genre">
                         <p>{{ post.texte|raw }} ({{ post.auteur }}) </p>  
                         <a href="#">Supprimer</a>      
@@ -18,7 +18,7 @@
                 {% endfor %}        
             </section>      
             <div class="pagination js-filter-pagination">
-                {{ knp_pagination_render(posts) }}
+                {{ knp_pagination_render(postsSignales) }}
             </div>             
         </main>
 </div>
