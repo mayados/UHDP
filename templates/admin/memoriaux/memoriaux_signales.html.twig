@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Histoires désapprouvées{% endblock %}
+{% block title %}Memoriaux signalés{% endblock %}
 
 {% block body %}
 
@@ -8,31 +8,31 @@
 
         {% include '_partials/_adminnav.html.twig' %}
         <main class="main-administration">
-            <h1>Histoires désapprouvées</h1>
-
+            <h1>Memoriaux signalés</h1>
             <table>
                 <tr>
-                    <th>Titre</th>
+                    <th>Nom</th>
                     <th>Auteur</th>
-                    <th>Action</th>
+                    <th>Actions</th>
                 </tr>
-            {% for histoire in histoiresDesapprouvees %}
+            {% for memorial in memoriaux %}
                 <tr>
                     <td>
-                        <p>{{ histoire.titre }}</p>
+                        <p>{{ memorial.nom }}</p>                        
                     </td>
                     <td>
-                        <p>{{ histoire.pseudo }}</p> 
+                        <p>{{ memorial.auteur }}</p>                        
                     </td>
                     <td>
-                        <a href="">Voir</a>
+                        <a href="#">Preview</a>                       
                     </td>
                 </tr>
             {% endfor %}
             </table>
             <div class="pagination js-filter-pagination">
-                {{ knp_pagination_render(histoiresDesapprouvees) }}
+                {{ knp_pagination_render(memoriaux) }}
             </div>            
         </main>        
+
 </div>
 {% endblock %}

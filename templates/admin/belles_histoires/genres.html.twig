@@ -7,17 +7,7 @@
 <div class="container-page administration">
         {% include '_partials/_adminnav.html.twig' %}
         <main class="main-administration">
-            <section id="categories-liste">
-                <h1>Liste des genres</h1>
-
-                {% for genre in genres %}
-                    <div class="genre">
-                        <p>{{ genre.nom }}  </p>  
-                        <a href="#">Supprimer</a>      
-                    </div>
-                {% endfor %}        
-            </section>
-
+            <h1>Liste des genres</h1>    
             <section id="ajout-genre">
                 <h2>Ajouter un genre</h2>
 
@@ -31,7 +21,25 @@
                         </div>
                     {{form_end(formAddGenre)}}              
                 </div>
-            </section>   
+            </section>          
+            <section id="categories-liste">
+                <table>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Action</th>
+                    </tr>
+                {% for genre in genres %}
+                    <tr class="genre">
+                        <td>
+                            <p>{{ genre.nom }}</p>  
+                        </td>
+                        <td>
+                            <a href="#">Supprimer</a>                             
+                        </td>
+                    </tr>
+                {% endfor %}    
+                </table>    
+            </section> 
         </main>
      
 </div>

@@ -10,12 +10,30 @@
             <section id="categories-liste">
                 <h1>Liste des Posts</h1>
 
+                <table>
+                    <tr>
+                        <th>Titre</th>
+                        <th>Auteur</th>
+                        <th>Date de création</th>
+                        <th>Action</th>
+                    </tr>
                 {% for post in posts %}
-                    <div class="genre">
-                        <p>{{ post.texte|raw }} ({{ post.auteur }}) </p>  
-                        <a href="#">Supprimer</a>      
-                    </div>
-                {% endfor %}        
+                    <tr class="genre">
+                        <td>
+                            <p>{{ post.texte|raw }}</p>
+                        </td>
+                        <td>
+                            <p>{{ post.auteur }}</p>  
+                        </td>
+                        <td>
+                            <p>{{ post.dateCreation| date('d-m-Y') }}</p>
+                        </td>
+                        <td>
+                          <a href="#">Voir</a>   
+                        </td>
+                    </tr>
+                {% endfor %} 
+                </table>       
             </section>      
             <div class="pagination js-filter-pagination">
                 {{ knp_pagination_render(posts) }}

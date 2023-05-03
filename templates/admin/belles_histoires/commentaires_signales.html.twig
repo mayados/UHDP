@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mots de commémoration{% endblock %}
+{% block title %}Commentaires signalés{% endblock %}
 
 {% block body %}
 
@@ -8,33 +8,32 @@
         {% include '_partials/_adminnav.html.twig' %}
         <main class="main-administration">
             <section id="categories-liste">
-                <h1>Liste des Mots</h1>
+                <h1>Commentaires signalés</h1>
 
                 <table>
                     <tr>
-                        <th>Mot</th>
+                        <th>Titre</th>
                         <th>Auteur</th>
                         <th>Action</th>
                     </tr>
-                {% for mot in mots %}
+                {% for commentaire in commentaires %}
                     <tr class="genre">
                         <td>
-                            <p>{{ mot.mot|raw }}</p>
+                            <p>{{ commentaire.texte|raw }}</p>
                         </td>
                         <td>
-                            <p>{{ mot.auteur }}</p> 
+                            <p>{{ commentaire.auteur }}</p>
                         </td>
                         <td>
-                            <a href="#">Voir</a>  
+                            <a href="#">Supprimer</a> 
                         </td>
                     </tr>
-                {% endfor %}   
-                </table>     
-            </section>    
+                {% endfor %}     
+                </table>   
+            </section>          
             <div class="pagination js-filter-pagination">
-                {{ knp_pagination_render(mots) }}
+                {{ knp_pagination_render(commentaires) }}
             </div>           
         </main>
-  
 </div>
 {% endblock %}
