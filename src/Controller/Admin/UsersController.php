@@ -2,12 +2,15 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\User;
+use App\Form\AddUserType;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UsersController extends AbstractController
 {
@@ -30,4 +33,36 @@ class UsersController extends AbstractController
             'utilisateursNonBannis' => $ur->findNotBannedUsersNotAdmin($request->query->getInt('page',1)),
         ]);
     }
+
+    #[Route('/admin/users/add', name: 'app_admin_users_add')]
+    public function addUser(ManagerRegistry $doctrine, Request $request,UserPasswordHasherInterface $userPasswordHasher,): Response
+    {
+
+        $user = new User();
+        $form = $this->createForm(AddUserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $form->getData();            
+            // encode the plain password
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                $user,
+                $form->get('plainPassword')->getData()
+            ));
+            $user->setBannir(false);
+            $user->setIsVerified(true);
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+
+            return $this->redirectToRoute('app_admin_users_add');
+        }
+
+        return $this->render('admin/utilisateurs/addUser.html.twig', [
+            'formAddUser' => $form->createView(),
+        ]);
+    }
+
 }
