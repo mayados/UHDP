@@ -24,7 +24,7 @@ class RegistrationFormType extends AbstractType
             ->add('email', EmailType::class, [
                 'constraints' => [
                     new Assert\Email(['message' => 'L\'email {{ value }} n\'est pas un email valide']),
-                    new Assert\NotBlank(['message' => 'L\'email ne peut pas être nul']),
+                    new Assert\NotBlank(['message' => 'L\'email ne peut pas être vide']),
                 ]
             ])
             ->add('pseudo', TextType::class, [
@@ -37,7 +37,7 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
-                        'message' => 'You should agree to our terms.',
+                        'message' => 'Vous devez accepter les conditions générales du site',
                     ]),
                 ],
             ])
