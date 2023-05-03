@@ -25,7 +25,7 @@
                         {{ banni.dateInscription| date('d-m-Y') }}
                     </td>
                     <td>
-                        <a href="#">Voir</a>                           
+                        <a href="{{ path('app_admin_users_show', {'id': banni.id}) }}">Voir</a>                           
                     </td>
                 </tr>
             {% endfor %}            
