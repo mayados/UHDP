@@ -48,36 +48,67 @@ class TopicRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
 
-        $topics = $this->paginatorInterface->paginate($data,$page,3);
+        $topics = $this->paginatorInterface->paginate($data,$page,16);
 
         return $topics;
     }
 
-    public function findPaginatedVerrouilles($page): PaginationInterface
+    public function findPaginatedTopicsNonSignales(int $page): PaginationInterface
     {
-        $data = $this->createQueryBuilder('t')
-        ->where('t.verrouillage = 1')
-        ->addOrderBy('t.dateCreation', 'DESC')
-        ->getQuery()
-        ->getResult();
 
-        $topicsVerrouilles = $this->paginatorInterface->paginate($data,$page,12);
+        // Nous devons trouver les topics dont l'id ne se trouve pas dans l'entité ReportTopic
 
-        return $topicsVerrouilles;
+        $em = $this->getEntityManager();
+        $sub = $em->createQueryBuilder();
+
+        //Requête en deux temps
+
+        $qb = $sub;
+        $qb->select('to.id')
+        ->from('App\Entity\ReportTopic', 'rt')
+        ->join('rt.topic', 'to');
+        
+        $sub = $em->createQueryBuilder();
+        /* Sélectionner tous les topics qui ne sont pas (NOT IN) le résultat précédent*/
+        $sub->select('t')
+        ->from('App\Entity\Topic', 't')
+        ->where($sub->expr()->notIn('t.id', $qb->getDQL()))
+        // Nous trions du plus ancien en premier au plus récent
+        ->orderBy('t.dateCreation','ASC');
+
+        $query = $sub->getQuery();
+        $data = $query->getResult();
+        $topics = $this->paginatorInterface->paginate($data,$page,20);
+
+        return $topics;  
+
     }
 
-    public function findPaginatedDeverrouilles($page): PaginationInterface
-    {
-        $data = $this->createQueryBuilder('t')
-        ->where('t.verrouillage = 0')
-        ->addOrderBy('t.dateCreation', 'DESC')
-        ->getQuery()
-        ->getResult();
+    // public function findPaginatedVerrouilles($page): PaginationInterface
+    // {
+    //     $data = $this->createQueryBuilder('t')
+    //     ->where('t.verrouillage = 1')
+    //     ->addOrderBy('t.dateCreation', 'DESC')
+    //     ->getQuery()
+    //     ->getResult();
 
-        $topicsDeverrouilles = $this->paginatorInterface->paginate($data,$page,12);
+    //     $topicsVerrouilles = $this->paginatorInterface->paginate($data,$page,12);
 
-        return $topicsDeverrouilles;
-    }
+    //     return $topicsVerrouilles;
+    // }
+
+    // public function findPaginatedDeverrouilles($page): PaginationInterface
+    // {
+    //     $data = $this->createQueryBuilder('t')
+    //     ->where('t.verrouillage = 0')
+    //     ->addOrderBy('t.dateCreation', 'DESC')
+    //     ->getQuery()
+    //     ->getResult();
+
+    //     $topicsDeverrouilles = $this->paginatorInterface->paginate($data,$page,12);
+
+    //     return $topicsDeverrouilles;
+    // }
 
 //    /**
 //     * @return Topic[] Returns an array of Topic objects

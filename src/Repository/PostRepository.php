@@ -55,6 +55,37 @@ class PostRepository extends ServiceEntityRepository
         return $posts;
     }
 
+    public function findPaginatedPostsNonSignales(int $page): PaginationInterface
+    {
+
+        // Nous devons trouver les topics dont l'id ne se trouve pas dans l'entité ReportTopic
+
+        $em = $this->getEntityManager();
+        $sub = $em->createQueryBuilder();
+
+        //Requête en deux temps
+
+        $qb = $sub;
+        $qb->select('po.id')
+        ->from('App\Entity\ReportPost', 'rp')
+        ->join('rp.post', 'po');
+        
+        $sub = $em->createQueryBuilder();
+        /* Sélectionner tous les topics qui ne sont pas (NOT IN) le résultat précédent*/
+        $sub->select('p')
+        ->from('App\Entity\Post', 'p')
+        ->where($sub->expr()->notIn('p.id', $qb->getDQL()))
+        // Nous trions du plus ancien en premier au plus récent
+        ->orderBy('p.dateCreation','ASC');
+
+        $query = $sub->getQuery();
+        $data = $query->getResult();
+        $posts = $this->paginatorInterface->paginate($data,$page,20);
+
+        return $posts;  
+
+    }
+
 //    /**
 //     * @return Post[] Returns an array of Post objects
 //     */

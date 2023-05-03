@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\ReportPost;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<ReportPost>
@@ -16,7 +18,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ReportPostRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private PaginatorInterface $paginatorInterface)
     {
         parent::__construct($registry, ReportPost::class);
     }
@@ -55,6 +57,36 @@ class ReportPostRepository extends ServiceEntityRepository
         ->getQuery()
         // ->getResult()
         ->getOneOrNullResult();
+
+    }
+
+    public function findPaginatedPostsSignales(int $page): PaginationInterface
+    {
+
+        $em = $this->getEntityManager();
+        $sub = $em->createQueryBuilder();
+
+        //Requête en deux temps
+
+        $qb = $sub;
+        $qb->select('po.id')
+        ->from('App\Entity\ReportPost', 'rp')
+        ->join('rp.post', 'po');
+        
+        $sub = $em->createQueryBuilder();
+        /* Sélectionner tous les topics qui ne sont pas (NOT IN) le résultat précédent*/
+        // Cette deuxieme requete est effectuée afin de récupérer la totalité de l'entité Topic, notamment pour accéder à ses méthodes
+        $sub->select('p')
+        ->from('App\Entity\Post', 'p')
+        ->where($sub->expr()->In('p.id', $qb->getDQL()))
+        // Nous trions du plus ancien en premier au plus récent
+        ->orderBy('p.dateCreation','ASC');
+
+        $query = $sub->getQuery();
+        $data = $query->getResult();
+        $postsSignales = $this->paginatorInterface->paginate($data,$page,20);
+
+        return $postsSignales;  
 
     }
 
