@@ -17,8 +17,10 @@
         </div>
         <div class="card-body">
             <p>
-                <a href="{{ path('app_admin_memoriaux') }}">Liste des mémoriaux</a>
-                <a href="{{ path('app_admin_condoleances') }}">Messages de condoléances</a>
+                <a href="{{ path('app_admin_memoriaux') }}">Mémoriaux</a>
+                <a href="{{ path('app_admin_memoriaux_signales') }}">Mémoriaux signalés</a>
+                <a href="{{ path('app_admin_condoleances') }}">Condoléances</a>
+                <a href="{{ path('app_admin_condoleances_signalees') }}">Condoléances signalées</a>
                 <a href="{{ path('app_admin_categories') }}">Catégories</a>  
             </p>            
         </div>
@@ -45,7 +47,9 @@
                 <a href="{{ path('app_admin_histoires_publiees') }}">Histoires publiées</a>
                 <a href="{{ path('app_admin_histoires_attente') }}">Histoires en attente</a>
                 <a href="{{ path('app_admin_histoires_desapprouvees') }}">Histoires désapprouvées</a>
-                <a href="{{ path('app_admin_histoires_commentaires') }}">Liste des commentaires</a>
+                <a href="{{ path('app_admin_histoires_signalees') }}">Histoires signalées</a>
+                <a href="{{ path('app_admin_histoires_commentaires') }}">Commentaires</a>
+                <a href="{{ path('app_admin_histoires_commentaires_signales') }}">Commentaires signalés</a>
                 <a href="{{ path('app_admin_histoires_genres') }}">Genres / ajout</a>
             </p>            
         </div>
@@ -56,7 +60,8 @@
         </div>
         <div class="card-body">
             <p>
-                <a href="{{ path('app_admin_commemoration_mots') }}">Liste des mots</a>
+                <a href="{{ path('app_admin_commemoration_mots') }}">Mots</a>
+                <a href="{{ path('app_admin_commemoration_mots_signales') }}">Mots signalés</a>
             </p>            
         </div>
     </article>
