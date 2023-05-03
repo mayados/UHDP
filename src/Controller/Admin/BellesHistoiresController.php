@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CommentBelleHistoireRepository;
+use App\Repository\ReportCommentRepository;
+use App\Repository\ReportHistoireRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BellesHistoiresController extends AbstractController
@@ -22,7 +24,7 @@ class BellesHistoiresController extends AbstractController
     public function findHistoiresPubliees(BelleHistoireRepository $bhr, Request $request): Response
     {
         return $this->render('admin/belles_histoires/publiees.html.twig', [
-            'histoiresPubliees' => $bhr->findPaginatedPubliees($request->query->getInt('page',1)),
+            'histoiresPubliees' => $bhr->findPaginatedPublieesNonSignalees($request->query->getInt('page',1)),
         ]); 
     }
 
@@ -46,16 +48,32 @@ class BellesHistoiresController extends AbstractController
         ]); 
     }
 
+    /*  Histoires signalées */
+    #[Route('/admin/histoires/signalees', name: 'app_admin_histoires_signalees')]
+    public function findHistoiresSignalees(ReportHistoireRepository $rhr, Request $request): Response
+    {
+        return $this->render('admin/belles_histoires/histoires_signalees.html.twig', [
+            'histoiresSignalees' => $rhr->findPaginatedPublieesSignalees($request->query->getInt('page',1)),
+        ]); 
+    }
 
     /* Liste des commentaires */
     #[Route('/admin/histoires/commentaires', name: 'app_admin_histoires_commentaires')]
-    public function commentaires(CommentBelleHistoireRepository $cbhr, ManagerRegistry $doctrine, Request $request): Response
+    public function findCommentairesNonSignales(CommentBelleHistoireRepository $cbhr, ManagerRegistry $doctrine, Request $request): Response
     {
 
-        $commentaires = $cbhr->findAll();
-
         return $this->render('admin/belles_histoires/commentaires.html.twig', [
-            'commentaires' => $commentaires,
+            'commentaires' => $cbhr->findPaginatedNonSignales($request->query->getInt('page',1)),
+        ]);  
+
+    }
+
+    #[Route('/admin/histoires/commentaires/signales', name: 'app_admin_histoires_commentaires_signales')]
+    public function findCommentairesSignales(ReportCommentRepository $rcr, ManagerRegistry $doctrine, Request $request): Response
+    {
+
+        return $this->render('admin/belles_histoires/commentaires_signales.html.twig', [
+            'commentaires' => $rcr->findPaginatedSignales($request->query->getInt('page',1)),
         ]);  
 
     }
