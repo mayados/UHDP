@@ -13,21 +13,18 @@
         {% if user.bannir == true %}
             <a href="{{ path('ban_admin_user', {'id': user.id}) }}">Dé-bannir</a>
         {% else %}
-            <a href="">Bannir</a>
+            <a href="{{ path('ban_admin_user', {'id': user.id}) }}">Bannir</a>
         {% endif %}
 
         {{ form_start(formAddUser) }}
             <div class="form-element">
-                {{ form_widget(formAddUser.email, {'attr': {'disabled': 'disabled'}}) }}
+                {{ form_row(formAddUser.email) }}         
             </div>
             <div class="form-element">
                 {{ form_row(formAddUser.pseudo) }}
             </div>        
             <div class="form-element">
                 {{ form_row(formAddUser.roles) }}
-            </div>
-            <div class="form-element">
-                {{ form_widget(formAddUser.plainPassword, {'attr': {'style': 'display:none'}}) }}
             </div>
             <div class="form-element">
                 {{ form_row(formAddUser.submit) }}
