@@ -86,4 +86,13 @@ class MemoriauxController extends AbstractController
         ]);  
 
     }
+
+    #[Route('/admin/memoriaux/{id}', name: 'app_admin_memorial_show')]
+    public function showMemorial(AnimalMemorial $memorial, Request $request): Response
+    {
+
+        return $this->render('admin/memoriaux/showMemorial.html.twig', [
+            'memorial' => $memorial,
+        ]);
+    }
 }
