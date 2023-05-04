@@ -10,23 +10,38 @@
     <main class="main-administration">
         <h1>{{ user.pseudo }}</h1>
 
+        {% if user.bannir == true %}
+            <a href="{{ path('ban_admin_user', {'id': user.id}) }}">Dé-bannir</a>
+        {% else %}
+            <a href="">Bannir</a>
+        {% endif %}
+
         {{ form_start(formAddUser) }}
-        <div class="form-element">
-            {{ form_row(formAddUser.email) }}
-        </div>
-        <div class="form-element">
-            {{ form_row(formAddUser.roles) }}
-        </div>
-        <div class="form-element">
-            {{ form_row(formAddUser.plainPassword) }}
-        </div>
-        <div class="form-element">
-            {{ form_row(formAddUser.pseudo) }}
-        </div>
-        <div class="form-element">
-            {{ form_row(formAddUser.submit) }}
-        </div>
-    {{ form_end(formAddUser) }}    
+            <div class="form-element">
+                {{ form_widget(formAddUser.email, {'attr': {'disabled': 'disabled'}}) }}
+            </div>
+            <div class="form-element">
+                {{ form_row(formAddUser.pseudo) }}
+            </div>        
+            <div class="form-element">
+                {{ form_row(formAddUser.roles) }}
+            </div>
+            <div class="form-element">
+                {{ form_widget(formAddUser.plainPassword, {'attr': {'style': 'display:none'}}) }}
+            </div>
+            <div class="form-element">
+                {{ form_row(formAddUser.submit) }}
+            </div>
+        {{ form_end(formAddUser) }}   
+    
+        {% if not user.photo %}
+            <img src="{{ asset('img/default_user.png') }}" alt="">
+        {% else %}
+            <img src="{{ asset('uploads/imgUserProfil/'~ user.photo) }}" alt="">   
+        {% endif %}     
+        {{ form_start(formPhoto) }}
+        {{ form_end(formPhoto) }}   
     </main>        
+
 </div>
 {% endblock %}
