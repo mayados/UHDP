@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Form\UserType;
 use App\Form\AddUserType;
 use App\Form\UserPhotoType;
 use App\Service\UploaderService;
@@ -71,21 +72,15 @@ class UsersController extends AbstractController
     public function showUser(User $user, ManagerRegistry $doctrine, Request $request,UserPasswordHasherInterface $userPasswordHasher,UploaderService $uploaderService): Response
     {
 
-        $form = $this->createForm(AddUserType::class, $user);
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         $formPhoto = $this->createForm(UserPhotoType::class, $user);
         $formPhoto->handleRequest($request);
+        $mail = $user->getEmail();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $form->getData();            
-            // encode the plain password
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                $user,
-                $form->get('plainPassword')->getData()
-            ));
-            $user->setBannir(false);
-            $user->setIsVerified(true);
+
+            $user = $form->getData();    
             $entityManager = $doctrine->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
