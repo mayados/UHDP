@@ -73,29 +73,29 @@ class MainController extends AbstractController
     //     ]);
     // }
 
-    #[Route('/admin/user/ban/{id}', name: 'ban_admin_user')]
-    public function banUser(User $user, UserRepository $ur, ManagerRegistry $doctrine)
-    {
-        $entityManager = $doctrine->getManager();
-        $user = $ur->find($user->getId());
-        // On vérifie s'il s'agit d'un bannissement ou débannissement
-        if($user->isBannir() == false){
-            // On ban
-            $user->setBannir(true);
-        }else{
-            // On dé-ban
-            $user->setBannir(false);
-        }
+    // #[Route('/admin/user/ban/{id}', name: 'ban_admin_user')]
+    // public function banUser(User $user, UserRepository $ur, ManagerRegistry $doctrine)
+    // {
+    //     $entityManager = $doctrine->getManager();
+    //     $user = $ur->find($user->getId());
+    //     // On vérifie s'il s'agit d'un bannissement ou débannissement
+    //     if($user->isBannir() == false){
+    //         // On ban
+    //         $user->setBannir(true);
+    //     }else{
+    //         // On dé-ban
+    //         $user->setBannir(false);
+    //     }
 
-        $entityManager->flush();
+    //     $entityManager->flush();
 
-        $this->addFlash('notice',"L'utilisateur a été banni");
+    //     $this->addFlash('notice',"L'utilisateur a été banni");
 
-        return $this->redirectToRoute(
-            'show_profile',
-            ['id' => $user->getId()]
-        );
-    }
+    //     return $this->redirectToRoute(
+    //         'show_profile',
+    //         ['id' => $user->getId()]
+    //     );
+    // }
 
     // #[Route('/admin/memoriaux', name: 'admin_memoriaux')]
     // public function findMemoriaux()
