@@ -3,17 +3,21 @@
 namespace App\Controller\Admin;
 
 
+use App\Form\HistoireType;
+use App\Entity\BelleHistoire;
 use App\Entity\GenreHistoire;
 use App\Form\GenreHistoireType;
+use App\Service\SluggerService;
+use App\Service\UploaderService;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\BelleHistoireRepository;
 use App\Repository\GenreHistoireRepository;
+use App\Repository\ReportCommentRepository;
+use App\Repository\ReportHistoireRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CommentBelleHistoireRepository;
-use App\Repository\ReportCommentRepository;
-use App\Repository\ReportHistoireRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BellesHistoiresController extends AbstractController
@@ -107,6 +111,135 @@ class BellesHistoiresController extends AbstractController
             'genres' => $genres,
             'formAddGenre' => $form->createView(),
         ]);  
+
+    }
+
+    #[Route('/admin/histoire/{slug}', name: 'app_admin_histoire_show')]
+    public function showHistoire(BelleHistoire $histoire,BelleHistoireRepository $bhr, Request $request, UploaderService $uploaderService, ManagerRegistry $doctrine, SluggerService $sluggerService): Response
+    {
+
+        $form = $this->createForm(HistoireType::class, $histoire);  
+        $form->handleRequest($request);
+        $auteur = $histoire->getAuteur();
+        $date = $histoire->getDateCreation();
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $histoire = $form->getData();            
+                
+            $imgHistoire = $form->get('imgHistoire')->getData();
+            $titre = $form->get('titre')->getData();
+            $slug = $sluggerService->slugElement($titre);
+            if($imgHistoire){
+                // Si on est dans le cas d'un edit et qu'une nouvelle image est uploadée (car lors d'un ajout on ne va pas supprimer le fichier qu'ion crée..)
+                if($histoire->getPhoto() != null){
+                    // On cherche la photo stockée pour le mémorial correspondant
+                    $previousPhoto = $histoire->getPhoto();
+                    $folder = 'imgHistoire';
+                    $uploaderService->delete($previousPhoto,$folder);
+                }
+                // Dans le cas où il y a une image soumise mais que le mémorial n'a pas encore d'image (=> cas d'ajout de mémorial ou edit sans image)
+                $folder = 'imgHistoire';
+                $image = $uploaderService->add($imgHistoire,$folder);
+                $histoire->setPhoto($image);     
+            }
+
+            $histoire->setSlug($slug);
+            $histoire->setAuteur($auteur);
+            $histoire->setDateCreation($date); 
+            // Dans tous les cas, on persist le memorial
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($histoire);
+            $entityManager->flush();
+
+            $this->addFlash('success', "L'histoire a été modifiée avec succès");
+
+            return $this->redirectToRoute(
+                'app_admin_histoire_show',
+                ['slug' => $histoire->getSlug()]
+            );
+        }
+
+        return $this->render('admin/belles_histoires/showHistoire.html.twig', [
+            'histoire' => $histoire,
+            'formEditHistoire' => $form->createView(),
+        ]); 
+    }
+
+    #[Route('/admin/histoire/disapprouved/{slug}', name: 'app_admin_histoire_disapprouved')]
+    public function disapprouvedHistoire(BelleHistoire $histoire,BelleHistoireRepository $bhr, Request $request, ManagerRegistry $doctrine): Response
+    {
+
+        $entityManager = $doctrine->getManager();
+        $histoire = $bhr->find($histoire->getId());
+        $histoire->setEtat('STATE_DISAPPROUVED');
+       $entityManager->persist($histoire);        
+        $entityManager->flush();
+
+        $this->addFlash('success', "L'histoire a été désapprouvée");
+
+        return $this->redirectToRoute(
+            'app_admin_histoire_show',
+            ['slug' => $histoire->getSlug()]
+        );
+    
+    }
+
+    #[Route('/admin/histoire/approuved/{slug}', name: 'app_admin_histoire_approuved')]
+    public function approuvedHistoire(BelleHistoire $histoire,BelleHistoireRepository $bhr, Request $request, ManagerRegistry $doctrine): Response
+    {
+
+        $entityManager = $doctrine->getManager();
+        $histoire = $bhr->find($histoire->getId());
+        $histoire->setEtat('STATE_APPROUVED');
+        $entityManager->persist($histoire);        
+        $entityManager->flush();
+
+        $this->addFlash('success', "L'histoire a été approuvée");
+
+        return $this->redirectToRoute(
+            'app_admin_histoire_show',
+            ['slug' => $histoire->getSlug()]
+        );
+    
+    }
+
+    #[Route('/admin/histoire/remove/{id}', name: 'app_admin_histoire_remove')]
+    public function removeHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire, UploaderService $uploaderService)
+    {
+        $histoire = $bhr->find($histoire->getId());  
+
+        // Comme la photo est nullable dans l'entité, on doit ajouter cette condition sinon ça fait unen erreur si l'image est vide
+        if($histoire->getPhoto()){
+            $photo = $histoire->getPhoto();
+            $folder = 'imgHistoire';
+            $uploaderService->delete($photo,$folder);             
+        }     
+    
+        $bhr->remove($histoire, $flush = true);
+
+        $this->addFlash('notice', "L'histoire a été supprimée");
+
+        return $this->redirectToRoute('app_admin_histoires_signalees');            
+
+    }
+
+    #[Route('/admin/histoire/reports/remove/{id}', name: 'app_admin_histoire_remove_reports')]
+    public function removeReportsHistoire(ReportHistoireRepository $rhr, BelleHistoire $histoire, UploaderService $uploaderService)
+    {
+        $idHistoire = $histoire->getId();
+        $reports = $rhr->findReportsByHistoire($idHistoire);
+
+        foreach($reports as $report)
+        {
+            $rhr->remove($report, $flush = true);
+        }
+
+        $this->addFlash('notice', "Les signalements ont été supprimés");
+
+        return $this->redirectToRoute(
+            'app_admin_histoire_show',
+            ['slug' => $histoire->getSlug()]
+        );          
 
     }
 
