@@ -2,13 +2,13 @@
 import Filter from './modules/Filter.js'
 import Like from './modules/Like.js'
 import Favoris from './modules/Favoris.js'
-import Submit from './modules/Submit.js'
+// import Submit from './modules/Submit.js'
 
 
 // On passe l'élément que l'on veut rendre AJAX
 new Filter(document.querySelector('.js-filter'))
 
-new Submit(document.querySelector('.js-refresh-page'))
+// new Submit(document.querySelector('.js-refresh-page'))
 // console.log(document.querySelector('.js-auto-refresh'))
 
 document.addEventListener('DOMContentLoaded', () => {
