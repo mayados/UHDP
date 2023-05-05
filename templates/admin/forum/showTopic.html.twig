@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ topic.titre }}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/base.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/memorial.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<div class="container-page administration">
+    {% include '_partials/_adminnav.html.twig' %}
+    <main class="main-administration">
+        <h1 id="memorial-title">{{ topic.titre }}</h1>     
+
+        <a href="{{ path('app_admin_topic_remove', {'slug': topic.slug}) }}">Supprimer le topic</a>
+{# 
+        {{ dump(firstPost.0.texte) }} #}
+        <p>{{ firstPost.0.texte }}</p>
+
+        {{ form_start(formEditTopic) }}
+            {{ form_row(formEditTopic.titre) }}
+            {{ form_row(formEditTopic.firstComment, { 'value': firstPost.0.texte  }) }}
+            {# {{ form_widget(formEditTopic.firstComment, { 'placeholder': firstPost.0.texte  }) }} #}
+            {{ form_row(formEditTopic.submit) }}
+        {{ form_end(formEditTopic) }} 
+    </main>
+
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ histoire.titre }}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/base.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/memorial.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<div class="container-page administration">
+    {% include '_partials/_adminnav.html.twig' %}
+    <main class="main-administration">
+        <h1 id="memorial-title">{{ histoire.titre }}</h1>     
+
+        <a href="{{ path('app_admin_histoire_remove', {'id': histoire.id}) }}">Supprimer l'histoire</a>
+        {% if histoire.etat == 'STATE_APPROUVED' %}
+            <a href="{{ path('app_admin_histoire_disapprouved', {'slug': histoire.slug}) }}">Désapprouver</a>
+        {% elseif histoire.etat == 'STATE_WAITING' %}
+            <a href="{{ path('app_admin_histoire_approuved', {'slug': histoire.slug}) }}">Approuver</a>
+            <a href="{{ path('app_admin_histoire_disapprouved', {'slug': histoire.slug}) }}">Désapprouver</a>
+        {% elseif histoire.etat == 'STATE_DISAPPROUVED' %}
+            <a href="{{ path('app_admin_histoire_approuved', {'slug': histoire.slug}) }}">Approuver</a>
+        {% endif %}
+
+        {% if histoire.reports| length > 0 %}
+            <a href="{{ path('app_admin_histoire_remove_reports', {'id': histoire.id}) }}">Supprimer les signalements</a>
+        {% endif %}
+
+
+        <section id="histoire-content">
+            <div id="histoire-content-header">
+                {# {% if histoire.photo == null %}
+                    <p>Pas de photo</p>
+                {% else %}
+                <figure>
+                    <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">            
+                </figure>
+                {% endif %} #}
+                {% if histoire.auteur == 'Antoine' %}
+                <figure>
+                    <img src="{{histoire.photo}}" alt="photo de l'histoire">            
+                </figure>
+                {% else %}
+                    <figure>
+                        <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">            
+                    </figure>
+                {% endif %}
+                <p>Date de création {{ histoire.dateCreation | date('d-m-Y') }}</p>
+                </div>
+            <div id="histoire-texte">
+                <p>{{ histoire.texte|raw }}</p>          
+            </div>            
+        </section>
+
+        {{ form_start(formEditHistoire) }}
+        {{ form_end(formEditHistoire) }}  
+    </main>
+
+</div>
+{% endblock %}

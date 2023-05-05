@@ -24,7 +24,7 @@
                         <p>{{ memorial.auteur }}</p>                        
                     </td>
                     <td>
-                        <a href="#">Preview</a>                       
+                        <a href="{{ path('app_admin_memorial_show', {'id': memorial.id}) }}">Voir</a>                       
                     </td>
                 </tr>
             {% endfor %}

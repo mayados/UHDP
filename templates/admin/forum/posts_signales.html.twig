@@ -33,7 +33,7 @@
                             <p>{{ post.howManyReports }}</p>
                         </td>
                         <td>
-                            <a href="#">Voir</a>    
+                            <a href="{{ path('app_admin_forum_post_show', {'id': post.id}) }}">Voir</a>    
                         </td>
                     </tr>
                 {% endfor %}        

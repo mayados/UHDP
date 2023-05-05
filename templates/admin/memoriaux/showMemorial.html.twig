@@ -12,7 +12,6 @@
 <div class="container-page administration">
     {% include '_partials/_adminnav.html.twig' %}
     <main class="main-administration">
-        <a href="{{ path('app_report_memorial', {'id': memorial.id}) }}">Signaler le mémorial</a>
         <h1 id="memorial-title">En mémoire de {{ memorial.nom }}</h1>     
         <section id="header-memorial">
             <figure>
@@ -38,7 +37,6 @@
                     {% else %}
                         <p>Mémorial créé par Utilisateur supprimé</p>
                     {% endif %}              
-                {% include "_partials/_showSoutient.html.twig" %}
             </div>            
         </section>
         
@@ -99,7 +97,8 @@
                 {% endif %}
             </div>
         </section>
-
+        {{ form_start(formEditMemorial) }}
+        {{ form_end(formEditMemorial) }} 
     </main>
 
 </div>

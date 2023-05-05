@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Post{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/base.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/memorial.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<div class="container-page administration">
+    {% include '_partials/_adminnav.html.twig' %}
+    <main class="main-administration">
+        <h1 id="memorial-title">Post</h1>     
+
+        <a href="{{ path('app_admin_post_remove', {'id': post.id}) }}">Supprimer le post</a>
+{# 
+        {{ dump(firstPost.0.texte) }} #}
+        <p>{{ post.texte }}</p>
+
+        {{ form_start(formEditPost) }}
+        {{ form_end(formEditPost) }} 
+    </main>
+
+</div>
+{% endblock %}

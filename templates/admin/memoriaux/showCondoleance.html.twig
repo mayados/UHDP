@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Condoléance{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/base.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/memorial.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<div class="container-page administration">
+    {% include '_partials/_adminnav.html.twig' %}
+    <main class="main-administration">
+        <h1 id="memorial-title">Condoléance</h1>     
+
+        <a href="{{ path('app_admin_condoleance_remove', {'idMemorial': condoleance.memorial, 'id': condoleance.id}) }}">Supprimer la condoléance</a>
+
+        <p>{{ condoleance.texte }}</p>
+
+        {{ form_start(formEditCondoleance) }}
+        {{ form_end(formEditCondoleance) }} 
+    </main>
+
+</div>
+{% endblock %}

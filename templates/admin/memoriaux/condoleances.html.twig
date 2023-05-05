@@ -29,7 +29,7 @@
                         <p>{{ condoleance.memorial }}</p>
                     </td>
                     <td>
-                        <a href="#">Voir</a>
+                        <a href="{{ path('app_admin_condoleance_show', {'id': condoleance.id}) }}">Voir</a>
                     </td>
                 </tr>
             {% endfor %}
