@@ -86,6 +86,19 @@ class PostRepository extends ServiceEntityRepository
 
     }
 
+    public function findFirstPost($idTopic)
+    {
+        return $this->createQueryBuilder('p')
+        ->select('p.texte','p.id')
+        ->leftJoin('p.topic','t')
+        ->where('t.id = :idTopic')
+        ->setParameter('idTopic', $idTopic)
+        ->addOrderBy('p.dateCreation', 'ASC')
+        ->setMaxResults(1)
+        ->getQuery()
+        ->getResult();
+    }
+
 //    /**
 //     * @return Post[] Returns an array of Post objects
 //     */
