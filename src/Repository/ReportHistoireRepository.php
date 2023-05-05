@@ -91,6 +91,15 @@ class ReportHistoireRepository extends ServiceEntityRepository
 
     }
 
+    public function findReportsByHistoire($idHistoire)
+    {
+        return $this->createQueryBuilder('r')
+        ->where('r.histoire = :idHistoire')
+        ->setParameter('idHistoire',$idHistoire)
+        ->getQuery()
+        ->getResult();
+    }
+
 //    /**
 //     * @return ReportHistoire[] Returns an array of ReportHistoire objects
 //     */
