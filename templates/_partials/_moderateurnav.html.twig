@@ -1,0 +1,83 @@
+<aside id="moderateur-nav">
+    <article class="rubrique">
+        <div class="card-header">
+            <h2>Utilisateurs</h2>            
+        </div>
+        <div class="card-body">
+            <p>
+                <a href="{{ path('app_moderateur_users_bannis') }}">Utilisateurs bannis</a>
+                <a href="{{ path('app_moderateur_users_unbanned') }}">Utilisateurs non bannis</a>
+            </p>            
+        </div>
+    </article>
+    {% for role in app.user.roles %}
+        {% if role == 'ROLE_MODERATEUR_HISTOIRES' %}
+            <article class="rubrique">
+                <div class="card-header">
+                    <h2>Belles histoires</h2>            
+                </div>
+                <div class="card-body">
+                    <p>
+                        <a href="{{ path('app_moderateur_histoires_publiees') }}">Histoires publiées</a>
+                        <a href="{{ path('app_moderateur_histoires_attente') }}">Histoires en attente</a>
+                        <a href="{{ path('app_moderateur_histoires_desapprouvees') }}">Histoires désapprouvées</a>
+                        <a href="{{ path('app_moderateur_histoires_signalees') }}">Histoires signalées</a>
+                        <a href="{{ path('app_moderateur_histoires_commentaires') }}">Commentaires</a>
+                        <a href="{{ path('app_moderateur_histoires_commentaires_signales') }}">Commentaires signalés</a>
+                    </p>            
+                </div>
+            </article>
+        {% elseif role == 'ROLE_MODERATEUR_FORUM' %}
+            <article class="rubrique">
+                <div class="card-header">
+                    <h2>Forum</h2>            
+                </div>
+                <div class="card-body">
+                    <p>
+                        <a href="{{ path('app_moderateur_topics') }}">Topics</a>
+                        <a href="{{ path('app_moderateur_topics_signales') }}">Topics signalés</a>
+                        <a href="{{ path('app_moderateur_forum_posts') }}">Posts</a>
+                        <a href="{{ path('app_moderateur_forum_posts_signales') }}">Posts signales</a>
+                    </p>            
+                </div>
+            </article>
+        {% elseif role == 'ROLE_MODERATEUR_MEMORIAUX' %}
+            <article class="rubrique">
+                <div class="card-header">
+                    <h2>Mémoriaux</h2>            
+                </div>
+                <div class="card-body">
+                    <p>
+                        <a href="{{ path('app_moderateur_memoriaux') }}">Mémoriaux</a>
+                        <a href="{{ path('app_moderateur_memoriaux_signales') }}">Mémoriaux signalés</a>
+                        <a href="{{ path('app_moderateur_condoleances') }}">Condoléances</a>
+                        <a href="{{ path('app_moderateur_condoleances_signalees') }}">Condoléances signalées</a>
+                        <a href="{{ path('app_moderateur_categories') }}">Catégories</a>  
+                    </p>            
+                </div>
+            </article>
+        {% elseif role == 'ROLE_MODERATEUR_COMMEMORATION' %}
+            <article class="rubrique">
+                <div class="card-header">
+                    <h2>Mur de commémoration</h2>
+                </div>
+                <div class="card-body">
+                    <p>
+                        <a href="{{ path('app_moderateur_commemoration_mots') }}">Mots</a>
+                        <a href="{{ path('app_moderateur_commemoration_mots_signales') }}">Mots signalés</a>
+                    </p>            
+                </div>
+            </article>
+            <article class="rubrique">
+                <div class="card-header">
+                    <h2>Messagerie</h2>            
+                </div>
+                <div class="card-body">
+                    <p>
+                        <a href="{{ path('app_moderateur_messagerie_signales') }}">Messages signalés</a>
+                    </p>            
+                </div>
+            </article>
+        {% endif %}
+    {% endfor %}    
+</aside>
