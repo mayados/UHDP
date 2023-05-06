@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Utilisateurs non bannis{% endblock %}
+
+{% block body %}
+
+<div class="container-page moderation">
+
+        {% include '_partials/_moderateurnav.html.twig' %}
+        <main class="main-administration">
+            <h1>Utilisateurs non bannis</h1>
+
+            <table>
+                <tr>
+                    <th>Pseudo</th>
+                    <th>Date d'inscription</th>
+                    <th>Actions</th>
+                </tr>
+                {% for user in utilisateursNonBannis %}
+                    <tr>
+                        <td>
+                            <p>{{ user.pseudo }}  </p>                              
+                        </td>
+                        <td>
+                            <p>{{ user.dateInscription| date('d-m-Y') }}</p>
+                        </td>
+                        <td>
+                            <a href="{{ path('app_moderateur_users_show', {'id': user.id}) }}">Voir</a>                               
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <div class="pagination js-filter-pagination">
+                {{ knp_pagination_render(utilisateursNonBannis) }}
+            </div>             
+        </main>        
+</div>
+{% endblock %}
