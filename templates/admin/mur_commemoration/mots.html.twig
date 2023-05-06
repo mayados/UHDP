@@ -25,7 +25,7 @@
                             <p>{{ mot.auteur }}</p> 
                         </td>
                         <td>
-                            <a href="#">Voir</a>  
+                            <a href="{{ path('app_admin_mot_show', {'id': mot.id}) }}">Voir</a>  
                         </td>
                     </tr>
                 {% endfor %}   

@@ -25,7 +25,7 @@
                         <p>{{ message.expediteur }}</p>
                     </td>
                     <td>
-                        <a href="#">Voir</a> 
+                        <a href="{{ path('app_admin_message_show', {'id': message.id}) }}">Voir</a> 
                     </td>
                 </tr>
             {% endfor %}

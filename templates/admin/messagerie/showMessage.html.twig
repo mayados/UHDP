@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Message{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/base.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/memorial.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<div class="container-page administration">
+    {% include '_partials/_adminnav.html.twig' %}
+    <main class="main-administration">
+        <h1 id="memorial-title">Message</h1>     
+
+        <a href="{{ path('app_admin_message_remove', {'id': message.id}) }}">Supprimer le message</a>
+
+        <a href="{{ path('app_admin_message_report_remove', {'id': message.id}) }}">Supprimer le signalement</a>
+
+        <p>{{ message.texte|raw }}</p>          
+
+    </main>
+
+</div>
+{% endblock %}

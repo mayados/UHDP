@@ -25,7 +25,7 @@
                             <p>{{ commentaire.auteur }}</p>
                         </td>
                         <td>
-                            <a href="#">Supprimer</a>  
+                            <a href="{{ path('app_admin_commentaire_show', {'id': commentaire.id}) }}">Voir</a>  
                         </td>
                     </tr>
                 {% endfor %}  

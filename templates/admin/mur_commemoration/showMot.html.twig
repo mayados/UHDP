@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mot de commémoration{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/base.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/memorial.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<div class="container-page administration">
+    {% include '_partials/_adminnav.html.twig' %}
+    <main class="main-administration">
+        <h1 id="memorial-title">Mot de commémoration</h1>     
+
+        <a href="{{ path('app_admin_mot_remove', {'id': mot.id}) }}">Supprimer le mot</a>
+
+        {% if mot.reports| length > 0 %}
+            <a href="{{ path('app_admin_mot_remove_reports', {'id': mot.id}) }}">Supprimer les signalements</a>
+        {% endif %}
+
+        <p>{{ mot.mot|raw }}</p>          
+
+
+        {{ form_start(formEditMot) }}
+        {{ form_end(formEditMot) }}  
+    </main>
+
+</div>
+{% endblock %}
