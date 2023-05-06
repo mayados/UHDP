@@ -89,6 +89,15 @@ class ReportMemorialRepository extends ServiceEntityRepository
 
     }
 
+    public function findReportsByMemorial($idMemorial)
+    {
+        return $this->createQueryBuilder('r')
+        ->where('r.memorial = :idMemorial')
+        ->setParameter('idMemorial',$idMemorial)
+        ->getQuery()
+        ->getResult();
+    }
+
 //    /**
 //     * @return ReportMemorial[] Returns an array of ReportMemorial objects
 //     */

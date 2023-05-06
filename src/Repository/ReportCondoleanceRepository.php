@@ -87,6 +87,15 @@ class ReportCondoleanceRepository extends ServiceEntityRepository
 
     }
 
+    public function findReportsByCondoleance($idCondoleance)
+    {
+        return $this->createQueryBuilder('r')
+        ->where('r.condoleance = :idCondoleance')
+        ->setParameter('idCondoleance',$idCondoleance)
+        ->getQuery()
+        ->getResult();
+    }
+
 //    /**
 //     * @return ReportCondoleance[] Returns an array of ReportCondoleance objects
 //     */
