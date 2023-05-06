@@ -90,6 +90,15 @@ class ReportPostRepository extends ServiceEntityRepository
 
     }
 
+    public function findReportsByPost($idPost)
+    {
+        return $this->createQueryBuilder('r')
+        ->where('r.post = :idPost')
+        ->setParameter('idPost',$idPost)
+        ->getQuery()
+        ->getResult();
+    }
+
 //    /**
 //     * @return ReportPost[] Returns an array of ReportPost objects
 //     */

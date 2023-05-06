@@ -90,6 +90,15 @@ class ReportTopicRepository extends ServiceEntityRepository
 
     }
 
+    public function findReportsByTopic($idTopic)
+    {
+        return $this->createQueryBuilder('r')
+        ->where('r.topic = :idTopic')
+        ->setParameter('idTopic',$idTopic)
+        ->getQuery()
+        ->getResult();
+    }
+
 //    /**
 //     * @return ReportTopic[] Returns an array of ReportTopic objects
 //     */

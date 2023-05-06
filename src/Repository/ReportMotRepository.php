@@ -87,6 +87,15 @@ class ReportMotRepository extends ServiceEntityRepository
 
     }
 
+    public function findReportsByMot($idMot)
+    {
+        return $this->createQueryBuilder('r')
+        ->where('r.mot = :idMot')
+        ->setParameter('idMot',$idMot)
+        ->getQuery()
+        ->getResult();
+    }
+
 //    /**
 //     * @return ReportMot[] Returns an array of ReportMot objects
 //     */

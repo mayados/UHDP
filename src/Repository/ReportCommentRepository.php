@@ -90,6 +90,15 @@ class ReportCommentRepository extends ServiceEntityRepository
 
     }
 
+    public function findReportsByComment($idComment)
+    {
+        return $this->createQueryBuilder('r')
+        ->where('r.commentaire = :idComment')
+        ->setParameter('idComment',$idComment)
+        ->getQuery()
+        ->getResult();
+    }
+
 //    /**
 //     * @return ReportComment[] Returns an array of ReportComment objects
 //     */
