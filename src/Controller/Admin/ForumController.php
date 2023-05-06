@@ -156,4 +156,44 @@ class ForumController extends AbstractController
             return $this->redirectToRoute('app_admin_topics_signales');            
     }
 
+    #[Route('/admin/forum/topic/reports/remove/{id}', name: 'app_admin_topic_remove_reports')]
+    public function removeReportsTopic(ReportTopicRepository $rtr, Topic $topic)
+    {
+        $idTopic = $topic->getId();
+        $reports = $rtr->findReportsByTopic($idTopic);
+
+        foreach($reports as $report)
+        {
+            $rtr->remove($report, $flush = true);
+        }
+
+        $this->addFlash('notice', "Les signalements ont été supprimés");
+
+        return $this->redirectToRoute(
+            'app_admin_forum_topic_show',
+            ['slug' => $topic->getSlug()]
+        );          
+
+    }
+
+    #[Route('/admin/forum/post/reports/remove/{id}', name: 'app_admin_post_remove_reports')]
+    public function removeReportsPost(ReportPostRepository $rpr, Post $post)
+    {
+        $idPost = $post->getId();
+        $reports = $rpr->findReportsByPost($idPost);
+
+        foreach($reports as $report)
+        {
+            $rpr->remove($report, $flush = true);
+        }
+
+        $this->addFlash('notice', "Les signalements ont été supprimés");
+
+        return $this->redirectToRoute(
+            'app_admin_forum_post_show',
+            ['id' => $post->getId()]
+        );          
+
+    }
+
 }
