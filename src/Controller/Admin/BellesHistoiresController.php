@@ -9,6 +9,8 @@ use App\Entity\GenreHistoire;
 use App\Form\GenreHistoireType;
 use App\Service\SluggerService;
 use App\Service\UploaderService;
+use App\Form\CommentHistoireType;
+use App\Entity\CommentBelleHistoire;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\BelleHistoireRepository;
 use App\Repository\GenreHistoireRepository;
@@ -165,6 +167,57 @@ class BellesHistoiresController extends AbstractController
         ]); 
     }
 
+    #[Route('/admin/commentaire/{id}', name: 'app_admin_commentaire_show')]
+    public function showCommentaire(CommentBelleHistoire $commentaire, CommentBelleHistoireRepository $cbhr, Request $request, ManagerRegistry $doctrine): Response
+    {
+
+        $form = $this->createForm(CommentHistoireType::class, $commentaire);  
+        $form->handleRequest($request);
+        $auteur = $commentaire->getAuteur();
+        $date = $commentaire->getDateCreation();
+        $histoire = $commentaire->getBelleHistoire();
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $commentaire = $form->getData();            
+                
+            $texte = $form->get('texte')->getData();
+
+            $commentaire->setTexte($texte);
+            $commentaire->setAuteur($auteur);
+            $commentaire->setDateCreation($date);
+            $commentaire->setBelleHistoire($histoire); 
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($histoire);
+            $entityManager->flush();
+
+            $this->addFlash('success', "Le commentaire a été modifié avec succès");
+
+            return $this->redirectToRoute(
+                'app_admin_commentaire_show',
+                ['id' => $commentaire->getId()]
+            );
+        }
+
+        return $this->render('admin/belles_histoires/showCommentaire.html.twig', [
+            'commentaire' => $commentaire,
+            'formEditCommentaire' => $form->createView(),
+        ]); 
+    }
+
+    #[Route('/admin/commentaire/remove/{id}', name: 'app_admin_comment_remove')]
+    public function removeCommentaire(CommentBelleHistoireRepository $cbhr, CommentBelleHistoire $comment)
+    {
+        $comment = $cbhr->find($comment->getId());
+
+        $cbhr->remove($comment, $flush = true);
+
+        $this->addFlash('notice', "Le commentaire a été supprimé");
+
+        return $this->redirectToRoute(
+            'app_admin_histoires_commentaires_signales'
+        );            
+    }
+
     #[Route('/admin/histoire/disapprouved/{slug}', name: 'app_admin_histoire_disapprouved')]
     public function disapprouvedHistoire(BelleHistoire $histoire,BelleHistoireRepository $bhr, Request $request, ManagerRegistry $doctrine): Response
     {
@@ -224,7 +277,7 @@ class BellesHistoiresController extends AbstractController
     }
 
     #[Route('/admin/histoire/reports/remove/{id}', name: 'app_admin_histoire_remove_reports')]
-    public function removeReportsHistoire(ReportHistoireRepository $rhr, BelleHistoire $histoire, UploaderService $uploaderService)
+    public function removeReportsHistoire(ReportHistoireRepository $rhr, BelleHistoire $histoire)
     {
         $idHistoire = $histoire->getId();
         $reports = $rhr->findReportsByHistoire($idHistoire);
@@ -239,6 +292,26 @@ class BellesHistoiresController extends AbstractController
         return $this->redirectToRoute(
             'app_admin_histoire_show',
             ['slug' => $histoire->getSlug()]
+        );          
+
+    }
+
+    #[Route('/admin/commentaire/reports/remove/{id}', name: 'app_admin_commentaire_remove_reports')]
+    public function removeReportComments(ReportCommentRepository $rcr, CommentBelleHistoire $comment)
+    {
+        $idComment = $comment->getId();
+        $reports = $rcr->findReportsByComment($idComment);
+
+        foreach($reports as $report)
+        {
+            $rcr->remove($report, $flush = true);
+        }
+
+        $this->addFlash('notice', "Les signalements ont été supprimés");
+
+        return $this->redirectToRoute(
+            'app_admin_commentaire_show',
+            ['id' => $comment->getId()]
         );          
 
     }
