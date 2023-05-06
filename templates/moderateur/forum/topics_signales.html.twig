@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Topics signalés{% endblock %}
+
+{% block body %}
+
+<div class="container-page moderation">
+
+        {% include '_partials/_moderateurnav.html.twig' %}
+        <main class="main-administration">
+            <h1>Topics signalés</h1>
+            <table>
+                <tr>
+                    <th>Titre</th>
+                    <th>Auteur</th>
+                    <th>Date de création</th>
+                    <th>Signalements</th>
+                    <th>Action</th>
+                </tr>
+            {% for topic in topicsSignales %}
+                <tr>
+                    <td>
+                        <p>{{ topic.titre }}</p>
+                    </td>
+                    <td>
+                        <p>{{ topic.auteur}}</p>
+                    </td>
+                    <td>
+                        <p>{{ topic.dateCreation| date('d-m-Y') }}</p>
+                    </td>
+                    <td>
+                        {{ topic.howManyReports }}
+                    </td>
+                    <td>
+                       <a href="{{ path('app_moderateur_forum_topic_show', {'slug':topic.slug}) }}"">Modérer</a>  
+                    </td>
+                    
+                </tr>
+            {% endfor %}
+            </table>
+            <div class="pagination js-filter-pagination">
+                {{ knp_pagination_render(topicsSignales) }}
+            </div>            
+        </main>        
+
+</div>
+{% endblock %}

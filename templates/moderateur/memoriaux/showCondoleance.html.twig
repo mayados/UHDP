@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Condoléance{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/base.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/memorial.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<div class="container-page moderation">
+    {% include '_partials/_moderateurnav.html.twig' %}
+    <main class="main-administration">
+        <h1 id="memorial-title">Condoléance</h1>     
+
+        <a href="{{ path('app_moderateur_condoleance_remove', {'idMemorial': condoleance.memorial, 'id': condoleance.id}) }}">Supprimer la condoléance</a>
+
+        {% if condoleance.reports| length > 0 %}
+            <a href="{{ path('app_moderateur_condoleance_remove_reports', {'id': condoleance.id}) }}">Supprimer les signalements</a>
+        {% endif %}
+
+        <p>{{ condoleance.texte }}</p>
+
+    </main>
+
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modération{% endblock %}
+
+{% block body %}
+
+<div class="container-page moderation">
+
+        {% include '_partials/_moderateurnav.html.twig' %}
+        <main id="accueil-administration" class="main-administration">
+            <h1>Modération</h1>
+            <p>Bienvenue {{ app.user.pseudo }}</p>
+        </main>        
+</div>
+{% endblock %}

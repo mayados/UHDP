@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mots de commémoration{% endblock %}
+
+{% block body %}
+
+<div class="container-page moderation">
+        {% include '_partials/_moderateurnav.html.twig' %}
+        <main class="main-administration">
+            <section id="categories-liste">
+                <h1>Liste des Mots</h1>
+
+                <table>
+                    <tr>
+                        <th>Mot</th>
+                        <th>Auteur</th>
+                        <th>Action</th>
+                    </tr>
+                {% for mot in mots %}
+                    <tr class="genre">
+                        <td>
+                            <p>{{ mot.mot|raw }}</p>
+                        </td>
+                        <td>
+                            <p>{{ mot.auteur }}</p> 
+                        </td>
+                        <td>
+                            <a href="{{ path('app_moderateur_mot_show', {'id': mot.id}) }}">Voir</a>  
+                        </td>
+                    </tr>
+                {% endfor %}   
+                </table>     
+            </section>    
+            <div class="pagination js-filter-pagination">
+                {{ knp_pagination_render(mots) }}
+            </div>           
+        </main>
+  
+</div>
+{% endblock %}

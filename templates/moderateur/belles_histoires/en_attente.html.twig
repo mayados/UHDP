@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Histoires en attente{% endblock %}
+
+{% block body %}
+
+<div class="container-page moderation">
+
+        {% include '_partials/_moderateurnav.html.twig' %}
+        <main class="main-administration">
+            <h1>Histoires en attente</h1>
+
+            <table>
+                <tr>
+                    <th>Titre</th>
+                    <th>Auteur</th>
+                    <th>Action</th>
+                </tr>
+            {% for histoire in histoiresWaiting %}
+                <tr>
+                    <td>
+                        <p>{{ histoire.titre }}</p>
+                    </td>
+                    <td>
+                        <p>{{ histoire.pseudo }}</p>     
+                    </td>
+                    <td>
+                        <a href="{{ path('app_moderateur_histoire_show', {'slug': histoire.slug}) }}">Voir</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </table>
+            <div class="pagination js-filter-pagination">
+                {{ knp_pagination_render(histoiresWaiting) }}
+            </div>            
+        </main>        
+</div>
+{% endblock %}
