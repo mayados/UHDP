@@ -70,6 +70,23 @@
                             <a href="{{ path('app_admin') }}">Administration</a>
                         </li>
                     {% endif %}                      
+                    {% if app.user and is_granted("ROLE_MODERATEUR_HISTOIRES")%}
+                        <li>
+                            <a href="{{ path('app_moderateur') }}">Modération</a>
+                        </li>
+                    {% elseif app.user and is_granted("ROLE_MODERATEUR_FORUM") %}
+                    <li>
+                        <a href="{{ path('app_moderateur') }}">Modération</a>
+                    </li>
+                    {% elseif app.user and is_granted("ROLE_MODERATEUR_MEMORIAUX") %}
+                    <li>
+                        <a href="{{ path('app_moderateur') }}">Modération</a>
+                    </li>
+                    {% elseif app.user and  is_granted("ROLE_MODERATEUR_COMMEMORATION")%}
+                    <li>
+                        <a href="{{ path('app_moderateur') }}">Modération</a>
+                    </li>
+                    {% endif %}                      
                     {% if app.user %}                        
                         <li>
                             <a href="{{ path('app_messagerie') }}"><i class="fa-solid fa-envelope"></i></a>
