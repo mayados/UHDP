@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Photo;
 use App\Form\MemorialType;
 use App\Entity\Condoleance;
 use App\Form\CategorieType;
@@ -9,6 +10,7 @@ use App\Form\CondoleanceType;
 use App\Entity\AnimalMemorial;
 use App\Entity\CategorieAnimal;
 use App\Service\UploaderService;
+use App\Repository\PhotoRepository;
 use App\Repository\CondoleanceRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\AnimalMemorialRepository;
@@ -137,6 +139,42 @@ class MemoriauxController extends AbstractController
         ]);
     }
 
+    #[Route('/admin/memorial/remove/{id}', name: 'app_admin_memorial_remove')]
+    public function removeMemorial(AnimalMemorialRepository $amr, AnimalMemorial $memorial, UploaderService $uploaderService)
+    {
+
+        // Nous cherchons le mémorial ayant pour id l'id envoyé, puis nous l'enlevons de la base de données avec remove() (fonction intégrer de base au repository)
+        $memorial = $amr->find($memorial->getId());        
+
+            // Comme la photo est nullable dans l'entité, on doit ajouter cette condition sinon ça fait unen erreur si l'image est vide
+            if($memorial->getPhoto()){
+                $photoMemo = $memorial->getPhoto();
+                $folder = 'imgMemorial';
+                $uploaderService->delete($photoMemo, $folder);            
+            }
+
+            // Si le mémorial a des photos dans sa galerie...
+            if($memorial->getPhotos()){
+                // On pense à récupérer les images de la galerie pour les effacer aussi dans le dossier imgGalerie et pas seulement en base de données
+                $photos = $memorial->getPhotos();
+                foreach($photos as $photo){
+                    // On récupère la string et non l'objet en lui même, car il faut connaître le nom du fichier à supprimer            
+                    $photo = $photo->getPhoto();
+                    $folder = 'imgGalerie';
+                    $uploaderService->delete($photo,$folder);            
+                }            
+            }
+
+            /*  Les photos de la galerie seront aussi supprimées de l'entity Photo (qui représente la galerie photo comme plusieurs photos 
+                peuvent être ajoutées),grâce au Orphean Removal*/
+            $amr->remove($memorial, $flush = true);
+
+            $this->addFlash('notice', 'Le mémorial a été supprimé');
+
+            return $this->redirectToRoute("app_admin_memoriaux_signales");            
+
+    }
+
     #[Route('/admin/memoriaux/condoleance/{id}', name: 'app_admin_condoleance_show')]
     public function showCondoleance(Condoleance $condoleance, Request $request, ManagerRegistry $doctrine): Response
     {
@@ -184,7 +222,7 @@ class MemoriauxController extends AbstractController
         );
     }
 
-    #[Route('/condoleance/remove/{idMemorial}/{id}', name: 'app_admin_condoleance_remove')]
+    #[Route('/admin/condoleance/remove/{idMemorial}/{id}', name: 'app_admin_condoleance_remove')]
     #[ParamConverter("memorial", options: ["mapping" => ["idMemorial" => "id"]])]
     #[ParamConverter("condoleance", options: ["mapping" => ["id" => "id"]])]
     public function removeCondoleance(CondoleanceRepository $cr, Condoleance $condoleance, AnimalMemorial $memorial, AnimalMemorialRepository $amr)
@@ -200,4 +238,46 @@ class MemoriauxController extends AbstractController
             'app_admin_condoleances'
         );            
     }
+
+    #[Route('/admin/condoleance/reports/remove/{id}', name: 'app_admin_condoleance_remove_reports')]
+    public function removeReportsCondoleance(ReportCondoleanceRepository $rcr, Condoleance $condoleance)
+    {
+        $idCondoleance = $condoleance->getId();
+        $reports = $rcr->findReportsByCondoleance($idCondoleance);
+
+        foreach($reports as $report)
+        {
+            $rcr->remove($report, $flush = true);
+        }
+
+        $this->addFlash('notice', "Les signalements ont été supprimés");
+
+        return $this->redirectToRoute(
+            'app_admin_condoleance_show',
+            ['id' => $condoleance->getId()]
+        );          
+
+    }
+
+    #[Route('/admin/memorial/reports/remove/{id}', name: 'app_admin_memorial_remove_reports')]
+    public function removeReportsMemorial(ReportMemorialRepository $rmr, AnimalMemorial $memorial)
+    {
+        $idMemorial = $memorial->getId();
+        $reports = $rmr->findReportsByMemorial($idMemorial);
+
+        foreach($reports as $report)
+        {
+            $rmr->remove($report, $flush = true);
+        }
+
+        $this->addFlash('notice', "Les signalements ont été supprimés");
+
+        return $this->redirectToRoute(
+            'app_admin_memorial_show',
+            ['id' => $memorial->getId()]
+        );          
+
+    }
+
+    
 }
