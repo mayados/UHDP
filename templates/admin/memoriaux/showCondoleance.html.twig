@@ -17,7 +17,7 @@
         <a href="{{ path('app_admin_condoleance_remove', {'idMemorial': condoleance.memorial, 'id': condoleance.id}) }}">Supprimer la condoléance</a>
 
         {% if condoleance.reports| length > 0 %}
-            <a href="{{ path('app_admin_post_remove_reports', {'id': post.id}) }}">Supprimer les signalements</a>
+            <a href="{{ path('app_admin_condoleance_remove_reports', {'id': condoleance.id}) }}">Supprimer les signalements</a>
         {% endif %}
 
         <p>{{ condoleance.texte }}</p>

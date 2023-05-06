@@ -87,7 +87,7 @@
                             </figure>
                             {% if memorial.auteur != null %}
                                 {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-                                    <a href="{{path('remove_photo', {'idMemorial': memorial.id, 'id': image.id}) }}">Supprimer la photo</a>
+                                    <a href="{{path('app_admin_remove_photo', {'idMemorial': memorial.id, 'id': image.id}) }}">Supprimer la photo</a>
                                 {% endif %}
                             {% endif %}
                         </div>
@@ -97,6 +97,11 @@
                 {% endif %}
             </div>
         </section>
+        <a href="{{ path('app_admin_memorial_remove', {'id': memorial.id}) }}">Supprimer le mémorial</a>
+
+        {% if memorial.reports| length > 0 %}
+            <a href="{{ path('app_admin_memorial_remove_reports', {'id': memorial.id}) }}">Supprimer les signalements</a>
+        {% endif %}
         {{ form_start(formEditMemorial) }}
         {{ form_end(formEditMemorial) }} 
     </main>
