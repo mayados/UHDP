@@ -9,6 +9,14 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+
+    role_hierarchy:
+        ROLE_MODERATEUR_HISTOIRES: ROLE_USER
+        ROLE_MODERATEUR_FORUM: ROLE_USER
+        ROLE_MODERATEUR_MEMORIAUX: ROLE_USER
+        ROLE_MODERATEUR_COMMEMORATION: ROLE_USER
+        ROLE_ADMIN: [ROLE_MODERATEUR_HISTOIRES, ROLE_MODERATEUR_FORUM, ROLE_MODERATEUR_MEMORIAUX, ROLE_MODERATEUR_COMMEMORATION]
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
