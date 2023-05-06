@@ -37,6 +37,15 @@ class UsersController extends AbstractController
         ]);
     }
 
+    #[Route('/admin/users/moderateurs', name: 'app_admin_moderateurs')]
+    public function findModerateurs(UserRepository $ur, Request $request): Response
+    {
+
+        return $this->render('admin/utilisateurs/moderateurs.html.twig', [
+            'moderateurs' => $ur->findModerateurs($request->query->getInt('page',1)),
+        ]);
+    }
+
     #[Route('/admin/users/add', name: 'app_admin_users_add')]
     public function addUser(ManagerRegistry $doctrine, Request $request,UserPasswordHasherInterface $userPasswordHasher,): Response
     {
