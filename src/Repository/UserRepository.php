@@ -86,6 +86,21 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $utilisateursNonBannis;
     }
 
+    public function findModerateurs(int $page): PaginationInterface
+    {
+        $data = $this->createQueryBuilder('u')
+            ->where("JSON_EXTRACT(u.roles, '$[0]') = 'ROLE_MODERATEUR_HISTOIRES'")
+            ->orWhere("JSON_EXTRACT(u.roles, '$[0]') = 'ROLE_MODERATEUR_FORUM'")
+            ->orWhere("JSON_EXTRACT(u.roles, '$[0]') = 'ROLE_MODERATEUR_MEMORIAUX'")
+            ->orWhere("JSON_EXTRACT(u.roles, '$[0]') = 'ROLE_MODERATEUR_COMMEMORATION'")
+            ->getQuery()
+            ->getResult();
+        
+        $moderateurs = $this->paginatorInterface->paginate($data,$page,20);
+
+        return $moderateurs;
+    }
+
 //    /**
 //     * @return User[] Returns an array of User objects
 //     */
