@@ -1610,9 +1610,10 @@ nav{
 
                                                     /****** VUES CONCERNANT L ADMINISTRATION ********/
 
-/* PARTIAL ADMIN NAV */
+/* PARTIAL ADMIN NAV ET MODERATEUR NAV */
 
-#admin-nav{
+#admin-nav,
+#moderateur-nav{
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -1620,26 +1621,30 @@ nav{
     flex: 1;
 }
 
-#admin-nav .rubrique{
+#admin-nav .rubrique,
+#moderateur-nav .rubrique{
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     width: 400px;
 }
 
-#admin-nav .rubrique .card-header{
+#admin-nav .rubrique .card-header,
+#moderateur-nav .rubrique .card-header{
     background-color: rgb(214, 214, 214);
     padding: 1rem 1rem 1rem 1rem;    
     text-align: center;
 }
 
-#admin-nav .rubrique .card-body p{
+#admin-nav .rubrique .card-body p,
+#moderateur-nav .rubrique .card-body p{
     display: flex;
     flex-direction: column;
     gap: 1rem;
     padding: 1.5rem 1rem 1.5rem 1rem;    
 }
 
-/* COMMUN CLASSE ADMINISTRATION PAGE */
-.administration{
+/* COMMUN CLASSE ADMINISTRATION PAGE ET MODERATION*/
+.administration,
+.moderation{
     display: flex;
 }
 
