@@ -53,6 +53,7 @@
 
         <section id="histoire-ajout-commentaires">
             <a id="ajout-commentaire" href="#">
+                {% if app.user %}
                 <div>
                     <figure>
                         {% if not app.user.photo %}
@@ -63,6 +64,7 @@
                     </figure>
                     <p> {{ app.user.pseudo }} que pensez-vous de cette histoire ?</p>                    
                 </div>
+                {% endif %}
             </a>
             <div id="ajout-commentaire-form"> 
                 {% if app.user and app.user.isVerified %}
