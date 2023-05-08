@@ -38,6 +38,8 @@ class MemorialController extends AbstractController
     {
         $categories = $car->findAll();
 
+        $now = new \DateTime();
+
         // On veut également mettre un système de recherche dans la vue 
         $searchData = new SearchData();
         //  ON range les infos dans l'objet searchData
@@ -71,6 +73,7 @@ class MemorialController extends AbstractController
             'memoriaux' => $amr->findPaginatedMemoriaux($request->query->getInt('page',1)),
             'categories' => $categories,
             'formSearch' => $form->createView(),
+            'souvenirs' => $amr->findMemoriauxOfMonth($now),
         ]);
     }
 
