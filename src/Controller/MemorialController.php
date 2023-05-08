@@ -74,6 +74,51 @@ class MemorialController extends AbstractController
         ]);
     }
 
+    #[Route('/memoriaux/recherche', name: 'app_memoriaux_recherche')]
+    public function findResearch(AnimalMemorialRepository $amr, CategorieAnimalRepository $car, Request $request): Response
+    {
+        // $categories = $car->findAll();
+
+        // On veut également mettre un système de recherche dans la vue 
+        $searchData = new SearchData();
+        //  ON range les infos dans l'objet searchData
+        $form = $this->createForm(SearchType::class, $searchData);
+
+        $form->handleRequest($request);
+            // dd($searchData);        
+        if($form->isSubmitted() && $form->isValid()){
+
+
+            $page = $request->query->getInt('page',1);
+            // $searchData->page = $request->query->getInt('page',1);
+            $memoriaux = $amr->findBySearch($searchData,$page);
+            // On vérifie si on est en AJAX
+            if($request->isXmlHttpRequest()){
+                // Si c'est le cas on renvoie du JSON
+                return new JsonResponse([
+                    'content' => $this->renderView('_partials/_memoriaux.html.twig', ['memoriaux' => $memoriaux]),
+                    'pagination' => $this->renderView('_partials/_pagination.html.twig', ['memoriaux' => $memoriaux])
+                ]);
+            }
+
+            $empty = [];
+            
+
+            return $this->render('memorial/recherche.html.twig',[
+            // 'categories' => $categories,   
+             'memoriaux' => $memoriaux,   
+             'formSearch' => $form->createView(),
+            ]);
+
+        }
+
+        return $this->render('memorial/recherche.html.twig', [
+            'memoriaux' => null,
+            // 'categories' => $categories,
+            'formSearch' => $form->createView(),
+        ]);
+    }
+
     #[Route('/categorie/{id}', name: 'app_categorie')]
     public function memoriauxParCategorie(AnimalMemorialRepository $amr, CategorieAnimalRepository $car, CategorieAnimal $categorie, Request $request): Response
     {
