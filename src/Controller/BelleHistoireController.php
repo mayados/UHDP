@@ -58,6 +58,8 @@ class BelleHistoireController extends AbstractController
 
         $histoire = $bhr->find($histoire->getId());
 
+        $idHistoire = $histoire->getId();
+
         // S'il y a un utilisateur et qu'il est vérifié, il a le droit à accéder au formulaire de commentaire, sinon non
         if($this->getUser() && $this->getUser()->isVerified()){
             $commentaire = new CommentBelleHistoire();
@@ -94,11 +96,13 @@ class BelleHistoireController extends AbstractController
             return $this->render('belle_histoire/belleHistoire.html.twig', [
                 'histoire' => $histoire,
                 'formAddComment' => $form->createView(),
+                'autresHistoires' => $bhr->findAutresHistoires($idHistoire),
             ]);
         }
 
         return $this->render('belle_histoire/belleHistoire.html.twig', [
             'histoire' => $histoire,
+            'autresHistoires' => $bhr->findAutresHistoires($idHistoire),
         ]);
     }
 
