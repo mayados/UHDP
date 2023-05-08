@@ -48,6 +48,7 @@ class AnimalMemorialRepository extends ServiceEntityRepository
     {
         // On crée une fonction ici car la logique ne doit pas se retouver majoritairement dans le controller, il est avant tout fait pour rediriger sur les vues
         $data = $this->createQueryBuilder('m')
+        ->select('m.id','m.nom','m.dateCreation','m.photo')
         ->addOrderBy('m.dateCreation', 'DESC')
         ->getQuery()
         ->getResult();
@@ -55,6 +56,20 @@ class AnimalMemorialRepository extends ServiceEntityRepository
         $memoriaux = $this->paginatorInterface->paginate($data,$page,16);
 
         return $memoriaux;
+    }
+
+    public function findMemoriauxOfMonth($now)
+    {
+        // On crée une fonction ici car la logique ne doit pas se retouver majoritairement dans le controller, il est avant tout fait pour rediriger sur les vues
+        return $this->createQueryBuilder('m')
+        ->select('m.id','m.nom','m.dateCreation','m.photo','m.dateDeces')
+        ->where('MONTH(m.dateDeces) = MONTH(:now)')
+        ->setParameter('now',$now)
+        ->orderBy('RAND()')
+        ->setMaxResults(5)
+        ->getQuery()
+        ->getResult();
+
     }
 
     public function findPaginatedMemoriauxNonSignales(int $page): PaginationInterface
