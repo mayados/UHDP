@@ -1,7 +1,10 @@
 <section class="memoriaux js-filter-content">
+    {% if memoriaux != null %}
     <div class="container-memoriaux">
         {% for memorial in memoriaux %}
             {% include '_partials/_memorialCard.html.twig' with {memorial:memorial} only %}
         {% endfor %}    
     </div>
+    {% endif %}
+
 </section>
