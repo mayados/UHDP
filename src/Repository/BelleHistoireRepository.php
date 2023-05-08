@@ -233,4 +233,17 @@ class BelleHistoireRepository extends ServiceEntityRepository
         ->getResult();
     }
 
+    public function findAutresHistoires($id)
+    {
+        // On crée une fonction ici car la logique ne doit pas se retouver majoritairement dans le controller, il est avant tout fait pour rediriger sur les vues
+        return $this->createQueryBuilder('h')
+        ->where('h.id != :id')
+        ->setParameter('id',$id)
+        ->orderBy('RAND()')
+        ->setMaxResults(3)
+        ->getQuery()
+        ->getResult();
+
+    }
+
 }
