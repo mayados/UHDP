@@ -554,7 +554,7 @@ nav{
 /* SECTION RECHERCHE */
 .recherche{
     /* border: 1px solid green; */
-    display: none;
+    /* display: none; */
     position: relative;
     padding: 1rem;
     border-bottom: 1px dotted var(--couleurPrincipale);
