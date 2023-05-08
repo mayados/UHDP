@@ -34,9 +34,32 @@
             {# <a class="search-link" href="#">Rechercher un mémorial <i class="fa-solid fa-magnifying-glass"></i></a> #}
             <a href="{{ path('app_memoriaux_recherche') }}">Rechercher un mémorial <i class="fa-solid fa-magnifying-glass"></i></a>
     </section>
-    <div class="recherche">
+    <section id="nous-pensons-a-eux">
+        <h2>Nous pensons à eux</h2>
+        {% if souvenirs != null %}
+        <div class="container-memoriaux">
+            {% for souvenir in souvenirs %}
+            <div class="memorial-card">
+                <a href="{{path('show_memorial', {'id': souvenir.id}) }}">
+                    <figure>
+                        {% if souvenir.photo != null %}
+                            <img src="{{ asset('uploads/imgMemorial/'~ souvenir.photo) }}" alt="photo de l'animal">   
+                        {% else %}
+                            <img src="{{ asset('img/angel_dog.jpg') }}" alt="photo de l'animal">
+                        {% endif %}
+                        {# <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">    #}
+                    </figure>       
+                    <p>{{ souvenir.nom }}</p>          
+                </a>
+            </div>
+            
+            {% endfor %}    
+        </div>
+        {% endif %}
+    </section>
+    {# <div class="recherche">
         {% include '_partials/_filter.html.twig' with {formSearch:formSearch} only %}
-    </div>
+    </div> #}
     {% include '_partials/_memoriaux.html.twig' %}            
     <div class="pagination js-filter-pagination">
         {% include '_partials/_pagination.html.twig'  %}
