@@ -25,7 +25,9 @@ doctrine:
             datetime_functions:
                 MONTH: DoctrineExtensions\Query\Mysql\Month
                 DAY: DoctrineExtensions\Query\Mysql\Day  
-                YEAR: DoctrineExtensions\Query\Mysql\Year            
+                YEAR: DoctrineExtensions\Query\Mysql\Year    
+            numeric_functions:
+                Rand: DoctrineExtensions\Query\Mysql\Rand        
 
 when@test:
     doctrine:
