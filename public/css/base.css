@@ -37,6 +37,9 @@ h1{
     font-size: var(--h2);
     text-align: center;
 } */
+.custom-errors{
+    background-color: red;
+}
 
 .container-page{
     margin-top: 5vh;
