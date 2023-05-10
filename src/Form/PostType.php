@@ -16,6 +16,7 @@ class PostType extends AbstractType
     {
         $builder
             ->add('texte', CKEditorType::class, [
+                'label' => false,
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'Le commentaire ne peut pas être nul']),
                 ]
