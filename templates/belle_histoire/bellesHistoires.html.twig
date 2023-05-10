@@ -10,7 +10,7 @@
     </section>
     <section id="genres-histoires">
         {% for genre in genres %}
-            <a href="">{{ genre.nom }}</a>
+            <a href="{{ path('app_belles_histoires_genre', {'id': genre.id}) }}">{{ genre.nom }}</a>
         {% endfor %}
     </section>    
     <section class="creation">
