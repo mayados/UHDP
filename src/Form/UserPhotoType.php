@@ -6,8 +6,11 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class UserPhotoType extends AbstractType
@@ -34,6 +37,15 @@ class UserPhotoType extends AbstractType
                     ])
                 ]
             ])
+            ->add('email', EmailType::class, [
+                'required' => false,
+                'disabled' => true,
+            ])
+            ->add('pseudo', TextType::class, [
+                'constraints' => [
+                    new Length(['min' => 2, 'max' => 50, 'minMessage' => 'Le pseudo doit faire au moins {{ limit }} caractères', 'maxMessage' => 'Le pseudo ne peut pas faire plus de {{ limit }} caractères'])
+                ]
+            ]) 
             ->add('submit', SubmitType::class)
         ;
     }
