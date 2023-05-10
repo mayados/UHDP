@@ -504,6 +504,11 @@ nav{
 
                                 /* PAGE LISTE MEMORIAUX */
 
+.page-memoriaux h2{
+    text-align: center;
+    padding-top: 3rem;
+}
+
 /* SECTION BANNIERE MEMORIAUX */
 .page-memoriaux{
     background-image: url('../img/spirales_sans_fond.png');
@@ -635,15 +640,35 @@ nav{
     border: 1px solid green;
 } */
 
+#nous-pensons-a-eux{
+    margin-bottom: 2rem;
+}
+
+.memorial-month-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 20px 10px 20px 10px;
+    width: 350px;
+}
+
+.memorial-month-card figure{
+    height: 300px;
+    width: 300px;
+    border-radius: 50%;
+    overflow: hidden;
+    transition: 0.5s;
+}
+
 .container-memoriaux{
     /* border: 2px solid blue; */
-    min-height: 50vh;
+    /* min-height: 50vh; */
     display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
     gap: 3%;
-    padding-top: 40px;
 }
 
 .memorial-card{
@@ -661,7 +686,8 @@ nav{
     margin-top: 50px;
 }
 
-.memorial-card a {
+.memorial-card a,
+.memorial-month-card a {
     height: 100%;
     width: 300px;
 }
@@ -674,20 +700,23 @@ nav{
     border-radius: 5px;
 }
 
-.memorial-card p{
+.memorial-card p,
+.memorial-month-card p{
     text-align: center;
     font-size: var(--figcaption);
     font-weight: bold;
     padding-top: 1.7rem;
 }
 
-.memorial-card img{
+.memorial-card img,
+.memorial-month-card img{
     height: 100%;
     width: 100%;
     object-fit: cover;
 }
 
-.memorial-card:hover{
+.memorial-card:hover,
+.memorial-month-card figure:hover{
     filter: grayscale();
     /* transform: scale(1.05); */
 }
