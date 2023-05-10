@@ -40,9 +40,23 @@
         {% if topics %}
             {% for topic in topics %}
             <div class="topic-user">
+                <div class="topic-infos">
+                    <figure>
+                        <img src="{{ asset('img/default_user.png') }}" alt="">
+                    </figure>
+                    <div class="title-infos">
+                        <a class="topic-title" href="{{path('show_topic', {'slug': topic.slug}) }}">{{ topic.titre }}</a>
+                    </div>
+                </div>
+                <div class="topic-posts">
+                    <i class="fa-regular fa-comment"></i>
+                    <p>{{ topic.howManyPosts }}</p>
+                </div>                 
+            </div>
+            {# <div class="topic-user">
                 <h3>{{ topic.titre }}</h3>
                 <a href="{{path('show_topic', {'slug': topic.slug}) }}">Voir</a>
-            </div>
+            </div> #}
             {% endfor %}
         {% else %}
             <p>Rien à afficher</p>

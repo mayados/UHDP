@@ -13,39 +13,49 @@
  
     <h1>Paramètres</h1>
 
-    <section id="infos-profil">
-        <h2>Modifier les informations du profil</h2>
+    <section class="form-page edit-page">
+        <div class="formulaire" id="form-infos-profil">
+            <h2>Modifier les informations du profil</h2>
 
-    {{ form_start(formEditProfile) }}
-        <div class="form-element">
-            {{ form_row(formEditProfile.pseudo) }}
+        {{ form_start(formEditProfile) }}
+            <div class="form-element">
+                {{ form_row(formEditProfile.email) }}
+            </div>
+            <div class="form-element">
+                {{ form_row(formEditProfile.pseudo) }}
+            </div>
+            <div class="form-element">
+                {{ form_row(formEditProfile.imgUser) }}
+            </div>
+            <div class="form-element">
+                {{ form_row(formEditProfile.submit) }}
+            </div>
+        {{ form_end(formEditProfile) }}       
         </div>
-        <div class="form-element">
-            {{ form_row(formEditProfile.photoProfil) }}
+    
+
+        <div class="formulaire" id="form-infos-password">
+            <h2>Modifier le mot de passe</h2>
+
+            {{ form_start(formEditPassword) }}
+            <div class="form-element">
+                {{ form_row(formEditPassword.currentPassword) }}
+            </div>
+            <div class="form-element">
+                {{ form_row(formEditPassword.newPassword) }}
+            </div>
+            <div class="form-element">
+                {{ form_row(formEditPassword.submit) }}
+            </div>
+        {{ form_end(formEditPassword) }}   
         </div>
-        <div class="form-element">
-            {{ form_row(formEditProfile.submit) }}
-        </div>
-    {{ form_end(formEditProfile) }}        
+
+        <a href="{{ path('suppr_account_user') }}">Supprimer le compte</a>        
     </section>
 
-    <section id="infos-paswword">
-        <h2>Modifier le mot de passe</h2>
 
-        {{ form_start(formEditPassword) }}
-        <div class="form-element">
-            {{ form_row(formEditPassword.currentPassword) }}
-        </div>
-        <div class="form-element">
-            {{ form_row(formEditPassword.newPassword) }}
-        </div>
-        <div class="form-element">
-            {{ form_row(formEditPassword.submit) }}
-        </div>
-    {{ form_end(formEditPassword) }}   
-    </section>
 
-    <a href="{{ path('suppr_account_user') }}">Supprimer le compte</a>
+
 
 
 </div>
