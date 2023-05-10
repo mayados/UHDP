@@ -35,11 +35,11 @@
             <a href="{{ path('app_memoriaux_recherche') }}">Rechercher un mémorial <i class="fa-solid fa-magnifying-glass"></i></a>
     </section>
     <section id="nous-pensons-a-eux">
-        <h2>Nous pensons à eux</h2>
         {% if souvenirs != null %}
+        <h2>Nous pensons à eux</h2>        
         <div class="container-memoriaux">
             {% for souvenir in souvenirs %}
-            <div class="memorial-card">
+            <div class="memorial-month-card">
                 <a href="{{path('show_memorial', {'id': souvenir.id}) }}">
                     <figure>
                         {% if souvenir.photo != null %}
@@ -52,11 +52,11 @@
                     <p>{{ souvenir.nom }}</p>          
                 </a>
             </div>
-            
             {% endfor %}    
         </div>
         {% endif %}
     </section>
+    <h2>Mémoriaux</h2>
     {# <div class="recherche">
         {% include '_partials/_filter.html.twig' with {formSearch:formSearch} only %}
     </div> #}
