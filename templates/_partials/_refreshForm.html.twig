@@ -1,4 +1,7 @@
 {{ form_start(formCondoleance, {attr: {class: 'js-submit-form'}}) }}    
+    <div class="custom-errors">
+        {{ form_errors(formCondoleance.texte) }}
+    </div>
     {{ form_widget(formCondoleance.texte, {'attr': {'id': 'condoText'}}) }}  
     {{ form_row(formCondoleance.submit) }}    
 {{ form_end(formCondoleance) }}

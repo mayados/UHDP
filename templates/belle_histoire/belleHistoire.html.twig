@@ -88,6 +88,9 @@
                     <div class="formulaire">
                         <a class="close" href="#"><i class="fa-solid fa-xmark"></i></a>
                         {{ form_start(formAddComment, {attr: {class: 'js-submit-form'}}) }}   
+                        <div class="custom-errors">
+                            {{ form_errors(formAddComment.texte) }}
+                        </div>
                         <div class="form-element">
                             {{ form_row(formAddComment.texte) }}
                         </div> 

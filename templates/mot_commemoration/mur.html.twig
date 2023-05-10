@@ -17,6 +17,9 @@
                 <a class="close" href="#"><i class="fa-solid fa-xmark"></i></a>
                 {% if app.user and app.user.isVerified %}        
                     {{ form_start(formAddMot) }}
+                        <div class="custom-errors">
+                            {{ form_errors(formAddMot.mot) }}
+                        </div>
                         <div class="form-element">
                             {{ form_row(formAddMot.mot) }}
                         </div>

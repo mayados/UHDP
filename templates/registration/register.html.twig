@@ -12,16 +12,28 @@
             <h1>Inscription</h1>   
                 
             {{ form_start(registrationForm) }}
+                <div class="custom-errors">
+                    {{ form_errors(registrationForm.email) }}
+                </div>
                 <div class="form-element">
                     {{ form_row(registrationForm.email) }}                
                 </div>
+                <div class="custom-errors">
+                    {{ form_errors(registrationForm.pseudo) }}
+                </div>
                 <div class="form-element">
                     {{ form_row(registrationForm.pseudo) }}                
+                </div>
+                <div class="custom-errors">
+                    {{ form_errors(registrationForm.plainPassword) }}
                 </div>
                 <div class="form-element">
                     {{ form_row(registrationForm.plainPassword, {
                         label: 'Password'
                     }) }}
+                </div>
+                <div class="custom-errors">
+                    {{ form_errors(registrationForm.agreeTerms) }}
                 </div>
                 <div class="form-element" id="agree-terms-element">
                     {{ form_row(registrationForm.agreeTerms) }}                

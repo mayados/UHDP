@@ -22,32 +22,62 @@
             <h1>Edition du mémorial</h1>
         {% endif %}        
     {{ form_start(formAddMemorial) }}    
+        <div class="custom-errors">
+            {{ form_errors(formAddMemorial.nom) }}
+        </div>
         <div class="form-element">
             {{ form_row(formAddMemorial.nom) }}            
+        </div>
+        <div class="custom-errors">
+            {{ form_errors(formAddMemorial.sexe) }}
         </div>
         <div class="form-element">
             {{ form_row(formAddMemorial.sexe) }}            
         </div>
+        <div class="custom-errors">
+            {{ form_errors(formAddMemorial.dateNaissance) }}
+        </div>
         <div class="form-element">
             {{ form_row(formAddMemorial.dateNaissance) }}            
+        </div>
+        <div class="custom-errors">
+            {{ form_errors(formAddMemorial.dateDeces) }}
         </div>
         <div class="form-element">
             {{ form_row(formAddMemorial.dateDeces) }}            
         </div>
+        <div class="custom-errors">
+            {{ form_errors(formAddMemorial.lieu) }}
+        </div>
         <div id="form-lieu" class="form-element">
             {{ form_row(formAddMemorial.lieu) }}            
+        </div>
+        <div class="custom-errors">
+            {{ form_errors(formAddMemorial.imgMemorial) }}
         </div>
         <div class="form-element">
             {{ form_row(formAddMemorial.imgMemorial) }}            
         </div>
+        <div class="custom-errors">
+            {{ form_errors(formAddMemorial.presentation) }}
+        </div>
         <div class="form-element">
             {{ form_row(formAddMemorial.presentation) }}
+        </div>
+        <div class="custom-errors">
+            {{ form_errors(formAddMemorial.chosesAimees) }}
         </div>
         <div class="form-element">
             {{ form_row(formAddMemorial.chosesAimees) }}
         </div>
+        <div class="custom-errors">
+            {{ form_errors(formAddMemorial.chosesDetestees) }}
+        </div>
         <div class="form-element">
             {{ form_row(formAddMemorial.chosesDetestees) }}
+        </div>
+        <div class="custom-errors">
+            {{ form_errors(formAddMemorial.histoire) }}
         </div>
         <div class="form-element">
             {{ form_row(formAddMemorial.histoire) }}

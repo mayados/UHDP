@@ -21,11 +21,20 @@
             <h1>Edition de l'histoire</h1>
         {% endif %}        
         {{ form_start(formAddHistoire) }}  
+            <div class="custom-errors">
+                {{ form_errors(formAddHistoire.titre) }}
+            </div>
             <div class="form-element">
                 {{ form_row(formAddHistoire.titre) }} 
             </div>
+            <div class="custom-errors">
+                {{ form_errors(formAddHistoire.texte) }}
+            </div>       
             <div class="form-element">
                 {{ form_row(formAddHistoire.texte) }} 
+            </div>
+            <div class="custom-errors">
+                {{ form_errors(formAddHistoire.imgHistoire) }}
             </div>
             <div class="form-element">
                 {{ form_row(formAddHistoire.imgHistoire) }} 

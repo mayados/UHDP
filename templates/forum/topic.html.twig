@@ -54,6 +54,9 @@
             {% if app.user.isVerified %}
                 <div class="formulaire">
                     {{ form_start(formAddPost) }}    
+                        <div class="custom-errors">
+                            {{ form_errors(formAddPost.texte) }}
+                        </div>
                         <div class="form-element">
                             {{ form_row(formAddPost.texte) }}
                         </div>

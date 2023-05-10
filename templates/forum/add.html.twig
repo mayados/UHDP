@@ -18,6 +18,9 @@
             <h1>Edition du topic</h1>
         {% endif %}        
         {{ form_start(formAddTopic) }}   
+            <div class="custom-errors">
+                {{ form_errors(formAddTopic.titre) }}
+            </div>
             <div class="form-element">
                 {{ form_row(formAddTopic.titre) }}                 
             </div> 
@@ -28,6 +31,9 @@
             {% else %}
                 <div class="form-element">
                     {{ form_row(formAddTopic.firstComment) }}                
+                </div>
+                <div class="custom-errors">
+                    {{ form_errors(formAddTopic.firstComment) }}
                 </div>
             {% endif %}
             <div class="form-element">
