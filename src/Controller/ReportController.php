@@ -9,10 +9,12 @@ use App\Entity\ReportPost;
 use App\Entity\Condoleance;
 use App\Entity\ReportTopic;
 use App\Entity\BelleHistoire;
+use App\Entity\GenreHistoire;
 use App\Entity\ReportComment;
 use App\Entity\AnimalMemorial;
 use App\Entity\ReportHistoire;
 use App\Entity\ReportMemorial;
+use App\Entity\CategorieAnimal;
 use App\Entity\MotCommemoration;
 use App\Entity\ReportCondoleance;
 use App\Entity\CommentBelleHistoire;
@@ -28,12 +30,16 @@ use App\Repository\ReportCondoleanceRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 #[IsGranted('ROLE_USER')]
 class ReportController extends AbstractController
 {
     #[Route('/report/memorial/{id}', name: 'app_report_memorial')]
-    public function reportMemorial(AnimalMemorial $memorial, ReportMemorialRepository $rpm, Request $request): Response
+    #[Route('/report/memorial/{idCategorie}/{id}', name: 'app_report_memorial_categorie')]
+    #[ParamConverter("memorial", options: ["mapping" => ["id" => "id"]])]
+    #[ParamConverter("categorie", options: ["mapping" => ["idCategorie" => "id"]])]
+    public function reportMemorial(AnimalMemorial $memorial, ReportMemorialRepository $rpm, CategorieAnimal $categorie = null, Request $request): Response
     {
         
         $user = $this->getUser();
@@ -59,10 +65,19 @@ class ReportController extends AbstractController
             // On crée un signalement
         }
 
-        return $this->redirectToRoute(
-            'show_memorial',
-            ['id' => $memorial->getId()]
-        );   
+        if($categorie){
+            return $this->redirectToRoute(
+                'show_memorial_categorie',
+                ['id' => $memorial->getId(),
+                'idCategorie' => $categorie->getId(),]
+            );               
+        }elseif(!$categorie){
+            return $this->redirectToRoute(
+                'show_memorial',
+                ['id' => $memorial->getId()]
+            );  
+        }
+ 
     }
 
     #[Route('/report/condoleance/{id}', name: 'app_report_condoleance')]
@@ -96,7 +111,10 @@ class ReportController extends AbstractController
 
     
     #[Route('/report/histoire/{id}', name: 'app_report_histoire')]
-    public function reportHistoire(BelleHistoire $histoire, ReportHistoireRepository $rhr, Request $request): Response
+    #[Route('/report/histoire/{idGenre}/{id}', name: 'app_report_histoire_genre')]
+    #[ParamConverter("histoire", options: ["mapping" => ["id" => "id"]])]
+    #[ParamConverter("genre", options: ["mapping" => ["idGenre" => "id"]])]
+    public function reportHistoire(BelleHistoire $histoire, GenreHistoire $genre = null, ReportHistoireRepository $rhr, Request $request): Response
     {
         
         $user = $this->getUser();
@@ -118,10 +136,19 @@ class ReportController extends AbstractController
             $rhr->save($report, $flush = true);
         }
 
-        return $this->redirectToRoute(
-            'show_histoire',
-            ['slug' => $histoire->getSlug()]
-        );   
+        if(!$genre){
+            return $this->redirectToRoute(
+                'show_histoire',
+                ['slug' => $histoire->getSlug()]
+            );               
+        }elseif($genre){
+            return $this->redirectToRoute(
+                'show_histoire_genre',
+                ['slug' => $histoire->getSlug(),
+                'idGenre' => $genre->getId()]
+            );        
+        }
+
     }
     
     #[Route('/report/comment/{id}', name: 'app_report_comment')]

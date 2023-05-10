@@ -162,99 +162,18 @@ class MemorialController extends AbstractController
     }
 
     #[Route('/memorial/{id}', name: 'show_memorial')]
-    public function showMemorial(ManagerRegistry $doctrine, AnimalMemorialRepository $amr, UploaderService $uploaderService, AnimalMemorial $memorial, Request $request, SluggerInterface $slugger): Response
-    {
-        $consultedInCategorie = false;
-
-        $memorial = $amr->find($memorial->getId());
-        $galerie = new Photo();
-        $form = $this->createForm(GaleriePhotoType::class, $galerie);    
-        $condoleance = new Condoleance();
-        $condoleanceForm = $this->createForm(CondoleanceType::class,$condoleance);
-
-        if($this->getUser()){
-            $condoleanceForm->handleRequest($request); 
-            if ($condoleanceForm->isSubmitted() && $condoleanceForm->isValid()) {
-                $condoleance = $condoleanceForm->getData();
-                $condoleance->setMemorial($memorial);
-                $condoleance->setAuteur($this->getUser());
-                $entityManager = $doctrine->getManager();
-                $entityManager->persist($condoleance);
-                $entityManager->flush();   
-
-                if($request->isXmlHttpRequest()){
-                    // Si c'est le cas on renvoie du JSON
-                    return new JsonResponse([
-                        'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial,'formCondoleance' => $condoleanceForm->createView()]),
-                        // 'formCondoleance' => $this->renderView('_partials/_refreshForm.html.twig', ['formCondoleance' => $condoleanceForm->createView()])
-                        // 'bloup'=> 'blou',
-                    ]);
-                }
-                // return $this->json([
-                //     'message' => 'ca fonctioenne.',
-                // ]);
-
-                return $this->redirectToRoute(
-                    'show_memorial',
-                    ['id' => $memorial->getId()]
-                );
-            }
-
-            // On vérifie que le user courant est le créateur du mémorial, sinon on ne peut pas accéder au formulaire d'ajout de photo
-            if($this->getUser()== $memorial->getAuteur()){
-                // On souhaite insérer le formulaire d'ajout d'image à la galerie photo directement dans la page du mémorial
-                // Dans un premier temps on persist dans la bdd de Photos le nom des fichiers
-                // Puis on add chaque image grâce à la méthode de l'entity AnimalMemorial (qui contient un collectionType)
-
-                $form->handleRequest($request); 
-                if ($form->isSubmitted() && $form->isValid()) {
-                    $galerie = $form->getData();  
-                    $galerie->setMemorial($memorial);
-                    $images = $form->get('images')->getData();
-
-                    foreach($images as $image){
-                        $folder = "imgGalerie";
-                        $fichier = $uploaderService->add($image,$folder);
-                        $photo= new Photo();
-                        $photo->setPhoto($fichier);
-                        $memorial->addPhoto($photo);  
-                        $entityManager = $doctrine->getManager();
-                        $entityManager->persist($photo);
-                        $entityManager->flush();                                  
-                    }
-
-                    $this->addFlash('success', 'La galerie a été alimentée avec succès');
-
-                    return $this->redirectToRoute(
-                        'show_memorial',
-                        ['id' => $memorial->getId()]
-                    );
-                }
-
-                return $this->render('memorial/memorial.html.twig', [
-                    'memorial' => $memorial,
-                    'formAddPhotoGalerie' => $form->createView(),
-                    'formCondoleance' => $condoleanceForm->createView(),
-                    'consultedInCategorie' => $consultedInCategorie,
-                ]);            
-            }
-        }
-        return $this->render('memorial/memorial.html.twig',[
-                'memorial' => $memorial,
-                'formAddPhotoGalerie' => $form->createView(),
-                'formCondoleance' => $condoleanceForm->createView(),
-                'consultedInCategorie' => $consultedInCategorie,
-        ]);
-
-    }
-
     #[Route('/memorial/{idCategorie}/{id}', name: 'show_memorial_categorie')]
     #[ParamConverter("memorial", options: ["mapping" => ["id" => "id"]])]
     #[ParamConverter("categorie", options: ["mapping" => ["idCategorie" => "id"]])]
-    public function showMemorialByCategorie(ManagerRegistry $doctrine, AnimalMemorialRepository $amr, UploaderService $uploaderService, AnimalMemorial $memorial, Request $request, SluggerInterface $slugger): Response
+    public function showMemorial(ManagerRegistry $doctrine, AnimalMemorialRepository $amr, UploaderService $uploaderService, AnimalMemorial $memorial, Request $request, CategorieAnimal $categorie = null, SluggerInterface $slugger): Response
     {
 
-        $consultedInCategorie = true;
+        if($categorie){
+            $consultedInCategorie = true;
+        }elseif(!$categorie){
+            $consultedInCategorie = false;            
+        }
+
 
         $memorial = $amr->find($memorial->getId());
         $galerie = new Photo();
@@ -284,10 +203,19 @@ class MemorialController extends AbstractController
                 //     'message' => 'ca fonctioenne.',
                 // ]);
 
+                if(!$categorie){
+                    return $this->redirectToRoute(
+                        'show_memorial',
+                        ['id' => $memorial->getId()]
+                    );                    
+                }
+
                 return $this->redirectToRoute(
                     'show_memorial_categorie',
-                    ['id' => $memorial->getId()]
-                );
+                    ['id' => $memorial->getId(),
+                    'idCategorie' => $categorie->getId()]
+                );     
+
             }
 
             // On vérifie que le user courant est le créateur du mémorial, sinon on ne peut pas accéder au formulaire d'ajout de photo
@@ -315,10 +243,19 @@ class MemorialController extends AbstractController
 
                     $this->addFlash('success', 'La galerie a été alimentée avec succès');
 
+                    if(!$categorie){
+                        return $this->redirectToRoute(
+                            'show_memorial',
+                            ['id' => $memorial->getId()]
+                        );                        
+                    }
+
                     return $this->redirectToRoute(
                         'show_memorial_categorie',
-                        ['id' => $memorial->getId()]
-                    );
+                        ['id' => $memorial->getId(),
+                        'idCategorie' => $categorie->getId()]
+                    );     
+
                 }
 
                 return $this->render('memorial/memorial.html.twig', [
@@ -337,6 +274,7 @@ class MemorialController extends AbstractController
         ]);
 
     }
+
 
     // Pour autocompléter le nom du lieu du mémorial (ne fonctionne pas quand la requête est effectuée avec la route /memoriaux/add)
     #[Route('/villes', name: 'add_ville', methods: ['POST'])]
@@ -443,10 +381,12 @@ class MemorialController extends AbstractController
     }
 
     #[Route('/condoleance/remove/{idMemorial}/{id}', name: 'remove_condoleance')]
+    #[Route('/condoleance/remove/{idCategorie}/{idMemorial}/{id}', name: 'remove_condoleance_categorie')]
     #[ParamConverter("memorial", options: ["mapping" => ["idMemorial" => "id"]])]
     #[ParamConverter("condoleance", options: ["mapping" => ["id" => "id"]])]
+    #[ParamConverter("categorie", options: ["mapping" => ["idCategorie" => "id"]])]
     #[Security("is_granted('ROLE_USER') and user === condoleance.getAuteur()", message:"Accès non autorisé.")]
-    public function removeCondoleance(CondoleanceRepository $cr, Condoleance $condoleance, AnimalMemorial $memorial, AnimalMemorialRepository $amr)
+    public function removeCondoleance(CondoleanceRepository $cr, CategorieAnimal $categorie = null, Condoleance $condoleance, AnimalMemorial $memorial, AnimalMemorialRepository $amr)
     {
         $condoleance = $cr->find($condoleance->getId());
 
@@ -455,17 +395,28 @@ class MemorialController extends AbstractController
 
         $this->addFlash('notice', "La condoléance a été supprimée");
 
+        if(!$categorie){
+            return $this->redirectToRoute(
+                'show_memorial',
+                ['id' => $memorial->getId()]
+            );               
+        }
+
         return $this->redirectToRoute(
-            'show_memorial',
-            ['id' => $memorial->getId()]
-        );            
+            'show_memorial_categorie',
+            ['id' => $memorial->getId(),
+            'idCategorie' => $categorie->getId()]
+        );  
+         
     }
 
     #[Route('/memorial/{idMemorial}/galerie/delete/{id}', name: 'remove_photo')]
+    #[Route('/memorial/{idCategorie}/{idMemorial}/galerie/delete/{id}', name: 'remove_photo_categorie')]
     #[ParamConverter("memorial", options: ["mapping" => ["idMemorial" => "id"]])]
     #[ParamConverter("image", options: ["mapping" => ["id" => "id"]])]
+    #[ParamConverter("categorie", options: ["mapping" => ["idCategorie" => "id"]])]
     #[Security("is_granted('ROLE_USER') and user === memorial.getAuteur()", message:"Accès non autorisé.")]
-    public function removePhotoGalerie(PhotoRepository $pr, Photo $photo, AnimalMemorial $memorial, UploaderService $uploaderService)
+    public function removePhotoGalerie(PhotoRepository $pr, Photo $photo, AnimalMemorial $memorial, CategorieAnimal $categorie = null, UploaderService $uploaderService)
     {
 
         $photo = $pr->find($photo->getId());
@@ -475,10 +426,18 @@ class MemorialController extends AbstractController
 
         $this->addFlash('notice', 'La photo a été supprimée de la galerie');
 
+        if(!$categorie){
+            return $this->redirectToRoute(
+                'show_memorial',
+                ['id' => $memorial->getId()],
+            );            
+        }
+
         return $this->redirectToRoute(
-            'show_memorial',
-            ['id' => $memorial->getId()],
-        );
+            'show_memorial_categorie',
+            ['id' => $memorial->getId(),
+            'idCategorie' => $categorie->getId()]
+        );  
     }
 
 }

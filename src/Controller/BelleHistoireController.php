@@ -4,17 +4,18 @@ namespace App\Controller;
 
 use App\Form\HistoireType;
 use App\Entity\BelleHistoire;
+use App\Entity\GenreHistoire;
 use App\Service\SluggerService;
 use App\Service\UploaderService;
 use App\Form\CommentHistoireType;
 use App\Entity\CommentBelleHistoire;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\BelleHistoireRepository;
+use App\Repository\GenreHistoireRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CommentBelleHistoireRepository;
-use App\Repository\GenreHistoireRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,6 +37,22 @@ class BelleHistoireController extends AbstractController
 
     }
 
+    #[Route('/bellesHistoires/{id}', name: 'app_belles_histoires_genre')]
+    public function findHistoiresByGenre(GenreHistoire $genre,BelleHistoireRepository $bhr, GenreHistoireRepository $ghr, Request $request): Response
+    {
+
+        $genreId = $genre->getId();
+        $genres = $ghr->findAll();
+        $listeHistoires = $bhr->findPaginatedHistoiresByGenre($request->query->getInt('page',1),$genreId);
+
+        return $this->render('belle_histoire/bellesHistoiresGenre.html.twig', [
+            'listeHistoires' => $listeHistoires,
+            'genres' => $genres,
+            'genre' => $genre,
+        ]);
+
+    }
+
     #[Route('/bellesHistoires/publier/{slug}', name: 'publish_histoire')]
     #[Security("is_granted('ROLE_USER') and user === histoire.getAuteur()", message:"Accès non autorisé.")]
     public function publishHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire ,Request $request,ManagerRegistry $doctrine): Response
@@ -53,8 +70,17 @@ class BelleHistoireController extends AbstractController
     }
 
     #[Route('/bellesHistoires/histoire/{slug}', name: 'show_histoire')]
-    public function showHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire, ManagerRegistry $doctrine, Request $request): Response
+    #[Route('/bellesHistoires/histoire/{idGenre}/{slug}', name: 'show_histoire_genre')]
+    #[ParamConverter("genre", options: ["mapping" => ["idGenre" => "id"]])]    
+    #[ParamConverter("histoire", options: ["mapping" => ["slug" => "slug"]])]
+    public function showHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire, GenreHistoire $genre = null, ManagerRegistry $doctrine, Request $request): Response
     {
+
+        if($genre){
+            $consultedInGenre = true;
+        }elseif(!$genre){
+            $consultedInGenre = false;            
+        }
 
         $histoire = $bhr->find($histoire->getId());
 
@@ -87,6 +113,14 @@ class BelleHistoireController extends AbstractController
                     ]);
                 }
 
+                if($genre){
+                    return $this->redirectToRoute(
+                        'show_histoire_genre',
+                        ['slug' => $histoire->getSlug(),
+                        'idGenre' => $genre->getId()]
+                    );
+                }
+
                 return $this->redirectToRoute(
                     'show_histoire',
                     ['slug' => $histoire->getSlug()]
@@ -97,12 +131,14 @@ class BelleHistoireController extends AbstractController
                 'histoire' => $histoire,
                 'formAddComment' => $form->createView(),
                 'autresHistoires' => $bhr->findAutresHistoires($idHistoire),
+                'consultedInGenre' => $consultedInGenre,
             ]);
         }
 
         return $this->render('belle_histoire/belleHistoire.html.twig', [
             'histoire' => $histoire,
             'autresHistoires' => $bhr->findAutresHistoires($idHistoire),
+            'consultedInGenre' => $consultedInGenre,
         ]);
     }
 
@@ -196,10 +232,12 @@ class BelleHistoireController extends AbstractController
     }
 
     #[Route('/comment/remove/{slug}/{id}', name: 'remove_comment')]
+    #[Route('/comment/remove/{idGenre}/{slug}/{id}', name: 'remove_comment_genre')]
     #[ParamConverter("histoire", options: ["mapping" => ["slug" => "slug"]])]
     #[ParamConverter("commentaire", options: ["mapping" => ["id" => "id"]])]
+    #[ParamConverter("genre", options: ["mapping" => ["idGenre" => "id"]])]
     #[Security("is_granted('ROLE_USER') and user === comment.getAuteur()", message:"Accès non autorisé.")]
-    public function removeComment(CommentBelleHistoireRepository $cbhr, CommentBelleHistoire $comment, BelleHistoire $histoire, BelleHistoireRepository $bhr)
+    public function removeComment(CommentBelleHistoireRepository $cbhr, CommentBelleHistoire $comment, BelleHistoire $histoire, GenreHistoire $genre = null, BelleHistoireRepository $bhr)
     {
         $comment = $cbhr->find($comment->getId());
 
@@ -208,10 +246,20 @@ class BelleHistoireController extends AbstractController
 
         $this->addFlash('notice', "Le commentaire a été supprimé");
 
+
+        if(!$genre){
+            return $this->redirectToRoute(
+                'show_histoire',
+                ['slug' => $histoire->getSlug()]
+            );              
+        }
+          
         return $this->redirectToRoute(
-            'show_histoire',
-            ['slug' => $histoire->getSlug()]
-        );            
+            'show_histoire_genre',
+            ['slug' => $histoire->getSlug(),
+            'idGenre' => $genre->getId()]
+        );      
+
     }
 
 }
