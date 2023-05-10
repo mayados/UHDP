@@ -12,10 +12,10 @@
 <div class="container-page js-refresh-page page-memorial">
     {% if consultedInCategorie == true %}
         <p><a href="{{ path('app_memoriaux') }}">Mémoriaux</a> &lt; <a href="{{path('app_categorie', {'id' : memorial.categorieAnimal.id}) }}">{{ memorial.categorieAnimal }}</a> &lt; {{ memorial.nom }}</p>
-        <a href="{{ path('app_report_memorial_categorie', {'id': memorial.id, 'idCategorie': memorial.categorieAnimal.id}) }}">Signaler le mémorial</a>        
+        <a class="report" href="{{ path('app_report_memorial_categorie', {'id': memorial.id, 'idCategorie': memorial.categorieAnimal.id}) }}"><i class="fa-solid fa-flag"></i></a>        
     {% else %}
         <p><a href="{{ path('app_memoriaux') }}">Mémoriaux</a> &lt; <a href="{{path('app_categorie', {'id' : memorial.categorieAnimal.id}) }}">{{ memorial.nom }}</a></p>
-        <a href="{{ path('app_report_memorial', {'id': memorial.id}) }}">Signaler le mémorial</a>    
+        <a class="report" href="{{ path('app_report_memorial', {'id': memorial.id}) }}"><i class="fa-solid fa-flag"></i></a>    
     {% endif %}
 
     <h1 id="memorial-title">En mémoire de {{ memorial.nom }}</h1>     
@@ -101,27 +101,33 @@
                     </div>
                 {% endif %}
             {% endif %}
-            {% if memorial.photos|length > 0 %}
+
+            <div id="container-img-galerie">
+            {% if memorial.photos|length > 0 %}                
                 {% for image in memorial.photos %}
                     <div class="image-galerie">
                         <figure>
-                            <img src="{{ asset('uploads/imgGalerie/'~ image.photo) }}" alt="photo de l'animal">                        
-                        </figure>
-                        {% if memorial.auteur != null %}
-                            {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-                                {% if consultedInCategorie == true %}
-                                    <a href="{{path('remove_photo_categorie', {'idMemorial': memorial.id, 'id': image.id, 'idCategorie' memorial.categorieAnimal.id}) }}">Supprimer la photo</a>
-                                {% else %}
-                                    <a href="{{path('remove_photo', {'idMemorial': memorial.id, 'id': image.id}) }}">Supprimer la photo</a>
-                                {% endif %}
+                            <img src="{{ asset('uploads/imgGalerie/'~ image.photo) }}" alt="photo de l'animal">     
+                            {% if memorial.auteur != null %}
+                                {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+                                    {% if consultedInCategorie == true %}
+                                        <a class="suppr-img" href="{{path('remove_photo_categorie', {'idMemorial': memorial.id, 'id': image.id, 'idCategorie': memorial.categorieAnimal.id}) }}"><i class="fa-solid fa-trash"></i></a>
+                                    {% else %}
+                                        <a class="suppr-img" href="{{path('remove_photo', {'idMemorial': memorial.id, 'id': image.id}) }}"><i class="fa-solid fa-trash"></i></a>
+                                    {% endif %}
 
-                            {% endif %}
-                        {% endif %}
+                                {% endif %}
+                            {% endif %}                                               
+                        </figure>
+
                     </div>
-                {% endfor %} 
+                {% endfor %}   
             {% else %} 
                     <p>La galerie ne contient aucune photo pour le moment</p>
-            {% endif %}
+            {% endif %}                              
+            </div>
+
+
         </div>
     </section>
     <section id="condoleances">
