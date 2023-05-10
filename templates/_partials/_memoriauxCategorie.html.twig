@@ -1,7 +1,29 @@
-<h1>Les mémoriaux des {{ categorie.nom }}</h1>
-    {% if categorie.animaux | length > 0 %}
-            {% include '_partials/_memoriaux.html.twig'  %}
-               
-    {% else %}
-        <p>Aucun mémorial pour le moment..</p>
-    {% endif %}    
+{# <h1>Les mémoriaux des {{ categorie.nom }}</h1> #}
+
+
+<section class="memoriaux js-filter-content">
+    {% if memoriaux != null %}
+    <div class="container-memoriaux">
+        {% for memorial in memoriaux %}
+                {% if categorie.animaux | length > 0 %}
+            <div class="memorial-card">
+                <a href="{{path('show_memorial_categorie', {'id': memorial.id, 'idCategorie': categorie.id}) }}">
+                    <figure>
+                        {% if memorial.photo != null %}
+                            <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">   
+                        {% else %}
+                            <img src="{{ asset('img/angel_dog.jpg') }}" alt="photo de l'animal">
+                        {% endif %}
+                        {# <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">    #}
+                    </figure>       
+                    <p>{{ memorial.nom }}</p>          
+                </a>
+            </div>    
+        {% else %}
+            <p>Aucun mémorial pour le moment..</p>
+        {% endif %}      
+        {% endfor %}    
+    </div>
+    {% endif %}
+
+</section>
