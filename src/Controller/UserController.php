@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Form\UserPhotoType;
 use App\Service\UploaderService;
 use App\Form\UserEditPasswordType;
 use App\Repository\UserRepository;
@@ -106,11 +107,11 @@ class UserController extends AbstractController
 
         $user = $this->getUser();
 
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserPhotoType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {         
-            $imgProfil = $form->get('photoProfil')->getData();
+            $imgProfil = $form->get('imgUser')->getData();
             if($imgProfil){
                 // Si on est dans le cas d'un edit et qu'une nouvelle image est uploadée (car lors d'un ajout on ne va pas supprimer le fichier qu'ion crée..)
                 if($user->getPhoto() != null){
@@ -130,7 +131,7 @@ class UserController extends AbstractController
 
                 $this->addFlash('success','Votre image de profil a bien été modifiée');
 
-                return $this->redirectToRoute('my_profile',);
+                return $this->redirectToRoute('edit_profile',);
         }
 
         $formPassword = $this->createForm(UserEditPasswordType::class);
