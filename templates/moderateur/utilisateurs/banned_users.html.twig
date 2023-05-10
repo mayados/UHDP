@@ -10,26 +10,28 @@
     <main class="main-administration">
         <h1>Utilisateurs bannis</h1>
 
-        <table>
-            <tr>
-                <th>Pseudo</th>
-                <th>Date d'inscription</th>
-                <th>Actions</th>
-            </tr>
-            {% for banni in utilisateursBannis %}
-                <tr class="banni">
-                    <td>
-                      <p>{{ banni.pseudo }}  </p>  
-                    </td>
-                    <td>
-                        {{ banni.dateInscription| date('d-m-Y') }}
-                    </td>
-                    <td>
-                        <a href="{{ path('app_moderateur_users_show', {'id': banni.id}) }}">Voir</a>                           
-                    </td>
+        <section class="list">
+            <table>
+                <tr>
+                    <th>Pseudo</th>
+                    <th>Date d'inscription</th>
+                    <th>Actions</th>
                 </tr>
-            {% endfor %}            
-        </table>
+                {% for banni in utilisateursBannis %}
+                    <tr class="banni">
+                        <td>
+                        <p>{{ banni.pseudo }}  </p>  
+                        </td>
+                        <td>
+                            {{ banni.dateInscription| date('d-m-Y') }}
+                        </td>
+                        <td>
+                            <a href="{{ path('app_moderateur_users_show', {'id': banni.id}) }}">Voir</a>                           
+                        </td>
+                    </tr>
+                {% endfor %}            
+            </table>
+        </section>
 
         <div class="pagination js-filter-pagination">
             {{ knp_pagination_render(utilisateursBannis) }}
