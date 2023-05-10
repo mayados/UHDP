@@ -4,31 +4,25 @@
 
 {% block body %}
 
+{# Vérifier le nom de catégorie, et, selon cela, applqiuer un fond / benniere différents #}
+
 <div class="container-page js-filter">
-
-    <section id="categorie">
-        {{ categorie.nom }}        
+    <section id="banniere-memoriaux">
+        <h1>Les mémoriaux des {{ categorie.nom }}</h1>
     </section>
-
-    <section class="creation">
+    {# Fil d'ariane #}
+    <p><a href="{{ path('app_memoriaux') }}">Mémoriaux</a> &lt; {{ categorie.nom }}</p>
+    <section class="interraction">
         {% if app.user and app.user.isVerified %}
             <a href="{{ path('add_memorial') }}">Créer un mémorial</a>
         {% elseif app.user and not app.user.isVerified %}
             <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir créer un mémorial</p>
         {% else %}
             <p>Veuillez vous inscrire ou vous connecter pour pouvoir créer un mémorial</p>
-        {% endif %}        
+        {% endif %}
+            {# <a class="search-link" href="#">Rechercher un mémorial <i class="fa-solid fa-magnifying-glass"></i></a> #}
+            <a href="{{ path('app_memoriaux_recherche') }}">Rechercher un mémorial <i class="fa-solid fa-magnifying-glass"></i></a>
     </section>
-    <div class="recherche">
-        {{ form_start(formSearch, {attr: {class: 'js-filter-form'}}) }}
-            {{ form_widget(formSearch.q, {attr: {'placeholder': 'Rechercher un mémorial dans la catégorie'}}) }}
-            {{ form_widget(formSearch.categories, {'attr': {'style': 'display:none'}}) }}
-            {{ form_row(formSearch.sexe) }}
-            {{ form_row(formSearch.anneeDeces) }}
-            {{ form_row(formSearch.moisDeces) }}
-            {# {{ form_row(formSearch.submit) }}         #}
-        {{ form_end(formSearch) }}
-    </div>
     <section class="memoriaux js-filter-content">
         {% include '_partials/_memoriauxCategorie.html.twig'  %}
     </section>
