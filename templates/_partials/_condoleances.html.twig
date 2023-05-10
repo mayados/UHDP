@@ -11,7 +11,11 @@
                         <p>{{ condoleance.dateCreation| date('d-m-Y') }}</p>                     
                         <p>{{ condoleance.texte| raw }}</p>
                         {% if app.user == condoleance.auteur %}
-                                <a href="{{path('remove_condoleance', {'idMemorial': memorial.id, 'id': condoleance.id}) }}">Supprimer</a>
+                                {% if consultedInCategorie == true %}
+                                        <a href="{{path('remove_condoleance_categorie', {'idMemorial': memorial.id, 'id': condoleance.id, 'idCategorie': memorial.categorieAnimal.id}) }}">Supprimer</a>
+                                {% else %}
+                                        <a href="{{path('remove_condoleance', {'idMemorial': memorial.id, 'id': condoleance.id}) }}">Supprimer</a>
+                                {% endif %}
                         {% endif %}
                 </div>
         {% endfor %}   

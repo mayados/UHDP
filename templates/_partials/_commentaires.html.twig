@@ -40,7 +40,12 @@
         <div class="commentaire-header-right">
             {% include "_partials/_likeComment.html.twig" %}   
             {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-            <a href="{{ path('remove_comment', {'slug': histoire.slug, 'id': commentaire.id}) }}">Delete</a>
+                {% if consultedInGenre == true %}
+                    <a href="{{ path('remove_comment_genre', {'slug': histoire.slug, 'id': commentaire.id, 'idGenre': histoire.genre.id}) }}">Delete</a>
+                {% else %}
+                    <a href="{{ path('remove_comment', {'slug': histoire.slug, 'id': commentaire.id}) }}">Delete</a>
+                {% endif %}
+
         {% endif %}         
         </div>
     </div>
