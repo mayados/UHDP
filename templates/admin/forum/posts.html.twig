@@ -7,34 +7,34 @@
 <div class="container-page administration">
         {% include '_partials/_adminnav.html.twig' %}
         <main class="main-administration">
-            <section id="categories-liste">
                 <h1>Liste des Posts</h1>
 
-                <table>
-                    <tr>
-                        <th>Titre</th>
-                        <th>Auteur</th>
-                        <th>Date de création</th>
-                        <th>Action</th>
-                    </tr>
-                {% for post in posts %}
-                    <tr class="genre">
-                        <td>
-                            <p>{{ post.texte|raw }}</p>
-                        </td>
-                        <td>
-                            <p>{{ post.auteur }}</p>  
-                        </td>
-                        <td>
-                            <p>{{ post.dateCreation| date('d-m-Y') }}</p>
-                        </td>
-                        <td>
-                          <a href="{{ path('app_admin_forum_post_show', {'id': post.id}) }}">Voir</a>   
-                        </td>
-                    </tr>
-                {% endfor %} 
-                </table>       
-            </section>      
+                <section class="list">
+                    <table>
+                        <tr>
+                            <th>Titre</th>
+                            <th>Auteur</th>
+                            <th>Date de création</th>
+                            <th>Action</th>
+                        </tr>
+                    {% for post in posts %}
+                        <tr class="genre">
+                            <td>
+                                <p>{{ post.texte|raw }}</p>
+                            </td>
+                            <td>
+                                <p>{{ post.auteur }}</p>  
+                            </td>
+                            <td>
+                                <p>{{ post.dateCreation| date('d-m-Y') }}</p>
+                            </td>
+                            <td>
+                            <a href="{{ path('app_admin_forum_post_show', {'id': post.id}) }}">Voir</a>   
+                            </td>
+                        </tr>
+                    {% endfor %} 
+                    </table>     
+                </section>  
             <div class="pagination js-filter-pagination">
                 {{ knp_pagination_render(posts) }}
             </div>             

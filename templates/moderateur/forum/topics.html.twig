@@ -9,34 +9,37 @@
         {% include '_partials/_moderateurnav.html.twig' %}
         <main class="main-administration">
             <h1>Topics</h1>
-            <table>
-                <tr>
-                    <th>Titre</th>
-                    <th>Auteur</th>
-                    <th>Date de création</th>
-                    <th>Action</th>
-                </tr>
-            {% for topic in topics %}
-                <tr>
-                    <td>
-                        <p>{{ topic.titre }}</p>
-                    </td>
-                    <td>
-                        <p>{{ topic.auteur}}</p> 
-                    </td>
-                    <td>
-                        <p>
-                            {{ topic.dateCreation| date('d-m-Y') }}
-                        </p>
-                    </td>
-                    <td>
-                      <a href="{{ path('app_moderateur_forum_topic_show', {'slug':topic.slug}) }}">Modérer</a>  
-                    </td>
-                     
-                </tr>
-                {# {{ dump(topic) }} #}
-            {% endfor %}
-            </table>
+
+            <section class="list">
+                <table>
+                    <tr>
+                        <th>Titre</th>
+                        <th>Auteur</th>
+                        <th>Date de création</th>
+                        <th>Action</th>
+                    </tr>
+                {% for topic in topics %}
+                    <tr>
+                        <td>
+                            <p>{{ topic.titre }}</p>
+                        </td>
+                        <td>
+                            <p>{{ topic.auteur}}</p> 
+                        </td>
+                        <td>
+                            <p>
+                                {{ topic.dateCreation| date('d-m-Y') }}
+                            </p>
+                        </td>
+                        <td>
+                        <a href="{{ path('app_moderateur_forum_topic_show', {'slug':topic.slug}) }}">Modérer</a>  
+                        </td>
+                        
+                    </tr>
+                    {# {{ dump(topic) }} #}
+                {% endfor %}
+                </table>
+            <section class="list">
             <div class="pagination js-filter-pagination">
                 {{ knp_pagination_render(topics) }}
             </div>            

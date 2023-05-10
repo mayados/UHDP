@@ -8,6 +8,7 @@
         {% include '_partials/_adminnav.html.twig' %}
         <main class="main-administration">
             <h1>Catégories</h1>            
+
             <section id="ajout-categorie">
                 <h2>Ajouter une catégorie</h2>
 
@@ -21,8 +22,8 @@
                         </div>
                     {{form_end(formAddCategorie)}}              
                 </div>
-            </section>                 
-            <section id="categories-liste">
+            </section>    
+            <section class="list">             
                 <table>
                     <tr>
                         <th>Nom</th>
@@ -40,8 +41,6 @@
                         <td>
                             <a href="{{ path('app_admin_remove_categorie', {'id': categorie.id}) }}">Supprimer</a>  
                         </td>
- 
-    
                     </tr>
                 {% endfor %}    
                 </table>    

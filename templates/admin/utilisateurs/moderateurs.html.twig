@@ -10,30 +10,32 @@
         <main class="main-administration">
             <h1>Modérateurs</h1>
 
-            <table>
-                <tr>
-                    <th>Pseudo</th>
-                    <th>Rôle</th>
-                    <th>Date d'inscription</th>
-                    <th>Actions</th>
-                </tr>
-                {% for moderateur in moderateurs %}
+            <section class="list">
+                <table>
                     <tr>
-                        <td>
-                            <p>{{ moderateur.pseudo }}  </p>                              
-                        </td>
-                        <td>
-                            <p>{{ moderateur.roles.0 }}  </p>                              
-                        </td>
-                        <td>
-                            <p>{{ moderateur.dateInscription| date('d-m-Y') }}</p>
-                        </td>
-                        <td>
-                            <a href="{{ path('app_admin_users_show', {'id': moderateur.id}) }}">Voir</a>                               
-                        </td>
+                        <th>Pseudo</th>
+                        <th>Rôle</th>
+                        <th>Date d'inscription</th>
+                        <th>Actions</th>
                     </tr>
-                {% endfor %}
-            </table>
+                    {% for moderateur in moderateurs %}
+                        <tr>
+                            <td>
+                                <p>{{ moderateur.pseudo }}  </p>                              
+                            </td>
+                            <td>
+                                <p>{{ moderateur.roles.0 }}  </p>                              
+                            </td>
+                            <td>
+                                <p>{{ moderateur.dateInscription| date('d-m-Y') }}</p>
+                            </td>
+                            <td>
+                                <a href="{{ path('app_admin_users_show', {'id': moderateur.id}) }}">Voir</a>                               
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </section>
             <div class="pagination js-filter-pagination">
                 {{ knp_pagination_render(moderateurs) }}
             </div>             

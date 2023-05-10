@@ -24,9 +24,9 @@
                                 <img src="{{ asset('img/default_user.png') }}" alt="">
                             </figure>
                             <div class="title-infos">
-                                <a href="{{path('show_topic', {'slug': topic.slug}) }}">{{ topic.titre }}</a>
+                                <a class="topic-title" href="{{path('show_topic', {'slug': topic.slug}) }}">{{ topic.titre }}</a>
                                 {% if topic.auteur != null %}                              
-                                    <p>Créé par <a href="#">{{ topic.auteur }}</a> le {{ topic.dateCreation | date('d-m-Y') }}</p> 
+                                    <p class="infos-crea">Créé par <a href="#">{{ topic.auteur }}</a> le {{ topic.dateCreation | date('d-m-Y') }}</p> 
                                 {% else %}
                                 <p>Créé par utilisateur supprimé le {{ topic.dateCreation | date('d-m-Y') }}</p>
                                 {% endif %}    
@@ -34,7 +34,7 @@
                         </div>
                         <div class="topic-posts">
                             <i class="fa-regular fa-comment"></i>
-                            <p>0</p>
+                            <p>{{ topic.howManyPosts }}</p>
                         </div>                 
                     </div>
                 {% endfor %}    

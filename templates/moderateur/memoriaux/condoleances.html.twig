@@ -9,31 +9,34 @@
         {% include '_partials/_moderateurnav.html.twig' %}
         <main class="main-administration">
             <h1>Messages de condoléance</h1>
-            <table>
-                <tr>
-                    <th>Nom</th>
-                    <th>Auteur</th>
-                    <th>Mémorial</th>
-                    <th>Actions</th>
-                </tr>
-            {% for condoleance in condoleances %}
-                <tr>
-                    <td>
-                        {# Limiter le nombre de caractères à afficher avec le filtre twig #}
-                        <p>{{ condoleance.texte|raw }}</p>                        
-                    </td>
-                    <td>
-                        <p>{{ condoleance.auteur }}</p>
-                    </td>
-                    <td>
-                        <p>{{ condoleance.memorial }}</p>
-                    </td>
-                    <td>
-                        <a href="{{ path('app_moderateur_condoleance_show', {'id': condoleance.id}) }}">Voir</a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </table>
+
+            <section class="list">
+                <table>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Auteur</th>
+                        <th>Mémorial</th>
+                        <th>Actions</th>
+                    </tr>
+                {% for condoleance in condoleances %}
+                    <tr>
+                        <td>
+                            {# Limiter le nombre de caractères à afficher avec le filtre twig #}
+                            <p>{{ condoleance.texte|raw }}</p>                        
+                        </td>
+                        <td>
+                            <p>{{ condoleance.auteur }}</p>
+                        </td>
+                        <td>
+                            <p>{{ condoleance.memorial }}</p>
+                        </td>
+                        <td>
+                            <a href="{{ path('app_moderateur_condoleance_show', {'id': condoleance.id}) }}">Voir</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </table>
+            <section class="list">
             <div class="pagination js-filter-pagination">
                 {{ knp_pagination_render(condoleances) }}
             </div>            

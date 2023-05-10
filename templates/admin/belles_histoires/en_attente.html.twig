@@ -10,26 +10,28 @@
         <main class="main-administration">
             <h1>Histoires en attente</h1>
 
-            <table>
-                <tr>
-                    <th>Titre</th>
-                    <th>Auteur</th>
-                    <th>Action</th>
-                </tr>
-            {% for histoire in histoiresWaiting %}
-                <tr>
-                    <td>
-                        <p>{{ histoire.titre }}</p>
-                    </td>
-                    <td>
-                        <p>{{ histoire.pseudo }}</p>     
-                    </td>
-                    <td>
-                        <a href="{{ path('app_admin_histoire_show', {'slug': histoire.slug}) }}">Voir</a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </table>
+            <section class="list">
+                <table>
+                    <tr>
+                        <th>Titre</th>
+                        <th>Auteur</th>
+                        <th>Action</th>
+                    </tr>
+                {% for histoire in histoiresWaiting %}
+                    <tr>
+                        <td>
+                            <p>{{ histoire.titre }}</p>
+                        </td>
+                        <td>
+                            <p>{{ histoire.pseudo }}</p>     
+                        </td>
+                        <td>
+                            <a href="{{ path('app_admin_histoire_show', {'slug': histoire.slug}) }}">Voir</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </table>
+            </section>
             <div class="pagination js-filter-pagination">
                 {{ knp_pagination_render(histoiresWaiting) }}
             </div>            
