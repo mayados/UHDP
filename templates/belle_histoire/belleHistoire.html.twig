@@ -13,6 +13,13 @@
     <section id="banniere-belle-histoire">
         <h1>{{ histoire.titre }}</h1>
     </section>
+    {% if consultedInGenre == true %}
+        <p><a href="{{ path('app_belles_histoires') }}">Belles Histoires</a> &lt; <a href="{{path('app_belles_histoires_genre', {'id' : histoire.genre.id}) }}">{{ histoire.genre }}</a> &lt; {{ histoire.titre }}</p>
+        <a href="{{ path('app_report_histoire_genre', {'idGenre': histoire.genre.id, 'id': histoire.id}) }}">Signaler l'histoire</a>        
+    {% else %}
+        <p><a href="{{ path('app_belles_histoires') }}">Belles Histoires</a> &lt; {{ histoire.titre }}</p>
+        <a href="{{ path('app_report_histoire', {'id': histoire.id}) }}">Signaler l'histoire</a>    
+    {% endif %}
     <article id="histoire">
         <section id="histoire-content">
             <div id="histoire-content-header">

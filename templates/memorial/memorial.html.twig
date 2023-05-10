@@ -10,7 +10,14 @@
 {% block body %}
 
 <div class="container-page js-refresh-page page-memorial">
-    <a href="{{ path('app_report_memorial', {'id': memorial.id}) }}">Signaler le mémorial</a>
+    {% if consultedInCategorie == true %}
+        <p><a href="{{ path('app_memoriaux') }}">Mémoriaux</a> &lt; <a href="{{path('app_categorie', {'id' : memorial.categorieAnimal.id}) }}">{{ memorial.categorieAnimal }}</a> &lt; {{ memorial.nom }}</p>
+        <a href="{{ path('app_report_memorial_categorie', {'id': memorial.id, 'idCategorie': memorial.categorieAnimal.id}) }}">Signaler le mémorial</a>        
+    {% else %}
+        <p><a href="{{ path('app_memoriaux') }}">Mémoriaux</a> &lt; <a href="{{path('app_categorie', {'id' : memorial.categorieAnimal.id}) }}">{{ memorial.nom }}</a></p>
+        <a href="{{ path('app_report_memorial', {'id': memorial.id}) }}">Signaler le mémorial</a>    
+    {% endif %}
+
     <h1 id="memorial-title">En mémoire de {{ memorial.nom }}</h1>     
     <section id="header-memorial">
         <figure>
@@ -99,7 +106,12 @@
                         </figure>
                         {% if memorial.auteur != null %}
                             {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-                                <a href="{{path('remove_photo', {'idMemorial': memorial.id, 'id': image.id}) }}">Supprimer la photo</a>
+                                {% if consultedInCategorie == true %}
+                                    <a href="{{path('remove_photo_categorie', {'idMemorial': memorial.id, 'id': image.id, 'idCategorie' memorial.categorieAnimal.id}) }}">Supprimer la photo</a>
+                                {% else %}
+                                    <a href="{{path('remove_photo', {'idMemorial': memorial.id, 'id': image.id}) }}">Supprimer la photo</a>
+                                {% endif %}
+
                             {% endif %}
                         {% endif %}
                     </div>
