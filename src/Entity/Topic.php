@@ -137,6 +137,10 @@ class Topic
         return $this;
     }
 
+    public function howManyPosts():  int{
+        return count($this->posts);
+    }
+
     /**
      * @return Collection<int, ReportTopic>
      */
