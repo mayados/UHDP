@@ -42,7 +42,17 @@
                     <p>Mémorial créé par <a href="{{ path('show_profile', {'id': memorial.auteur.id}) }}">{{ memorial.auteur }}</a></p>
                 {% else %}
                     <p>Mémorial créé par Utilisateur supprimé</p>
-                {% endif %}              
+                {% endif %}    
+                    <div class="share">
+                        Partager le mémorial :  
+                        {% if consultedInCategorie == true %}                        
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ absolute_url(path('show_memorial', {id: memorial.id})) }}" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                            <a href="https://www.twitter.com/intent/tweet?text={{ memorial.nom|url_encode }}%20{{ absolute_url(path('show_memorial', {id: memorial.id})) }}%20UneHistoireDePattes" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+                        {% else %}
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ absolute_url(path('show_memorial_categorie', {id: memorial.id, 'idCategorie': memorial.categorieAnimal.id})) }}" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="https://www.twitter.com/intent/tweet?text={{ memorial.nom|url_encode }}%20{{ absolute_url(path('show_memorial_categorie', {id: memorial.id, 'idCategorie': memorial.categorieAnimal.id})) }}%20UneHistoireDePattes" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+                        {% endif %}
+                    </div>
             {% include "_partials/_showSoutient.html.twig" %}
         </div>            
     </section>
