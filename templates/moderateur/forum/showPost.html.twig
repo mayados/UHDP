@@ -12,16 +12,19 @@
 <div class="container-page moderation">
     {% include '_partials/_moderateurnav.html.twig' %}
     <main class="main-administration">
-        <h1 id="memorial-title">Post</h1>     
+        <h1>Post</h1>     
 
-        <a href="{{ path('app_moderateur_post_remove', {'id': post.id}) }}">Supprimer le post</a>
+        <div class="manage-post">
+            <p>{{ post.texte|raw }}</p>            
+        </div>
+
+        <a class="manage-button" href="{{ path('app_moderateur_post_remove', {'id': post.id}) }}">Supprimer le post</a>
 
         {% if post.reports| length > 0 %}
-            <a href="{{ path('app_moderateur_post_remove_reports', {'id': post.id}) }}">Supprimer les signalements</a>
+            <a class="manage-button" href="{{ path('app_moderateur_post_remove_reports', {'id': post.id}) }}">Supprimer les signalements</a>
         {% endif %}
 {# 
         {{ dump(firstPost.0.texte) }} #}
-        <p>{{ post.texte }}</p>
 
     </main>
 

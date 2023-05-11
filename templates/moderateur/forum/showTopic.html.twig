@@ -12,16 +12,19 @@
 <div class="container-page moderation">
     {% include '_partials/_moderateurnav.html.twig' %}
     <main class="main-administration">
-        <h1 id="memorial-title">{{ topic.titre }}</h1>     
+        <h1>{{ topic.titre }}</h1>  
+        
+        <div class="manage-topic">
+            <p>{{ firstPost.0.texte|raw }}</p>            
+        </div>
 
-        <a href="{{ path('app_moderateur_topic_remove', {'slug': topic.slug}) }}">Supprimer le topic</a>
+        <a class="manage-button" href="{{ path('app_moderateur_topic_remove', {'slug': topic.slug}) }}">Supprimer le topic</a>
 
         {% if topic.reports| length > 0 %}
             <a href="{{ path('app_moderateur_topic_remove_reports', {'id': topic.id}) }}">Supprimer les signalements</a>
         {% endif %}
 {# 
         {{ dump(firstPost.0.texte) }} #}
-        <p>{{ firstPost.0.texte }}</p>
 
     </main>
 

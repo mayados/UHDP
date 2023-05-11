@@ -12,23 +12,35 @@
 <div class="container-page administration">
     {% include '_partials/_adminnav.html.twig' %}
     <main class="main-administration">
-        <h1 id="memorial-title">{{ topic.titre }}</h1>     
+        <h1>{{ topic.titre }}</h1>     
 
-        <a href="{{ path('app_admin_topic_remove', {'slug': topic.slug}) }}">Supprimer le topic</a>
+        <div class="manage-topic">
+            <p>{{ firstPost.0.texte|raw }}</p>            
+        </div>
+
+        <a class="manage-button" href="{{ path('app_admin_topic_remove', {'slug': topic.slug}) }}">Supprimer le topic</a>
 
         {% if topic.reports| length > 0 %}
             <a href="{{ path('app_admin_topic_remove_reports', {'id': topic.id}) }}">Supprimer les signalements</a>
         {% endif %}
 {# 
         {{ dump(firstPost.0.texte) }} #}
-        <p>{{ firstPost.0.texte }}</p>
 
-        {{ form_start(formEditTopic) }}
-            {{ form_row(formEditTopic.titre) }}
-            {{ form_row(formEditTopic.firstComment, { 'value': firstPost.0.texte  }) }}
-            {# {{ form_widget(formEditTopic.firstComment, { 'placeholder': firstPost.0.texte  }) }} #}
-            {{ form_row(formEditTopic.submit) }}
-        {{ form_end(formEditTopic) }} 
+
+        <div class="formulaire" id="form-topic">
+            {{ form_start(formEditTopic) }}
+                <div class="form-element">
+                    {{ form_row(formEditTopic.titre) }}
+                </div>
+                <div class="form-element">
+                    {{ form_row(formEditTopic.firstComment, { 'value': firstPost.0.texte  }) }}
+                </div>
+                {# {{ form_widget(formEditTopic.firstComment, { 'placeholder': firstPost.0.texte  }) }} #}
+                <div class="form-element">
+                    {{ form_row(formEditTopic.submit) }}
+                </div>
+            {{ form_end(formEditTopic) }} 
+        </div>
     </main>
 
 </div>
