@@ -14,10 +14,10 @@
     <main class="main-administration">
         <h1 id="memorial-title">Condoléance</h1>     
 
-        <a href="{{ path('app_moderateur_condoleance_remove', {'idMemorial': condoleance.memorial, 'id': condoleance.id}) }}">Supprimer la condoléance</a>
+        <a class="manage-button" href="{{ path('app_moderateur_condoleance_remove', {'idMemorial': condoleance.memorial, 'id': condoleance.id}) }}">Supprimer la condoléance</a>
 
         {% if condoleance.reports| length > 0 %}
-            <a href="{{ path('app_moderateur_condoleance_remove_reports', {'id': condoleance.id}) }}">Supprimer les signalements</a>
+            <a class="manage-button" href="{{ path('app_moderateur_condoleance_remove_reports', {'id': condoleance.id}) }}">Supprimer les signalements</a>
         {% endif %}
 
         <p>{{ condoleance.texte }}</p>

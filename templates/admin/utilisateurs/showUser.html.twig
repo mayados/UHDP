@@ -10,34 +10,40 @@
     <main class="main-administration">
         <h1>{{ user.pseudo }}</h1>
 
+        <figure class="figure-element">
+            {% if not user.photo %}
+                <img src="{{ asset('img/default_user.png') }}" alt="">
+            {% else %}
+                <img src="{{ asset('uploads/imgUserProfil/'~ user.photo) }}" alt="">   
+            {% endif %}             
+        </figure>
+    
+        <a id="admin-supr-img-user" href="{{ path('app_admin_users_remove_photo', {'id': user.id}) }}">Supprimer la photo de profil</a>        
+
         {% if user.bannir == true %}
-            <a href="{{ path('ban_admin_user', {'id': user.id}) }}">Dé-bannir</a>
+            <a class="manage-button" href="{{ path('ban_admin_user', {'id': user.id}) }}">Dé-bannir</a>
         {% else %}
-            <a href="{{ path('ban_admin_user', {'id': user.id}) }}">Bannir</a>
+            <a class="manage-button" href="{{ path('ban_admin_user', {'id': user.id}) }}">Bannir</a>
         {% endif %}
 
-        {{ form_start(formAddUser) }}
-            <div class="form-element">
-                {{ form_row(formAddUser.email) }}         
-            </div>
-            <div class="form-element">
-                {{ form_row(formAddUser.pseudo) }}
-            </div>        
-            <div class="form-element">
-                {{ form_row(formAddUser.roles) }}
-            </div>
-            <div class="form-element">
-                {{ form_row(formAddUser.submit) }}
-            </div>
-        {{ form_end(formAddUser) }}   
+        <div class="formulaire" id="form-infos-profil">
+            {{ form_start(formAddUser) }}
+                <div class="form-element">
+                    {{ form_row(formAddUser.email) }}         
+                </div>
+                <div class="form-element">
+                    {{ form_row(formAddUser.pseudo) }}
+                </div>        
+                <div class="form-element">
+                    {{ form_row(formAddUser.roles) }}
+                </div>
+                <div class="form-element">
+                    {{ form_row(formAddUser.submit) }}
+                </div>
+            {{ form_end(formAddUser) }}   
+        </div>
     
-        {% if not user.photo %}
-            <img src="{{ asset('img/default_user.png') }}" alt="">
-        {% else %}
-            <img src="{{ asset('uploads/imgUserProfil/'~ user.photo) }}" alt="">   
-        {% endif %}     
-        {{ form_start(formPhoto) }}
-        {{ form_end(formPhoto) }}   
+
     </main>        
 
 </div>

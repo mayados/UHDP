@@ -10,17 +10,20 @@
     <main class="main-administration">
         <h1>{{ user.pseudo }}</h1>
 
+        <figure class="figure-element">
+            {% if not user.photo %}
+                <img src="{{ asset('img/default_user.png') }}" alt="">
+            {% else %}
+                <img src="{{ asset('uploads/imgUserProfil/'~ user.photo) }}" alt="">   
+            {% endif %}     
+        </figure>
         {% if user.bannir == true %}
-            <a href="{{ path('ban_moderateur_user', {'id': user.id}) }}">Dé-bannir</a>
+            <a class="manage-button" href="{{ path('ban_moderateur_user', {'id': user.id}) }}">Dé-bannir</a>
         {% else %}
-            <a href="{{ path('ban_moderateur_user', {'id': user.id}) }}">Bannir</a>
+            <a class="manage-button" href="{{ path('ban_moderateur_user', {'id': user.id}) }}">Bannir</a>
         {% endif %}  
     
-        {% if not user.photo %}
-            <img src="{{ asset('img/default_user.png') }}" alt="">
-        {% else %}
-            <img src="{{ asset('uploads/imgUserProfil/'~ user.photo) }}" alt="">   
-        {% endif %}     
+
     </main>        
 
 </div>

@@ -10,23 +10,25 @@
     <main class="main-administration">
         <h1>Ajouter un utilisateur</h1>
 
-        {{ form_start(formAddUser) }}
-        <div class="form-element">
-            {{ form_row(formAddUser.email) }}
+        <div class="formulaire" id="form-infos-profil">
+            {{ form_start(formAddUser) }}
+                <div class="form-element">
+                    {{ form_row(formAddUser.email) }}
+                </div>
+                <div class="form-element">
+                    {{ form_row(formAddUser.roles) }}
+                </div>
+                <div class="form-element">
+                    {{ form_row(formAddUser.plainPassword) }}
+                </div>
+                <div class="form-element">
+                    {{ form_row(formAddUser.pseudo) }}
+                </div>
+                <div class="form-element">
+                    {{ form_row(formAddUser.submit) }}
+                </div>
+            {{ form_end(formAddUser) }}    
         </div>
-        <div class="form-element">
-            {{ form_row(formAddUser.roles) }}
-        </div>
-        <div class="form-element">
-            {{ form_row(formAddUser.plainPassword) }}
-        </div>
-        <div class="form-element">
-            {{ form_row(formAddUser.pseudo) }}
-        </div>
-        <div class="form-element">
-            {{ form_row(formAddUser.submit) }}
-        </div>
-    {{ form_end(formAddUser) }}    
     </main>        
 </div>
 {% endblock %}
