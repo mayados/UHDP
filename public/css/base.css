@@ -1816,7 +1816,7 @@ nav{
     /* border: 1px solid red; */
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
 }
 
 .list{
@@ -1841,6 +1841,95 @@ nav{
 .list table tr th{
     border: 1px solid #dddddd;
     height: 2rem;
+}
+
+.figure-element{
+    height: 300px;
+    width: 300px;
+}
+
+.figure-element img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.manage-button{
+    background-color: var(--couleurPrincipale);
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    margin: 1rem;
+}
+
+.manage-button:hover{
+    background-color: white;
+    color: var(--couleurPrincipale);
+    border: 1px solid var(--couleurPrincipale);
+}
+
+.manage-page-memorial{
+    padding: 5vh 2vh 0 2vh;
+    background-image: url('../img/stars_motifs.png');
+    position: relative;
+}
+
+.manage-page-memorial #header-memorial{
+    display: flex;  
+    flex-direction: column;
+    gap: 10px;
+}
+
+.manage-page-memorial #header-memorial figure{
+    flex: 2;
+    height: 500px;
+    border: 1px solid rgb(214, 214, 214);
+    z-index: 99;
+    border-radius: 5px; 
+    overflow: hidden;            
+}
+
+.manage-page-memorial #header-memorial figure img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 5px solid white;
+} 
+
+.manage-page-memorial #memorial-infos h2{
+    padding-bottom: 1rem;
+    text-align: center;
+}
+
+.manage-page-memorial #memorial-infos{
+    /* border: 2px solid black; */
+    display: flex;
+    flex-direction: column;
+    justify-content: inherit;
+    gap: 0.5rem;
+    /* align-items: center; */
+    flex:1;
+    padding: 20px;
+}
+
+.manage-page-memorial #form-memorial{
+    width: inherit;
+}
+
+.manage-condoleance{
+    border: 1px solid rgb(227, 227, 227);
+    position: relative;
+    min-height: 5rem;
+    padding: 1rem;
+    margin: 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.manage-condoleance p:last-child{
+    position: absolute;
+    bottom: 0.2rem;
+    right: 0.2rem;
 }
 
 /* PAGE ACCUEIL ADMINISTRATION */
