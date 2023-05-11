@@ -153,7 +153,9 @@ nav{
 #form-topic,
 #form-memorial,
 #form-infos-profil,
-#form-infos-password{
+#form-infos-password,
+#form-commentaire,
+#form-mot{
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     width: 750px;
     padding: 30px 30px 50px 30px;
@@ -166,7 +168,9 @@ nav{
 #form-memorial .form-element div,
 #form-infos-profil .form-element div,
 #form-infos-password .form-element div,
-#form-post .form-element div{
+#form-post .form-element div,
+#form-commentaire .form-element div,
+#form-mot .form-element div{
     display: flex;
     flex-direction: column;
     padding-top: 20px;
@@ -199,7 +203,9 @@ nav{
 #form-histoire #histoire_submit,
 #form-topic #topic_submit,
 #form-memorial #memorial_submit,
-#form_post #post_submit{
+#form_post #post_submit,
+#form-commentaire #form_comment_submit,
+#form_mot #mot_submit{
     width: 100px;
     margin: 0 auto;
     padding: 5px 10px 5px 10px;
@@ -1946,7 +1952,8 @@ nav{
 
 /* PAGE CATEGORIES ADMINISTRATION */
 
-#ajout-categorie{
+#ajout-categorie,
+#ajout-genre{
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     width: 400px;    
     text-align: center;
@@ -1954,17 +1961,20 @@ nav{
     margin-bottom: 3rem;
 }
 
-#form-categorie{
+#form-categorie,
+#form-genre{
     padding: 1rem;
 }
 
-#form-categorie form{
+#form-categorie form,
+#form-genre form{
     display: flex;
     justify-content: center;
     gap: 1rem;
 }
 
-#form-categorie input{
+#form-categorie input,
+#form-genre input{
     margin-left: 0.3rem;
 }
 
