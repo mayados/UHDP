@@ -142,7 +142,8 @@ nav{
 
 
 #form-login,
-#form-register{
+#form-register,
+#form-post{
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     width: 400px;
     padding: 30px 30px 50px 30px;
@@ -164,7 +165,8 @@ nav{
 #form-topic .form-element div,
 #form-memorial .form-element div,
 #form-infos-profil .form-element div,
-#form-infos-password .form-element div{
+#form-infos-password .form-element div,
+#form-post .form-element div{
     display: flex;
     flex-direction: column;
     padding-top: 20px;
@@ -179,7 +181,8 @@ nav{
 
 #form-login input,
 #form-register input,
-#form-topic input{
+#form-topic input,
+#form-post input{
     height: 2.5rem;
     border: none;
     padding-left: 10px;
@@ -195,7 +198,8 @@ nav{
 
 #form-histoire #histoire_submit,
 #form-topic #topic_submit,
-#form-memorial #memorial_submit{
+#form-memorial #memorial_submit,
+#form_post #post_submit{
     width: 100px;
     margin: 0 auto;
     padding: 5px 10px 5px 10px;
@@ -1816,7 +1820,7 @@ nav{
     /* border: 1px solid red; */
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
+    align-items: center;
 }
 
 .list{
@@ -1916,7 +1920,9 @@ nav{
     width: inherit;
 }
 
-.manage-condoleance{
+.manage-condoleance,
+.manage-topic,
+.manage-post{
     border: 1px solid rgb(227, 227, 227);
     position: relative;
     min-height: 5rem;
@@ -1924,6 +1930,7 @@ nav{
     margin: 2rem;
     display: flex;
     align-items: center;
+    width: 80%;
 }
 
 .manage-condoleance p:last-child{
@@ -1937,6 +1944,29 @@ nav{
     text-align: center;
 }
 
+/* PAGE CATEGORIES ADMINISTRATION */
+
+#ajout-categorie{
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    width: 400px;    
+    text-align: center;
+    padding: 30px 30px 30px 30px;    
+    margin-bottom: 3rem;
+}
+
+#form-categorie{
+    padding: 1rem;
+}
+
+#form-categorie form{
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+#form-categorie input{
+    margin-left: 0.3rem;
+}
 
                                                         /********** RESPONSIVE **********/
 
