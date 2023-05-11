@@ -77,14 +77,30 @@ class UsersController extends AbstractController
         ]);
     }
 
+    #[Route('/admin/users/photo/remove/{id}', name: 'app_admin_users_remove_photo')]
+    public function removePhotoUser(User $user, Request $request, UploaderService $uploaderService): Response
+    {
+
+        $photo = $user->getPhoto();
+        if(!$photo == null){
+            $folder = 'imgUserProfil';
+            $uploaderService->delete($photo, $folder);            
+        }
+
+
+            return $this->redirectToRoute(
+                'app_admin_users_show',
+                ['id' => $user->getId()]
+            );
+
+    }
+
     #[Route('/admin/users/show/{id}', name: 'app_admin_users_show')]
     public function showUser(User $user, ManagerRegistry $doctrine, Request $request,UserPasswordHasherInterface $userPasswordHasher,UploaderService $uploaderService): Response
     {
 
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-        $formPhoto = $this->createForm(UserPhotoType::class, $user);
-        $formPhoto->handleRequest($request);
         $mail = $user->getEmail();
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -101,38 +117,9 @@ class UsersController extends AbstractController
             );   
         }
 
-        if ($formPhoto->isSubmitted() && $formPhoto->isValid()) {
-            $user = $formPhoto->getData();            
-            $imgUser= $formPhoto->get('imgUser')->getData();
-            if($imgUser){
-                // Si on est dans le cas d'un edit et qu'une nouvelle image est uploadée (car lors d'un ajout on ne va pas supprimer le fichier qu'on crée..)
-                if($user->getPhoto() != null){
-                    // On cherche la photo stockée pour le mémorial correspondant
-                    $previousPhoto = $user->getPhoto();
-
-                    $folder = 'imgUserProfil';
-                    $uploaderService->delete($previousPhoto,$folder);
-                }
-                // Dans le cas où il y a une image soumise mais que le mémorial n'a pas encore d'image (=> cas d'ajout de mémorial ou edit sans image)
-                $folder = 'imgUserProfil';
-                $image = $uploaderService->add($imgUser,$folder);
-                $user->setPhoto($image);                              
-            }
-            // Dans tous les cas, on persist le memorial
-            $entityManager = $doctrine->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->redirectToRoute(
-                'app_admin_users_show',
-                ['id' => $user->getId()]
-            );   
-        }
-
         return $this->render('admin/utilisateurs/showUser.html.twig', [
             'formAddUser' => $form->createView(),
             'user' => $user,
-            'formPhoto' => $formPhoto->createView(),
         ]);
     }
 
