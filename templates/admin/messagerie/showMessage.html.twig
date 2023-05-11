@@ -12,13 +12,18 @@
 <div class="container-page administration">
     {% include '_partials/_adminnav.html.twig' %}
     <main class="main-administration">
-        <h1 id="memorial-title">Message</h1>     
+        <h1 id="memorial-title">Message</h1>   
+        
+        <div class="manage-post">
+            <p>{{ message.texte|raw }}</p>                  
+        </div>
+    
 
-        <a href="{{ path('app_admin_message_remove', {'id': message.id}) }}">Supprimer le message</a>
+        <a class="manage-button" href="{{ path('app_admin_message_remove', {'id': message.id}) }}">Supprimer le message</a>
 
-        <a href="{{ path('app_admin_message_report_remove', {'id': message.id}) }}">Supprimer le signalement</a>
+        <a class="manage-button" href="{{ path('app_admin_message_report_remove', {'id': message.id}) }}">Supprimer le signalement</a>
 
-        <p>{{ message.texte|raw }}</p>          
+        
 
     </main>
 

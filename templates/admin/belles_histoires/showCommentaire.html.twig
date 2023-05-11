@@ -12,19 +12,29 @@
 <div class="container-page administration">
     {% include '_partials/_adminnav.html.twig' %}
     <main class="main-administration">
-        <h1 id="memorial-title">Commentaire</h1>     
-
-        <a href="{{ path('app_admin_comment_remove', {'id': commentaire.id}) }}">Supprimer le commentaire</a>
+        <h1>Commentaire</h1>  
+        
+        <div class="manage-post">
+            <p>{{ commentaire.texte|raw }}</p>              
+        </div>
+   
+        <a class="manage-button" href="{{ path('app_admin_comment_remove', {'id': commentaire.id}) }}">Supprimer le commentaire</a>
 
         {% if commentaire.reports| length > 0 %}
-            <a href="{{ path('app_admin_commentaire_remove_reports', {'id': commentaire.id}) }}">Supprimer les signalements</a>
+            <a class="manage-button" href="{{ path('app_admin_commentaire_remove_reports', {'id': commentaire.id}) }}">Supprimer les signalements</a>
         {% endif %}
 
-        <p>{{ commentaire.texte|raw }}</p>          
+     
 
+        <div class="formulaire" id="form-commentaire">
+            <div class="form-element">
+                {{ form_start(formEditCommentaire) }}
+            </div>
+            <div class="form-element">
+                {{ form_end(formEditCommentaire) }}          
+            <div class="form-element">    
+        </div>
 
-        {{ form_start(formEditCommentaire) }}
-        {{ form_end(formEditCommentaire) }}  
     </main>
 
 </div>

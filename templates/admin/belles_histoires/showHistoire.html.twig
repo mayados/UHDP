@@ -39,18 +39,18 @@
             </div>            
         </section>
 
-        <a href="{{ path('app_admin_histoire_remove', {'id': histoire.id}) }}">Supprimer l'histoire</a>
+        <a class="manage-button" href="{{ path('app_admin_histoire_remove', {'id': histoire.id}) }}">Supprimer l'histoire</a>
         {% if histoire.etat == 'STATE_APPROUVED' %}
-            <a href="{{ path('app_admin_histoire_disapprouved', {'slug': histoire.slug}) }}">Désapprouver</a>
+            <a class="manage-button" href="{{ path('app_admin_histoire_disapprouved', {'slug': histoire.slug}) }}">Désapprouver</a>
         {% elseif histoire.etat == 'STATE_WAITING' %}
-            <a href="{{ path('app_admin_histoire_approuved', {'slug': histoire.slug}) }}">Approuver</a>
-            <a href="{{ path('app_admin_histoire_disapprouved', {'slug': histoire.slug}) }}">Désapprouver</a>
+            <a class="manage-button" href="{{ path('app_admin_histoire_approuved', {'slug': histoire.slug}) }}">Approuver</a>
+            <a class="manage-button" href="{{ path('app_admin_histoire_disapprouved', {'slug': histoire.slug}) }}">Désapprouver</a>
         {% elseif histoire.etat == 'STATE_DISAPPROUVED' %}
-            <a href="{{ path('app_admin_histoire_approuved', {'slug': histoire.slug}) }}">Approuver</a>
+            <a class="manage-button" href="{{ path('app_admin_histoire_approuved', {'slug': histoire.slug}) }}">Approuver</a>
         {% endif %}
 
         {% if histoire.reports| length > 0 %}
-            <a href="{{ path('app_admin_histoire_remove_reports', {'id': histoire.id}) }}">Supprimer les signalements</a>
+            <a class="manage-button" href="{{ path('app_admin_histoire_remove_reports', {'id': histoire.id}) }}">Supprimer les signalements</a>
         {% endif %}
 
         <div class="formulaire" id="form-histoire">
