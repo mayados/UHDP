@@ -13,6 +13,8 @@ export default class Submit {
           }
           this.content = element.querySelector('.js-auto-refresh-content')     
           this.form = element.querySelector('.js-submit-form')
+          this.likes = element.querySelector('.js-refresh-like')
+          console.log(this.likes)
           this.bindEvents()
       }
       
@@ -60,7 +62,9 @@ export default class Submit {
             .then(async (response) => {
              console.log(response)
               const data = await response.json();
-              this.content.innerHTML = data.content
+              // console.log(data)
+              // this.content.innerHTML = data.content
+              // this.likes.innerHTML = data.likes
               instance.setData("")
               // console.log(data.content) 
             })

@@ -47,6 +47,7 @@ export default class Like {
               }
                 // console.log(this)
                 const nb = response.nbLike;
+                console.log(url)
 
                 this.dataset.nb = nb;
                 if(span.classList.contains('pensee')){
