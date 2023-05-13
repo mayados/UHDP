@@ -17,16 +17,16 @@ class CondoleanceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        // ->add('texte', CKEditorType::class, [
-        //     'constraints' => [
-        //         new Assert\NotBlank(['message' => 'Le message de condoléance ne peut pas être vide']),
-        //     ]
-        // ])
-        ->add('texte', TextareaType::class, [
+        ->add('texte', CKEditorType::class, [
             'constraints' => [
                 new Assert\NotBlank(['message' => 'Le message de condoléance ne peut pas être vide']),
             ]
         ])
+        // ->add('texte', TextareaType::class, [
+        //     'constraints' => [
+        //         new Assert\NotBlank(['message' => 'Le message de condoléance ne peut pas être vide']),
+        //     ]
+        // ])
         ->add('submit', SubmitType::class, [
             'label' => 'Envoyer',
         ])
