@@ -105,8 +105,8 @@ class BelleHistoireController extends AbstractController
                 if($request->isXmlHttpRequest()){
                     // Si c'est le cas on renvoie du JSON
                     return new JsonResponse([
-                        'content' => $this->renderView('_partials/_commentaires.html.twig', ['histoire' => $histoire]),
-                        // 'like' => $this->renderView('_partials/_likeComment.html.twig',['histoire' => $histoire, 'commentaire' => $commentaire]),
+                        'content' => $this->renderView('_partials/_commentaires.html.twig', ['histoire' => $histoire, 'consultedInGenre' => $consultedInGenre]),
+                        'likes' => $this->renderView('_partials/_likeComment.html.twig',['commentaire' => $commentaire]),
                         // 'like' => $this->renderView('_partials/_likeComment.html.twig', ['histoire' => $histoire]),
                         // 'formCondoleance' => $this->renderView('_partials/_refreshForm.html.twig', ['formCondoleance' => $condoleanceForm->createView()])
                         // 'bloup'=> 'blou',

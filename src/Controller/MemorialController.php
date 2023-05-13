@@ -194,7 +194,7 @@ class MemorialController extends AbstractController
                 if($request->isXmlHttpRequest()){
                     // Si c'est le cas on renvoie du JSON
                     return new JsonResponse([
-                        'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial,'formCondoleance' => $condoleanceForm->createView()]),
+                        'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial,'formCondoleance' => $condoleanceForm->createView(),'consultedInCategorie' => $consultedInCategorie]),
                         // 'formCondoleance' => $this->renderView('_partials/_refreshForm.html.twig', ['formCondoleance' => $condoleanceForm->createView()])
                         // 'bloup'=> 'blou',
                     ]);
