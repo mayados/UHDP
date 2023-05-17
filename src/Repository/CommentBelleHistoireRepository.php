@@ -42,6 +42,16 @@ class CommentBelleHistoireRepository extends ServiceEntityRepository
     }
 
     
+    public function findCommentaires($histoire)
+    {
+        return $this->createQueryBuilder('c')
+        ->where('c.belleHistoire = :histoire')
+        ->setParameter('histoire',$histoire)
+        ->addOrderBy('c.dateCreation', 'DESC')
+        ->getQuery()
+        ->getResult();
+    }
+    
     public function findPaginatedNonSignales($page): PaginationInterface
     {
 

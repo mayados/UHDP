@@ -80,6 +80,16 @@ class CondoleanceRepository extends ServiceEntityRepository
         return $condoleances;  
     }
 
+    public function findCondoleances($memorial)
+    {
+        return $this->createQueryBuilder('c')
+        ->where('c.memorial = :memorial')
+        ->setParameter('memorial',$memorial)
+        ->addOrderBy('c.dateCreation', 'DESC')
+        ->getQuery()
+        ->getResult();
+    }
+
 //    /**
 //     * @return Condoleance[] Returns an array of Condoleance objects
 //     */
