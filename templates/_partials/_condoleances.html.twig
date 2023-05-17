@@ -4,24 +4,37 @@
     {% include '_partials/_refreshForm.html.twig' %}  
 {% endif %} #}
 <div id="container-condoleances" class="js-auto-refresh-content">
-        {% if memorial.condoleances| length > 0 %}
-        {% for condoleance in memorial.condoleances %}
-                <div class="condoleance-memorial">
-                        <p>{{ condoleance.auteur }}</p>   
-                        <p>{{ condoleance.dateCreation| date('d-m-Y') }}</p>                     
-                        <p>{{ condoleance.texte| raw }}</p>
-                        {% if app.user == condoleance.auteur %}
-                                {% if consultedInCategorie == true %}
-                                        <a href="{{path('remove_condoleance_categorie', {'idMemorial': memorial.id, 'id': condoleance.id, 'idCategorie': memorial.categorieAnimal.id}) }}">Supprimer</a>
-                                {% else %}
-                                        <a href="{{path('remove_condoleance', {'idMemorial': memorial.id, 'id': condoleance.id}) }}">Supprimer</a>
-                                {% endif %}
-                        {% endif %}
-                </div>
-        {% endfor %}   
+        {% if condoleances| length > 0 %}
+                {% for condoleance in condoleances %}
+                        <div class="condoleance-memorial">
+                                <div class="condoleance-body">
+                                        <div class="condoleance-infos">
+                                                <p>{{ condoleance.auteur }}</p>   
+                                                <p>{{ condoleance.dateCreation| date('d-m-Y') }}</p>                                                 
+                                        </div>
+                                        <div class="condoleance-texte">
+                                                <p>{{ condoleance.texte| raw }}</p>                                
+                                        </div>                                                                      
+                                </div>
+
+                                <div class="condoleance-action">
+                                        {% if app.user == condoleance.auteur %}
+                                                {% if consultedInCategorie == true %}
+                                                        <a href="{{path('remove_condoleance_categorie', {'idMemorial': memorial.id, 'id': condoleance.id, 'idCategorie': memorial.categorieAnimal.id}) }}"><i class="fa-solid fa-trash"></i></a>
+                                                {% else %}
+                                                        <a href="{{path('remove_condoleance', {'idMemorial': memorial.id, 'id': condoleance.id}) }}"><i class="fa-solid fa-trash"></i></a>
+                                                {% endif %}
+                                        {% endif %}                                
+                                </div>
+                        </div>
+                {% endfor %}   
         {% endif %}
-        <div class="condoleance-memorial">
-                <p>L'équipe d'Une Histoire de Pattes se joint à vous dans vos peines et vous adresse de sincères condoléances.</p>
-                <p>{{ memorial.dateCreation| date('d-m-Y') }}</p>  
+        <div class="condoleance-memorial-equipe">
+                <div>
+                        <p>{{ memorial.dateCreation| date('d-m-Y') }}</p>                          
+                </div>
+                <div>
+                        <p>L'équipe d'Une Histoire de Pattes se joint à vous dans vos peines et vous adresse de sincères condoléances.</p>      
+                </div>
         </div>        
 </div>   
