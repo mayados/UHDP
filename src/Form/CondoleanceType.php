@@ -20,7 +20,8 @@ class CondoleanceType extends AbstractType
         ->add('texte', CKEditorType::class, [
             'constraints' => [
                 new Assert\NotBlank(['message' => 'Le message de condoléance ne peut pas être vide']),
-            ]
+            ],
+            'required' => false,
         ])
         // ->add('texte', TextareaType::class, [
         //     'constraints' => [
