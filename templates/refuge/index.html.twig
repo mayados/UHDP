@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello RefugeController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code><a href="{{ 'C:/laragon/www/UneHistoireDePattes/src/Controller/RefugeController.php'|file_link(0) }}">src/Controller/RefugeController.php</a></code></li>
+        <li>Your template at <code><a href="{{ 'C:/laragon/www/UneHistoireDePattes/templates/refuge/index.html.twig'|file_link(0) }}">templates/refuge/index.html.twig</a></code></li>
+    </ul>
+</div>
+<script>
+        const madiv = document.querySelector('.test');
+
+        fetch("http://127.0.1:8000/api/refuges")
+        // On crée une variable réponse par rapport aux éléments du dessus, qui va être transformée en json
+        .then( (response) => response.json())
+        // On donne un nom de variable pour récupérer les données
+        .then( (data)=> {
+            console.log(data["hydra:member"][0].nom)
+        })    
+
+
+</script>
+{% endblock %}
