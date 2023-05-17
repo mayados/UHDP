@@ -73,7 +73,7 @@ class BelleHistoireController extends AbstractController
     #[Route('/bellesHistoires/histoire/{idGenre}/{slug}', name: 'show_histoire_genre')]
     #[ParamConverter("genre", options: ["mapping" => ["idGenre" => "id"]])]    
     #[ParamConverter("histoire", options: ["mapping" => ["slug" => "slug"]])]
-    public function showHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire, GenreHistoire $genre = null, ManagerRegistry $doctrine, Request $request): Response
+    public function showHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire, GenreHistoire $genre = null, CommentBelleHistoireRepository $cbhr, ManagerRegistry $doctrine, Request $request): Response
     {
 
         if($genre){
@@ -83,6 +83,7 @@ class BelleHistoireController extends AbstractController
         }
 
         $histoire = $bhr->find($histoire->getId());
+        $commentaires = $cbhr->findCommentaires($histoire);
 
         $idHistoire = $histoire->getId();
 
@@ -105,11 +106,7 @@ class BelleHistoireController extends AbstractController
                 if($request->isXmlHttpRequest()){
                     // Si c'est le cas on renvoie du JSON
                     return new JsonResponse([
-                        'content' => $this->renderView('_partials/_commentaires.html.twig', ['histoire' => $histoire, 'consultedInGenre' => $consultedInGenre]),
-                        'likes' => $this->renderView('_partials/_likeComment.html.twig',['commentaire' => $commentaire]),
-                        // 'like' => $this->renderView('_partials/_likeComment.html.twig', ['histoire' => $histoire]),
-                        // 'formCondoleance' => $this->renderView('_partials/_refreshForm.html.twig', ['formCondoleance' => $condoleanceForm->createView()])
-                        // 'bloup'=> 'blou',
+                        'content' => $this->renderView('_partials/_commentaires.html.twig', ['histoire' => $histoire, 'consultedInGenre' => $consultedInGenre,'commentaires' => $cbhr->findCommentaires($histoire)]),
                     ]);
                 }
 
@@ -132,6 +129,7 @@ class BelleHistoireController extends AbstractController
                 'formAddComment' => $form->createView(),
                 'autresHistoires' => $bhr->findAutresHistoires($idHistoire),
                 'consultedInGenre' => $consultedInGenre,
+                'commentaires' => $commentaires,
             ]);
         }
 
@@ -139,6 +137,7 @@ class BelleHistoireController extends AbstractController
             'histoire' => $histoire,
             'autresHistoires' => $bhr->findAutresHistoires($idHistoire),
             'consultedInGenre' => $consultedInGenre,
+            'commentaires' => $commentaires,
         ]);
     }
 

@@ -165,7 +165,7 @@ class MemorialController extends AbstractController
     #[Route('/memorial/{idCategorie}/{id}', name: 'show_memorial_categorie')]
     #[ParamConverter("memorial", options: ["mapping" => ["id" => "id"]])]
     #[ParamConverter("categorie", options: ["mapping" => ["idCategorie" => "id"]])]
-    public function showMemorial(ManagerRegistry $doctrine, AnimalMemorialRepository $amr, UploaderService $uploaderService, AnimalMemorial $memorial, Request $request, CategorieAnimal $categorie = null, SluggerInterface $slugger): Response
+    public function showMemorial(ManagerRegistry $doctrine, AnimalMemorialRepository $amr, CondoleanceRepository $cr, UploaderService $uploaderService, AnimalMemorial $memorial, Request $request, CategorieAnimal $categorie = null, SluggerInterface $slugger): Response
     {
 
         if($categorie){
@@ -180,6 +180,7 @@ class MemorialController extends AbstractController
         $form = $this->createForm(GaleriePhotoType::class, $galerie);    
         $condoleance = new Condoleance();
         $condoleanceForm = $this->createForm(CondoleanceType::class,$condoleance);
+        $condoleances = $cr->findCondoleances($memorial);
 
         if($this->getUser()){
             $condoleanceForm->handleRequest($request); 
@@ -194,7 +195,7 @@ class MemorialController extends AbstractController
                 if($request->isXmlHttpRequest()){
                     // Si c'est le cas on renvoie du JSON
                     return new JsonResponse([
-                        'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial,'formCondoleance' => $condoleanceForm->createView(),'consultedInCategorie' => $consultedInCategorie]),
+                        'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial,'formCondoleance' => $condoleanceForm->createView(),'consultedInCategorie' => $consultedInCategorie, 'condoleances' => $cr->findCondoleances($memorial)]),
                         // 'formCondoleance' => $this->renderView('_partials/_refreshForm.html.twig', ['formCondoleance' => $condoleanceForm->createView()])
                         // 'bloup'=> 'blou',
                     ]);
@@ -216,6 +217,17 @@ class MemorialController extends AbstractController
                     'idCategorie' => $categorie->getId()]
                 );     
 
+            }else{
+                // Si le formulaire n'est pas valide et qu'il s'agit d'une requête AJAX
+                if($request->isXmlHttpRequest()){
+                    // Si c'est le cas on renvoie du JSON
+                    return new JsonResponse([
+                        'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial,'consultedInCategorie' => $consultedInCategorie, 'formCondoleance' => $condoleanceForm->createView(),'condoleances' => $cr->findCondoleances($memorial)]),
+                        'error' => $this->renderView('_partials/_refreshForm.html.twig', ['formCondoleance' => $condoleanceForm->createView()]),
+                        // 'error' => "je suis une erreur",
+                        // 'bloup'=> 'blou',
+                    ]);
+                }
             }
 
             // On vérifie que le user courant est le créateur du mémorial, sinon on ne peut pas accéder au formulaire d'ajout de photo
@@ -263,6 +275,7 @@ class MemorialController extends AbstractController
                     'formAddPhotoGalerie' => $form->createView(),
                     'formCondoleance' => $condoleanceForm->createView(),
                     'consultedInCategorie' => $consultedInCategorie,
+                    'condoleances' => $condoleances,
                 ]);            
             }
         }
@@ -271,6 +284,7 @@ class MemorialController extends AbstractController
                 'formAddPhotoGalerie' => $form->createView(),
                 'formCondoleance' => $condoleanceForm->createView(),
                 'consultedInCategorie' => $consultedInCategorie,
+                'condoleances' => $condoleances,
         ]);
 
     }
