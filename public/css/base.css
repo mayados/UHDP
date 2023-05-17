@@ -679,6 +679,7 @@ nav{
     height: 300px;
     width: 300px;
     border-radius: 50%;
+    border: 2px solid rgb(194, 194, 194);
     overflow: hidden;
     transition: 0.5s;
 }
@@ -892,13 +893,41 @@ nav{
     min-height: 5vh;
 }
 
-.condoleance-memorial{
+.condoleance-memorial,
+.condoleance-memorial-equipe{
     min-height: 50px;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
     border-bottom: 0.5px solid gray;
-    padding: 20px 10px 20px 10px;    
+    padding: 20px 2rem 20px 2rem;  
+}
+
+.condoleance-body .condoleance-texte{
+    /* Permet de couper un long mot */
+    overflow-wrap: anywhere;
+    text-align: justify;
+}
+
+.condoleance-body .condoleance-infos{
+    min-width: fit-content;
+}
+
+.condoleance-memorial{
+    justify-content: space-between;
+}
+
+.condoleance-memorial-equipe{
+    gap: 3rem;
+}
+
+.condoleance-memorial .condoleance-body{
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+}
+
+.condoleance-action{
+    margin-left: 1.5rem;
 }
 
 .showSoutient-content .unlikedPaw{
@@ -1256,6 +1285,7 @@ nav{
 
 #comment-histoire .commentaire .commentaire-content{
     padding-top: 1.5rem;
+    overflow-wrap: anywhere;
 }
 
                             /**** PAGE FORMULAIRE BELLE HISTOIRE ***/
@@ -1422,7 +1452,17 @@ nav{
 }
 
 .ajout-posts{
+    text-align: center;
     margin: 0 10vh 0 10vh;
+}
+
+#post_submit{
+    border-radius: 3px;
+    margin: 1rem 0 1rem 0;
+    padding: 5px 10px 5px 10px;
+    background-color: white;
+    color: var(--couleurPrincipale);
+    border: 1px solid var(--couleurPrincipale);
 }
 
 
@@ -2160,6 +2200,42 @@ nav{
         gap: 2rem;
     }
 
+    /* PAGE MEMORIAL */
+    .page-memorial{
+        padding: 5vh 2vw 0 2vw;
+    }
+
+    .condoleance-memorial{
+        padding: 20px 1rem 20px 1rem;  
+    }
+
+    .condoleance-memorial .condoleance-body{
+        gap: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        /* border: 1px solid green; */
+    }
+
+    .condoleance-memorial-equipe{
+        gap: 1rem;
+        flex-direction: column-reverse;
+        align-items: flex-start;
+        text-align: justify;
+    }
+
+    /* .condoleance-infos{
+        border: 1px solid red;
+    }
+
+    .condoleance-texte{
+        border: 1px solid blue;
+    } */
+
+    .condoleance-action{
+        border: 1px solid green;
+        margin-left: 1rem;
+    }
+
     /* PAGE BELLES HISTOIRES */
     .belle-histoire-card{
         width: 330px;
@@ -2282,15 +2358,16 @@ nav{
 
     /* PAGE FORUM */
 
-    .forum-page{
+    /* .forum-page{
         padding: 3vh 1vh 0 1vh;
-    }
+    } */
 
     .topic{
         padding: 1rem 0.2rem 1rem 0.2rem;
-        border: 1px solid blue;
         justify-content: space-between;
-        align-items: center;
+        /* align-items: center; */
+        gap: 1rem;
+        flex-direction: column;
     }
     
     .topic .topic-infos{
@@ -2298,8 +2375,22 @@ nav{
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
+        /* border: 1px solid red; */
     }
 
+    #topics{
+        margin: 0 1rem 0 1rem;
+    }
+
+    .topic-posts{
+        margin: 0 auto;
+    }
+
+    /* PAGE TOPIC */
+    #posts,
+    .ajout-posts{
+        margin: 0 1rem 0 1rem;
+    }
 
     /* PAGE MES HISTOIRES */
     .rubriques{
@@ -2311,6 +2402,10 @@ nav{
 
     .rubriques a{
         width: 300px;
+    }
+
+    .administration{
+        flex-direction: column;
     }
 
 }
