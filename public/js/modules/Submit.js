@@ -11,10 +11,13 @@ export default class Submit {
           if(element == null){
             return  
           }
-          this.content = element.querySelector('.js-auto-refresh-content')     
-          this.form = element.querySelector('.js-submit-form')
-          this.likes = element.querySelector('.js-refresh-like')
-          console.log(this.likes)
+          this.content = element.querySelector('.js-auto-refresh-content')   
+          this.form = element.querySelector('.js-submit-form')  
+          this.erreurs = element.querySelector('.custom-errors')
+          console.log(this.form)
+
+          // this.h2 = element.querySelector('.js-refresh-like')
+          // console.log(this.likes)
           this.bindEvents()
       }
       
@@ -60,15 +63,32 @@ export default class Submit {
             // .then(response => response.json())
             // Lorsque la promesse provenant de .json aboutit, on récupère ce qui a été traité par le JSON
             .then(async (response) => {
-             console.log(response)
+            //  console.log(response)
               const data = await response.json();
-              // console.log(data)
-              // this.content.innerHTML = data.content
-              // this.likes.innerHTML = data.likes
+              // var liste = document.createElement("ul");
+              // var listeItem = document.createElement("li");
+              //   this.form.appendChild(liste)
+              //   liste.appendChild(listeItem)
+              // console.log(data.content)
+              // $contenu = this.content;
+              // const contenu = data.content
+              // this.content.appendChild(contenu)
+              // var comment = document.createElement('div');
+              // comment.classList.add("commentaire");
+              // comment.innerHTML = data.content;
+              // document.querySelector('#comment-histoire').appendChild(comment);
+              this.content.innerHTML = data.content
               instance.setData("")
+              console.log(data.content)
+              if(data.error != undefined){
+                instance.setData("")
+
+                  this.form.innerHTML = data.error
+                  console.log(data.error)
+              }
               // console.log(data.content) 
             })
-            .catch(e => alert(e));
+            .catch(e => console.log(e));
         })
       }
   
