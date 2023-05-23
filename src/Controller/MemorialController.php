@@ -180,6 +180,7 @@ class MemorialController extends AbstractController
         $form = $this->createForm(GaleriePhotoType::class, $galerie);    
         $condoleance = new Condoleance();
         $condoleanceForm = $this->createForm(CondoleanceType::class,$condoleance);
+        $editCondoleanceForm = $this->createForm(CondoleanceType::class,$condoleance);
         $condoleances = $cr->findCondoleances($memorial);
 
         if($this->getUser()){
@@ -228,6 +229,32 @@ class MemorialController extends AbstractController
                         // 'bloup'=> 'blou',
                     ]);
                 }
+
+            // $editCondoleanceForm->handleRequest($request);
+            // if ($editCondoleanceForm->isSubmitted() && $editCondoleanceForm->isValid()) {
+            //     $condoleance = $editCondoleanceForm->getData();
+            //     $condoleance->setMemorial($memorial);
+            //     $texte = $condoleance->getTexte()->getData();
+            //     $condoleance->setTexte($texte);
+            //     $condoleance->setAuteur($this->getUser());
+            //     $entityManager = $doctrine->getManager();
+            //     $entityManager->persist($condoleance);
+            //     $entityManager->flush();   
+            // }
+
+            // if(!$categorie){
+            //     return $this->redirectToRoute(
+            //         'show_memorial',
+            //         ['id' => $memorial->getId()]
+            //     );                    
+            // }
+
+            // return $this->redirectToRoute(
+            //     'show_memorial_categorie',
+            //     ['id' => $memorial->getId(),
+            //     'idCategorie' => $categorie->getId()]
+            // );  
+
             }
 
             // On vérifie que le user courant est le créateur du mémorial, sinon on ne peut pas accéder au formulaire d'ajout de photo
@@ -276,6 +303,7 @@ class MemorialController extends AbstractController
                     'formCondoleance' => $condoleanceForm->createView(),
                     'consultedInCategorie' => $consultedInCategorie,
                     'condoleances' => $condoleances,
+                    'editCondoleanceForm' => $editCondoleanceForm->createView(),
                 ]);            
             }
         }
@@ -285,6 +313,7 @@ class MemorialController extends AbstractController
                 'formCondoleance' => $condoleanceForm->createView(),
                 'consultedInCategorie' => $consultedInCategorie,
                 'condoleances' => $condoleances,
+                'editCondoleanceForm' => $editCondoleanceForm->createView(),
         ]);
 
     }
@@ -423,6 +452,37 @@ class MemorialController extends AbstractController
         );  
          
     }
+
+    #[Route('/memorial/condoleance/edit/{id}/{idMemorial}', name: 'edit_condoleance')]
+    #[ParamConverter("condoleance", options: ["mapping" => ["id" => "id"]])]
+    #[ParamConverter("memorial", options: ["mapping" => ["idMemorial" => "id"]])]
+    #[Security("is_granted('ROLE_USER') and user === condoleance.getAuteur()", message:"Accès non autorisé.")]
+    public function editCondoleance(Condoleance $condoleance, AnimalMemorial $memorial,ManagerRegistry $doctrine,Request $request){
+        if (isset($_POST['submit'])) {
+            $entityManager = $doctrine->getManager();
+            // chercher objet module 
+            // $condoleance = $entityManager->getRepository(Condoleance::class,$condoleance);
+            // recuperer duree
+            $texte = $request->request->get('texte');
+            // nouveau programme
+            $condoleance->setMemorial($memorial);
+            $date = $condoleance->getDateCreation();
+            $auteur = $condoleance->getAuteur();
+            $condoleance->setDateCreation($date);
+            $condoleance->setAuteur($auteur);
+            $condoleance->setTexte($texte);
+            $entityManager->persist($condoleance);
+            $entityManager->flush();
+
+            $this->addFlash("succes","La condoléance a bien été modifiée");
+
+            return $this->redirectToRoute(
+                'show_memorial',
+                ['id' => $memorial->getId()]
+            );  
+        }
+    }
+
 
     #[Route('/memorial/{idMemorial}/galerie/delete/{id}', name: 'remove_photo')]
     #[Route('/memorial/{idCategorie}/{idMemorial}/galerie/delete/{id}', name: 'remove_photo_categorie')]
