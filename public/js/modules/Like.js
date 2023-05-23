@@ -6,6 +6,9 @@ export default class Like {
      */
       constructor(likeElements){
         this.likeElements = likeElements;
+        this.content = document.querySelector('.js-refresh-like');
+        var contenu = this.content
+        console.log(contenu)
 
           if(likeElements){
             this.init()
@@ -30,8 +33,12 @@ export default class Like {
         console.log(url)
         fetch(url.pathname + "?", {
             headers: {
+              // 'Sec-Fetch-Site': 'same-origin',
+            // 'Access-Control-Allow-Origin': '*',
             'X-Requested-With': 'XMLHttpRequest'
             },
+            // dataType: "json",
+            // mode: 'cors',
             // method: 'GET'
         })
             .then(response => response.json())
@@ -51,10 +58,24 @@ export default class Like {
 
                 this.dataset.nb = nb;
                 if(span.classList.contains('pensee')){
-                  span.innerHTML = nb + ' pensées envoyées'
+
+                  if(nb > 1){
+                    span.innerHTML = nb + ' pensées envoyées'                    
+                  }else{
+                    span.innerHTML = nb + ' pensée envoyée'                    
+                  }
+
                 }else{
-                  span.innerHTML = nb + ' patounes'
+                  
+                  if(nb > 1){
+                    span.innerHTML = nb + ' patounes'
+                  }else{
+                    span.innerHTML = nb + ' patoune'
+                  }
+
                 }
+
+                console.log(response)
                 // Reste à catch les exceptions
             }).catch(e => alert(e));
       }
