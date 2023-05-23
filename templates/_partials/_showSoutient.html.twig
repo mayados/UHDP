@@ -8,7 +8,13 @@
         {% else %}
             <i class="fa-solid fa-hand-holding-heart unlikedPaw"></i>
         {% endif %}
-        <span class="pensee">{{ memorial.soutients|length }} pensées envoyées</span>
+        <span class="pensee">{{ memorial.soutients|length }} 
+            {% if memorial.soutients|length > 1 %}
+                pensées envoyées
+            {% else %}
+                pensée envoyée
+            {% endif %}
+        </span>
         {% if app.user %}
         </a>
     {% endif %}

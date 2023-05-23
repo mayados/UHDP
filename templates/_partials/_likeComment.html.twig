@@ -8,7 +8,13 @@
         {% else %}
             <i id="unlikedPaw" class="fa-solid fa-paw unlikedPaw"></i>
         {% endif %}
-        <span>{{ commentaire.likes|length }} patounes</span>
+        <span>{{ commentaire.likes|length }} 
+            {% if commentaire.likes|length > 1 %}
+                patounes
+            {% else %}
+                patoune
+            {% endif %}
+        </span>
         {% if app.user %}
         </a>
     {% endif %}
