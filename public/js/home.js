@@ -64,3 +64,13 @@ function stopTimer(){
 function startTimer(){
     timer = setInterval(slideNext,4000);
 }
+
+    // Menu burger
+
+    var toggleButton = document.querySelector('.toggle-menu');
+    var navBar = document.querySelector('.nav-bar');
+    var toggleLine = document.querySelector('.line');
+    toggleButton.addEventListener('click', function () {
+        navBar.classList.toggle('toggle');
+        toggleButton.classList.toggle('toggle');
+    });

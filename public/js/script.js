@@ -12,6 +12,17 @@ new Submit(document.querySelector('.js-refresh-page'))
 // console.log(document.querySelector('.js-auto-refresh'))
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    // Menu burger
+
+    var toggleButton = document.querySelector('.toggle-menu');
+    var navBar = document.querySelector('.nav-bar');
+    var toggleLine = document.querySelector('.line');
+    toggleButton.addEventListener('click', function () {
+        navBar.classList.toggle('toggle');
+        toggleButton.classList.toggle('toggle');
+    });
+
     const likeElements = [].slice.call(document.querySelectorAll('.like-button'));
     if(likeElements){
         new Like(likeElements);
@@ -156,7 +167,51 @@ document.addEventListener('DOMContentLoaded', () => {
         })        
     }
 
+    const modifyButtons = document.querySelectorAll('.modify-button');
+    modifyButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            // var text = button.nextSibling;
+            var parentButton = button.parentNode
+            console.log(parentButton.nextSibling)
+            // const modifyForm = document.querySelectorAll('.modify-form');
+            // modifyForm.forEach(function(form){
+            //     modifyForm.style.display='block';
+            // })
+            // const close = document.querySelector('.close');
+            // const modifyPart = document.querySelector('#modify-part');
+            //      console.log(modifyPart.nextSibling)
+       
+            // console.log(modifyPart)
+    
+           
+                
+                // modifyPart.style.display='none'
+    
+            // close.addEventListener('click', e =>{
+            //     e.preventDefault();
+                // modifyForm.style.display='none';
+                // modifyPart.style.display='block'
+            // })  
+        })
+    })
+    // if(modifyButtons){
+    //     const modifyForm = document.querySelector('.modify-form');
+    //     const close = document.querySelector('.close');
+    //     const modifyPart = document.querySelector('.modify-part');
+    //     console.log(modifyPart)
 
+    //     modifyButton.addEventListener('click', e =>{
+    //         e.preventDefault();
+    //         modifyForm.style.display='block';
+    //         modifyPart.style.display='none'
+    //     })
+
+    //     close.addEventListener('click', e =>{
+    //         e.preventDefault();
+    //         modifyForm.style.display='none';
+    //         modifyPart.style.display='block'
+    //     })        
+    // }
 
 
 })
