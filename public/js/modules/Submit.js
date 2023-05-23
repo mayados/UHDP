@@ -78,13 +78,17 @@ export default class Submit {
               // comment.innerHTML = data.content;
               // document.querySelector('#comment-histoire').appendChild(comment);
               this.content.innerHTML = data.content
-              instance.setData("")
-              console.log(data.content)
+
+              // S'il y a des erreurs
               if(data.error != undefined){
-                instance.setData("")
+                // instance.setData("")
 
                   this.form.innerHTML = data.error
                   console.log(data.error)
+              }else{
+                
+                instance.setData("")
+                console.log(data.content)                
               }
               // console.log(data.content) 
             })
