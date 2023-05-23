@@ -17,7 +17,7 @@
         {% endblock %}
     </head>
     <body>
-        <header id="header-main">
+        <header id="header-main" class="header-bar">
             {% if app.session.flashBag.has('success') %}
                 {% for msg in app.flashes('success') %}        
                     <div class="alert-success">
@@ -39,7 +39,12 @@
                     </div>
                 {% endfor %}             
             {% endif %}
-            <nav>
+            <div class="toggle-menu">
+                <div class="line line1"></div>
+                <div class="line line2"></div>
+                <div class="line line3"></div>
+            </div>
+            <nav class="nav-bar">
                 <ul id="nav-menu">
                     <li>
                         <a href="{{ path('app_home') }}">Accueil</a>
@@ -62,6 +67,10 @@
                         <i class="fa-solid fa-paw"></i>
                     </li>
                     <li>
+                        <a href="{{ path('app_refuge') }}">Adoptez</a>
+                        <i class="fa-solid fa-paw"></i>
+                    </li>
+                    <li>
                         <a href="#">A propos</a>
                         <i class="fa-solid fa-paw"></i>
                     </li>
@@ -69,24 +78,26 @@
                         <li>
                             <a href="{{ path('app_admin') }}">Administration</a>
                         </li>
-                    {% endif %}                      
-                    {% if app.user and is_granted("ROLE_MODERATEUR_HISTOIRES")%}
+                    {% endif %} 
+                    {% if app.user.roles[0] != ('ROLE_ADMIN') %}                     
+                        {% if app.user and is_granted("ROLE_MODERATEUR_HISTOIRES")%}
+                            <li>
+                                <a href="{{ path('app_moderateur') }}">Modération</a>
+                            </li>
+                        {% elseif app.user and is_granted("ROLE_MODERATEUR_FORUM") %}
                         <li>
                             <a href="{{ path('app_moderateur') }}">Modération</a>
                         </li>
-                    {% elseif app.user and is_granted("ROLE_MODERATEUR_FORUM") %}
-                    <li>
-                        <a href="{{ path('app_moderateur') }}">Modération</a>
-                    </li>
-                    {% elseif app.user and is_granted("ROLE_MODERATEUR_MEMORIAUX") %}
-                    <li>
-                        <a href="{{ path('app_moderateur') }}">Modération</a>
-                    </li>
-                    {% elseif app.user and  is_granted("ROLE_MODERATEUR_COMMEMORATION")%}
-                    <li>
-                        <a href="{{ path('app_moderateur') }}">Modération</a>
-                    </li>
-                    {% endif %}                      
+                        {% elseif app.user and is_granted("ROLE_MODERATEUR_MEMORIAUX") %}
+                        <li>
+                            <a href="{{ path('app_moderateur') }}">Modération</a>
+                        </li>
+                        {% elseif app.user and  is_granted("ROLE_MODERATEUR_COMMEMORATION")%}
+                        <li>
+                            <a href="{{ path('app_moderateur') }}">Modération</a>
+                        </li>
+                        {% endif %} 
+                    {% endif %}                     
                     {% if app.user %}                        
                         <li>
                             <a href="{{ path('app_messagerie') }}"><i class="fa-solid fa-envelope"></i></a>
