@@ -14,11 +14,11 @@
         <h1>{{ histoire.titre }}</h1>
     </section>
     {% if consultedInGenre == true %}
-        <p><a href="{{ path('app_belles_histoires') }}">Belles Histoires</a> &lt; <a href="{{path('app_belles_histoires_genre', {'id' : histoire.genre.id}) }}">{{ histoire.genre }}</a> &lt; {{ histoire.titre }}</p>
-        <a href="{{ path('app_report_histoire_genre', {'idGenre': histoire.genre.id, 'id': histoire.id}) }}">Signaler l'histoire</a>        
+        <p> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_belles_histoires') }}">Belles Histoires</a> &lt; <a href="{{path('app_belles_histoires_genre', {'id' : histoire.genre.id}) }}">{{ histoire.genre }}</a> &lt; {{ histoire.titre }}</p>
+        <a href="{{ path('app_report_histoire_genre', {'idGenre': histoire.genre.id, 'id': histoire.id}) }}"><i class="fa-solid fa-flag"></i></a>        
     {% else %}
-        <p><a href="{{ path('app_belles_histoires') }}">Belles Histoires</a> &lt; {{ histoire.titre }}</p>
-        <a href="{{ path('app_report_histoire', {'id': histoire.id}) }}">Signaler l'histoire</a>    
+        <p> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_belles_histoires') }}">Belles Histoires</a> &lt; {{ histoire.titre }}</p>
+        <a href="{{ path('app_report_histoire', {'id': histoire.id}) }}"><i class="fa-solid fa-flag"></i></a>    
     {% endif %}
     <article id="histoire">
         <section id="histoire-content">
@@ -125,7 +125,7 @@
                         <div class="hr-infos">
                             <p>{{ histoire.genre }}</p>
                             <p>{{ histoire.dateCreation|date('d-m-Y') }}</p>
-                            <p>{{ histoire.howManyLikes}}</p>
+                            <p>{{ histoire.howManyLikes}} <i class="fa-solid fa-paw"></i></p>
                         </div>
                         <div class="hr-texte">
                             <h3><a href="{{path('show_histoire', {'slug': histoire.slug}) }}">{{ histoire.titre }}</a></h3>
