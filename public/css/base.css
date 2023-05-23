@@ -129,6 +129,10 @@ nav{
 
                                         /*************  COMMUN FORMULAIRES & LOGIN FORM & REGISTER FORM **************/
 
+.modify-form{
+    display: none;
+}
+
 .form-page{
     display: flex;
     justify-content: center;
@@ -578,7 +582,7 @@ nav{
     border-radius: 5px;
 }
 
-/* SECTION RECHERCHE */
+/* VUE RECHERCHE */
 .recherche{
     /* border: 1px solid green; */
     /* display: none; */
@@ -624,9 +628,11 @@ nav{
 #search_sexe_0,
 #search_sexe_1{
     margin-left: 0.9rem;
-    margin-right: 1rem;
+    margin-right: 0.5rem;
     position: relative;
     cursor: pointer;
+    height: 1.5rem;
+    width: 1.5rem;
 }
 
 /* #search_sexe input::before,
@@ -1551,7 +1557,7 @@ nav{
 #messages-conversation{
     box-shadow: rgba(17, 17, 26, 0.05) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px;
     margin: 2rem auto;
-    width: 90%;
+    width: 100%;
     background-color: rgba(255, 185, 185, 0.3);
 
 }
@@ -2018,11 +2024,92 @@ nav{
     margin-left: 0.3rem;
 }
 
+
+                                                    /* PAGE LOGIN */
+
+.login-page{
+    /* Mettre illustration ou image représentant animaux + personne */
+    background: url('../img/login_back.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+#form-login{
+    background-color: rgb(255, 255, 255, 0.4);
+}
+
                                                         /********** RESPONSIVE **********/
 
 
 /* Large (min-width : 992px & max-width : 1200px) */  
 @media screen and (max-width: 1200px) {
+
+        /* HEADER */
+
+    #header-main{
+        display: flex;
+        align-items: center;
+    }
+
+    .toggle-menu{
+        width: 40px;
+        height: 31px;
+        padding: 2px 2px 2px 3px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        z-index: 99999;
+        margin-left: 1rem;
+    }
+    
+    .toggle-menu .line {
+        width: 100%;
+        height: 3px;
+        border-radius: 5px;
+        background-color: #000000;
+        transition: transform 0.2s ease-out;
+    }
+    
+    .toggle .line1 {
+        background-color: #000000;
+        transform: scale(0.9) rotateZ(-45deg) translate(-6px, 4px);
+    }
+    
+    .toggle .line2 {
+        display: none;
+    }
+    
+    .toggle .line3 {
+        background-color: #000000;
+        transform: scale(0.9) rotateZ(45deg) translate(-6px, -4px);
+    }
+    
+    .nav-bar{
+        position: absolute;
+        top: 0;
+        right: 100%;
+        width: 70vw;
+        height: 100vh;
+        justify-content: center;
+        /* align-items: flex-end; */
+        align-items: center;
+        flex-direction: column;
+        background-color: var(--nav);    
+    }
+    
+    .toggle{
+        right: 0;
+    }
+    
+    #nav-menu{
+        width: 100%;
+        flex-direction: column;
+        position: absolute;
+    }
+    
+    nav #nav-menu li i{
+        display: none;
+    }
 
     /* COMMUN */
     .container-page{
@@ -2058,6 +2145,9 @@ nav{
 
 /* Medium  (min-width : 768px & max-width : 992px) */
 @media screen and (max-width: 992px) {
+
+
+    /* PAGE GLOBALE */
 
     .container-page{
         background-color: orange;
@@ -2406,6 +2496,19 @@ nav{
 
     .administration{
         flex-direction: column;
+    }
+
+    /* PAGE CONVERSATION */
+    #messages-conv-container .mon-message{
+        margin-left: 10%;
+        width: 90%;
+        background-color: beige;
+    }
+    
+    #messages-conv-container .correspondant-message{
+        margin-right: 10%;
+        width: 90%;
+        background-color: white;
     }
 
 }
