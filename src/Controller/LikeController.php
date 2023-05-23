@@ -59,10 +59,12 @@ class LikeController extends AbstractController
             $manager->flush();
 
             // On précise les datas que l'on souhaite envoyer au json
+            
             return $this->json([
                 'message' => 'Le like de commentaire a été supprimé.',
                 'nbLike' => $comment->howManyLikes()
             ]);
+
         }
 
         $comment->addLike($user);
@@ -72,6 +74,8 @@ class LikeController extends AbstractController
             'message' => 'Le like de commentaire a été ajouté.',
             'nbLike' => $comment->howManyLikes()
         ]);
+
+        
     }
 
     #[Route('/like/memorial/{id}', name: 'app_showSoutient')]
