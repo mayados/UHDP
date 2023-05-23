@@ -11,10 +11,10 @@
 
 <div class="container-page js-refresh-page page-memorial">
     {% if consultedInCategorie == true %}
-        <p><a href="{{ path('app_memoriaux') }}">Mémoriaux</a> &lt; <a href="{{path('app_categorie', {'id' : memorial.categorieAnimal.id}) }}">{{ memorial.categorieAnimal }}</a> &lt; {{ memorial.nom }}</p>
+        <p> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_memoriaux') }}">Mémoriaux</a> &lt; <a href="{{path('app_categorie', {'id' : memorial.categorieAnimal.id}) }}">{{ memorial.categorieAnimal }}</a> &lt; {{ memorial.nom }}</p>
         <a class="report" href="{{ path('app_report_memorial_categorie', {'id': memorial.id, 'idCategorie': memorial.categorieAnimal.id}) }}"><i class="fa-solid fa-flag"></i></a>        
     {% else %}
-        <p><a href="{{ path('app_memoriaux') }}">Mémoriaux</a> &lt; <a href="{{path('app_categorie', {'id' : memorial.categorieAnimal.id}) }}">{{ memorial.nom }}</a></p>
+        <p> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_memoriaux') }}">Mémoriaux</a> &lt; <a href="{{path('app_categorie', {'id' : memorial.categorieAnimal.id}) }}">{{ memorial.nom }}</a></p>
         <a class="report" href="{{ path('app_report_memorial', {'id': memorial.id}) }}"><i class="fa-solid fa-flag"></i></a>    
     {% endif %}
 
