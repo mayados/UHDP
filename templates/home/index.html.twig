@@ -69,7 +69,15 @@
             <span>N'oubliez pas de cliquer sur le lien envoyé sur votre adresse mail pour accéder à toutes les fonctionnalités !</span>
         {% endif %}        
     </section>
-
+    {# <section  id="texte-accueil-uhdp">
+        <div class="texte">
+            <p>
+                Bienvenue sur une histoire de pattes, votre <strong>cimetière virtuel pour animaux</strong>. Vous souhaitez faire le <strong>deuil de votre animal de compagnie</strong> et lui rendre un dernier hommage ? Ou vous souhaitez aider les personnes à faire leur deuil ? Vous êtes au bon endroit. </br>
+                Une histoire de Pattes n'est pas uniquement un cimetière virtuel, c'est aussi un espace à l'aspect social où vous pourrez échanger avec les diverses personnes inscrites. Vous pouvez également écrire des histories en rapport avec les animaux. </br>
+                Envie de sortir ce qu'il y a au fond de votre coeur sans exposer votrer identité ? C'est possible avec le mur de commémoration.
+            </p>            
+        </div>
+    </section>    #}
     <section id="derniers-memoriaux">
         <h2 class="title-lines">Derniers mémoriaux</h2>
         <div id="container-memoriaux-recents">
@@ -93,7 +101,6 @@
             Prêt à <a href="{{path('add_memorial') }}">créer un mémorial</a> ?
             </p>            
         </div>
-        <img id="pissenlit" src="{{ asset('img/pissenlit.png') }}" alt="">
     </section>   
     <section id="dernieres-belles-histoires">
         <h2 class="title-lines">Dernières belles histoires</h2>
@@ -115,8 +122,7 @@
                             <div class="hr-infos">
                                 <p>{{ histoire.genre }}</p>
                                 <p>{{ histoire.dateCreation|date('d-m-Y') }}</p>
-                                <p>{{ histoire.howManyLikes}}</p>
-                            </div>
+                                <p>{{ histoire.howManyLikes}} <i class="fa-solid fa-paw"></i></p>                            </div>
                             <div class="hr-texte">
                                 <h3>{{ histoire.titre }}</h3>
                                 <p>{{ histoire.texte|slice(0, 80) }}...</p>
@@ -137,7 +143,8 @@
     </section>
     <section  id="explications-histoires">
         <div class="texte">
-            <p>Les belles histoires sont des histoires vraies : le héros est un animal, peu importe son espèce. Cela peut être une histoire connue ou non, ou l'histoire d'un animal que vous avez croisé à titre personnel.<br>
+            <p>
+            Les belles histoires sont des histoires dont le héros est un animal, peu importe son espèce. Qu'il s'agisse d'une histoire vraie, d'une fiction ou d'un hommage pour votre animal ou un animal que vous avez connu, n'hésitez pas à écrire.
             Prêt à <a href="{{path('add_memorial') }}">raconter une belle histoire</a> ?
             </p>            
         </div>
