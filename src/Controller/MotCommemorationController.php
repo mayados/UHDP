@@ -19,7 +19,7 @@ class MotCommemorationController extends AbstractController
     {
         if($this->getUser()){
             // On trouve tous les mots par ordre décroissant pour afficher le dernier écrit au-dessus
-            $mots = $mcr->findBy([],['dateCreation' => 'DESC']);
+            $mots = $mcr->findAllPaginated($request->query->getInt('page',1));
 
             // On affiche le formulaire d'ajout de mot uniquement à un utilisateur CONNECTE et VERIFIE
             if ($this->getUser() && $this->getUser()->isVerified()) {
