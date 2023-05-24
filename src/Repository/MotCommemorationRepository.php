@@ -41,6 +41,18 @@ class MotCommemorationRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllPaginated($page): PaginationInterface
+    {
+        $data = $this->createQueryBuilder('m')
+        ->addOrderBy('m.dateCreation', 'DESC')
+        ->getQuery()
+        ->getResult();
+
+        $mots = $this->paginatorInterface->paginate($data,$page,10);
+
+        return $mots;
+    }
+
     public function findPaginatedNonSignales($page): PaginationInterface
     {
 
