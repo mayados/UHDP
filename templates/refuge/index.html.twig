@@ -16,17 +16,79 @@
         <li>Your controller at <code><a href="{{ 'C:/laragon/www/UneHistoireDePattes/src/Controller/RefugeController.php'|file_link(0) }}">src/Controller/RefugeController.php</a></code></li>
         <li>Your template at <code><a href="{{ 'C:/laragon/www/UneHistoireDePattes/templates/refuge/index.html.twig'|file_link(0) }}">templates/refuge/index.html.twig</a></code></li>
     </ul>
+
+    <label>
+      Numéro  
+    </label>
+    <input id="numero" type="text">
+    <br>
+    <label>
+        Rue
+    </label>
+    <input id="rue" type="text">
+    <br>
+    <label>
+        Ville
+    </label>
+    <input id="ville" type="text">
+    <br>
+    <label>
+        Code Postal
+    </label>
+    <input id="codePostal" type="text">
+    <br>
+    <button id="recherche">Chercher coordonnées</button>
+    <br><br>
+    <label>Latitude</label>
+    <input id="latitude" type="text">
+    <br>
+    <label>Longitude</label>
+    <input id="longitude" type="text">
+    
 </div>
 <script>
         const madiv = document.querySelector('.test');
 
-        fetch("http://127.0.1:8000/api/refuges")
+        /* fetch("http://127.0.1:8000/api/refuges")
         // On crée une variable réponse par rapport aux éléments du dessus, qui va être transformée en json
         .then( (response) => response.json())
         // On donne un nom de variable pour récupérer les données
         .then( (data)=> {
             console.log(data["hydra:member"][0].nom)
-        })    
+        })   */ 
+
+        /* fetch("https://nominatim.openstreetmap.org/search?city=Moussey&country=France&postalcode=88210&street=4 chemin de l etang&limit=1&format=json")
+        .then(async (response) => {
+            const data = await response.json();
+            console.log(data)
+            const long = data[0].lon
+            const lat = data[0].lat
+            console.log("longitude :" +long)
+            console.log("latitude :" +lat)
+        }); */
+
+        var numero = document.querySelector('#numero');
+        var rue = document.querySelector('#rue');
+        var ville = document.querySelector('#ville');
+        var codePostal = document.querySelector('#codePostal');
+        var codePostal = document.querySelector('#codePostal');
+        var recherche = document.querySelector('#recherche');
+        var latitude = document.querySelector('#latitude');
+        var longitude = document.querySelector('#longitude');
+
+
+        recherche.addEventListener("click", (event) => {
+            event.preventDefault();
+            fetch("https://nominatim.openstreetmap.org/search?city="+ville.value+"&country=France&postalcode="+codePostal.value+"&street="+numero.value+" "+rue.value+"&limit=1&format=json")
+                .then(async (response) => {
+                    const data = await response.json();
+                    console.log(data)
+                    const long = data[0].lon
+                    const lat = data[0].lat
+                    latitude.value = lat;
+                    longitude.value = long;
+            }); 
+        })
 
 
 </script>
