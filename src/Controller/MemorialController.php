@@ -180,8 +180,9 @@ class MemorialController extends AbstractController
         $form = $this->createForm(GaleriePhotoType::class, $galerie);    
         $condoleance = new Condoleance();
         $condoleanceForm = $this->createForm(CondoleanceType::class,$condoleance);
-        $editCondoleanceForm = $this->createForm(CondoleanceType::class,$condoleance);
+            // $editCondoleanceForm = $this->createForm(CondoleanceType::class,$condoleance);       
         $condoleances = $cr->findCondoleances($memorial);
+        $editCondoleanceForm = $this->createForm(CondoleanceType::class,$condoleance); 
 
         if($this->getUser()){
             $condoleanceForm->handleRequest($request); 
@@ -474,7 +475,7 @@ class MemorialController extends AbstractController
             $entityManager->persist($condoleance);
             $entityManager->flush();
 
-            $this->addFlash("succes","La condoléance a bien été modifiée");
+            $this->addFlash("success","La condoléance a bien été modifiée");
 
             return $this->redirectToRoute(
                 'show_memorial',
