@@ -20,7 +20,10 @@ class Refuge
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $adresse = null;
+    private ?string $numero = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $rue = null;
 
     #[ORM\Column(length: 255)]
     private ?string $ville = null;
@@ -34,6 +37,13 @@ class Refuge
     #[ORM\Column(length: 255)]
     private ?string $site = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $latitude = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $longitude = null;
+
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -51,14 +61,26 @@ class Refuge
         return $this;
     }
 
-    public function getAdresse(): ?string
+    public function getNumero(): ?string
     {
-        return $this->adresse;
+        return $this->numero;
     }
 
-    public function setAdresse(string $adresse): self
+    public function setNumero(string $numero): self
     {
-        $this->adresse = $adresse;
+        $this->numero = $numero;
+
+        return $this;
+    }
+
+    public function getRue(): ?string
+    {
+        return $this->rue;
+    }
+
+    public function setRue(string $rue): self
+    {
+        $this->rue = $rue;
 
         return $this;
     }
@@ -110,4 +132,30 @@ class Refuge
 
         return $this;
     }
+
+    public function getLatitude(): ?string
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(string $latitude): self
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getLongitude(): ?string
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(string $longitude): self
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+
+
 }
