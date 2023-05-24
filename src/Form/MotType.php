@@ -19,7 +19,7 @@ class MotType extends AbstractType
                 'label' => false,
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'Le mot ne peut pas être nul']),
-                    new Assert\Length(['min' => 4, 'max' => 500, 'minMessage' => 'Le mot doit faire au moins {{ limit }} caractères', 'maxMessage' => 'Le mot ne peut pas faire plus de {{ limit }} caractères'])
+                    new Assert\Length(['min' => 10, 'minMessage' => 'Le mot doit faire au moins {{ limit }} caractères'])
                 ]
             ])
             ->add('submit', SubmitType::class, [
