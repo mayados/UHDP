@@ -8,8 +8,8 @@
     <section id="banniere-topic">
         <h1>{{ topic.titre }}</h1>        
     </section>
+    <p class="fil-ariane"> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_forum') }}"> Forum </a> &lt; <a href="{{path('show_histoire', {'slug' : topic.slug}) }}">{{ topic.titre }}</a></p>
     <section id="topic">
-        <p> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_forum') }}"> Forum </a> &lt; <a href="{{path('show_histoire', {'slug' : topic.slug}) }}">{{ topic.titre }}</a></p>
         {% if app.user == topic.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
             <a href="{{path('remove_topic', {'slug': topic.slug}) }}">Supprimer le topic</a>
             <a href="{{ path('edit_topic', {'slug': topic.slug}) }}">Edit</a>

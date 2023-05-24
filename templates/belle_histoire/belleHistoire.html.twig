@@ -14,11 +14,11 @@
         <h1>{{ histoire.titre }}</h1>
     </section>
     {% if consultedInGenre == true %}
-        <p> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_belles_histoires') }}">Belles Histoires</a> &lt; <a href="{{path('app_belles_histoires_genre', {'id' : histoire.genre.id}) }}">{{ histoire.genre }}</a> &lt; {{ histoire.titre }}</p>
-        <a href="{{ path('app_report_histoire_genre', {'idGenre': histoire.genre.id, 'id': histoire.id}) }}"><i class="fa-solid fa-flag"></i></a>        
+        <p class="fil-ariane"> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_belles_histoires') }}">Belles Histoires</a> &lt; <a href="{{path('app_belles_histoires_genre', {'id' : histoire.genre.id}) }}">{{ histoire.genre }}</a> &lt; {{ histoire.titre }}</p>
+        <a class="report" href="{{ path('app_report_histoire_genre', {'idGenre': histoire.genre.id, 'id': histoire.id}) }}"><i class="fa-solid fa-flag"></i></a>        
     {% else %}
-        <p> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_belles_histoires') }}">Belles Histoires</a> &lt; {{ histoire.titre }}</p>
-        <a href="{{ path('app_report_histoire', {'id': histoire.id}) }}"><i class="fa-solid fa-flag"></i></a>    
+        <p class="fil-ariane"> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_belles_histoires') }}">Belles Histoires</a> &lt; {{ histoire.titre }}</p>
+        <a class="report" href="{{ path('app_report_histoire', {'id': histoire.id}) }}"><i class="fa-solid fa-flag"></i></a>    
     {% endif %}
     <article id="histoire">
         <section id="histoire-content">
@@ -59,31 +59,29 @@
 
 
         <section id="histoire-ajout-commentaires">
-            <a id="ajout-commentaire" href="#">
-                {% if app.user %}
-                <div>
-                    <figure>
-                        {% if not app.user.photo %}
-                            <img src="{{ asset('img/default_user.png') }}" alt="">
-                        {% else %}
-                            <img src="{{ asset('uploads/imgUserProfil/'~ app.user.photo) }}" alt="">   
-                        {% endif %} 
-                    </figure>
-                    <p> {{ app.user.pseudo }} que pensez-vous de cette histoire ?</p>                    
-                </div>
-                {% endif %}
-            </a>
-            <div id="ajout-commentaire-form"> 
-                {% if app.user and app.user.isVerified %}
-                    <div id="form-comment-infos">
+            {% if app.user and app.user.isVerified %}            
+                <a id="ajout-commentaire" href="#">
+                    <div>
                         <figure>
-                        {% if not app.user.photo %}
-                            <img src="{{ asset('img/default_user.png') }}" alt="">
-                        {% else %}
-                            <img src="{{ asset('uploads/imgUserProfil/'~ app.user.photo) }}" alt="">   
-                        {% endif %} 
+                            {% if not app.user.photo %}
+                                <img src="{{ asset('img/default_user.png') }}" alt="">
+                            {% else %}
+                                <img src="{{ asset('uploads/imgUserProfil/'~ app.user.photo) }}" alt="">   
+                            {% endif %} 
                         </figure>
-                        <p> {{ app.user.pseudo }} que pensez-vous de cette histoire ?</p>   
+                        <p> {{ app.user.pseudo }} que pensez-vous de cette histoire ?</p>                    
+                    </div>
+                </a>
+                <div id="ajout-commentaire-form"> 
+                    <div id="form-comment-infos">
+                            <figure>
+                            {% if not app.user.photo %}
+                                <img src="{{ asset('img/default_user.png') }}" alt="">
+                            {% else %}
+                                <img src="{{ asset('uploads/imgUserProfil/'~ app.user.photo) }}" alt="">   
+                            {% endif %} 
+                            </figure>
+                            <p> {{ app.user.pseudo }} que pensez-vous de cette histoire ?</p>   
                     </div>
                     <div class="formulaire">
                         <a class="close" href="#"><i class="fa-solid fa-xmark"></i></a>
@@ -99,12 +97,12 @@
                         </div>
                         {{ form_end(formAddComment) }}                        
                     </div>
-                {% elseif app.user and not app.user.isVerified %}
-                    <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir commenter</p>
-                {% else %}
-                    <p>Veuillez vous inscrire ou vous connecter pour pouvoir commenter</p>
-                {% endif %}            
-            </div>                 
+                </div>                       
+            {% elseif app.user and not app.user.isVerified %}
+                <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir commenter</p>
+            {% elseif not app.user %}
+                <p>Veuillez vous <a href="{{ path('app_register') }}">inscrire</a> ou vous <a href="{{ path('app_login') }}">connecter</a> pour pouvoir créer une belle histoire</p>
+            {% endif %}            
         </section>
         <section id="comment-histoire" class="js-auto-refresh-content">
             <h2>Commentaires</h2>           
