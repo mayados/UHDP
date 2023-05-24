@@ -6,10 +6,14 @@
 
 <div class="container-page">
 
-    <h1>Mur de commémoration</h1>
+    <section id="banniere-mur-commemoration">
+        <h1>Mur de commémoration</h1>
+    </section>
 
-    <p>Le mur de commémoration est un espace permettant d'écrire un mot pour les animaux 
-        ayant rejoint les étoiles. pour y accéder, vous devez avoir un compte utilisateur et être vérifié</p>
-
+    <div class="message-non-connecte">
+        <p>Le mur de commémoration est un espace permettant d'écrire un mot de façon anonyme pour les autres membres, pour les animaux 
+            ayant rejoint les étoiles. pour y accéder, Veuillez vous <a href="{{ path('app_register') }}">inscrire</a> ou vous <a href="{{ path('app_login') }}">connecter</a>.
+        </p>        
+    </div>
 </div>
 {% endblock %}

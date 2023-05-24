@@ -6,9 +6,14 @@
 
 <div class="container-page">
 
-    <h1>Forum</h1>
+    <section id="banniere-forum">
+        <h1>Forum</h1>
+    </section>
 
-    <p>Le forum est un espace d'échange. pour y accéder, vous devez avoir un compte utilisateur et être vérifié</p>
+    <div class="message-non-connecte">
+        <p>Le forum est un espace d'échange entre membres inscrits. Pour y accéder, Veuillez vous <a href="{{ path('app_register') }}">inscrire</a> ou vous <a href="{{ path('app_login') }}">connecter</a>.
+        </p>        
+    </div>
 
 </div>
 {% endblock %}
