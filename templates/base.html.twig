@@ -79,7 +79,7 @@
                             <a href="{{ path('app_admin') }}">Administration</a>
                         </li>
                     {% endif %} 
-                    {% if app.user.roles[0] != ('ROLE_ADMIN') %}                     
+                    {% if app.user and app.user.roles[0] != ('ROLE_ADMIN') %}                     
                         {% if app.user and is_granted("ROLE_MODERATEUR_HISTOIRES")%}
                             <li>
                                 <a href="{{ path('app_moderateur') }}">Modération</a>
