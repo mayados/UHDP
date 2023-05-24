@@ -37,113 +37,6 @@ class BelleHistoireController extends AbstractController
 
     }
 
-    #[Route('/bellesHistoires/{id}', name: 'app_belles_histoires_genre')]
-    public function findHistoiresByGenre(GenreHistoire $genre,BelleHistoireRepository $bhr, GenreHistoireRepository $ghr, Request $request): Response
-    {
-
-        $genreId = $genre->getId();
-        $genres = $ghr->findAll();
-        $listeHistoires = $bhr->findPaginatedHistoiresByGenre($request->query->getInt('page',1),$genreId);
-
-        return $this->render('belle_histoire/bellesHistoiresGenre.html.twig', [
-            'listeHistoires' => $listeHistoires,
-            'genres' => $genres,
-            'genre' => $genre,
-        ]);
-
-    }
-
-    #[Route('/bellesHistoires/publier/{slug}', name: 'publish_histoire')]
-    #[Security("is_granted('ROLE_USER') and user === histoire.getAuteur()", message:"Accès non autorisé.")]
-    public function publishHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire ,Request $request,ManagerRegistry $doctrine): Response
-    {
-
-            $histoire->setEtat('STATE_WAITING');
-            $entityManager = $doctrine->getManager();
-            $entityManager->persist($histoire);
-            $entityManager->flush();      
-
-            $this->addFlash('notice', "L'histoire a été soumise à la modération. Elle sera traitée dans les plus brefs délais");
-
-            return $this->redirectToRoute('my_histoires');            
-
-    }
-
-    #[Route('/bellesHistoires/histoire/{slug}', name: 'show_histoire')]
-    #[Route('/bellesHistoires/histoire/{idGenre}/{slug}', name: 'show_histoire_genre')]
-    #[ParamConverter("genre", options: ["mapping" => ["idGenre" => "id"]])]    
-    #[ParamConverter("histoire", options: ["mapping" => ["slug" => "slug"]])]
-    public function showHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire = null, GenreHistoire $genre = null, CommentBelleHistoireRepository $cbhr, ManagerRegistry $doctrine, Request $request): Response
-    {
-        if($histoire) {
-
-            if($genre){
-                $consultedInGenre = true;
-            }elseif(!$genre){
-                $consultedInGenre = false;            
-            }
-    
-            $histoire = $bhr->find($histoire->getId());
-            $commentaires = $cbhr->findCommentaires($histoire);
-    
-            $idHistoire = $histoire->getId();
-    
-            // S'il y a un utilisateur et qu'il est vérifié, il a le droit à accéder au formulaire de commentaire, sinon non
-            if($this->getUser() && $this->getUser()->isVerified()){
-                $commentaire = new CommentBelleHistoire();
-                $form = $this->createForm(CommentHistoireType::class, $commentaire);
-                $form->handleRequest($request); 
-                if ($form->isSubmitted() && $form->isValid()) {
-                    $commentaire = $form->getData();  
-                    $dateNow = new \DateTime();
-                    $commentaire->setAuteur($this->getUser());
-                    $commentaire->setBelleHistoire($histoire);
-                    $commentaire->setDateCreation($dateNow);
-                    $histoire->addCommentaire($commentaire);  
-                    $entityManager = $doctrine->getManager();
-                    $entityManager->persist($commentaire);
-                    $entityManager->flush();                                  
-    
-                    if($request->isXmlHttpRequest()){
-                        // Si c'est le cas on renvoie du JSON
-                        return new JsonResponse([
-                            'content' => $this->renderView('_partials/_commentaires.html.twig', ['histoire' => $histoire, 'consultedInGenre' => $consultedInGenre,'commentaires' => $cbhr->findCommentaires($histoire)]),
-                        ]);
-                    }
-    
-                    if($genre){
-                        return $this->redirectToRoute(
-                            'show_histoire_genre',
-                            ['slug' => $histoire->getSlug(),
-                            'idGenre' => $genre->getId()]
-                        );
-                    }
-    
-                    return $this->redirectToRoute(
-                        'show_histoire',
-                        ['slug' => $histoire->getSlug()]
-                    );
-                }
-    
-                return $this->render('belle_histoire/belleHistoire.html.twig', [
-                    'histoire' => $histoire,
-                    'formAddComment' => $form->createView(),
-                    'autresHistoires' => $bhr->findAutresHistoires($idHistoire),
-                    'consultedInGenre' => $consultedInGenre,
-                    'commentaires' => $commentaires,
-                ]);
-            }
-    
-            return $this->render('belle_histoire/belleHistoire.html.twig', [
-                'histoire' => $histoire,
-                'autresHistoires' => $bhr->findAutresHistoires($idHistoire),
-                'consultedInGenre' => $consultedInGenre,
-                'commentaires' => $commentaires,
-            ]);
-        } else {
-            return $this->redirectToRoute("app_belles_histoires");
-        }
-    }
 
     #[Route('/bellesHistoires/add', name: 'add_histoire')]
     #[Route('/bellesHistoires/edit/{slug}', name: 'edit_histoire')]
@@ -212,6 +105,117 @@ class BelleHistoireController extends AbstractController
             'edit' => $edit,
         ]);            
     }
+
+
+    #[Route('/bellesHistoires/{id}', name: 'app_belles_histoires_genre')]
+    public function findHistoiresByGenre(GenreHistoire $genre,BelleHistoireRepository $bhr, GenreHistoireRepository $ghr, Request $request): Response
+    {
+
+        $genreId = $genre->getId();
+        $genres = $ghr->findAll();
+        $listeHistoires = $bhr->findPaginatedHistoiresByGenre($request->query->getInt('page',1),$genreId);
+
+        return $this->render('belle_histoire/bellesHistoiresGenre.html.twig', [
+            'listeHistoires' => $listeHistoires,
+            'genres' => $genres,
+            'genre' => $genre,
+        ]);
+
+    }
+
+    #[Route('/bellesHistoires/publier/{slug}', name: 'publish_histoire')]
+    #[Security("is_granted('ROLE_USER') and user === histoire.getAuteur()", message:"Accès non autorisé.")]
+    public function publishHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire ,Request $request,ManagerRegistry $doctrine): Response
+    {
+
+            $histoire->setEtat('STATE_WAITING');
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($histoire);
+            $entityManager->flush();      
+
+            $this->addFlash('notice', "L'histoire a été soumise à la modération. Elle sera traitée dans les plus brefs délais");
+
+            return $this->redirectToRoute('my_histoires');            
+
+    }
+
+
+    #[Route('/bellesHistoires/histoire/{slug}', name: 'show_histoire')]
+    #[Route('/bellesHistoires/histoire/{idGenre}/{slug}', name: 'show_histoire_genre')]
+    #[ParamConverter("genre", options: ["mapping" => ["idGenre" => "id"]])]    
+    #[ParamConverter("histoire", options: ["mapping" => ["slug" => "slug"]])]
+    public function showHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire = null, GenreHistoire $genre = null, CommentBelleHistoireRepository $cbhr, ManagerRegistry $doctrine, Request $request): Response
+    {
+        if($histoire) {
+
+            if($genre){
+                $consultedInGenre = true;
+            }elseif(!$genre){
+                $consultedInGenre = false;            
+            }
+    
+            $histoire = $bhr->find($histoire->getId());
+            $commentaires = $cbhr->findCommentaires($histoire,$request->query->getInt('page',1));
+    
+            $idHistoire = $histoire->getId();
+    
+            // S'il y a un utilisateur et qu'il est vérifié, il a le droit à accéder au formulaire de commentaire, sinon non
+            if($this->getUser() && $this->getUser()->isVerified()){
+                $commentaire = new CommentBelleHistoire();
+                $form = $this->createForm(CommentHistoireType::class, $commentaire);
+                $form->handleRequest($request); 
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $commentaire = $form->getData();  
+                    $dateNow = new \DateTime();
+                    $commentaire->setAuteur($this->getUser());
+                    $commentaire->setBelleHistoire($histoire);
+                    $commentaire->setDateCreation($dateNow);
+                    $histoire->addCommentaire($commentaire);  
+                    $entityManager = $doctrine->getManager();
+                    $entityManager->persist($commentaire);
+                    $entityManager->flush();                                  
+    
+                    if($request->isXmlHttpRequest()){
+                        // Si c'est le cas on renvoie du JSON
+                        return new JsonResponse([
+                            'content' => $this->renderView('_partials/_commentaires.html.twig', ['histoire' => $histoire, 'consultedInGenre' => $consultedInGenre,'commentaires' => $cbhr->findCommentaires($histoire,$request->query->getInt('page',1))]),
+                        ]);
+                    }
+    
+                    if($genre){
+                        return $this->redirectToRoute(
+                            'show_histoire_genre',
+                            ['slug' => $histoire->getSlug(),
+                            'idGenre' => $genre->getId()]
+                        );
+                    }
+    
+                    return $this->redirectToRoute(
+                        'show_histoire',
+                        ['slug' => $histoire->getSlug()]
+                    );
+                }
+    
+                return $this->render('belle_histoire/belleHistoire.html.twig', [
+                    'histoire' => $histoire,
+                    'formAddComment' => $form->createView(),
+                    'autresHistoires' => $bhr->findAutresHistoires($idHistoire),
+                    'consultedInGenre' => $consultedInGenre,
+                    'commentaires' => $commentaires,
+                ]);
+            }
+    
+            return $this->render('belle_histoire/belleHistoire.html.twig', [
+                'histoire' => $histoire,
+                'autresHistoires' => $bhr->findAutresHistoires($idHistoire),
+                'consultedInGenre' => $consultedInGenre,
+                'commentaires' => $commentaires,
+            ]);
+        } else {
+            return $this->redirectToRoute("app_belles_histoires");
+        }
+    }
+
 
     #[Route('/bellesHistoires/histoire/remove/{id}', name: 'remove_histoire')]
     #[Security("is_granted('ROLE_USER') and user === histoire.getAuteur()", message:"Accès non autorisé.")]
