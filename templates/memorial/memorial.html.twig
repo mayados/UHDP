@@ -143,15 +143,15 @@
     <section id="condoleances">
         <h2>Condoléances</h2>
         {% if app.user %}
-        <div id="ajout-message">
-            <p >Ajouter un message de condoléances <i class="fa-solid fa-pen"></i></p>
-        </div>
-
+            <div id="ajout-message">
+                <p >Ajouter un message de condoléances <i class="fa-solid fa-pen"></i></p>
+            </div>
             <div id="container-form-condoleances">
                 <a class="close" href="#"><i class="fa-solid fa-xmark"></i></a>
                 {% include '_partials/_refreshForm.html.twig' %}                  
             </div>
-
+        {% else %}
+            <p>Veuillez vous <a href="{{ path('app_register') }}">inscrire</a> ou vous <a href="{{ path('app_login') }}">connecter</a> pour pouvoir envoyer un message de condoléance</p>
         {% endif %}
         {% include '_partials/_condoleances.html.twig' %} 
     </section>

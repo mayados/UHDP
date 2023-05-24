@@ -19,7 +19,7 @@
         {% elseif app.user and not app.user.isVerified %}
             <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir créer une belle histoire</p>
         {% else %}
-            <p>Veuillez vous inscrire ou vous connecter pour pouvoir créer une belle histoire</p>
+            <p>Veuillez vous <a href="{{ path('app_register') }}">inscrire</a> ou vous <a href="{{ path('app_login') }}">connecter</a> pour pouvoir créer une belle histoire</p>
         {% endif %}        
     </section>
 
