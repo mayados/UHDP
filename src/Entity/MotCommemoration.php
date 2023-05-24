@@ -24,8 +24,7 @@ class MotCommemoration
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank()]
     #[Assert\Length(
-        min: 4,
-        max: 500,
+        min: 10,
     )]
     private ?string $mot = null;
 
