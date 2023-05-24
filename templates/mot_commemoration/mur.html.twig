@@ -8,14 +8,22 @@
     <section id="banniere-mur-commemoration">
         <h1>Mur de commémoration</h1>        
     </section>
+    <section id="commemoration-presentation">
+        <div class="texte">
+            <p>
+                Le mur de commémoration est un espace qui vous permet d'écrire ce que vous avez sur le coeur à propos des animaux qui nous ont quitté. Les autres membres ne pourront pas voir qui a écrit le mot.
+            </p>            
+        </div>
+    </section>
     <section id="mur-content">
+        
         <div id="ajout-mot">
-            <a id="ajout-mot-link" href="#">
-                Ajouter un mot de commémoration
-            </a>
-            <div id="ajout-mot-form">
-                <a class="close" href="#"><i class="fa-solid fa-xmark"></i></a>
-                {% if app.user and app.user.isVerified %}        
+            {% if app.user and app.user.isVerified %}                
+                <a id="ajout-mot-link" href="#">
+                    Ajouter un mot de commémoration
+                </a>
+                <div id="ajout-mot-form">
+                    <a class="close" href="#"><i class="fa-solid fa-xmark"></i></a>
                     {{ form_start(formAddMot) }}
                         <div class="custom-errors">
                             {{ form_errors(formAddMot.mot) }}
@@ -27,11 +35,12 @@
                             {{ form_row(formAddMot.submit) }}
                         </div>
                     {{ form_end(formAddMot) }}                   
-                {% elseif app.user and not app.user.isVerified %}
-                    <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir ajouter un mot</p>
-                {% endif %}                
-            </div>
+                </div>
+            {% elseif app.user and not app.user.isVerified %}
+                <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir ajouter un mot</p>
+            {% endif %}                   
         </div>    
+      
         <div id="mur-commemoration">
             {% for mot in mots %}
                 <div class="mot">
@@ -47,7 +56,9 @@
             {% endfor %}        
             </div>
     </section>
-
+    <div class="pagination">
+        {{ knp_pagination_render(mots) }}
+    </div>
 
 
 </div>
