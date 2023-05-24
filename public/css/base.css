@@ -11,10 +11,15 @@
     --nav: #FEFEFE;
     --navLink: #4B4B4B;
     --blanc: white;
-    --couleurPrincipale: #71E2E2;
+    --couleurPrincipale: #9deded;
+    /* --couleurPrincipale: #71E2E2; */
     --h1: 1.7rem;
     --h2: 1.4rem;
     --figcaption: 1.2rem;
+}
+
+strong{
+    font-weight: inherit;
 }
 
 li{
@@ -68,6 +73,35 @@ h1{
 .pagination span a{
     background-color: var(--couleurPrincipale);    
 }
+
+.message-verification{
+    padding: 5px;
+    background-color: red;
+    text-align: center;
+    color: white;
+}
+
+.underlined_link{
+    text-decoration: wavy underline;
+    text-decoration-thickness: 2px;
+}
+
+.message-non-connecte{
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh;
+    font-size: 1.4rem;
+    text-align: justify;
+    padding: 0 1rem;
+}
+
+.fil-ariane{
+    margin-left: 1rem;
+}
+
 
                                     /*************  HEADER ET MENU DE NAVIGATION  ************/
 #header-main{
@@ -125,6 +159,27 @@ nav{
 
 
 
+                                    /******  COMMUN MOTS DE PRESENTATION PAGE ET SITE *************/
+
+#texte-accueil-uhdp,
+#forum-presentation,
+#commemoration-presentation{
+    min-height: 20vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    position: relative;    
+}
+
+#texte-accueil-uhdp .texte,
+#forum-presentation .texte,
+#commemoration-presentation .texte{
+    font-size: 1.4rem;
+    text-align: justify;
+    width: 90%;
+    padding: 10px 0;
+}
 
 
                                         /*************  COMMUN FORMULAIRES & LOGIN FORM & REGISTER FORM **************/
@@ -576,10 +631,14 @@ nav{
     padding: 20px 0;
 }
 
-.interraction a{
+.interraction .link-recherche{
     background-color: var(--couleurPrincipale);
     padding: 10px;
     border-radius: 5px;
+}
+
+.interraction p{
+    margin-bottom: 1rem;
 }
 
 /* VUE RECHERCHE */
@@ -1294,6 +1353,16 @@ nav{
     overflow-wrap: anywhere;
 }
 
+#comment-histoire #sans-commentaire{
+    margin-top: 2rem;
+}
+
+
+#autres-histoires h2{
+    margin-top: 3rem;
+    margin-left: 2%;
+}
+
                             /**** PAGE FORMULAIRE BELLE HISTOIRE ***/
 
 
@@ -1781,7 +1850,7 @@ nav{
     margin: 0 auto;   
     box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;     
     background-color: rgb(250, 250, 250);    
-    padding: 1rem;        
+    padding: 1rem;    
 }
 
 #ajout-mot{
