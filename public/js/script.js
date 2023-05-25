@@ -168,35 +168,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    const modifyButtons = document.querySelectorAll('.modify-button');
-    modifyButtons.forEach(function(button) {
-        button.addEventListener('click', function() {           
-            // console.log(this.id)
-            console.log("je suis cliqué")
-            const idButton = this.id;
-            CKEDITOR.replace( 'texte_edit'+idButton );
-            CKEDITOR.add 
-            const formulaire = document.querySelector("#form"+idButton);
-            const condoleanceTexte = document.querySelector("#condoleance"+idButton)
-            const formulaireClass = formulaire.className;
-            formulaire.classList.remove('modify-form');
-            formulaire.classList.add('modify-form-visible');
-            condoleanceTexte.style.display='none';
-            // console.log(formulaire)
-
-            const idClose = document.querySelector("#close"+idButton);
-
-            console.log(idClose)
+    function addEventListenerToModifyBtn(){
+        const modifyButtons = document.querySelectorAll('.modify-button');
+        modifyButtons.forEach(function(button) {
+            button.addEventListener('click', function() {           
+                // console.log(this.id)
+                console.log("je suis cliqué")
+                const idButton = this.id;
+                CKEDITOR.replace( 'texte_edit'+idButton );
+                CKEDITOR.add 
+                const formulaire = document.querySelector("#form"+idButton);
+                const condoleanceTexte = document.querySelector("#condoleance"+idButton)
+                const formulaireClass = formulaire.className;
+                formulaire.classList.remove('modify-form');
+                formulaire.classList.add('modify-form-visible');
+                condoleanceTexte.style.display='none';
+                // console.log(formulaire)
     
-            idClose.addEventListener('click', e =>{
-                e.preventDefault();
-                console.log(this.href)
-                formulaire.classList.add('modify-form');
-                formulaire.classList.remove('modify-form-visible')
-                condoleanceTexte.style.display='block';
-            })  
-        })
-    })
+                const idClose = document.querySelector("#close"+idButton);
+    
+                console.log(idClose)
+        
+                idClose.addEventListener('click', e =>{
+                    e.preventDefault();
+                    console.log(this.href)
+                    formulaire.classList.add('modify-form');
+                    formulaire.classList.remove('modify-form-visible')
+                    condoleanceTexte.style.display='block';
+                })  
+            })
+        })}
+    addEventListenerToModifyBtn();
+   
 
     // const modifyButtons = document.querySelectorAll('.modify-button');
     // modifyButtons.forEach(function(button) {
