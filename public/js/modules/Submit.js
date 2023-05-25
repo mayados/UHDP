@@ -77,7 +77,12 @@ export default class Submit {
               // comment.classList.add("commentaire");
               // comment.innerHTML = data.content;
               // document.querySelector('#comment-histoire').appendChild(comment);
+
+              // Probleme avec lecture du dom car innerhtml et non appendChild ?
               this.content.innerHTML = data.content
+
+              // const contenu = this.content
+              // contenu.innerHTML = data.content
 
               // S'il y a des erreurs
               if(data.error != undefined){
