@@ -188,6 +188,11 @@ nav{
     display: none;
 }
 
+.modify-form-visible{
+    display: block;
+    position: relative;
+}
+
 .form-page{
     display: flex;
     justify-content: center;
