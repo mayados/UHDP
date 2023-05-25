@@ -172,7 +172,10 @@ document.addEventListener('DOMContentLoaded', () => {
     modifyButtons.forEach(function(button) {
         button.addEventListener('click', function() {           
             // console.log(this.id)
+            console.log("je suis cliqué")
             const idButton = this.id;
+            CKEDITOR.replace( 'texte_edit'+idButton );
+            CKEDITOR.add 
             const formulaire = document.querySelector("#form"+idButton);
             const condoleanceTexte = document.querySelector("#condoleance"+idButton)
             const formulaireClass = formulaire.className;
@@ -194,6 +197,43 @@ document.addEventListener('DOMContentLoaded', () => {
             })  
         })
     })
+
+    // const modifyButtons = document.querySelectorAll('.modify-button');
+    // modifyButtons.forEach(function(button) {
+    //     button.addEventListener('click', function() {           
+    //         // console.log(this.id)
+    //         event.preventDefault();            
+    //         const idButton = this.id;
+
+    //         // console.log(this.getAttribute("formaction"))
+    //         // const actionUrl = this.getAttribute("formaction")
+    //         const url = new URL(this.formAction|| window.location.href);
+    //         // console.log(url)
+    //         fetch(url.pathname, {
+    //             headers: {
+    //             'X-Requested-With': 'XMLHttpRequest'
+    //             },
+    //             // method: 'GET'
+    //         })
+    //         .then(response => response.json())
+    //         .then(response => {
+
+    //             const form = response.formEditCondoleance
+    //             CKEDITOR.replace( 'form_texte' );
+    //             CKEDITOR.add 
+    //             // console.log(CKEDITOR.instances)
+    //             const containerForm = document.querySelector("#form"+idButton);  
+
+    //             containerForm.innerHTML = form
+    //             // containerForm.appendChild(form);
+    //             console.log(form)
+    //             containerForm.classList.remove('modify-form');
+    //             containerForm.classList.add('modify-form-visible');
+    //             // console.log(form)
+    //         })
+
+    //     })
+    // })
 
 
 })
