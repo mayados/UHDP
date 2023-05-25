@@ -167,51 +167,33 @@ document.addEventListener('DOMContentLoaded', () => {
         })        
     }
 
+
     const modifyButtons = document.querySelectorAll('.modify-button');
     modifyButtons.forEach(function(button) {
-        button.addEventListener('click', function() {
-            // var text = button.nextSibling;
-            var parentButton = button.parentNode
-            console.log(parentButton.nextSibling)
-            // const modifyForm = document.querySelectorAll('.modify-form');
-            // modifyForm.forEach(function(form){
-            //     modifyForm.style.display='block';
-            // })
-            // const close = document.querySelector('.close');
-            // const modifyPart = document.querySelector('#modify-part');
-            //      console.log(modifyPart.nextSibling)
-       
-            // console.log(modifyPart)
+        button.addEventListener('click', function() {           
+            // console.log(this.id)
+            const idButton = this.id;
+            const formulaire = document.querySelector("#form"+idButton);
+            const condoleanceTexte = document.querySelector("#condoleance"+idButton)
+            const formulaireClass = formulaire.className;
+            formulaire.classList.remove('modify-form');
+            formulaire.classList.add('modify-form-visible');
+            condoleanceTexte.style.display='none';
+            // console.log(formulaire)
+
+            const idClose = document.querySelector("#close"+idButton);
+
+            console.log(idClose)
     
-           
-                
-                // modifyPart.style.display='none'
-    
-            // close.addEventListener('click', e =>{
-            //     e.preventDefault();
-                // modifyForm.style.display='none';
-                // modifyPart.style.display='block'
-            // })  
+            idClose.addEventListener('click', e =>{
+                e.preventDefault();
+                console.log(this.href)
+                formulaire.classList.add('modify-form');
+                formulaire.classList.remove('modify-form-visible')
+                condoleanceTexte.style.display='block';
+            })  
         })
     })
-    // if(modifyButtons){
-    //     const modifyForm = document.querySelector('.modify-form');
-    //     const close = document.querySelector('.close');
-    //     const modifyPart = document.querySelector('.modify-part');
-    //     console.log(modifyPart)
-
-    //     modifyButton.addEventListener('click', e =>{
-    //         e.preventDefault();
-    //         modifyForm.style.display='block';
-    //         modifyPart.style.display='none'
-    //     })
-
-    //     close.addEventListener('click', e =>{
-    //         e.preventDefault();
-    //         modifyForm.style.display='none';
-    //         modifyPart.style.display='block'
-    //     })        
-    // }
 
 
 })
