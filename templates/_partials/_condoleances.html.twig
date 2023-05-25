@@ -13,33 +13,35 @@
                                                 <p>{{ condoleance.auteur }}</p>   
                                                 <p>{{ condoleance.dateCreation| date('d-m-Y') }}</p>                                                 
                                         </div>
-                                        <div class="condoleance-texte">
+                                        <div id="condoleance{{ condoleance.id }}" class="condoleance-texte">
                                                 <p>{{ condoleance.texte| raw }}</p>                                
-                                        </div>                                                                   
+                                        </div>   
+                                        <div id="form{{ condoleance.id }}" class="modify-form">
+                                                <a id="close{{ condoleance.id }}" class="close" href="#"><i class="fa-solid fa-xmark"></i></a>                                
+                                                <form method="POST" action="{{path('edit_condoleance',{'id':condoleance.id, 'idMemorial':memorial.id})}}">
+                                                        <div class="form-element">
+                                                                {# <label>Texte</label> #}
+                                                                <textarea name="texte" class="form-control">{{ condoleance.texte| striptags| raw}}</textarea>  
+                                                                <button type="submit" name="submit" value="submit" class="green">Modifier</button>         
+                                                        </div>
+                                                </form>                                
+                                        </div>                                                                
                                 </div>
 
                                 <div class="condoleance-action">
                                         {% if app.user == condoleance.auteur %}
                                                 {% if consultedInCategorie == true %}
                                                         <a href="{{path('remove_condoleance_categorie', {'idMemorial': memorial.id, 'id': condoleance.id, 'idCategorie': memorial.categorieAnimal.id}) }}"><i class="fa-solid fa-trash"></i></a>
-                                                        <button class="modify-button">Modifier</button>   
+                                                        <button id="{{ condoleance.id }}" class="modify-button">Modifier</button>   
                                                 {% else %}
                                                         <a href="{{path('remove_condoleance', {'idMemorial': memorial.id, 'id': condoleance.id}) }}"><i class="fa-solid fa-trash"></i></a>
-                                                        <button class="modify-button">Modifier</button>   
+                                                        <button id="{{ condoleance.id }}" class="modify-button">Modifier</button>   
                                                 {% endif %}
                                         {% endif %}                                
                                 </div>
                         </div>
+
                         {# <div class="modify-form"> #}
-                        <div>
-                                <form method="POST" action="{{path('edit_condoleance',{'id':condoleance.id, 'idMemorial':memorial.id})}}">
-                                        <div class="form-element">
-                                                <label for="inputPassword">Texte</label>
-                                                <textarea name="texte" class="form-control">{{ condoleance.texte| raw }}</textarea>  
-                                                <button type="submit" name="submit" value="submit" class="green">Modifier</button>         
-                                        </div>
-                                </form>                                
-                        </div>
 
                 {% endfor %}   
         {% endif %}
