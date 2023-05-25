@@ -463,7 +463,7 @@ class MemorialController extends AbstractController
     #[Security("is_granted('ROLE_USER') and user === condoleance.getAuteur()", message:"Accès non autorisé.")]
     public function editCondoleance(Condoleance $condoleance, AnimalMemorial $memorial,ManagerRegistry $doctrine,Request $request){
 
-        if (isset($_POST['submit'])) {
+        if (isset($_POST['modify'])) {
             $entityManager = $doctrine->getManager();
             $texte = $request->request->get('texte');
             $condoleance->setMemorial($memorial);
