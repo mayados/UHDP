@@ -7,7 +7,7 @@
         {% if condoleances| length > 0 %}
                 {% for condoleance in condoleances %}
                         {# Laisser cette partie en visible de base puis la cachée lorsque le bouton est cliqué #}
-                        <div class="condoleance-memorial" id="modify-part">
+                        <div class="condoleance-memorial modify-part">
                                 <div class="condoleance-body">
                                         <div class="condoleance-infos">
                                                 <p>{{ condoleance.auteur }}</p>   
@@ -21,7 +21,7 @@
                                                 <form method="POST" action="{{path('edit_condoleance',{'id':condoleance.id, 'idMemorial':memorial.id})}}">
                                                         <div class="form-element">
                                                                 <textarea id="texte_edit{{ condoleance.id }}" name="texte" class="form-control">{{ condoleance.texte}}</textarea>  
-                                                                <button type="submit" name="submit" value="submit" class="green">Modifier</button>         
+                                                                <button type="submit" name="modify" value="submit" class="green">Modifier</button>         
                                                         </div>
                                                 </form>                                
                                         </div>                                                                
@@ -37,7 +37,7 @@
                                                         {# <button id="{{ condoleance.id }}" class="modify-button">Modifier</button>    #}
                                                 {% endif %}
                                         {% endif %}       
-                                        <button id="{{ condoleance.id }}" class="modify-button" type="submit" formaction="{{ path('display_modify_form_condoleance', {'id': condoleance.id, 'idMemorial': memorial.id}) }}">Modifier</button>    
+                                        <button id="{{ condoleance.id }}" class="modify-button" type="submit" formaction="{{ path('display_modify_form_condoleance', {'id': condoleance.id, 'idMemorial': memorial.id}) }}" onclick="addEventListenerToModifyBtn()"> Modifier </button>
                                 </div>
                         </div>
                 {% endfor %}   
