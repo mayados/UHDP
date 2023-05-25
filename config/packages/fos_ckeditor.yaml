@@ -28,5 +28,6 @@ fos_ck_editor:
                         "TextColor",
                         "/",
                         "FontSize",
+                        "Smiley",
                       ]
                   }
