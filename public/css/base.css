@@ -191,6 +191,7 @@ nav{
 .modify-form-visible{
     display: block;
     position: relative;
+    border: 1px solid red;
 }
 
 .form-page{
