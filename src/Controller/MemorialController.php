@@ -234,31 +234,6 @@ class MemorialController extends AbstractController
                     ]);
                 }
 
-            // $editCondoleanceForm->handleRequest($request);
-            // if ($editCondoleanceForm->isSubmitted() && $editCondoleanceForm->isValid()) {
-            //     $condoleance = $editCondoleanceForm->getData();
-            //     $condoleance->setMemorial($memorial);
-            //     $texte = $condoleance->getTexte()->getData();
-            //     $condoleance->setTexte($texte);
-            //     $condoleance->setAuteur($this->getUser());
-            //     $entityManager = $doctrine->getManager();
-            //     $entityManager->persist($condoleance);
-            //     $entityManager->flush();   
-            // }
-
-            // if(!$categorie){
-            //     return $this->redirectToRoute(
-            //         'show_memorial',
-            //         ['id' => $memorial->getId()]
-            //     );                    
-            // }
-
-            // return $this->redirectToRoute(
-            //     'show_memorial_categorie',
-            //     ['id' => $memorial->getId(),
-            //     'idCategorie' => $categorie->getId()]
-            // );  
-
             }
 
             // On vérifie que le user courant est le créateur du mémorial, sinon on ne peut pas accéder au formulaire d'ajout de photo
@@ -461,9 +436,19 @@ class MemorialController extends AbstractController
     #[ParamConverter("condoleance", options: ["mapping" => ["id" => "id"]])]
     #[ParamConverter("memorial", options: ["mapping" => ["idMemorial" => "id"]])]
     #[Security("is_granted('ROLE_USER') and user === condoleance.getAuteur()", message:"Accès non autorisé.")]
-    public function editCondoleance(Condoleance $condoleance, AnimalMemorial $memorial,ManagerRegistry $doctrine,Request $request){
+    public function editCondoleance(Condoleance $condoleance, AnimalMemorial $memorial, CondoleanceRepository $cr , CategorieAnimal $categorie = null , ManagerRegistry $doctrine,Request $request){
 
-        if (isset($_POST['modify'])) {
+        if($categorie){
+            $consultedInCategorie = true;
+        }elseif(!$categorie){
+            $consultedInCategorie = false;            
+        }
+
+        // On récupère le token généré dans le formulaire
+        $submittedToken = $request->request->get('token');
+        $texteTest = $request->request->get('texte');
+
+        if (isset($_POST['modify']) && $this->isCsrfTokenValid('modify-item', $submittedToken)) {
             $entityManager = $doctrine->getManager();
             $texte = $request->request->get('texte');
             $condoleance->setMemorial($memorial);
@@ -475,6 +460,14 @@ class MemorialController extends AbstractController
             $entityManager->persist($condoleance);
             $entityManager->flush();
 
+            if($request->isXmlHttpRequest()){
+                // Si c'est le cas on renvoie du JSON
+                return new JsonResponse([
+                    // 'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, 'condoleances' => $cr->findCondoleances($memorial),'consultedInCategorie'=> $consultedInCategorie]),
+                    'content' => "bravo",
+                ]);
+             }
+
             $this->addFlash("success","La condoléance a bien été modifiée");
 
             
@@ -485,94 +478,13 @@ class MemorialController extends AbstractController
         }
 
 
-
-    }
-
-    #[Route('/memorial/condoleance/display/{id}/{idMemorial}', name: 'display_modify_form_condoleance')]
-    #[ParamConverter("condoleance", options: ["mapping" => ["id" => "id"]])]
-    #[ParamConverter("memorial", options: ["mapping" => ["idMemorial" => "id"]])]
-    #[Security("is_granted('ROLE_USER') and user === condoleance.getAuteur()", message:"Accès non autorisé.")]
-    public function displayModifyFormCondoleance(Condoleance $condoleance, AnimalMemorial $memorial , CondoleanceRepository $cr,ManagerRegistry $doctrine,Request $request): Response
-    {
-
-        // On crée le formulaire correspondant
-        // $condoleance = $cr->find($condoleance->getId());
-        // $formEditCondoleance = $this->createForm(CondoleanceType::class,$condoleance);
-
-        // $formEditCondoleance->handleRequest($request); 
-        // if ($formEditCondoleance->isSubmitted() && $formEditCondoleance->isValid()) {
-        //     $condoleance = $formEditCondoleance->getData();
-        //     $condoleance->setMemorial($memorial);
-        //     $condoleance->setAuteur($this->getUser());
-        //     $entityManager = $doctrine->getManager();
-        //     $entityManager->persist($condoleance);
-        //     $entityManager->flush();   
-
-        //     // if(!$categorie){
-        //     //     return $this->redirectToRoute(
-        //     //         'show_memorial',
-        //     //         ['id' => $memorial->getId()]
-        //     //     );                    
-        //     // }
-
-        //     return $this->redirectToRoute(
-        //         'show_memorial',
-        //         ['id' => $memorial->getId()]
-        //     );   
-        // }
-
-        // // dd($formEditCondoleance);
-        // // Lorsque l'on reçoit la requête en ajax, on doit renvoyer la vue du formulaire voulu
-        // // if($request->isXmlHttpRequest()){
-        //     // Si c'est le cas on renvoie du JSON
-        //     return new JsonResponse([
-        //         'formEditCondoleance' => $this->renderView('_partials/_modifyForm.html.twig', ['condoleance' => $condoleance, 'formEditCondoleance' => $formEditCondoleance->createView(),'memorial' => $memorial]),
-        //     ]);
-        // // }
-
-
-            //Autre méthode : création du form dans le controller
-
-        $condoleance = $cr->find($condoleance->getId());
-
-        $formEditCondoleance = $this->createFormBuilder($condoleance)
-        ->setMethod('POST')
-        ->add('texte', CKEditorType::class)
-        ->add('submit', SubmitType::class)
-        ->getForm();
-
-        $formEditCondoleance->handleRequest($request); 
-        if($formEditCondoleance->isSubmitted() && $formEditCondoleance->isValid()) {
-            $condoleance = $formEditCondoleance->getData();
-            $condoleance->setMemorial($memorial);
-            $condoleance->setAuteur($this->getUser());
-            $entityManager = $doctrine->getManager();
-            $entityManager->persist($condoleance);
-            $entityManager->flush();   
-
-            // if(!$categorie){
-            //     return $this->redirectToRoute(
-            //         'show_memorial',
-            //         ['id' => $memorial->getId()]
-            //     );                    
-            // }
-
-            return $this->redirectToRoute(
-                'show_memorial',
-                ['id' => $memorial->getId()]
-            );  
-
-        }
-            // Si c'est le cas on renvoie du JSON
         if($request->isXmlHttpRequest()){
             // Si c'est le cas on renvoie du JSON
             return new JsonResponse([
-                'formEditCondoleance' => $this->renderView('_partials/_modifyForm.html.twig', ['condoleance' => $condoleance, 'formEditCondoleance' => $formEditCondoleance->createView(),'memorial' => $memorial]),
+                'content' => "ca n'a pas fonctionné"
+
             ]);
         }
-
- 
-
 
 
     }
