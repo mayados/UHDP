@@ -13,6 +13,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -60,6 +61,14 @@ class ForumController extends AbstractController
                 $entityManager = $doctrine->getManager();
                 $entityManager->persist($post);
                 $entityManager->flush();
+
+                if($request->isXmlHttpRequest()){
+                    // Si c'est le cas on renvoie du JSON
+                    return new JsonResponse([
+                        'content' => $this->renderView('_partials/_posts.html.twig', ['topic' => $topic,'formAddPost' => $form->createView(), 'posts' => $pr->findPaginatedPosts($request->query->getInt('page',1),$topic)]),
+
+                    ]);
+                }
 
                 return $this->redirectToRoute(
                     'show_topic',
@@ -175,6 +184,40 @@ class ForumController extends AbstractController
                 ['slug' => $topic->getSlug()]
             );
     }    
+
+    #[Route('/topic/post/edit/{id}/{slugTopic}', name: 'edit_post')]
+    #[ParamConverter("commentaire", options: ["mapping" => ["id" => "id"]])]
+    #[ParamConverter("topic", options: ["mapping" => ["slugTopic" => "slug"]])]
+    #[Security("is_granted('ROLE_USER') and user === post.getAuteur()", message:"Accès non autorisé.")]
+    public function editPost(Post $post, Topic $topic, ManagerRegistry $doctrine,Request $request){
+
+        // On récupère le token généré dans le formulaire
+        $submittedToken = $request->request->get('token');
+        $texteTest = $request->request->get('texte');
+
+        if (isset($_POST['modify']) && $this->isCsrfTokenValid('modify-item', $submittedToken)) {
+            $entityManager = $doctrine->getManager();
+            $texte = $request->request->get('texte');
+            $post->setTopic($topic);
+            $date = $post->getDateCreation();
+            $auteur = $post->getAuteur();
+            $post->setDateCreation($date);
+            $post->setAuteur($auteur);
+            $post->setTexte($texte);
+            $entityManager->persist($post);
+            $entityManager->flush();
+
+            $this->addFlash("success","Le post a bien été modifié");
+
+            
+            return $this->redirectToRoute(
+                'show_topic',
+                ['slug' => $topic->getSlug()]
+            );  
+        }
+
+
+    }
 
     #[Route('/topic/verrouillage/{id}', name: 'verrouillage_topic')]
     #[Security("is_granted('ROLE_USER') and user === topic.getAuteur()", message:"Accès non autorisé.")]
