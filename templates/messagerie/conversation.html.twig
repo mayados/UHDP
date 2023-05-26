@@ -3,7 +3,7 @@
 {% block title %}Conversation{% endblock %}
 
 {% block body %}
-<div class="container-page">
+<div class="container-page js-refresh-page">
     <a id="conv-return" href="{{ path('app_messagerie') }}"><i class="fa-solid fa-arrow-left"></i></a>
     <div id="correspondant-infos">
         <figure>
@@ -16,27 +16,9 @@
         <h1>{{ user.pseudo }}</h1>        
     </div>
     <section id="messages-conversation">
-        <div id="messages-conv-container">
-            {% if messages %}
-                {% for message in messages %}
-                    {% if message.expediteur.id == app.user.id %}
-                        <div class="mon-message">
-                            <p>{{ message.texte|raw }}</p>
-                            <a href="{{path('remove_message', {'idConversation' : message.destinataire.id, 'id': message.id}) }}"><i class="fa-solid fa-trash"></i></a>
-                        </div>
-                    {% else %}
-                        <div class="correspondant-message">
-                            <p>{{ message.texte|raw }}</p>
-                            <a href="{{path('message_signal', {'id': message.id}) }}"><i class="fa-solid fa-flag"></i></a>                
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            {% else %}
-                    <p>Démarrez dès à présent une conversation avec {{ user.pseudo }}</p>
-            {% endif %}
-        </div>
+        {% include '_partials/_messages.html.twig' %} 
         <div id="form-conv-message-container">
-            {{ form_start(form) }}
+            {{ form_start(form, {attr: {class: 'js-submit-form'}}) }}
                 {{ form_row(form.texte) }}
                 {# On cache le champ ici car il est setté dans le controller. On ne l'enlève pas du form car on en a besoin dans la messagerie #}
                 {{ form_widget(form.destinataire, { 'attr': {'style': 'display:none'} }) }}

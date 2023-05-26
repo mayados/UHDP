@@ -1,0 +1,37 @@
+<section id="posts" class="js-auto-refresh-content">
+    {% for post in posts %}
+        <article class="post">
+            <div class="user-post-infos">
+                <figure>
+                    {% if post.auteur.photo != null %}
+                        <img src="{{ asset('uploads/imgUser/'~ post.auteur.photo) }}" alt="profil de {{ post.auteur }}">
+                    {% else %}
+                        <img src="{{ asset('img/default_user.png') }}" alt="">
+                    {% endif %}
+                </figure>    
+                <div class="infos-sup">
+                    {% if post.auteur != null %}
+                        <a href="{{ path('show_profile', {'id': post.auteur.id}) }}">{{ post.auteur }}</a>
+                    {% else %}
+                        <p>Utilisateur supprimé</p>
+                    {% endif %}
+                    <p>le {{ topic.dateCreation | date('d-m-Y') }} à {{ topic.dateCreation | date('H:i:s') }}</p>
+                </div> 
+                <button id="{{ post.id }}" class="modify-button" type="submit"> Modifier </button>      
+            </div>
+            <div id="condoleance{{ post.id }}" class="post-texte">
+                <p>{{ post.texte|raw }}</p>                
+            </div>
+            <div id="form{{ post.id }}" class="modify-form">
+                <a id="close{{ post.id }}" class="close" href="#"><i class="fa-solid fa-xmark"></i></a>                                
+                <form method="POST" action="{{path('edit_post',{'id':post.id, 'slugTopic':topic.slug})}}">
+                        <div class="form-element">
+                                <textarea id="texte_edit{{ post.id }}" name="texte" class="form-control">{{ post.texte}}</textarea>  
+                                <input type="hidden" name="token" value="{{ csrf_token('modify-item') }}"/>
+                                <button type="submit" name="modify" value="submit" class="green">Modifier</button>         
+                        </div>
+                </form>                                
+            </div>  
+        </article>
+    {% endfor %}          
+</section>

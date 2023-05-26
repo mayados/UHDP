@@ -30,7 +30,7 @@
                     <img src="{{ asset('img/angel_dog.jpg') }}" alt="photo de l'histoire">    
                 </figure>
                 <div class="comment-infos">
-                    {{ dump(commentaire.id) }}
+                    {# {{ dump(commentaire.id) }} #}
                     {% if commentaire.auteur != null %}
                         <p>{{ commentaire.auteur }}</p></p>
                     {% else %}
@@ -41,20 +41,30 @@
             </div>
             <div class="commentaire-header-right">
                 {% include "_partials/_likeComment.html.twig" %}   
-                {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+                {% if app.user == commentaire.auteur %}
                     {% if consultedInGenre == true %}
                         <a href="{{ path('remove_comment_genre', {'slug': histoire.slug, 'id': commentaire.id, 'idGenre': histoire.genre.id}) }}"><i class="fa-solid fa-trash"></i></a>
                     {% else %}
                         <a href="{{ path('remove_comment', {'slug': histoire.slug, 'id': commentaire.id}) }}"><i class="fa-solid fa-trash"></i></a>
                     {% endif %}
-
+                    <button id="{{ commentaire.id }}" class="modify-button" type="submit"> Modifier </button>
             {% endif %}         
             </div>
         </div>
 
-        <div class="commentaire-content">
+        <div id="condoleance{{ commentaire.id }}" class="commentaire-content">
             <p>{{ commentaire.texte|raw }}  
         </div>
+        <div id="form{{ commentaire.id }}" class="modify-form">
+            <a id="close{{ commentaire.id }}" class="close" href="#"><i class="fa-solid fa-xmark"></i></a>                                
+            <form method="POST" action="{{path('edit_commentaire',{'id':commentaire.id, 'slugHistoire':histoire.slug})}}">
+                    <div class="form-element">
+                            <textarea id="texte_edit{{ commentaire.id }}" name="texte" class="form-control">{{ commentaire.texte}}</textarea>  
+                            <input type="hidden" name="token" value="{{ csrf_token('modify-item') }}"/>
+                            <button type="submit" name="modify" value="submit" class="green">Modifier</button>         
+                    </div>
+            </form>                                
+        </div>    
     </article>
     {% endfor %}   
     <div class="pagination">

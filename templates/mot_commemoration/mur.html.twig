@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<div class="container-page page-mur">
+<div class="container-page js-refresh-page page-mur">
     <section id="banniere-mur-commemoration">
         <h1>Mur de commémoration</h1>        
     </section>
@@ -24,7 +24,7 @@
                 </a>
                 <div id="ajout-mot-form">
                     <a class="close" href="#"><i class="fa-solid fa-xmark"></i></a>
-                    {{ form_start(formAddMot) }}
+                    {{ form_start(formAddMot, {attr: {class: 'js-submit-form'}}) }}
                         <div class="custom-errors">
                             {{ form_errors(formAddMot.mot) }}
                         </div>
@@ -40,21 +40,7 @@
                 <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir ajouter un mot</p>
             {% endif %}                   
         </div>    
-      
-        <div id="mur-commemoration">
-            {% for mot in mots %}
-                <div class="mot">
-                    <p>{{ mot.mot|raw }}
-                    <div class="mot-infos">
-                        <p>{{ mot.dateCreation | date('d-m-Y') }} {{ mot.dateCreation | date('H:i:s') }}</p>
-                        <div class="mot-interractions">
-                            <a href="{{ path('remove_mot', {'id': mot.id}) }}"><i class="fa-solid fa-trash"></i></a>
-                            <a href=""><i class="fa-solid fa-flag"></i></a>                        
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}        
-            </div>
+        {% include '_partials/_mots.html.twig' %} 
     </section>
     <div class="pagination">
         {{ knp_pagination_render(mots) }}

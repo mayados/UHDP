@@ -1,0 +1,25 @@
+<div id="mur-commemoration" class="js-auto-refresh-content">
+    {% for mot in mots %}
+        <div class="mot">
+            <p id="condoleance{{ mot.id }}" >{{ mot.mot|raw }}
+            <div id="form{{ mot.id }}" class="modify-form">
+                <a id="close{{ mot.id }}" class="close" href="#"><i class="fa-solid fa-xmark"></i></a>                                
+                <form method="POST" action="{{path('edit_mot',{'id':mot.id})}}">
+                        <div class="form-element">
+                                <textarea id="texte_edit{{ mot.id }}" name="texte" class="form-control">{{ mot.mot}}</textarea>  
+                                <input type="hidden" name="token" value="{{ csrf_token('modify-item') }}"/>
+                                <button type="submit" name="modify" value="submit" class="green">Modifier</button>         
+                        </div>
+                </form>                                
+            </div>    
+            <div class="mot-infos">
+                <p>{{ mot.dateCreation | date('d-m-Y') }} {{ mot.dateCreation | date('H:i:s') }}</p>
+                <div class="mot-interractions">
+                    <a href="{{ path('remove_mot', {'id': mot.id}) }}"><i class="fa-solid fa-trash"></i></a>
+                    <a href=""><i class="fa-solid fa-flag"></i></a>         
+                    <button id="{{ mot.id }}" class="modify-button" type="submit"> Modifier </button>               
+                </div>
+            </div>
+        </div>
+    {% endfor %}        
+</div>

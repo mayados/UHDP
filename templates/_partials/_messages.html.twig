@@ -1,0 +1,19 @@
+<div id="messages-conv-container" class="js-auto-refresh-content">
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.expediteur.id == app.user.id %}
+                <div class="mon-message">
+                    <p>{{ message.texte|raw }}</p>
+                    <a href="{{path('remove_message', {'idConversation' : message.destinataire.id, 'id': message.id}) }}"><i class="fa-solid fa-trash"></i></a>
+                </div>
+            {% else %}
+                <div class="correspondant-message">
+                    <p>{{ message.texte|raw }}</p>
+                    <a href="{{path('message_signal', {'id': message.id}) }}"><i class="fa-solid fa-flag"></i></a>                
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+            <p>Démarrez dès à présent une conversation avec {{ user.pseudo }}</p>
+    {% endif %}
+</div>

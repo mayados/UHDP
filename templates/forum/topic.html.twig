@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<div class="container-page forum-page">
+<div class="container-page js-refresh-page forum-page">
     <section id="banniere-topic">
         <h1>{{ topic.titre }}</h1>        
     </section>
@@ -20,32 +20,7 @@
             {% endif %}
         {% endif %}
     </section>
-    <section id="posts">
-        {% for post in posts %}
-            <article class="post">
-                <div class="user-post-infos">
-                    <figure>
-                        {% if post.auteur.photo != null %}
-                            <img src="{{ asset('uploads/imgUser/'~ post.auteur.photo) }}" alt="profil de {{ post.auteur }}">
-                        {% else %}
-                            <img src="{{ asset('img/default_user.png') }}" alt="">
-                        {% endif %}
-                    </figure>    
-                    <div class="infos-sup">
-                        {% if post.auteur != null %}
-                            <a href="{{ path('show_profile', {'id': post.auteur.id}) }}">{{ post.auteur }}</a>
-                        {% else %}
-                            <p>Utilisateur supprimé</p>
-                        {% endif %}
-                        <p>le {{ topic.dateCreation | date('d-m-Y') }} à {{ topic.dateCreation | date('H:i:s') }}</p>
-                    </div>       
-                </div>
-                <div class="post-texte">
-                    <p>{{ post.texte|raw }}</p>                
-                </div>
-            </article>
-        {% endfor %}          
-    </section>
+    {% include '_partials/_posts.html.twig' %} 
     <div class="pagination">
         {{ knp_pagination_render(posts) }}
     </div>
@@ -54,7 +29,7 @@
             <h2>Ajouter un message</h2>
             {% if app.user.isVerified %}
                 <div class="formulaire">
-                    {{ form_start(formAddPost) }}    
+                    {{ form_start(formAddPost, {attr: {class: 'js-submit-form'}}) }}    
                         <div class="custom-errors">
                             {{ form_errors(formAddPost.texte) }}
                         </div>
