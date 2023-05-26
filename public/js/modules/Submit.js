@@ -1,4 +1,5 @@
 import Like from './Like.js'
+
 /**
  * @property {HTMLElement} content
  * @property {HTMLFormElement} form
@@ -15,7 +16,7 @@ export default class Submit {
     this.content = element.querySelector('.js-auto-refresh-content')
     this.form = element.querySelector('.js-submit-form')
     this.erreurs = element.querySelector('.custom-errors')
-    console.log(this.form)
+    // console.log(this.form)
 
     // this.h2 = element.querySelector('.js-refresh-like')
     // console.log(this.likes)
@@ -76,7 +77,11 @@ export default class Submit {
                     // console.log(this.id)
                     console.log("je suis cliqué")
                     const idButton = this.id;
-                    CKEDITOR.replace( 'texte_edit'+idButton );
+                    CKEDITOR.replace( 'texte_edit'+idButton, {
+                      toolbar: [
+                          { name:'styles', items:[ 'Bold' , 'Italic' , 'Underline' , 'Strike' , '-' , '-' , '-'  , '-' , '-' , '-' , '-' , 'TextColor' , '/' , 'FontSize' , 'Smiley', ]}
+                      ]
+                  } );
                     CKEDITOR.add 
                     const formulaire = document.querySelector("#form"+idButton);
                     const condoleanceTexte = document.querySelector("#condoleance"+idButton)
