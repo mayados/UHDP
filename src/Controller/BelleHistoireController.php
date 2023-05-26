@@ -269,4 +269,38 @@ class BelleHistoireController extends AbstractController
 
     }
 
+    #[Route('/histoire/condoleance/edit/{id}/{slugHistoire}', name: 'edit_commentaire')]
+    #[ParamConverter("commentaire", options: ["mapping" => ["id" => "id"]])]
+    #[ParamConverter("histoire", options: ["mapping" => ["slugHistoire" => "slug"]])]
+    #[Security("is_granted('ROLE_USER') and user === commentaire.getAuteur()", message:"Accès non autorisé.")]
+    public function editCommentaire(CommentBelleHistoire $commentaire, BelleHistoire $histoire,ManagerRegistry $doctrine,Request $request){
+
+        // On récupère le token généré dans le formulaire
+        $submittedToken = $request->request->get('token');
+        $texteTest = $request->request->get('texte');
+
+        if (isset($_POST['modify']) && $this->isCsrfTokenValid('modify-item', $submittedToken)) {
+            $entityManager = $doctrine->getManager();
+            $texte = $request->request->get('texte');
+            $commentaire->setBelleHistoire($histoire);
+            $date = $commentaire->getDateCreation();
+            $auteur = $commentaire->getAuteur();
+            $commentaire->setDateCreation($date);
+            $commentaire->setAuteur($auteur);
+            $commentaire->setTexte($texte);
+            $entityManager->persist($commentaire);
+            $entityManager->flush();
+
+            $this->addFlash("success","Le commentaire a bien été modifié");
+
+            
+            return $this->redirectToRoute(
+                'show_histoire',
+                ['slug' => $histoire->getSlug()]
+            );  
+        }
+
+
+    }
+
 }

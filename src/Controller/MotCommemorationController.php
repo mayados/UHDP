@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Repository\MotCommemorationRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -35,7 +36,16 @@ class MotCommemorationController extends AbstractController
                     $mot->setDateCreation($date);
                     $entityManager = $doctrine->getManager();
                     $entityManager->persist($mot);
-                    $entityManager->flush();                                  
+                    $entityManager->flush();     
+                    
+                    if($request->isXmlHttpRequest()){
+                        // Si c'est le cas on renvoie du JSON
+                        return new JsonResponse([
+                            'content' => $this->renderView('_partials/_mots.html.twig', ['formAddMot' => $form->createView(), 'mots' => $mcr->findAllPaginated($request->query->getInt('page',1))]),
+                            // 'formCondoleance' => $this->renderView('_partials/_refreshForm.html.twig', ['formCondoleance' => $condoleanceForm->createView()])
+                            // 'bloup'=> 'blou',
+                        ]);
+                    }
 
                     return $this->redirectToRoute(
                         'app_mot_commemoration',
@@ -67,6 +77,38 @@ class MotCommemorationController extends AbstractController
         $mot = $mcr->find($mot->getId());        
         $mcr->remove($mot, $flush = true);
         return $this->redirectToRoute('app_mot_commemoration');            
+
+    }
+
+    #[Route('/mot/commemoration/edit/mot/{id}', name: 'edit_mot')]
+    #[Security("is_granted('ROLE_USER') and user === mot.getAuteur()", message:"Accès non autorisé.")]
+    public function editMot(MotCommemoration $mot, ManagerRegistry $doctrine,Request $request){
+
+        // On récupère le token généré dans le formulaire
+        $submittedToken = $request->request->get('token');
+        $texteTest = $request->request->get('texte');
+
+        if (isset($_POST['modify']) && $this->isCsrfTokenValid('modify-item', $submittedToken)) {
+            $entityManager = $doctrine->getManager();
+            $texte = $request->request->get('texte');
+            $date = $mot->getDateCreation();
+            $auteur = $mot->getAuteur();
+            $mot->setDateCreation($date);
+            $mot->setAuteur($auteur);
+            $mot->setMot($texte);
+            $entityManager->persist($mot);
+            $entityManager->flush();
+
+
+            
+            $this->addFlash("success","Le mot a bien été modifié");
+
+            
+            return $this->redirectToRoute(
+                'app_mot_commemoration'
+            );  
+        }
+
 
     }
 

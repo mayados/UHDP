@@ -11,9 +11,10 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 
 #[IsGranted('ROLE_USER', statusCode: 404, message: 'Il faut être connecté pour accéder à la messagerie')]
@@ -125,6 +126,14 @@ class MessagerieController extends AbstractController
                 $entityManager = $doctrine->getManager();
                 $entityManager->persist($message);
                 $entityManager->flush();
+
+                if($request->isXmlHttpRequest()){
+                    // Si c'est le cas on renvoie du JSON
+                    return new JsonResponse([
+                        'content' => $this->renderView('_partials/_messages.html.twig', ['form' => $form->createView(), 'messages' => $mr->findMessagesByConversation($me,$user)]),
+
+                    ]);
+                }
 
                 return $this->redirectToRoute(
                     'app_conversation',
