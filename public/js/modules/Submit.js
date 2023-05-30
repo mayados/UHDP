@@ -1,4 +1,5 @@
 import Like from './Like.js'
+import Modify from './Modify.js'
 
 /**
  * @property {HTMLElement} content
@@ -28,15 +29,17 @@ export default class Submit {
 
     this.form.addEventListener('submit', e => {
       e.preventDefault();
-      let instanceName = ""
-      let instance = ""
-      let textareaValue = ""
-      for (var i in CKEDITOR.instances) {
-        instance = CKEDITOR.instances[i]
-        instanceName = CKEDITOR.instances[i].name
-        textareaValue = CKEDITOR.instances[i].getData();
+      console.log(CKEDITOR.instances)     
+      // let instanceName = ""
+      // let instance = ""
+      // let textareaValue = ""
+      // for (var i in CKEDITOR.instances) {
+        let instance = CKEDITOR.instances['condoleance_texte']
+        let instanceName = CKEDITOR.instances['condoleance_texte'].name
+        let textareaValue = CKEDITOR.instances['condoleance_texte'].getData();
 
-      }
+      // }
+ 
 
       instance.updateElement();
       // CKEDITOR.replace('condoleance_texte')
@@ -109,18 +112,27 @@ export default class Submit {
           if(likeElements){
               new Like(likeElements);
           }
+
+          const modifyFormsElements = [].slice.call(document.querySelectorAll('.js-modify-form'))
+          // console.log(modifyFormsElements)
+          if(modifyFormsElements){
+              new Modify(modifyFormsElements);
+          }
+
           
+          CKEDITOR.instances['condoleance_texte'].updateElement()
+
           // S'il y a des erreurs
           if (data.error != undefined) {
             // instance.setData("")
 
             this.form.innerHTML = data.error
             
-            console.log(data.error)
+            // console.log(data.error)
           } else {
 
             instance.setData("")
-            console.log(data.content)
+            // console.log(data.content)
           }
           // console.log(data.content) 
         })
