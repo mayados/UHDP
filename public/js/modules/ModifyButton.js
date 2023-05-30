@@ -41,6 +41,9 @@ export function addEventListenerToModifyBtn(){
                 formulaire.classList.add('modify-form');
                 formulaire.classList.remove('modify-form-visible')
                 condoleanceTexte.style.display='block';
-            })  
+            })
+            
+            console.log(document.querySelector('#formulaire114'))
+
         })
     })}
