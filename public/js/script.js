@@ -3,9 +3,9 @@ import Filter from './modules/Filter.js'
 import Like from './modules/Like.js'
 import Favoris from './modules/Favoris.js'
 import Submit from './modules/Submit.js'
-// import Modify from './modules/Modify.js'
+import Modify from './modules/Modify.js'
 import { addEventListenerToModifyBtn } from "./modules/ModifyButton.js";
-import { postModifyForm } from "./modules/Modify.js";
+// import { postModifyForm } from "./modules/Modify.js";
 
 
 // On passe l'élément que l'on veut rendre AJAX
@@ -39,11 +39,11 @@ document.addEventListener('DOMContentLoaded', () => {
         new Favoris(favorisElements);
     }
 
-    // const modifyFormsElements = [].slice.call(document.querySelectorAll('.js-modify-form'))
+    const modifyFormsElements = [].slice.call(document.querySelectorAll('.js-modify-form'))
     // console.log(modifyFormsElements)
-    // if(modifyFormsElements){
-    //     new Modify(modifyFormsElements);
-    // }
+    if(modifyFormsElements){
+        new Modify(modifyFormsElements);
+    }
 
     const recherche = document.querySelector('.recherche');
     if(recherche){
