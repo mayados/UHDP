@@ -436,7 +436,8 @@ class MemorialController extends AbstractController
     #[ParamConverter("condoleance", options: ["mapping" => ["id" => "id"]])]
     #[ParamConverter("memorial", options: ["mapping" => ["idMemorial" => "id"]])]
     #[Security("is_granted('ROLE_USER') and user === condoleance.getAuteur()", message:"Accès non autorisé.")]
-    public function editCondoleance(Condoleance $condoleance, AnimalMemorial $memorial, CondoleanceRepository $cr , CategorieAnimal $categorie = null , ManagerRegistry $doctrine,Request $request){
+    public function editCondoleance(Condoleance $condoleance, AnimalMemorial $memorial, CondoleanceRepository $cr , CategorieAnimal $categorie = null , ManagerRegistry $doctrine,Request $request)
+    {
 
         if($categorie){
             $consultedInCategorie = true;
@@ -446,9 +447,10 @@ class MemorialController extends AbstractController
 
         // On récupère le token généré dans le formulaire
         $submittedToken = $request->request->get('token');
-        $texteTest = $request->request->get('texte');
+        // $texteTest = $request->request->get('texte');
 
-        if (isset($_POST['modify']) && $this->isCsrfTokenValid('modify-item', $submittedToken)) {
+
+        if (isset($_POST) && $this->isCsrfTokenValid('modify-item', $submittedToken)) {
             $entityManager = $doctrine->getManager();
             $texte = $request->request->get('texte');
             $condoleance->setMemorial($memorial);
@@ -463,8 +465,8 @@ class MemorialController extends AbstractController
             if($request->isXmlHttpRequest()){
                 // Si c'est le cas on renvoie du JSON
                 return new JsonResponse([
-                    // 'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, 'condoleances' => $cr->findCondoleances($memorial),'consultedInCategorie'=> $consultedInCategorie]),
-                    'content' => "bravo",
+                    'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, 'condoleances' => $cr->findCondoleances($memorial),'consultedInCategorie'=> $consultedInCategorie]),
+                    // 'content' => "bravo",
                 ]);
              }
 
@@ -475,16 +477,18 @@ class MemorialController extends AbstractController
                 'show_memorial',
                 ['id' => $memorial->getId()]
             );  
+        }else{
+            // if($request->isXmlHttpRequest()){
+                // Si c'est le cas on renvoie du JSON
+                return new JsonResponse([
+                    'content' => "ca n'a pas fonctionné"
+
+                ]);
+            // }            
         }
 
 
-        if($request->isXmlHttpRequest()){
-            // Si c'est le cas on renvoie du JSON
-            return new JsonResponse([
-                'content' => "ca n'a pas fonctionné"
 
-            ]);
-        }
 
 
     }
