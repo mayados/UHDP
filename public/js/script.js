@@ -1,9 +1,11 @@
 
 import Filter from './modules/Filter.js'
 import Like from './modules/Like.js'
+import Delete from './modules/Delete.js'
 import Favoris from './modules/Favoris.js'
 import Submit from './modules/Submit.js'
 import Modify from './modules/Modify.js'
+import Report from './modules/Report.js'
 import { addEventListenerToModifyBtn } from "./modules/ModifyButton.js";
 // import { postModifyForm } from "./modules/Modify.js";
 
@@ -13,12 +15,14 @@ new Filter(document.querySelector('.js-filter'))
 
 new Submit(document.querySelector('.js-refresh-page'))
 
+
 // new Modify(document.querySelector('.js-modify-page'))
 // console.log(document.querySelector('.js-modify-page'))
 
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    console.log(CKEDITOR.instances)
     // Menu burger
 
     var toggleButton = document.querySelector('.toggle-menu');
@@ -28,6 +32,11 @@ document.addEventListener('DOMContentLoaded', () => {
         navBar.classList.toggle('toggle');
         toggleButton.classList.toggle('toggle');
     });
+
+    const deleteElements = [].slice.call(document.querySelectorAll('.delete'));
+    if(deleteElements){
+        new Delete(deleteElements);
+    }
 
     const likeElements = [].slice.call(document.querySelectorAll('.like-button'));
     if(likeElements){
@@ -43,6 +52,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // console.log(modifyFormsElements)
     if(modifyFormsElements){
         new Modify(modifyFormsElements);
+    }
+
+    const reportElements = [].slice.call(document.querySelectorAll('.report-flag'));
+    if(reportElements){
+        new Report(reportElements);
     }
 
     const recherche = document.querySelector('.recherche');

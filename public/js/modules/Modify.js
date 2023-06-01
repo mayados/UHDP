@@ -12,6 +12,7 @@ donc la requête ajax non plus, c'est le click direct qui est pris en compte */
 
 import Like from './Like.js'
 import Submit from './Submit.js'
+import Delete from './Delete.js'
 
 /**
  * @property {HTMLElement} content
@@ -125,6 +126,7 @@ export default class Modify {
                       })
                   })
 
+                  console.log(data)
 
                   // console.log(data.content)                    
         
@@ -141,6 +143,10 @@ export default class Modify {
                   //  CKEDITOR.instances['condoleance_texte'].updateElement()
                   // new Submit(document.querySelector('.js-refresh-page'))
 
+                  const deleteElements = [].slice.call(document.querySelectorAll('.delete'));
+                  if(deleteElements){
+                      new Delete(deleteElements);
+                  }
 
                   console.log(document.querySelector('.js-submit-form'))
                   console.log(document.querySelector('#formulaire115'))

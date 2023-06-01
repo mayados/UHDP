@@ -1,3 +1,4 @@
+import Delete from './Delete.js'
 
 export default class Like {
 
@@ -73,6 +74,12 @@ export default class Like {
                     span.innerHTML = nb + ' patoune'
                   }
 
+                }
+
+
+                const deleteElements = [].slice.call(document.querySelectorAll('.delete'));
+                if(deleteElements){
+                    new Delete(deleteElements);
                 }
 
                 console.log(response)
