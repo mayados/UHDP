@@ -12,12 +12,18 @@
 <div class="container-page js-refresh-page js-modify-page page-memorial">
     {% if consultedInCategorie == true %}
         <p> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_memoriaux') }}">Mémoriaux</a> &lt; <a href="{{path('app_categorie', {'id' : memorial.categorieAnimal.id}) }}">{{ memorial.categorieAnimal }}</a> &lt; {{ memorial.nom }}</p>
-        <a class="report" href="{{ path('app_report_memorial_categorie', {'id': memorial.id, 'idCategorie': memorial.categorieAnimal.id}) }}"><i class="fa-solid fa-flag"></i></a>        
     {% else %}
         <p> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_memoriaux') }}">Mémoriaux</a> &lt; <a href="{{path('app_categorie', {'id' : memorial.categorieAnimal.id}) }}">{{ memorial.nom }}</a></p>
-        <a class="report" href="{{ path('app_report_memorial', {'id': memorial.id}) }}"><i class="fa-solid fa-flag"></i></a>    
     {% endif %}
-
+    {% if memorial.reports |length > 0 %}
+        {% for report in app.user.reportedMemorials %}
+                {% if (report.memorial == memorial) and (app.user == report.signaleur) %}
+                        <a class="report-flag" href="{{ path('app_report_memorial', {'id': memorial.id}) }}"><i class="fa-solid fa-flag flag-report-icon reported"></i></a> 
+                {% endif %}
+        {% endfor %}
+    {% else %}
+            <a class="report-flag" href="{{ path('app_report_memorial', {'id': memorial.id}) }}"><i class="fa-solid fa-flag flag-report-icon unreported"></i></a> 
+    {% endif %}
     <h1 id="memorial-title">En mémoire de {{ memorial.nom }}</h1>     
     <section id="header-memorial">
         <figure>

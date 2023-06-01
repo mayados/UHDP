@@ -14,11 +14,18 @@
         <h1>{{ histoire.titre }}</h1>
     </section>
     {% if consultedInGenre == true %}
-        <p class="fil-ariane"> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_belles_histoires') }}">Belles Histoires</a> &lt; <a href="{{path('app_belles_histoires_genre', {'id' : histoire.genre.id}) }}">{{ histoire.genre }}</a> &lt; {{ histoire.titre }}</p>
-        <a class="report" href="{{ path('app_report_histoire_genre', {'idGenre': histoire.genre.id, 'id': histoire.id}) }}"><i class="fa-solid fa-flag"></i></a>        
+        <p class="fil-ariane"> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_belles_histoires') }}">Belles Histoires</a> &lt; <a href="{{path('app_belles_histoires_genre', {'id' : histoire.genre.id}) }}">{{ histoire.genre }}</a> &lt; {{ histoire.titre }}</p>    
     {% else %}
         <p class="fil-ariane"> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_belles_histoires') }}">Belles Histoires</a> &lt; {{ histoire.titre }}</p>
-        <a class="report" href="{{ path('app_report_histoire', {'id': histoire.id}) }}"><i class="fa-solid fa-flag"></i></a>    
+    {% endif %}
+    {% if histoire.reports |length > 0 %}
+        {% for report in app.user.reportedHistoires %}
+                {% if (report.histoire == histoire) and (app.user == report.signaleur) %}
+                        <a class="report-flag" href="{{ path('app_report_histoire', {'id': histoire.id}) }}"><i class="fa-solid fa-flag flag-report-icon reported"></i></a> 
+                {% endif %}
+        {% endfor %}
+    {% else %}
+            <a class="report-flag" href="{{ path('app_report_histoire', {'id': histoire.id}) }}"><i class="fa-solid fa-flag flag-report-icon unreported"></i></a> 
     {% endif %}
     <article id="histoire">
         <section id="histoire-content">
@@ -104,7 +111,7 @@
                 <p>Veuillez vous <a href="{{ path('app_register') }}">inscrire</a> ou vous <a href="{{ path('app_login') }}">connecter</a> pour pouvoir créer une belle histoire</p>
             {% endif %}            
         </section>
-        <section id="comment-histoire" class="js-auto-refresh-content">
+        <section id="comment-histoire" class="js-auto-refresh-content delete-report">
             <h2>Commentaires</h2>           
             {% include "_partials/_commentaires.html.twig" %}
         </section>             

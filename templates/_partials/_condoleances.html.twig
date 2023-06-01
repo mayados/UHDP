@@ -3,7 +3,7 @@
     <h3>Ajouter un message de condoléances</h3>
     {% include '_partials/_refreshForm.html.twig' %}  
 {% endif %} #}
-<div id="container-condoleances" class="js-auto-refresh-content modify-form-fragment">
+<div id="container-condoleances" class="js-auto-refresh-content modify-form-fragment delete-report">
         {% if condoleances| length > 0 %}
                 {% for condoleance in condoleances %}
                         {# Laisser cette partie en visible de base puis la cachée lorsque le bouton est cliqué #}
@@ -31,14 +31,24 @@
                                 <div class="condoleance-action">
                                         {% if app.user == condoleance.auteur %}
                                                 {% if consultedInCategorie == true %}
-                                                        <a href="{{path('remove_condoleance_categorie', {'idMemorial': memorial.id, 'id': condoleance.id, 'idCategorie': memorial.categorieAnimal.id}) }}"><i class="fa-solid fa-trash"></i></a>
+                                                        <a class="delete" href="{{path('remove_condoleance_categorie', {'idMemorial': memorial.id, 'id': condoleance.id, 'idCategorie': memorial.categorieAnimal.id}) }}"><i class="fa-solid fa-trash"></i></a>
                                                         {# <button id="{{ condoleance.id }}" class="modify-button">Modifier</button>    #}
                                                 {% else %}
-                                                        <a href="{{path('remove_condoleance', {'idMemorial': memorial.id, 'id': condoleance.id}) }}"><i class="fa-solid fa-trash"></i></a>
+                                                        <a class="delete" href="{{path('remove_condoleance', {'idMemorial': memorial.id, 'id': condoleance.id}) }}"><i class="fa-solid fa-trash"></i></a>
                                                         {# <button id="{{ condoleance.id }}" class="modify-button">Modifier</button>    #}
                                                 {% endif %}
                                         {% endif %}       
                                         <button id="{{ condoleance.id }}" class="modify-button" type="submit"> Modifier </button>
+                                        {# <a href="">Je suis un lien</a> #}
+                                        {% if condoleance.reports |length > 0 %}
+                                                {% for report in app.user.reportedCondoleances %}
+                                                        {% if (report.condoleance == condoleance) and (app.user == report.signaleur) %}
+                                                                <a class="report-flag" href="{{ path('app_report_condoleance', {'id': condoleance.id}) }}"><i class="fa-solid fa-flag flag-report-icon reported"></i></a> 
+                                                        {% endif %}
+                                                {% endfor %}
+                                        {% else %}
+                                                <a class="report-flag" href="{{ path('app_report_condoleance', {'id': condoleance.id}) }}"><i class="fa-solid fa-flag flag-report-icon unreported"></i></a> 
+                                        {% endif %}
                                 </div>
                         </div>
                 {% endfor %}   

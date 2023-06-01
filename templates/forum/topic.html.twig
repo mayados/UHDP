@@ -18,6 +18,15 @@
             {% else %}
                 <a href="{{ path('verrouillage_topic', {'id': topic.id}) }}">Verouiller le topic</a>
             {% endif %}
+            {% if topic.reports |length > 0 %}
+                {% for report in app.user.reportedTopics %}
+                        {% if (report.topic == topic) and (app.user == report.signaleur) %}
+                                <a class="report-flag" href="{{ path('app_report_topic', {'id': topic.id}) }}"><i class="fa-solid fa-flag flag-report-icon reported"></i></a> 
+                        {% endif %}
+                {% endfor %}
+            {% else %}
+                    <a class="report-flag" href="{{ path('app_report_topic', {'id': topic.id}) }}"><i class="fa-solid fa-flag flag-report-icon unreported"></i></a> 
+            {% endif %}
         {% endif %}
     </section>
     {% include '_partials/_posts.html.twig' %} 

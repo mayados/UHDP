@@ -1,4 +1,4 @@
-<section id="posts" class="js-auto-refresh-content">
+<section id="posts" class="js-auto-refresh-content delete-report">
     {% for post in posts %}
         <article class="post">
             <div class="user-post-infos">
@@ -15,16 +15,26 @@
                     {% else %}
                         <p>Utilisateur supprimé</p>
                     {% endif %}
-                    <p>le {{ topic.dateCreation | date('d-m-Y') }} à {{ topic.dateCreation | date('H:i:s') }}</p>
+                    <p>le {{ post.dateCreation | date('d-m-Y') }} à {{ post.dateCreation | date('H:i:s') }}</p>
                 </div> 
-                <button id="{{ post.id }}" class="modify-button" type="submit"> Modifier </button>      
+                <button id="{{ post.id }}" class="modify-button" type="submit"> Modifier </button> 
+                <a class="delete" href="{{ path('remove_post', {'slug': topic.slug, 'id': post.id}) }}"><i class="fa-solid fa-trash"></i></a>
+                {% if post.reports |length > 0 %}
+                    {% for report in app.user.reportedPosts %}
+                            {% if (report.post == post) and (app.user == report.signaleur) %}
+                                    <a class="report-flag" href="{{ path('app_report_post', {'id': post.id}) }}"><i class="fa-solid fa-flag flag-report-icon reported"></i></a> 
+                            {% endif %}
+                    {% endfor %}
+                {% else %}
+                        <a class="report-flag" href="{{ path('app_report_post', {'id': post.id}) }}"><i class="fa-solid fa-flag flag-report-icon unreported"></i></a> 
+                {% endif %}
             </div>
             <div id="condoleance{{ post.id }}" class="post-texte">
                 <p>{{ post.texte|raw }}</p>                
             </div>
             <div id="form{{ post.id }}" class="modify-form">
                 <a id="close{{ post.id }}" class="close" href="#"><i class="fa-solid fa-xmark"></i></a>                                
-                <form method="POST" action="{{path('edit_post',{'id':post.id, 'slugTopic':topic.slug})}}">
+                <form id="formulaire{{ post.id }}"  class="js-modify-form" method="POST" action="{{path('edit_post',{'id':post.id, 'slugTopic':topic.slug})}}">
                         <div class="form-element">
                                 <textarea id="texte_edit{{ post.id }}" name="texte" class="form-control">{{ post.texte}}</textarea>  
                                 <input type="hidden" name="token" value="{{ csrf_token('modify-item') }}"/>
