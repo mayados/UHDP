@@ -1,5 +1,7 @@
 import Like from './Like.js'
 import Modify from './Modify.js'
+import Delete from './Delete.js'
+
 
 /**
  * @property {HTMLElement} content
@@ -29,19 +31,51 @@ export default class Submit {
 
     this.form.addEventListener('submit', e => {
       e.preventDefault();
-      console.log(CKEDITOR.instances)     
-      // let instanceName = ""
-      // let instance = ""
-      // let textareaValue = ""
-      // for (var i in CKEDITOR.instances) {
-        let instance = CKEDITOR.instances['condoleance_texte']
-        let instanceName = CKEDITOR.instances['condoleance_texte'].name
-        let textareaValue = CKEDITOR.instances['condoleance_texte'].getData();
 
-      // }
+      let instanceName = ""
+      let instance = ""
+      let textareaValue = ""
+      // console.log(CKEDITOR.instances)
+      for (var i in CKEDITOR.instances) {
+        if(CKEDITOR.instances[i].name == 'condoleance_texte'){
+          instance = CKEDITOR.instances['condoleance_texte']
+          instanceName = CKEDITOR.instances['condoleance_texte'].name
+          textareaValue = CKEDITOR.instances['condoleance_texte'].getData();  
+          instance.updateElement();
+          instance.setData('')
+        }else if(CKEDITOR.instances[i].name == 'comment_histoire_texte'){
+           instance = CKEDITOR.instances['comment_histoire_texte']
+           instanceName = CKEDITOR.instances['comment_histoire_texte'].name
+           textareaValue = CKEDITOR.instances['comment_histoire_texte'].getData(); 
+           instance.updateElement();
+           instance.setData('') 
+
+        }else if(CKEDITOR.instances[i].name == 'mot_mot'){
+          instance = CKEDITOR.instances['mot_mot']
+          instanceName = CKEDITOR.instances['mot_mot'].name
+          textareaValue = CKEDITOR.instances['mot_mot'].getData();  
+          instance.updateElement();
+          instance.setData('')
+        }else if(CKEDITOR.instances['post_texte']){
+          instance = CKEDITOR.instances['post_texte']
+          instanceName = CKEDITOR.instances['post_texte'].name
+          textareaValue = CKEDITOR.instances['post_texte'].getData();  
+          instance.updateElement();
+          instance.setData('')
+        } else if(CKEDITOR.instances['message_texte']){
+          instance = CKEDITOR.instances['message_texte']
+          instanceName = CKEDITOR.instances['message_texte'].name
+          textareaValue = CKEDITOR.instances['message_texte'].getData();  
+          instance.updateElement();
+          instance.setData('')
+        }
+          // instance.updateElement();
+          // instance.setData('')
+
+      }
  
 
-      instance.updateElement();
+      // instance.updateElement();
       // CKEDITOR.replace('condoleance_texte')
       const data = new FormData(this.form)
       data.append(instanceName, textareaValue)
@@ -119,14 +153,21 @@ export default class Submit {
               new Modify(modifyFormsElements);
           }
 
+          const deleteElements = [].slice.call(document.querySelectorAll('.delete'));
+          if(deleteElements){
+              new Delete(deleteElements);
+          }
+
           
-          CKEDITOR.instances['condoleance_texte'].updateElement()
+          // CKEDITOR.instances['condoleance_texte'].updateElement()
+          // CKEDITOR.instances['comment_histoire_texte'].updateElement()
 
           // S'il y a des erreurs
           if (data.error != undefined) {
-            // instance.setData("")
 
-            this.form.innerHTML = data.error
+
+            // this.form.innerHTML = data.error            
+            console.log(data.error)
             
             // console.log(data.error)
           } else {
