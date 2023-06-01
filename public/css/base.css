@@ -102,8 +102,13 @@ h1{
     margin-left: 1rem;
 }
 
+.reported{
+    color: red;
+}
+
 
                                     /*************  HEADER ET MENU DE NAVIGATION  ************/
+
 #header-main{
     background-color: var(--nav);
     width: 100vw;
