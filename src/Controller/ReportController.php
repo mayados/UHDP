@@ -28,6 +28,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repository\ReportCondoleanceRepository;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -65,18 +66,24 @@ class ReportController extends AbstractController
             // On crée un signalement
         }
 
-        if($categorie){
-            return $this->redirectToRoute(
-                'show_memorial_categorie',
-                ['id' => $memorial->getId(),
-                'idCategorie' => $categorie->getId(),]
-            );               
-        }elseif(!$categorie){
-            return $this->redirectToRoute(
-                'show_memorial',
-                ['id' => $memorial->getId()]
-            );  
-        }
+        // if($categorie){
+        //     return $this->redirectToRoute(
+        //         'show_memorial_categorie',
+        //         ['id' => $memorial->getId(),
+        //         'idCategorie' => $categorie->getId(),]
+        //     );               
+        // }elseif(!$categorie){
+        //     return $this->redirectToRoute(
+        //         'show_memorial',
+        //         ['id' => $memorial->getId()]
+        //     );  
+        // }
+
+        
+        return new JsonResponse([
+            'content' => 'signalement effectué',
+
+        ]); 
  
     }
 
@@ -103,10 +110,15 @@ class ReportController extends AbstractController
             $rpc->save($report, $flush = true);
         }
 
-        return $this->redirectToRoute(
-            'show_memorial',
-            ['id' => $condoleance->getMemorial()->getId()]
-        );   
+        return new JsonResponse([
+            'content' => 'signalement effectué',
+
+        ]); 
+
+        // return $this->redirectToRoute(
+        //     'show_memorial',
+        //     ['id' => $condoleance->getMemorial()->getId()]
+        // );   
     }
 
     
@@ -136,18 +148,23 @@ class ReportController extends AbstractController
             $rhr->save($report, $flush = true);
         }
 
-        if(!$genre){
-            return $this->redirectToRoute(
-                'show_histoire',
-                ['slug' => $histoire->getSlug()]
-            );               
-        }elseif($genre){
-            return $this->redirectToRoute(
-                'show_histoire_genre',
-                ['slug' => $histoire->getSlug(),
-                'idGenre' => $genre->getId()]
-            );        
-        }
+        return new JsonResponse([
+            'content' => 'signalement effectué',
+
+        ]); 
+
+        // if(!$genre){
+        //     return $this->redirectToRoute(
+        //         'show_histoire',
+        //         ['slug' => $histoire->getSlug()]
+        //     );               
+        // }elseif($genre){
+        //     return $this->redirectToRoute(
+        //         'show_histoire_genre',
+        //         ['slug' => $histoire->getSlug(),
+        //         'idGenre' => $genre->getId()]
+        //     );        
+        // }
 
     }
     
@@ -157,7 +174,7 @@ class ReportController extends AbstractController
         
         $user = $this->getUser();
 
-        $signaleur = $rcr->findSignaleurHistoire($user,$comment);
+        $signaleur = $rcr->findSignaleurComment($user,$comment);
 
         // Met la mauvaise heure : deux heures de moins que l'heure actuelle
         $now = new \DateTimeImmutable();
@@ -174,10 +191,15 @@ class ReportController extends AbstractController
             $rcr->save($report, $flush = true);
         }
 
-        return $this->redirectToRoute(
-            'show_histoire',
-            ['slug' => $comment->getBelleHistoire()->getSlug()]
-        );   
+        return new JsonResponse([
+            'content' => 'signalement effectué',
+
+        ]); 
+
+        // return $this->redirectToRoute(
+        //     'show_histoire',
+        //     ['slug' => $comment->getBelleHistoire()->getSlug()]
+        // );   
     }
 
     #[Route('/report/topic/{id}', name: 'app_report_topic')]
@@ -203,10 +225,15 @@ class ReportController extends AbstractController
             $rtr->save($report, $flush = true);
         }
 
-        return $this->redirectToRoute(
-            'show_topic',
-            ['slug' => $topic->getSlug()]
-        );   
+
+        return new JsonResponse([
+            'content' => 'signalement effectué',
+
+        ]); 
+        // return $this->redirectToRoute(
+        //     'show_topic',
+        //     ['slug' => $topic->getSlug()]
+        // );   
     }
 
     #[Route('/report/post/{id}', name: 'app_report_post')]
@@ -232,10 +259,15 @@ class ReportController extends AbstractController
             $rpr->save($report, $flush = true);
         }
 
-        return $this->redirectToRoute(
-            'show_topic',
-            ['slug' => $post->getTopic()->getSlug()]
-        );   
+        // return $this->redirectToRoute(
+        //     'show_topic',
+        //     ['slug' => $post->getTopic()->getSlug()]
+        // );   
+
+        return new JsonResponse([
+            'content' => 'signalement effectué',
+
+        ]); 
     }
     
     #[Route('/report/mot/{id}', name: 'app_report_mot')]
@@ -244,7 +276,7 @@ class ReportController extends AbstractController
         
         $user = $this->getUser();
 
-        $signaleur = $rmr->findSignaleurTopic($user,$mot);
+        $signaleur = $rmr->findSignaleurMot($user,$mot);
 
         // Met la mauvaise heure : deux heures de moins que l'heure actuelle
         $now = new \DateTimeImmutable();
@@ -261,8 +293,13 @@ class ReportController extends AbstractController
             $rmr->save($report, $flush = true);
         }
 
-        return $this->redirectToRoute(
-            'app_mot_commemoration',
-        );   
+        return new JsonResponse([
+            'content' => 'signalement effectué',
+
+        ]); 
+
+        // return $this->redirectToRoute(
+        //     'app_mot_commemoration',
+        // );   
     }
 }

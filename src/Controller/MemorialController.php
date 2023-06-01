@@ -223,13 +223,14 @@ class MemorialController extends AbstractController
                 );     
 
             }else{
+
+
                 // Si le formulaire n'est pas valide et qu'il s'agit d'une requête AJAX
                 if($request->isXmlHttpRequest()){
                     // Si c'est le cas on renvoie du JSON
                     return new JsonResponse([
                         'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial,'consultedInCategorie' => $consultedInCategorie, 'formCondoleance' => $condoleanceForm->createView(),'condoleances' => $cr->findCondoleances($memorial)]),
                         'error' => $this->renderView('_partials/_refreshForm.html.twig', ['formCondoleance' => $condoleanceForm->createView()]),
-                        // 'error' => "je suis une erreur",
                         // 'bloup'=> 'blou',
                     ]);
                 }
@@ -415,20 +416,28 @@ class MemorialController extends AbstractController
         $cr->remove($condoleance, $flush = true);
         $memorial = $amr->find($memorial->getId());
 
-        $this->addFlash('notice', "La condoléance a été supprimée");
+        // $this->addFlash('notice', "La condoléance a été supprimée");
 
         if(!$categorie){
-            return $this->redirectToRoute(
-                'show_memorial',
-                ['id' => $memorial->getId()]
-            );               
+            // return $this->redirectToRoute(
+            //     'show_memorial',
+            //     ['id' => $memorial->getId()]
+            // );           
+            return new JsonResponse([
+                'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, "condoleances" => $cr->findCondoleances($memorial), 'consultedInCategorie' => false]),
+
+            ]);        
         }
 
-        return $this->redirectToRoute(
-            'show_memorial_categorie',
-            ['id' => $memorial->getId(),
-            'idCategorie' => $categorie->getId()]
-        );  
+        return new JsonResponse([
+            'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, "condoleances" => $cr->findCondoleances($memorial), 'consultedInCategorie' => true]),
+
+        ]);   
+        // return $this->redirectToRoute(
+        //     'show_memorial_categorie',
+        //     ['id' => $memorial->getId(),
+        //     'idCategorie' => $categorie->getId()]
+        // );  
          
     }
 

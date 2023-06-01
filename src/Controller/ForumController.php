@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use DateTimeZone;
 use App\Entity\Post;
 use App\Entity\Topic;
 use App\Form\PostType;
@@ -48,7 +49,8 @@ class ForumController extends AbstractController
         if ($this->getUser()->isVerified()) {
             
             $post = new Post();
-            $date = new \DateTime();
+            $date = date_timezone_set(new \DateTime(),new DateTimeZone('Europe/Paris'));
+            // $date = new \DateTime();
             $form = $this->createForm(PostType::class, $post);
             $form->handleRequest($request);
 
@@ -169,7 +171,7 @@ class ForumController extends AbstractController
     #[ParamConverter("topic", options: ["mapping" => ["slug" => "slug"]])]
     #[ParamConverter("post", options: ["mapping" => ["id" => "id"]])]
     #[Security("is_granted('ROLE_USER') and user === post.getAuteur()", message:"Accès non autorisé.")]
-    public function removePost(PostRepository $pr, Post $post, Topic $topic, TopicRepository $tr)
+    public function removePost(PostRepository $pr, Post $post, Topic $topic, TopicRepository $tr, Request $request)
     {
             $post = $pr->find($post->getId());
 
@@ -177,25 +179,30 @@ class ForumController extends AbstractController
             
             $topic = $tr->find($topic->getId());
 
-            $this->addFlash('notice', 'Le commentaire a été supprimé');
+            return new JsonResponse([
+                'content' => $this->renderView('_partials/_posts.html.twig', ['posts' => $pr->findPaginatedPosts($request->query->getInt('page',1),$topic),'topic' => $topic]),
+    
+            ]);       
 
-            return $this->redirectToRoute(
-                'show_topic',
-                ['slug' => $topic->getSlug()]
-            );
+            // $this->addFlash('notice', 'Le commentaire a été supprimé');
+
+            // return $this->redirectToRoute(
+            //     'show_topic',
+            //     ['slug' => $topic->getSlug()]
+            // );
     }    
 
     #[Route('/topic/post/edit/{id}/{slugTopic}', name: 'edit_post')]
     #[ParamConverter("commentaire", options: ["mapping" => ["id" => "id"]])]
     #[ParamConverter("topic", options: ["mapping" => ["slugTopic" => "slug"]])]
     #[Security("is_granted('ROLE_USER') and user === post.getAuteur()", message:"Accès non autorisé.")]
-    public function editPost(Post $post, Topic $topic, ManagerRegistry $doctrine,Request $request){
+    public function editPost(Post $post, Topic $topic, PostRepository $pr ,ManagerRegistry $doctrine,Request $request){
 
         // On récupère le token généré dans le formulaire
         $submittedToken = $request->request->get('token');
         $texteTest = $request->request->get('texte');
 
-        if (isset($_POST['modify']) && $this->isCsrfTokenValid('modify-item', $submittedToken)) {
+        if (isset($_POST) && $this->isCsrfTokenValid('modify-item', $submittedToken)) {
             $entityManager = $doctrine->getManager();
             $texte = $request->request->get('texte');
             $post->setTopic($topic);
@@ -207,13 +214,30 @@ class ForumController extends AbstractController
             $entityManager->persist($post);
             $entityManager->flush();
 
-            $this->addFlash("success","Le post a bien été modifié");
+            if($request->isXmlHttpRequest()){
+                // Si c'est le cas on renvoie du JSON
+                return new JsonResponse([
+                    'content' => $this->renderView('_partials/_posts.html.twig', ['topic' => $topic, 'posts' => $pr->findPaginatedPosts($request->query->getInt('page',1),$topic)]),
+                ]);
+             }
+
+
+            // $this->addFlash("success","Le post a bien été modifié");
 
             
-            return $this->redirectToRoute(
-                'show_topic',
-                ['slug' => $topic->getSlug()]
-            );  
+            // return $this->redirectToRoute(
+            //     'show_topic',
+            //     ['slug' => $topic->getSlug()]
+            // );  
+        }
+        else{
+            // if($request->isXmlHttpRequest()){
+                // Si c'est le cas on renvoie du JSON
+                return new JsonResponse([
+                    'content' => "ca n'a pas fonctionné"
+
+                ]);
+            // }            
         }
 
 

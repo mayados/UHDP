@@ -210,7 +210,7 @@ class BellesHistoiresController extends AbstractController
         $comment = $cbhr->find($comment->getId());
 
         $cbhr->remove($comment, $flush = true);
-
+  
         $this->addFlash('notice', "Le commentaire a été supprimé");
 
         return $this->redirectToRoute(

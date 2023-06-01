@@ -163,6 +163,9 @@ class MessagerieController extends AbstractController
         if($this->getUser() && ($this->getUser() == $message->getExpediteur()))
         {
             $user = $ur->find($user->getId());
+            $me = $this->getUser();
+            
+            $user = $ur->find($user->getId());
             // On trouve l'id du message et on le delete grâce à la méthode du User
             $message = $mr->find($message->getId());
 
@@ -174,12 +177,16 @@ class MessagerieController extends AbstractController
             $current->removeMessagesEnvoye($message, $flush = true);
             $entityManager->flush();
 
-            $this->addFlash('notice', 'Le message a été supprimé');
+            // $this->addFlash('notice', 'Le message a été supprimé');
 
-            return $this->redirectToRoute(
-                'app_conversation',
-                ['id' => $user->getId()]
-            );            
+            // return $this->redirectToRoute(
+            //     'app_conversation',
+            //     ['id' => $user->getId()]
+            // );        
+            return new JsonResponse([
+                'content' => $this->renderView('_partials/_messages.html.twig', ['messages' => $messages = $mr->findMessagesByConversation($me,$user)]),
+
+            ]);    
         }
 
         $this->addFlash('warning', 'Il faut être connecté pour accéder à la messagerie');
