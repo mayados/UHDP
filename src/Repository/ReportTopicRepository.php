@@ -52,7 +52,7 @@ class ReportTopicRepository extends ServiceEntityRepository
 
         return $this->createQueryBuilder('r')
         ->where('r.signaleur = :user')
-        ->andWhere('r.topic = topic')
+        ->andWhere('r.topic = :topic')
         ->setParameters($parameters)
         ->getQuery()
         // ->getResult()
