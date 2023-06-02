@@ -159,23 +159,20 @@ export default class Submit {
           }
 
           
-          // CKEDITOR.instances['condoleance_texte'].updateElement()
-          // CKEDITOR.instances['comment_histoire_texte'].updateElement()
-
           // S'il y a des erreurs
           if (data.error != undefined) {
 
+            const formError = this.form.querySelector('.custom-errors');
+            const messageErreur = document.createElement("p")
+            messageErreur.innerText = data.error;
+            formError.appendChild(messageErreur);
 
-            // this.form.innerHTML = data.error            
-            console.log(data.error)
-            
-            // console.log(data.error)
           } else {
-
+            const formError = this.form.querySelector('.custom-errors');
+            formError.style.display = 'none';
             instance.setData("")
-            // console.log(data.content)
           }
-          // console.log(data.content) 
+
         })
         .catch(e => console.log(e));
     })
