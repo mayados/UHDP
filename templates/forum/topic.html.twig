@@ -10,7 +10,7 @@
     </section>
     <p class="fil-ariane"> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_forum') }}"> Forum </a> &lt; <a href="{{path('show_histoire', {'slug' : topic.slug}) }}">{{ topic.titre }}</a></p>
     <section id="topic">
-        {% if app.user == topic.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
+        {% if app.user == topic.auteur %}
             <a href="{{path('remove_topic', {'slug': topic.slug}) }}">Supprimer le topic</a>
             <a href="{{ path('edit_topic', {'slug': topic.slug}) }}">Edit</a>
             {% if topic.isVerrouillage %}
@@ -18,16 +18,18 @@
             {% else %}
                 <a href="{{ path('verrouillage_topic', {'id': topic.id}) }}">Verouiller le topic</a>
             {% endif %}
+        {% else %}
             {% if topic.reports |length > 0 %}
                 {% for report in app.user.reportedTopics %}
                         {% if (report.topic == topic) and (app.user == report.signaleur) %}
-                                <a class="report-flag" href="{{ path('app_report_topic', {'id': topic.id}) }}"><i class="fa-solid fa-flag flag-report-icon reported"></i></a> 
+                                <a class="report-flag corner-flag" href="{{ path('app_report_topic', {'id': topic.id}) }}"><i class="fa-solid fa-flag flag-report-icon reported"></i></a> 
                         {% endif %}
                 {% endfor %}
             {% else %}
-                    <a class="report-flag" href="{{ path('app_report_topic', {'id': topic.id}) }}"><i class="fa-solid fa-flag flag-report-icon unreported"></i></a> 
+                    <a class="report-flag corner-flag" href="{{ path('app_report_topic', {'id': topic.id}) }}"><i class="fa-solid fa-flag flag-report-icon unreported"></i></a> 
             {% endif %}
         {% endif %}
+
     </section>
     {% include '_partials/_posts.html.twig' %} 
     <div class="pagination">
