@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Ajout de refuge
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{ asset('js/api_lieu.js')}}"></script>
+{% endblock %}
+
+{% block body %}
+<div class="container-page administration">
+    {% include '_partials/_adminnav.html.twig' %}
+    <main class="main-administration">
+        <div class="formulaire" id="form-memorial">
+                <h1>Ajout de refuge</h1>    
+        {{ form_start(formAddRefuge) }}    
+            <div class="custom-errors">
+                {{ form_errors(formAddRefuge.nom) }}
+            </div>
+            <div class="form-element">
+                {{ form_row(formAddRefuge.nom) }}            
+            </div>
+            <div class="custom-errors">
+                {{ form_errors(formAddRefuge.numero) }}
+            </div>
+            <div class="form-element">
+                {{ form_row(formAddRefuge.numero) }}            
+            </div>
+            <div class="custom-errors">
+                {{ form_errors(formAddRefuge.rue) }}
+            </div>
+            <div class="form-element">
+                {{ form_row(formAddRefuge.rue) }}            
+            </div>
+            <div class="custom-errors">
+                {{ form_errors(formAddRefuge.ville) }}
+            </div>
+            <div class="form-element">
+                {{ form_row(formAddRefuge.ville) }}            
+            </div>
+            <div class="custom-errors">
+                {{ form_errors(formAddRefuge.codePostal) }}
+            </div>
+            <div class="form-element">
+                {{ form_row(formAddRefuge.codePostal) }}            
+            </div>
+            <div class="custom-errors">
+                {{ form_errors(formAddRefuge.departement) }}
+            </div>
+            <div class="form-element">
+                {{ form_row(formAddRefuge.departement) }}            
+            </div>
+            <div class="custom-errors">
+                {{ form_errors(formAddRefuge.site) }}
+            </div>
+            <div class="form-element">
+                {{ form_row(formAddRefuge.site) }}            
+            </div>
+            <div class="custom-errors">
+                {{ form_errors(formAddRefuge.latitude) }}
+            </div>
+            <div class="form-element">
+                {{ form_row(formAddRefuge.latitude) }}            
+            </div>
+            <div class="custom-errors">
+                {{ form_errors(formAddRefuge.longitude) }}
+            </div>
+            <div class="form-element">
+                {{ form_row(formAddRefuge.longitude) }}            
+            </div>
+            <div class="form-element">
+                {{ form_row(formAddRefuge.submit) }}
+            </div>
+        {{ form_end(formAddRefuge) }}  
+        </div>
+    </main>
+
+
+</div>
+{% endblock %}
