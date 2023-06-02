@@ -1,95 +1,60 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello RefugeController!{% endblock %}
+{% block title %}Refuges{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<div class="container-page js-refresh-page">
+    <section id="banniere-belle-histoire">
+        <h1>Refuges</h1>
+    </section>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/laragon/www/UneHistoireDePattes/src/Controller/RefugeController.php'|file_link(0) }}">src/Controller/RefugeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/laragon/www/UneHistoireDePattes/templates/refuge/index.html.twig'|file_link(0) }}">templates/refuge/index.html.twig</a></code></li>
-    </ul>
+    <div id="map"></div>
 
-    <label>
-      Numéro  
-    </label>
-    <input id="numero" type="text">
-    <br>
-    <label>
-        Rue
-    </label>
-    <input id="rue" type="text">
-    <br>
-    <label>
-        Ville
-    </label>
-    <input id="ville" type="text">
-    <br>
-    <label>
-        Code Postal
-    </label>
-    <input id="codePostal" type="text">
-    <br>
-    <button id="recherche">Chercher coordonnées</button>
-    <br><br>
-    <label>Latitude</label>
-    <input id="latitude" type="text">
-    <br>
-    <label>Longitude</label>
-    <input id="longitude" type="text">
-    
 </div>
 <script>
-        const madiv = document.querySelector('.test');
+    // Création d'une carte : initialisation et indication des coordonnées géographiques et du niveau de zoom
+    //  setView() return l'objet map
+    //  On indique [latitude, longitude]
+    var map = L.map('map').setView([48.584614, 7.7507127], 12);
 
-        /* fetch("http://127.0.1:8000/api/refuges")
+    var myIcon = L.icon({
+        iconUrl: "{{ asset('img/pointer.png')}}",
+        iconSize: [25, 40],
+        iconAnchor: [22, 94],
+        popupAnchor: [-3, -76],
+        // shadowUrl: 'my-icon-shadow.png',
+        // shadowSize: [68, 95],
+        shadowAnchor: [22, 94]
+    });
+
+    // Ajout d'un tile layer : on indique la 
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        // Il faut mentionner d'où nous l'avons pris. Ici, ça provient d'OpenStreetMap
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        // Le zoom maximum qu'un utilisateur pourra faire
+        maxZoom: 19,
+    }).addTo(map);
+
+     fetch("http://127.0.1:8000/api/refuges")
         // On crée une variable réponse par rapport aux éléments du dessus, qui va être transformée en json
-        .then( (response) => response.json())
+    .then( (response) => response.json())
         // On donne un nom de variable pour récupérer les données
-        .then( (data)=> {
-            console.log(data["hydra:member"][0].nom)
-        })   */ 
+    .then( (data)=> {
+       var datas = data["hydra:member"];
+        let refuges = [];
+        for(let i = 0; i < datas.length; i++){
+            var refuge = datas[i]
+            refuges.push(refuge)
+        }
+        console.log(refuges)
 
-        /* fetch("https://nominatim.openstreetmap.org/search?city=Moussey&country=France&postalcode=88210&street=4 chemin de l etang&limit=1&format=json")
-        .then(async (response) => {
-            const data = await response.json();
-            console.log(data)
-            const long = data[0].lon
-            const lat = data[0].lat
-            console.log("longitude :" +long)
-            console.log("latitude :" +lat)
-        }); */
-
-        var numero = document.querySelector('#numero');
-        var rue = document.querySelector('#rue');
-        var ville = document.querySelector('#ville');
-        var codePostal = document.querySelector('#codePostal');
-        var codePostal = document.querySelector('#codePostal');
-        var recherche = document.querySelector('#recherche');
-        var latitude = document.querySelector('#latitude');
-        var longitude = document.querySelector('#longitude');
-
-
-        recherche.addEventListener("click", (event) => {
-            event.preventDefault();
-            fetch("https://nominatim.openstreetmap.org/search?city="+ville.value+"&country=France&postalcode="+codePostal.value+"&street="+numero.value+" "+rue.value+"&limit=1&format=json")
-                .then(async (response) => {
-                    const data = await response.json();
-                    console.log(data)
-                    const long = data[0].lon
-                    const lat = data[0].lat
-                    latitude.value = lat;
-                    longitude.value = long;
-            }); 
+        refuges.forEach(refuge => {
+            console.log(refuge.nom)
+            var refugePoint = L.marker([refuge.latitude, refuge.longitude], {icon : myIcon}).addTo(map);
+            refugePoint.bindPopup("<b>"+refuge.nom+"</b><br>"+refuge.numero+" "+refuge.rue+"<br>"+refuge.codePostal+" "+refuge.ville+"<br>Site: <a href='"+refuge.site+"' target='_blank'>"+refuge.site+"</a>");
         })
 
-
+    })   
 </script>
 {% endblock %}
