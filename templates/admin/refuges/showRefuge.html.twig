@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ refuge.nom }}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/base.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/memorial.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<div class="container-page administration">
+    {% include '_partials/_adminnav.html.twig' %}
+    <main class="main-administration">
+        <h1>{{ refuge.nom }}</h1>     
+
+        <a class="manage-button" href="{{ path('app_admin_refuge_remove', {'id': refuge.id}) }}">Supprimer le refuge</a>
+
+        <div class="formulaire" id="form-memorial">
+                    <h1>Modifier le refuge</h1>    
+            {{ form_start(formEditRefuge) }}    
+                <div class="custom-errors">
+                    {{ form_errors(formEditRefuge.nom) }}
+                </div>
+                <div class="form-element">
+                    {{ form_row(formEditRefuge.nom) }}            
+                </div>
+                <div class="custom-errors">
+                    {{ form_errors(formEditRefuge.numero) }}
+                </div>
+                <div class="form-element">
+                    {{ form_row(formEditRefuge.numero) }}            
+                </div>
+                <div class="custom-errors">
+                    {{ form_errors(formEditRefuge.rue) }}
+                </div>
+                <div class="form-element">
+                    {{ form_row(formEditRefuge.rue) }}            
+                </div>
+                <div class="custom-errors">
+                    {{ form_errors(formEditRefuge.ville) }}
+                </div>
+                <div class="form-element">
+                    {{ form_row(formEditRefuge.ville) }}            
+                </div>
+                <div class="custom-errors">
+                    {{ form_errors(formEditRefuge.codePostal) }}
+                </div>
+                <div class="form-element">
+                    {{ form_row(formEditRefuge.codePostal) }}            
+                </div>
+                <div class="custom-errors">
+                    {{ form_errors(formEditRefuge.departement) }}
+                </div>
+                <div class="form-element">
+                    {{ form_row(formEditRefuge.departement) }}            
+                </div>
+                <div class="custom-errors">
+                    {{ form_errors(formEditRefuge.site) }}
+                </div>
+                <div class="form-element">
+                    {{ form_row(formEditRefuge.site) }}            
+                </div>
+                <div class="custom-errors">
+                    {{ form_errors(formEditRefuge.latitude) }}
+                </div>
+                <div class="form-element">
+                    {{ form_row(formEditRefuge.latitude) }}            
+                </div>
+                <div class="custom-errors">
+                    {{ form_errors(formEditRefuge.longitude) }}
+                </div>
+                <div class="form-element">
+                    {{ form_row(formEditRefuge.longitude) }}            
+                </div>
+                <div class="form-element">
+                    {{ form_row(formEditRefuge.submit) }}
+                </div>
+            {{ form_end(formEditRefuge) }}  
+        </div>
+    </main>
+
+</div>
+<script>
+
+    // Lorsque tous les éléments de la page sont chargés, le script peut s'exécuter
+    window.addEventListener('DOMContentLoaded', (event) => {
+        var numero = document.querySelector('#refuge_numero');
+        var rue = document.querySelector('#refuge_rue');
+        var ville = document.querySelector('#refuge_ville');
+        var codePostal = document.querySelector('#refuge_codePostal');
+        var departement = document.querySelector('#refuge_departement');
+        var recherche = document.querySelector('#refuge_submit');
+        var latitude = document.querySelector('#refuge_latitude');
+        var longitude = document.querySelector('#refuge_longitude');
+
+
+        departement.addEventListener("focusout", (event) => {
+            event.preventDefault();
+            fetch("https://nominatim.openstreetmap.org/search?city="+ville.value+"&country=France&postalcode="+codePostal.value+"&street="+numero.value+" "+rue.value+"&limit=1&format=json")
+                .then(async (response) => {
+                    const data = await response.json();
+                    console.log(data)
+                    const long = data[0].lon
+                    const lat = data[0].lat
+                    latitude.value = lat;
+                    longitude.value = long;
+            }); 
+        })
+    })
+
+</script>
+{% endblock %}
