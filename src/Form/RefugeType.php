@@ -22,7 +22,7 @@ class RefugeType extends AbstractType
             ->add('departement', TextType::class)
             ->add('site', TextType::class)
             ->add('latitude', TextType::class)
-            ->add('longitude', TextType::class)
+            ->add('longitude', TextType::class)         
             ->add('submit', SubmitType::class)
         ;
     }
