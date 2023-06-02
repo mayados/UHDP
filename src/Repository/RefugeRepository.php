@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Refuge;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @extends ServiceEntityRepository<Refuge>
@@ -16,7 +18,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class RefugeRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private PaginatorInterface $paginatorInterface)
     {
         parent::__construct($registry, Refuge::class);
     }
@@ -37,6 +39,18 @@ class RefugeRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findPaginatedRefugesForAdmin($page): PaginationInterface
+    {
+        $data = $this->createQueryBuilder('r')
+        ->select('r.id','r.nom','r.numero','r.rue','r.ville','r.codePostal','r.departement')
+        ->getQuery()
+        ->getResult();
+
+        $refuges = $this->paginatorInterface->paginate($data,$page,16);
+
+        return $refuges;
     }
 
 //    /**
