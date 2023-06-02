@@ -15,17 +15,20 @@
             <div class="mot-infos">
                 <p>{{ mot.dateCreation | date('d-m-Y') }} {{ mot.dateCreation | date('H:i:s') }}</p>
                 <div class="mot-interractions">
-                    <a class="delete" href="{{ path('remove_mot', {'id': mot.id}) }}"><i class="fa-solid fa-trash"></i></a>      
-                    <button id="{{ mot.id }}" class="modify-button" type="submit"> Modifier </button>  
-                    {% if mot.reports |length > 0 %}
-                        {% for report in app.user.reportedMots %}
-                                {% if (report.mot == mot) and (app.user == report.signaleur) %}
-                                        <a class="report-flag" href="{{ path('app_report_mot', {'id': mot.id}) }}"><i class="fa-solid fa-flag flag-report-icon reported"></i></a> 
-                                {% endif %}
-                        {% endfor %}
+                    {% if app.user == mot.auteur %}
+                        <a class="delete" href="{{ path('remove_mot', {'id': mot.id}) }}"><i class="fa-solid fa-trash"></i></a>      
+                        <button id="{{ mot.id }}" class="modify-button" type="submit"> Modifier </button>  
                     {% else %}
-                            <a class="report-flag" href="{{ path('app_report_mot', {'id': mot.id}) }}"><i class="fa-solid fa-flag flag-report-icon unreported"></i></a> 
-                    {% endif %}                
+                        {% if mot.reports |length > 0 %}
+                            {% for report in app.user.reportedMots %}
+                                    {% if (report.mot == mot) and (app.user == report.signaleur) %}
+                                            <a class="report-flag" href="{{ path('app_report_mot', {'id': mot.id}) }}"><i class="fa-solid fa-flag flag-report-icon reported"></i></a> 
+                                    {% endif %}
+                            {% endfor %}
+                        {% else %}
+                                <a class="report-flag" href="{{ path('app_report_mot', {'id': mot.id}) }}"><i class="fa-solid fa-flag flag-report-icon unreported"></i></a> 
+                        {% endif %}                            
+                    {% endif %}
                 </div>
             </div>
         </div>
