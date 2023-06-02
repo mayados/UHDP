@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Refuges{% endblock %}
+
+{% block body %}
+
+<div class="container-page administration">
+
+        {% include '_partials/_adminnav.html.twig' %}
+        <main class="main-administration">
+            <h1>Refuges</h1>
+
+            <section class="list">
+                <table>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Numéro</th>
+                        <th>Rue</th>
+                        <th>Ville</th>
+                        <th>Code postal</th>
+                        <th>Département</th>
+                        <th>Action</th>
+                    </tr>
+                {% for refuge in refuges %}
+                    <tr>
+                        <td>
+                            <p>{{ refuge.nom }}</p>
+                        </td>
+                        <td>
+                            <p>{{ refuge.numero}}</p> 
+                        </td>
+                        <td>
+                            <p>
+                                {{ refuge.rue }}
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                {{ refuge.ville }}
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                {{ refuge.codePostal }}
+                            </p>
+                        </td>
+                        <td>
+                            <p>
+                                {{ refuge.departement }}
+                            </p>
+                        </td>
+                        <td>
+                        <a href="{{ path('app_admin_show_refuge', {'id':refuge.id}) }}">Voir</a>  
+                        </td>
+                        
+                    </tr>
+                {% endfor %}
+                </table>
+            </section>
+            <div class="pagination js-filter-pagination">
+                {{ knp_pagination_render(refuges) }}
+            </div>            
+        </main>        
+
+</div>
+{% endblock %}
