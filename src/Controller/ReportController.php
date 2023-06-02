@@ -43,47 +43,52 @@ class ReportController extends AbstractController
     public function reportMemorial(AnimalMemorial $memorial, ReportMemorialRepository $rpm, CategorieAnimal $categorie = null, Request $request): Response
     {
         
-        $user = $this->getUser();
+       // Le créateur du mémorial ne peut pas le signaler
+       if($this->getUser() != $memorial->getAuteur()){
+            $user = $this->getUser();
 
-        $signaleur = $rpm->findSignaleurMemorial($user,$memorial);
+            $signaleur = $rpm->findSignaleurMemorial($user,$memorial);
 
-        // Met la mauvaise heure : deux heures de moins que l'heure actuelle
-        $now = new \DateTimeImmutable();
+            // Met la mauvaise heure : deux heures de moins que l'heure actuelle
+            $now = new \DateTimeImmutable();
 
-        if($signaleur != null){
+            if($signaleur != null){
 
-            // dd($signaleur);
-            $rpm->remove($signaleur, $flush = true);
-            // Signifie que le user a déjà signalé ce mémorial, donc on dé-signal
+                // dd($signaleur);
+                $rpm->remove($signaleur, $flush = true);
+                // Signifie que le user a déjà signalé ce mémorial, donc on dé-signal
 
-        }else{
-            $report = new ReportMemorial();
-            $report->setSignaleur($user);
-            $report->setMemorial($memorial);
-            $report->setDateCreation($now);
-            $rpm->save($report, $flush = true);
-            // dd("Je suis null");
-            // On crée un signalement
-        }
+            }else{
+                $report = new ReportMemorial();
+                $report->setSignaleur($user);
+                $report->setMemorial($memorial);
+                $report->setDateCreation($now);
+                $rpm->save($report, $flush = true);
+                // dd("Je suis null");
+                // On crée un signalement
+            }
 
-        // if($categorie){
-        //     return $this->redirectToRoute(
-        //         'show_memorial_categorie',
-        //         ['id' => $memorial->getId(),
-        //         'idCategorie' => $categorie->getId(),]
-        //     );               
-        // }elseif(!$categorie){
-        //     return $this->redirectToRoute(
-        //         'show_memorial',
-        //         ['id' => $memorial->getId()]
-        //     );  
-        // }
+            // if($categorie){
+            //     return $this->redirectToRoute(
+            //         'show_memorial_categorie',
+            //         ['id' => $memorial->getId(),
+            //         'idCategorie' => $categorie->getId(),]
+            //     );               
+            // }elseif(!$categorie){
+            //     return $this->redirectToRoute(
+            //         'show_memorial',
+            //         ['id' => $memorial->getId()]
+            //     );  
+            // }
 
-        
-        return new JsonResponse([
-            'content' => 'signalement effectué',
+            
+            return new JsonResponse([
+                'content' => 'signalement effectué',
 
-        ]); 
+            ]); 
+       }
+
+       return $this->redirectToRoute('app_home');   
  
     }
 
@@ -91,34 +96,35 @@ class ReportController extends AbstractController
     public function reportCondoleance(Condoleance $condoleance, ReportCondoleanceRepository $rpc, Request $request): Response
     {
         
-        $user = $this->getUser();
+        // Le créateur de la condoléance ne peut pas la signaler
+        if($this->getUser() != $condoleance->getAuteur()){
 
-        $signaleur = $rpc->findSignaleurCondoleance($user,$condoleance);
+            $user = $this->getUser();
 
-        // Met la mauvaise heure : deux heures de moins que l'heure actuelle
-        $now = new \DateTimeImmutable();
+            $signaleur = $rpc->findSignaleurCondoleance($user,$condoleance);
 
-        if($signaleur != null){
+            // Met la mauvaise heure : deux heures de moins que l'heure actuelle
+            $now = new \DateTimeImmutable();
 
-            $rpc->remove($signaleur, $flush = true);
+            if($signaleur != null){
 
-        }else{
-            $report = new ReportCondoleance();
-            $report->setSignaleur($user);
-            $report->setCondoleance($condoleance);
-            $report->setDateCreation($now);
-            $rpc->save($report, $flush = true);
-        }
+                $rpc->remove($signaleur, $flush = true);
 
-        return new JsonResponse([
-            'content' => 'signalement effectué',
+            }else{
+                $report = new ReportCondoleance();
+                $report->setSignaleur($user);
+                $report->setCondoleance($condoleance);
+                $report->setDateCreation($now);
+                $rpc->save($report, $flush = true);
+            }
 
-        ]); 
+            return new JsonResponse([
+                'content' => 'signalement effectué',
 
-        // return $this->redirectToRoute(
-        //     'show_memorial',
-        //     ['id' => $condoleance->getMemorial()->getId()]
-        // );   
+            ]);             
+        }        
+
+        return $this->redirectToRoute('app_home');   
     }
 
     
@@ -129,29 +135,35 @@ class ReportController extends AbstractController
     public function reportHistoire(BelleHistoire $histoire, GenreHistoire $genre = null, ReportHistoireRepository $rhr, Request $request): Response
     {
         
-        $user = $this->getUser();
+       // Le créateur de l'histoire ne peut pas la signaler
+       if($this->getUser() != $histoire->getAuteur()){
+            $user = $this->getUser();
 
-        $signaleur = $rhr->findSignaleurHistoire($user,$histoire);
+            $signaleur = $rhr->findSignaleurHistoire($user,$histoire);
 
-        // Met la mauvaise heure : deux heures de moins que l'heure actuelle
-        $now = new \DateTimeImmutable();
+            // Met la mauvaise heure : deux heures de moins que l'heure actuelle
+            $now = new \DateTimeImmutable();
 
-        if($signaleur != null){
+            if($signaleur != null){
 
-            $rhr->remove($signaleur, $flush = true);
+                $rhr->remove($signaleur, $flush = true);
 
-        }else{
-            $report = new ReportHistoire();
-            $report->setSignaleur($user);
-            $report->setHistoire($histoire);
-            $report->setDateCreation($now);
-            $rhr->save($report, $flush = true);
-        }
+            }else{
+                $report = new ReportHistoire();
+                $report->setSignaleur($user);
+                $report->setHistoire($histoire);
+                $report->setDateCreation($now);
+                $rhr->save($report, $flush = true);
+            }
 
-        return new JsonResponse([
-            'content' => 'signalement effectué',
+            return new JsonResponse([
+                'content' => 'signalement effectué',
 
-        ]); 
+            ]); 
+       }
+
+       return $this->redirectToRoute('app_home');   
+
 
         // if(!$genre){
         //     return $this->redirectToRoute(
@@ -172,134 +184,154 @@ class ReportController extends AbstractController
     public function reportComment(CommentBelleHistoire $comment, ReportCommentRepository $rcr, Request $request): Response
     {
         
-        $user = $this->getUser();
+        if($this->getUser() != $comment->getAuteur()){
+            $user = $this->getUser();
 
-        $signaleur = $rcr->findSignaleurComment($user,$comment);
+            $signaleur = $rcr->findSignaleurComment($user,$comment);
 
-        // Met la mauvaise heure : deux heures de moins que l'heure actuelle
-        $now = new \DateTimeImmutable();
+            // Met la mauvaise heure : deux heures de moins que l'heure actuelle
+            $now = new \DateTimeImmutable();
 
-        if($signaleur != null){
+            if($signaleur != null){
 
-            $rcr->remove($signaleur, $flush = true);
+                $rcr->remove($signaleur, $flush = true);
 
-        }else{
-            $report = new ReportComment();
-            $report->setSignaleur($user);
-            $report->setCommentaire($comment);
-            $report->setDateCreation($now);
-            $rcr->save($report, $flush = true);
+            }else{
+                $report = new ReportComment();
+                $report->setSignaleur($user);
+                $report->setCommentaire($comment);
+                $report->setDateCreation($now);
+                $rcr->save($report, $flush = true);
+            }
+
+            return new JsonResponse([
+                'content' => 'signalement effectué',
+
+            ]); 
+
+            // return $this->redirectToRoute(
+            //     'show_histoire',
+            //     ['slug' => $comment->getBelleHistoire()->getSlug()]
+            // );   
         }
 
-        return new JsonResponse([
-            'content' => 'signalement effectué',
+        return $this->redirectToRoute('app_home');   
 
-        ]); 
-
-        // return $this->redirectToRoute(
-        //     'show_histoire',
-        //     ['slug' => $comment->getBelleHistoire()->getSlug()]
-        // );   
     }
 
     #[Route('/report/topic/{id}', name: 'app_report_topic')]
     public function reportTopic(Topic $topic, ReportTopicRepository $rtr, Request $request): Response
     {
         
-        $user = $this->getUser();
+        if($this->getUser() != $topic->getAuteur()){
+            $user = $this->getUser();
 
-        $signaleur = $rtr->findSignaleurTopic($user,$topic);
+            $signaleur = $rtr->findSignaleurTopic($user,$topic);
 
-        // Met la mauvaise heure : deux heures de moins que l'heure actuelle
-        $now = new \DateTimeImmutable();
+            // Met la mauvaise heure : deux heures de moins que l'heure actuelle
+            $now = new \DateTimeImmutable();
 
-        if($signaleur != null){
+            if($signaleur != null){
 
-            $rtr->remove($signaleur, $flush = true);
+                $rtr->remove($signaleur, $flush = true);
 
-        }else{
-            $report = new ReportTopic();
-            $report->setSignaleur($user);
-            $report->setTopic($topic);
-            $report->setDateCreation($now);
-            $rtr->save($report, $flush = true);
+            }else{
+                $report = new ReportTopic();
+                $report->setSignaleur($user);
+                $report->setTopic($topic);
+                $report->setDateCreation($now);
+                $rtr->save($report, $flush = true);
+            }
+
+
+            return new JsonResponse([
+                'content' => 'signalement effectué',
+
+            ]); 
+            // return $this->redirectToRoute(
+            //     'show_topic',
+            //     ['slug' => $topic->getSlug()]
+            // );   
         }
 
+        return $this->redirectToRoute('app_home');  
 
-        return new JsonResponse([
-            'content' => 'signalement effectué',
-
-        ]); 
-        // return $this->redirectToRoute(
-        //     'show_topic',
-        //     ['slug' => $topic->getSlug()]
-        // );   
     }
 
     #[Route('/report/post/{id}', name: 'app_report_post')]
     public function reportPost(Post $post, ReportPostRepository $rpr, Request $request): Response
     {
         
-        $user = $this->getUser();
+        if($this->getUser() != $post->getAuteur()){
+            $user = $this->getUser();
 
-        $signaleur = $rpr->findSignaleurPost($user,$post);
+            $signaleur = $rpr->findSignaleurPost($user,$post);
 
-        // Met la mauvaise heure : deux heures de moins que l'heure actuelle
-        $now = new \DateTimeImmutable();
+            // Met la mauvaise heure : deux heures de moins que l'heure actuelle
+            $now = new \DateTimeImmutable();
 
-        if($signaleur != null){
+            if($signaleur != null){
 
-            $rpr->remove($signaleur, $flush = true);
+                $rpr->remove($signaleur, $flush = true);
 
-        }else{
-            $report = new ReportPost();
-            $report->setSignaleur($user);
-            $report->setPost($post);
-            $report->setDateCreation($now);
-            $rpr->save($report, $flush = true);
+            }else{
+                $report = new ReportPost();
+                $report->setSignaleur($user);
+                $report->setPost($post);
+                $report->setDateCreation($now);
+                $rpr->save($report, $flush = true);
+            }
+
+            // return $this->redirectToRoute(
+            //     'show_topic',
+            //     ['slug' => $post->getTopic()->getSlug()]
+            // );   
+
+            return new JsonResponse([
+                'content' => 'signalement effectué',
+
+            ]); 
         }
 
-        // return $this->redirectToRoute(
-        //     'show_topic',
-        //     ['slug' => $post->getTopic()->getSlug()]
-        // );   
+        return $this->redirectToRoute('app_home');  
 
-        return new JsonResponse([
-            'content' => 'signalement effectué',
-
-        ]); 
     }
     
     #[Route('/report/mot/{id}', name: 'app_report_mot')]
     public function reportMot(MotCommemoration $mot, ReportMotRepository $rmr, Request $request): Response
     {
         
-        $user = $this->getUser();
+        if($this->getUser() != $mot->getAuteur()){
+            $user = $this->getUser();
 
-        $signaleur = $rmr->findSignaleurMot($user,$mot);
+            $signaleur = $rmr->findSignaleurMot($user,$mot);
 
-        // Met la mauvaise heure : deux heures de moins que l'heure actuelle
-        $now = new \DateTimeImmutable();
+            // Met la mauvaise heure : deux heures de moins que l'heure actuelle
+            $now = new \DateTimeImmutable();
 
-        if($signaleur != null){
+            if($signaleur != null){
 
-            $rmr->remove($signaleur, $flush = true);
+                $rmr->remove($signaleur, $flush = true);
 
-        }else{
-            $report = new ReportMot();
-            $report->setSignaleur($user);
-            $report->setMot($mot);
-            $report->setDateCreation($now);
-            $rmr->save($report, $flush = true);
+            }else{
+                $report = new ReportMot();
+                $report->setSignaleur($user);
+                $report->setMot($mot);
+                $report->setDateCreation($now);
+                $rmr->save($report, $flush = true);
+            }
+
+            return new JsonResponse([
+                'content' => 'signalement effectué',
+
+            ]); 
+
+            // return $this->redirectToRoute(
+            //     'app_mot_commemoration',
+            // );   
         }
 
-        return new JsonResponse([
-            'content' => 'signalement effectué',
+        return $this->redirectToRoute('app_home');  
 
-        ]); 
-
-        // return $this->redirectToRoute(
-        //     'app_mot_commemoration',
-        // );   
     }
 }
