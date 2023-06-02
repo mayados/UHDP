@@ -42,14 +42,28 @@ class MotCommemorationController extends AbstractController
                         // Si c'est le cas on renvoie du JSON
                         return new JsonResponse([
                             'content' => $this->renderView('_partials/_mots.html.twig', ['formAddMot' => $form->createView(), 'mots' => $mcr->findAllPaginated($request->query->getInt('page',1))]),
-                            // 'formCondoleance' => $this->renderView('_partials/_refreshForm.html.twig', ['formCondoleance' => $condoleanceForm->createView()])
-                            // 'bloup'=> 'blou',
                         ]);
                     }
 
                     return $this->redirectToRoute(
                         'app_mot_commemoration',
                     );
+                }else{
+                    // Si le formulaire n'est pas valide et qu'il s'agit d'une requête AJAX
+                    if($request->isXmlHttpRequest()){
+                        $errorMessage ="";
+                        // la fonction getErrors() permet d'obtenir une instance de l'objet FormErrorIterator, pour obtenir le message il faut donc faire appel, pour chaque erreur qu'il pourrait y avoir, à la fonction getMessage()
+                        $errors = $form['mot']->getErrors();
+                        foreach ($errors as $error) {
+                            $errorMessage = $error->getMessage();
+                        };
+
+                        // Si c'est le cas on renvoie du JSON
+                        return new JsonResponse([
+                            'content' => $this->renderView('_partials/_mots.html.twig', ['formAddMot' => $form->createView(), 'mots' => $mcr->findAllPaginated($request->query->getInt('page',1))]),
+                            'error' => $errorMessage,
+                        ]);
+                    }
                 }
 
                 return $this->render('mot_commemoration/mur.html.twig', [

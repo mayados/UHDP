@@ -33,6 +33,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\Form\FormError;
 
 class MemorialController extends AbstractController
 {
@@ -224,14 +225,19 @@ class MemorialController extends AbstractController
 
             }else{
 
-
                 // Si le formulaire n'est pas valide et qu'il s'agit d'une requête AJAX
                 if($request->isXmlHttpRequest()){
+                    $errorMessage ="";
+                    // la fonction getErrors() permet d'obtenir une instance de l'objet FormErrorIterator, pour obtenir le message il faut donc faire appel, pour chaque erreur qu'il pourrait y avoir, à la fonction getMessage()
+                    $errors = $condoleanceForm['texte']->getErrors();
+                    foreach ($errors as $error) {
+                        $errorMessage = $error->getMessage();
+                    };
+
                     // Si c'est le cas on renvoie du JSON
                     return new JsonResponse([
                         'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial,'consultedInCategorie' => $consultedInCategorie, 'formCondoleance' => $condoleanceForm->createView(),'condoleances' => $cr->findCondoleances($memorial)]),
-                        'error' => $this->renderView('_partials/_refreshForm.html.twig', ['formCondoleance' => $condoleanceForm->createView()]),
-                        // 'bloup'=> 'blou',
+                        'error' => $errorMessage,
                     ]);
                 }
 

@@ -194,6 +194,22 @@ class BelleHistoireController extends AbstractController
                         'show_histoire',
                         ['slug' => $histoire->getSlug()]
                     );
+                }else{
+                    // Si le formulaire n'est pas valide et qu'il s'agit d'une requête AJAX
+                    if($request->isXmlHttpRequest()){
+                        $errorMessage ="";
+                        // la fonction getErrors() permet d'obtenir une instance de l'objet FormErrorIterator, pour obtenir le message il faut donc faire appel, pour chaque erreur qu'il pourrait y avoir, à la fonction getMessage()
+                        $errors = $form['texte']->getErrors();
+                        foreach ($errors as $error) {
+                            $errorMessage = $error->getMessage();
+                        };
+
+                        // Si c'est le cas on renvoie du JSON
+                        return new JsonResponse([
+                            'content' => $this->renderView('_partials/_commentaires.html.twig', ['histoire' => $histoire, 'consultedInGenre' => $consultedInGenre,'commentaires' => $cbhr->findCommentaires($histoire,$request->query->getInt('page',1))]),
+                            'error' => $errorMessage,
+                        ]);
+                    }
                 }
     
                 return $this->render('belle_histoire/belleHistoire.html.twig', [
