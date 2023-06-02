@@ -106,6 +106,16 @@ h1{
     color: red;
 }
 
+.js-refresh-page{
+    position: relative;
+}
+
+.corner-flag{
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+}
+
 
                                     /*************  HEADER ET MENU DE NAVIGATION  ************/
 
