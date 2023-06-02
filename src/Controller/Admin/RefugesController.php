@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class RefugeController extends AbstractController
+class RefugesController extends AbstractController
 {
 
     // #[Route('/admin/refuges/liste', name: 'app_admin_refuges_liste')]
@@ -50,7 +50,7 @@ class RefugeController extends AbstractController
             return $this->redirectToRoute('app_admin_refuges_add');
         }
 
-        return $this->render('memorial/add.html.twig', [
+        return $this->render('admin/refuges/add.html.twig', [
             'formAddRefuge' => $form->createView(),
             'edit' => $edit,
             'refuge' => $refuge
