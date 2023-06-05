@@ -186,6 +186,22 @@ nav{
 .footer-cta {
   border-bottom: 1px solid #373636;
 }
+
+.footer-infos{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.footer-info{
+    padding: 1.5rem 0 1.5rem 0;
+}
+
+.footer-content-infos{
+    display: flex;
+    justify-content: space-evenly;
+    gap: 3rem;
+}
+
 .single-cta i {
   color: #ff5e14;
   font-size: 30px;
@@ -209,6 +225,7 @@ nav{
 .footer-content {
   position: relative;
   z-index: 2;
+  padding: 2rem;
 }
 .footer-pattern img {
   position: absolute;
@@ -256,8 +273,8 @@ nav{
 .twitter-bg{
   background: #55ACEE;
 }
-.google-bg{
-  background: #DD4B39;
+.instagram-bg{
+  background: #fb3958;
 }
 .footer-widget-heading h3 {
   color: #fff;
@@ -273,7 +290,7 @@ nav{
   bottom: -15px;
   height: 2px;
   width: 50px;
-  background: #ff5e14;
+  background: var(--couleurPrincipale);
 }
 .footer-widget ul li {
   display: inline-block;
@@ -282,7 +299,7 @@ nav{
   margin-bottom: 12px;
 }
 .footer-widget ul li a:hover{
-  color: #ff5e14;
+  color: var(--couleurPrincipale);
 }
 .footer-widget ul li a {
   color: #878787;
@@ -316,6 +333,13 @@ nav{
   background: #202020;
   padding: 25px 0;
 }
+
+.copyright-infos{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1.5rem 0 1.5rem;
+}
+
 .copyright-text p {
   margin: 0;
   font-size: 14px;
