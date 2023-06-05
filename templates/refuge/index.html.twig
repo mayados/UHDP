@@ -50,9 +50,16 @@
         console.log(refuges)
 
         refuges.forEach(refuge => {
+
+            var numero = "";
+            if(refuge.numero != undefined){
+                numero = refuge.numero
+            }else{
+                numero = "";
+            }
             console.log(refuge.nom)
             var refugePoint = L.marker([refuge.latitude, refuge.longitude], {icon : myIcon}).addTo(map);
-            refugePoint.bindPopup("<b>"+refuge.nom+"</b><br>"+refuge.numero+" "+refuge.rue+"<br>"+refuge.codePostal+" "+refuge.ville+"<br>Site: <a href='"+refuge.site+"' target='_blank'>"+refuge.site+"</a>");
+            refugePoint.bindPopup("<b>"+refuge.nom+"</b><br>"+numero+" "+refuge.rue+"<br>"+refuge.codePostal+" "+refuge.ville+"<br>Site: <a href='"+refuge.site+"' target='_blank'>"+refuge.site+"</a>");
         })
 
     })   
