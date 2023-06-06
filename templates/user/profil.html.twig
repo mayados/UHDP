@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<div class="container-page">
+{# <div class="container-page">
 
     <section id="infos-profil">
         <h1>{{ user.pseudo }}</h1>
@@ -57,12 +57,112 @@
             {% for topic in topics %}
                 <div class="topic-user">
                     <h3>{{ topic.titre }}</h3>    
-                    <a href="{{ path('show_topic', {'id': topic.id}) }}">Voir</a>                
+                    <a href="{{ path('show_topic', {'slug': topic.slug}) }}">Voir</a>                
                 </div>
             {% endfor %}    
             {% else %}
             <p>Pas de topics créés</p>
         {% endif %}  
+    </section>
+
+</div> #}
+
+<div class="container-page profil-page">
+    <div class="banniere-profil">
+        <div class="profil-picture">
+            <figure>
+                {% if not user.photo %}
+                    <img src="{{ asset('img/default_user.png') }}" alt="">
+                {% else %}
+                    <img src="{{ asset('uploads/imgUserProfil/'~ user.photo) }}" alt="">   
+                {% endif %} 
+            </figure>                 
+        </div>
+    </div>
+    <section class="infos-profil">
+        <h1>{{ user.pseudo }}</h1> 
+    </section>
+    <section class="rubriques">
+        <a  href="{{ path('app_conversation', {'id': user.id}) }}"><i class="fa-solid fa-envelope"></i> Envoyer un message</a>
+    </section>
+    <section class="user-memoriaux">
+        <h2>Mémoriaux créés</h2>
+        <div class="container-memoriaux">
+            {% if memoriaux|length > 0 %}
+                {% for memorial in memoriaux %}
+                    {% include '_partials/_memorialCard.html.twig' with {memorial:memorial} only %}
+                {% endfor %}   
+            {% else %}    
+                <p>Pas de mémoriaux créés</p>
+            {% endif %}
+        </div>
+    </section>
+    <section id="histoires-creees">
+        <h2>Belles Histoires créées</h2>
+        {% if histoires | length > 0 %}
+            {% for histoire in histoires %}
+            <article class="belle-histoire-card">
+                <div class="hr-media">
+                    <figure>
+                        {% if histoire.auteur.id != 416 %}
+                        <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire"> 
+                        {% else %} 
+                        <img src="{{histoire.photo}}" alt="photo de l'histoire"> 
+                        {% endif %}
+                    </figure>
+                </div>
+                <div class="hr-content">
+                    <div class="hr-infos">
+                        <p>{{ histoire.genre }}</p>
+                        <p>{{ histoire.dateCreation|date('d-m-Y') }}</p>
+                        <p>{{ histoire.howManyLikes}} <i class="fa-solid fa-paw"></i></p>
+                    </div>
+                    <div class="hr-texte">
+                        <h3><a href="{{path('show_histoire', {'slug': histoire.slug}) }}">{{ histoire.titre }}</a></h3>
+                        <p>{{ histoire.texte|slice(0, 80) }}...</p>
+                    </div>
+                    <div class="hr-auteur">
+                        <figure>
+                            <img src="" alt="">
+                        </figure>
+                        <p>Auteur : {{ histoire.auteur }}</p>
+                    </div>
+                </div>
+                <div class="share-content">
+                    <i class="fa-solid fa-share-nodes"></i>
+                </div>
+            </article>
+            {% endfor %}     
+        {% else %}
+        <p>Pas de belles histoires créées</p>
+        {% endif %}        
+    </section>
+    <section class="user-topics">
+        <h2>Topics créés</h2>
+        {% if topics %}
+            {% for topic in topics %}
+            <div class="topic-user">
+                <div class="topic-infos">
+                    <figure>
+                        <img src="{{ asset('img/default_user.png') }}" alt="">
+                    </figure>
+                    <div class="title-infos">
+                        <a class="topic-title" href="{{path('show_topic', {'slug': topic.slug}) }}">{{ topic.titre }}</a>
+                    </div>
+                </div>
+                <div class="topic-posts">
+                    <i class="fa-regular fa-comment"></i>
+                    <p>{{ topic.howManyPosts }}</p>
+                </div>                 
+            </div>
+            {# <div class="topic-user">
+                <h3>{{ topic.titre }}</h3>
+                <a href="{{path('show_topic', {'slug': topic.slug}) }}">Voir</a>
+            </div> #}
+            {% endfor %}
+        {% else %}
+            <p>Rien à afficher</p>
+        {% endif %}
     </section>
 
 </div>

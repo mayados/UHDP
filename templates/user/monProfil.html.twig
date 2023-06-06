@@ -5,7 +5,7 @@
 {% block body %}
 
 <div class="container-page profil-page">
-    <div id="banniere-mon-profil">
+    <div class="banniere-profil">
         <div class="profil-picture">
             <figure>
                 {% if not user.photo %}
@@ -16,14 +16,14 @@
             </figure>                 
         </div>
     </div>
-    <section id="infos-mon-profil">
+    <section class="infos-profil">
         <h1>{{ user.pseudo }}</h1>
         <a href="{{ path('edit_profile') }}"><i class="fa-solid fa-gear"></i></a>   
     </section>
     <section class="rubriques">
         <a  href="{{path('my_histoires') }}">Gérer mes Belles histoires</a>
     </section>
-    <section id="mes-memoriaux">
+    <section class="user-memoriaux">
         <h2>Mes mémoriaux</h2>
         <div class="container-memoriaux">
             {% if memoriaux|length > 0 %}
@@ -35,7 +35,7 @@
             {% endif %}
         </div>
     </section>
-    <section id="mes-topics">
+    <section class="user-topics">
         <h2>Mes topics</h2>
         {% if topics %}
             {% for topic in topics %}
