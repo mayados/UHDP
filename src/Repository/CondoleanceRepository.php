@@ -80,14 +80,18 @@ class CondoleanceRepository extends ServiceEntityRepository
         return $condoleances;  
     }
 
-    public function findCondoleances($memorial)
+    public function findPaginatedCondoleances($memorial,$page): PaginationInterface
     {
-        return $this->createQueryBuilder('c')
+        $data = $this->createQueryBuilder('c')
         ->where('c.memorial = :memorial')
         ->setParameter('memorial',$memorial)
         ->addOrderBy('c.dateCreation', 'DESC')
         ->getQuery()
         ->getResult();
+
+        $condoleances = $this->paginatorInterface->paginate($data,$page,6);
+
+        return $condoleances;
     }
 
 //    /**
