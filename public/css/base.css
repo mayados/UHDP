@@ -116,6 +116,17 @@ h1{
     top: 1rem;
 }
 
+.logo{
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+
+#logo-link{
+    height: 80%;
+}
+
+
                                     /*************** LEAFLET ********************/
 
 #map{
@@ -353,7 +364,7 @@ nav{
   margin-left: 20px;
 }
 .footer-menu li:hover a{
-  color: #ff5e14;
+  color: var(--couleurPrincipale);
 }
 .footer-menu li a {
   font-size: 14px;
@@ -411,7 +422,9 @@ nav{
 
 #form-login,
 #form-register,
-#form-post{
+#form-post,
+#form-send-mail,
+#form-reset{
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     width: 400px;
     padding: 30px 30px 50px 30px;
@@ -438,7 +451,9 @@ nav{
 #form-infos-password .form-element div,
 #form-post .form-element div,
 #form-commentaire .form-element div,
-#form-mot .form-element div{
+#form-mot .form-element div
+#form-send-mail .form-element div,
+#form-reset .form-element div{
     display: flex;
     flex-direction: column;
     padding-top: 20px;
@@ -454,7 +469,9 @@ nav{
 #form-login input,
 #form-register input,
 #form-topic input,
-#form-post input{
+#form-post input
+#form-send-mail input,
+#form-reset input{
     height: 2.5rem;
     border: none;
     padding-left: 10px;
@@ -462,7 +479,9 @@ nav{
 }
 
 #form-login button,
-#form-register button{
+#form-register button,
+#form-send-mail button,
+#form-reset button{
     margin: 25px 0 25px 0;
     height: 2.5rem;
     width: 100%;
@@ -1888,14 +1907,14 @@ nav{
 
                                                                 /****** VUES CONCERNANT LES USER ******/
 
-        /*** PAGE MON PROFIL *****/
+        /*** PAGE MON PROFIL ET PROFIL USER *****/
 
 .profil-page{
     background-color: #FAE5D3;
     /* background-color: #D3FFF9; */
 }
 
-#banniere-mon-profil{
+.banniere-profil{
     height: 20vh;
     display: flex;
     justify-content: center;
@@ -1933,7 +1952,7 @@ nav{
     height: 100%;
 }
 
-#infos-mon-profil a{
+.infos-profil a{
     position: absolute;
     top: 22vh;
     right: 20px;
@@ -1952,14 +1971,16 @@ nav{
     padding: 5px 10px 5px 10px;
 }
 
-#mes-memoriaux,
-#mes-topics,
-#mes-favoris{
+.user-memoriaux,
+.user-topics,
+#mes-favoris,
+#histoires-creees{
     text-align: center;
     padding: 3rem 0 3rem 0;    
 }
 
-#mes-topics{
+.user-topics,
+#histoires-creees{
     display: flex;
     flex-direction: column;
     align-items: center;    
@@ -2321,6 +2342,26 @@ nav{
 
 /* Large (min-width : 992px & max-width : 1200px) */  
 @media screen and (max-width: 1200px) {
+
+    .copyright-infos{
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        justify-content: space-between;
+        padding: 0 1.5rem 0 1.5rem;
+    }
+
+    .footer-content-infos{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        gap: 3rem;
+    }
+    
+    #logo-link{
+        height: 3rem;
+        border: 1px solid blue;
+    }
 
         /* HEADER */
 
