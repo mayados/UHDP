@@ -13,7 +13,7 @@
             <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
             integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
             crossorigin=""/>
-
+            <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/">
         {% endblock %}
 
         {% block javascripts %}
@@ -55,8 +55,9 @@
             </div>
             <nav class="nav-bar">
                 <ul id="nav-menu">
-                    <li>
-                        <a href="{{ path('app_home') }}">Accueil</a>
+                    <li id="logo-link">
+                        <a href="{{ path('app_home') }}"><img src="{{ asset('img/patte_uhdp_logo.png') }}" class="logo" alt="logo">
+                    </a>
                         <i class="fa-solid fa-paw"></i>
                     </li>
                     <li>
@@ -180,7 +181,7 @@
                         <div class="col-xl-4 col-lg-4 mb-50">
                             <div class="footer-widget">
                                 <div class="footer-logo">
-                                    <a href="index.html"><img src="https://i.ibb.co/QDy827D/ak-logo.png" class="img-fluid" alt="logo"></a>
+                                    <a href="index.html"><img src="{{ asset('img/patte_uhdp_logo.png') }}" class="img-fluid" alt="logo"></a>
                                 </div>
                                 <div class="footer-text">
                                     <p>Une Histoire de Pattes, votre cimetière virtuel pour animaux et espace social face à la perte de votre animal.</p>
@@ -236,7 +237,7 @@
                     <div class="copyright-infos">
                         <div class="col-xl-6 col-lg-6 text-center text-lg-left">
                             <div class="copyright-text">
-                                <p>Copyright &copy; 2023, All Right Reserved - Une Histoire de Pattes </p>
+                                <p>Copyright &copy; 2023, Tous droits réservés - Une Histoire de Pattes </p>
                             </div>
                         </div>
                         <div class="col-xl-6 col-lg-6 d-none d-lg-block text-right">
