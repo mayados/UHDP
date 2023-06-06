@@ -1,6 +1,7 @@
 import Like from './Like.js'
 import Modify from './Modify.js'
 import Delete from './Delete.js'
+import Report from './Report.js'
 
 
 /**
@@ -159,6 +160,11 @@ export default class Submit {
           }
 
           
+          const reportElements = [].slice.call(document.querySelectorAll('.report-flag'));
+          if(reportElements){
+              new Report(reportElements);
+          }
+
           // S'il y a des erreurs
           if (data.error != undefined) {
 
