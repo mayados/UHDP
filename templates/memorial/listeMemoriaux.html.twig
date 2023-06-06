@@ -36,7 +36,10 @@
     </section>
     <section id="nous-pensons-a-eux">
         {% if souvenirs != null %}
-        <h2>Nous pensons à eux</h2>        
+        {% set month = 'now'|date('F')|format_datetime(locale='fr',pattern="MMMM") %}        
+        <h2>Ils ont rejoint les étoiles un mois de {{ month }}</h2>    
+
+    
         <div class="container-memoriaux">
             {% for souvenir in souvenirs %}
             <div class="memorial-month-card">
