@@ -21,4 +21,12 @@ class HomeController extends AbstractController
             'dernieresHistoires' => $dernieresHistoires,
         ]);
     }
+
+    #[Route('/notre/histoire', name: 'app_notre_histoire')]
+    public function showNotreHistoire()
+    {
+
+        return $this->render('notreHistoire/notreHistoire.html.twig');
+    }
+
 }
