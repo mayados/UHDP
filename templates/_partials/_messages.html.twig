@@ -5,11 +5,22 @@
                 <div class="mon-message">
                     <p>{{ message.texte|raw }}</p>
                     <a class="delete" href="{{path('remove_message', {'idConversation' : message.destinataire.id, 'id': message.id}) }}"><i class="fa-solid fa-trash"></i></a>
+                    <p>{{ message.dateCreation | date('d-m-Y') }} à {{ message.dateCreation | date('H:i:s')  }}</p> 
+                    {% if message.isRead == true %}         
+                        <p>Lu</p>    
+                    {% else %}
+                        <p>Non lu</p>
+                    {% endif %}
                 </div>
             {% else %}
                 <div class="correspondant-message">
                     <p>{{ message.texte|raw }}</p>
-                    <a href="{{path('message_signal', {'id': message.id}) }}"><i class="fa-solid fa-flag"></i></a>                
+                {% if message.isSignaled == true %}
+                    <a class="report-flag corner-flag" href="{{ path('message_signal', {'id': message.id}) }}"><i class="fa-solid fa-flag flag-report-icon reported"></i></a> 
+                {% elseif message.isSignaled == false %}
+                    <a class="report-flag corner-flag" href="{{ path('message_signal', {'id': message.id}) }}"><i class="fa-solid fa-flag flag-report-icon unreported"></i></a>   
+                {% endif %}                     
+                    <p>{{ message.dateCreation | date('d-m-Y') }} à {{ message.dateCreation | date('H:i:s')  }}</p> 
                 </div>
             {% endif %}
         {% endfor %}
