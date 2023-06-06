@@ -87,6 +87,11 @@ class MessagerieController extends AbstractController
 
         $expediteur =$message->getExpediteur()->getId();
 
+        return new JsonResponse([
+            'content' => 'signalement effectué',
+
+        ]); 
+
         $this->addFlash('success', 'Le message a été signalé');
         return $this->redirectToRoute('app_conversation',
         ['id' => $expediteur]); 
