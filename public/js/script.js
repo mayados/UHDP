@@ -15,15 +15,24 @@ new Filter(document.querySelector('.js-filter'))
 
 new Submit(document.querySelector('.js-refresh-page'))
 
-
 // new Modify(document.querySelector('.js-modify-page'))
 // console.log(document.querySelector('.js-modify-page'))
 
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    console.log(CKEDITOR.instances)
+    // console.log(CKEDITOR.instances)
     // Menu burger
+
+    var shareCircles = document.querySelectorAll('.share-content')
+    if(shareCircles){
+        shareCircles.forEach(function(circle){
+            circle.addEventListener('click', function() {
+                console.log("je veux déplier les fonctions de partage")
+            })
+        })
+    }
+
 
     var toggleButton = document.querySelector('.toggle-menu');
     var navBar = document.querySelector('.nav-bar');
