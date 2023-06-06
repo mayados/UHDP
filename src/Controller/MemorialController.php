@@ -185,7 +185,7 @@ class MemorialController extends AbstractController
         $condoleance = new Condoleance();
         $condoleanceForm = $this->createForm(CondoleanceType::class,$condoleance);
             // $editCondoleanceForm = $this->createForm(CondoleanceType::class,$condoleance);       
-        $condoleances = $cr->findCondoleances($memorial);
+        $condoleances = $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1));
         // $editCondoleanceForm = $this->createForm(CondoleanceType::class,$condoleance); 
 
         if($this->getUser()){
