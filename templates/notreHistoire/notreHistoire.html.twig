@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Notre histoire{% endblock %}
+
+{% block body %}
+
+<div class="container-page">
+    <section id="banniere-notre-histoire">
+        <h1>Notre histoire</h1>        
+    </section>
+    <section id="notre-histoire-presentation">
+        <article>
+            <p>Une Histoire de Pattes est né dans l'esprit de sa créatrice quelques années après le décès de Péki, son fidèle chien. Ayant toujours l'envie que Péki, mais également tous les autres compagnons partis trop tôt, ne soient pas oubliés dans le temps, et afin de ne pas se sentir seule lorsque cela lui revient brutalement, le site a été créé.<br>
+            Même si le déclencheur fût Péki, ce site a été réalisé en hommage à plusieurs compagnons tels que : Gringow, Kurty-Django, Bill, Anna, Caramel..
+            </p>
+            <div id="container-img-initiateurs">
+                <figure>
+                    <img src="{{ asset('img/default_user.png') }}" alt="">
+                    <figcaption>Péki</figcaption>
+                </figure>
+                <figure>
+                    <img src="" alt="">
+                    <figcaption>Gringow</figcaption>
+                </figure>
+                <figure>
+                    <img src="" alt="">
+                    <figcaption>Bill</figcaption>
+                </figure>
+            </div>
+            <p>N'hésitez pas à publier sur le site. Votre amitié, à vous et votre compagnon, ne sera pas oubliée et pourrait ensoleiller la journée d'une personne.</p>
+        </article>
+    </section>
+</div>
+{% endblock %}
