@@ -36,14 +36,6 @@
         maxZoom: 19,
     }).addTo(map);
 
-
-
-  /*  var markers = L.markerClusterGroup({
-        iconCreateFunction: function(cluster) {
-            return L.divIcon({ html: '<b>' + cluster.getChildCount() + '</b>' });
-        }
-    });*/
-
      fetch("http://127.0.1:8000/api/refuges")
         // On crée une variable réponse par rapport aux éléments du dessus, qui va être transformée en json
     .then( (response) => response.json())
@@ -58,7 +50,7 @@
         console.log(refuges)
 
         var markers = L.markerClusterGroup();
-        //var featuresGroupMarkers = L.FeatureGroup();
+        var bounds = L.latLngBounds()
 
         refuges.forEach(refuge => {
 
@@ -71,13 +63,14 @@
             console.log(refuge.nom)
             
             var refugePoint = L.marker([refuge.latitude, refuge.longitude], {icon : myIcon}).addTo(map);
-            refugePoint.bindPopup("<b>"+refuge.nom+"</b><br>"+numero+" "+refuge.rue+"<br>"+refuge.codePostal+" "+refuge.ville+"<br>Site: <a href='"+refuge.site+"' target='_blank'>"+refuge.site+"</a>");
+            bounds.extend([refuge.latitude, refuge.longitude])
+           // refugePoint.bindPopup("<b>"+refuge.nom+"</b><br>"+numero+" "+refuge.rue+"<br>"+refuge.codePostal+" "+refuge.ville+"<br>Site: <a href='"+refuge.site+"' target='_blank'>"+refuge.site+"</a>");
             markers.addLayer(refugePoint.bindPopup("<b>"+refuge.nom+"</b><br>"+numero+" "+refuge.rue+"<br>"+refuge.codePostal+" "+refuge.ville+"<br>Site: <a href='"+refuge.site+"' target='_blank'>"+refuge.site+"</a>"))
-           // featuresGroupMarkers.addLayer(refugePoint.bindPopup("<b>"+refuge.nom+"</b><br>"+numero+" "+refuge.rue+"<br>"+refuge.codePostal+" "+refuge.ville+"<br>Site: <a href='"+refuge.site+"' target='_blank'>"+refuge.site+"</a>"))
         })
 
         map.addLayer(markers);
-       // map.fitBounds(featuresGroupMarkers)
+        // fitBounds permet d'afficher directement le rayon que couvrent les différents marqueurs : tous les marqueurs seront visibles de suite
+       map.fitBounds(bounds)
 
     })   
 </script>
