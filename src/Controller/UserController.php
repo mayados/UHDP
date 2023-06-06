@@ -102,7 +102,7 @@ class UserController extends AbstractController
 
     #[Route('/user/parametres', name: 'edit_profile')]
     #[Security("is_granted('ROLE_USER')")]
-    public function editProfile(UploaderService $uploaderService, Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $hasher)
+    public function editProfile(UploaderService $uploaderService, Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $hasher, TopicRepository $tr)
     {
 
         $user = $this->getUser();
@@ -158,8 +158,7 @@ class UserController extends AbstractController
                 $this->addFlash('success', 'Votre mot de passe a bien été modifié');
 
                 return $this->redirectToRoute(
-                    'show_profile',
-                    ['id' => $user->getId()]
+                    'my_profile',
                 );
 
             }else{
