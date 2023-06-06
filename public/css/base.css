@@ -1,7 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Upright:wght@300;400;500;600;700&display=swap');
+
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /* font-family: 'Cormorant Upright';
+    font-weight: 400; */
 }
 
 
@@ -146,6 +150,8 @@ h1{
     z-index: 999;
     top: 0;
     left: 0;
+    font-family: 'Cormorant Upright';
+    font-weight: 700;
 }
 
 nav{
@@ -396,6 +402,14 @@ nav{
 }
 
 
+                                    /********  SHARE  **********/
+
+.share-content-inner{
+    display: none;
+}
+
+
+
                                         /*************  COMMUN FORMULAIRES & LOGIN FORM & REGISTER FORM **************/
 
 .modify-form{
@@ -471,7 +485,9 @@ nav{
 #form-topic input,
 #form-post input
 #form-send-mail input,
-#form-reset input{
+#form-reset input,
+#form-infos-profil input,
+#form-infos-password input{
     height: 2.5rem;
     border: none;
     padding-left: 10px;
@@ -481,7 +497,9 @@ nav{
 #form-login button,
 #form-register button,
 #form-send-mail button,
-#form-reset button{
+#form-reset button,
+#form-infos-profil button,
+#form-infos-password button{
     margin: 25px 0 25px 0;
     height: 2.5rem;
     width: 100%;
@@ -512,23 +530,12 @@ nav{
     padding-bottom: 5%;
 }
 
- /* #bienvenue #bienvenue-sides{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 2.5% 0 2.5%;
-    gap: 20px;
+#texte-accueil-uhdp .texte p,
+#explications-memoriaux,
+#explications-histoires{
+    font-family: 'Cormorant Upright';
+    font-weight: 600;
 }
-
-#uhdp-description{
-    flex: 1.3;
-    min-height: 500px;
-    text-align: justify;
-    display: flex;
-    align-items: center;
-    font-size: 1.4rem;
-    padding: 20px 0 20px 20px;
-}  */
 
 #bienvenue #carousel{
     position: relative;
@@ -1768,6 +1775,46 @@ nav{
     border: 1px solid var(--couleurPrincipale);
 }
 
+                                                        /********* VUE CONCERNANT LA PAGE NOTRE HISTOIRE *************/
+#banniere-notre-histoire{
+    height: 25vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../img/beige_shape.png");
+    background-size: 100% 98%;
+    /* padding-bottom: 5%; */
+    background-repeat: no-repeat;
+}
+
+#notre-histoire-presentation{
+    padding: 1rem 2rem 1rem 2rem;
+}
+
+#container-img-initiateurs{
+    display: flex;
+    justify-content: space-evenly;
+    padding: 2rem 0 2rem 0;
+}
+
+#container-img-initiateurs figure{
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    height: 200px;
+    width: 200px;
+}
+
+#container-img-initiateurs figure img{
+    height: 90%;
+    width: 100%;
+    object-fit: contain;
+}
+
+#container-img-initiateurs figcaption{
+    text-align: center;
+    padding-bottom: 1rem;
+}
+
+
 
                                                             /****** VUES CONCERNANT LA MESSAGERIE ******/
 
@@ -2057,6 +2104,25 @@ nav{
 .nothing{
     padding: 2rem;
 }
+
+
+/* PAGE DE PARAMETRES PROFIL */
+#delete-account{
+    padding: 5px 10px 5px 10px;
+    background-color: rgb(226, 52, 52);
+    margin-bottom: 2rem;
+    border: 1px solid black;
+    border-radius: 10px;
+    color: white;
+}
+
+#delete-account:hover{
+    background-color: white;
+    color: rgb(226, 52, 52);
+    border: 1px solid rgb(226, 52, 52);
+}
+
+
 
                                                                 /******* VUES CONCERNANT LE MUR DE COMMEMORATION ********/
 
