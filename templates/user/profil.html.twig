@@ -4,69 +4,6 @@
 
 {% block body %}
 
-{# <div class="container-page">
-
-    <section id="infos-profil">
-        <h1>{{ user.pseudo }}</h1>
-        <figure>
-            {% if not user.photo %}
-                <img src="{{ asset('img/default_user.png') }}" alt="">
-            {% else %}
-                <img src="{{ asset('uploads/imgGalerie/'~ user.photo) }}" alt="">   
-            {% endif %}  
-        </figure>   
-    </section>
-    <a href="{{ path('app_conversation', {'id': user.id}) }}"><i class="fa-solid fa-envelope"></i></a>
-    <section id="memoriaux-crees">
-        <h2>Mémoriaux créés</h2>
-        {% if memoriaux | length > 0 %}
-            {% for memorial in memoriaux %}
-                <div class="memorial-user">
-                    <h3>{{ memorial.nom }}</h3>
-                    <figure>
-                        <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="">                    
-                    </figure>            
-                    <a href="{{ path('show_memorial', {'id': memorial.id}) }}">Voir le mémorial</a>                
-                </div>
-            {% endfor %}    
-        {% else %}
-            <p>Pas de mémoriaux créés</p>
-        {% endif %}        
-    </section>
-
-    <section id="histoires-creees">
-        <h2>Belles Histoires créées</h2>
-        {% if histoires | length > 0 %}
-            {% for histoire in histoires %}
-                <div class="histoire-user">
-                    <h3>{{ histoire.titre }}</h3>    
-                    <figure>
-                        <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="">                    
-                    </figure>        
-                    <a href="{{ path('show_histoire', {'id': histoire.id}) }}">Lire l'histoire</a>                
-                </div>
-            {% endfor %}    
-        {% else %}
-        <p>Pas de belles histoires créées</p>
-        {% endif %}        
-    </section>
-
-    <section id="topics-crees">
-        <h2>Topics créés</h2>
-        {% if topics | length > 0 %}
-            {% for topic in topics %}
-                <div class="topic-user">
-                    <h3>{{ topic.titre }}</h3>    
-                    <a href="{{ path('show_topic', {'slug': topic.slug}) }}">Voir</a>                
-                </div>
-            {% endfor %}    
-            {% else %}
-            <p>Pas de topics créés</p>
-        {% endif %}  
-    </section>
-
-</div> #}
-
 <div class="container-page profil-page">
     <div class="banniere-profil">
         <div class="profil-picture">
@@ -119,7 +56,7 @@
                     </div>
                     <div class="hr-texte">
                         <h3><a href="{{path('show_histoire', {'slug': histoire.slug}) }}">{{ histoire.titre }}</a></h3>
-                        <p>{{ histoire.texte|slice(0, 80) }}...</p>
+                        <p>{{ histoire.texte|slice(0, 80)|raw }}...</p>
                     </div>
                     <div class="hr-auteur">
                         <figure>
