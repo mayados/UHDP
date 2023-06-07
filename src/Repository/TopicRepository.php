@@ -41,6 +41,23 @@ class TopicRepository extends ServiceEntityRepository
         }
     }
 
+    public function searchTopic($mot,$page): PaginationInterface
+    {
+        if($mot != null){
+            $data = $this->createQueryBuilder('t')
+            ->where('t.titre LIKE :mot')
+            ->setParameter('mot',"%{$mot}%")
+            ->getQuery()
+            ->getResult();
+
+            $topics = $this->paginatorInterface->paginate($data,$page,16);
+
+            return $topics;            
+        }
+
+
+    }
+
     public function findPaginatedTopics($page): PaginationInterface
     {
         $data = $this->createQueryBuilder('t')
