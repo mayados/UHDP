@@ -1640,6 +1640,31 @@ nav{
     background-size: 100% 98%;
 }
 
+#topic-search{
+    padding: 1rem 0 2rem 0;
+}
+
+#topic-search,
+#topic-search form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#topic-search form button,
+#topic-search form input,
+#topic-search a{
+    padding: 5px 10px 5px 10px;
+}
+
+#topic-search a{
+    margin-left: 2rem;
+    background-color: red;
+    color: white;
+    border-radius: 5px;
+    border: 1px solid white;
+}
+
 #topics{
     margin: 0 10vh 0 10vh;
 }
@@ -1798,9 +1823,11 @@ nav{
 }
 
 #container-img-initiateurs figure{
-    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
-    height: 200px;
-    width: 200px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    height: 300px;
+    width: 300px;
+    padding: 1rem;
+    border-radius: 5px;
 }
 
 #container-img-initiateurs figure img{
@@ -2120,6 +2147,18 @@ nav{
     background-color: white;
     color: rgb(226, 52, 52);
     border: 1px solid rgb(226, 52, 52);
+}
+
+#delete-account-dialog{
+    background-color: orange;
+    margin: auto auto;
+    height: 200px;
+    width: 320px;
+    padding: 10px;
+}
+
+#delete-account-dialog p{
+    text-align: center;
 }
 
 
@@ -2832,6 +2871,15 @@ nav{
 
 
     /* PAGE FORUM */
+
+    #topic-search{
+        flex-direction: column;
+    }
+
+    #topic-search a{
+        margin-top: 2rem;
+        margin-left: inherit;
+    }
 
     /* .forum-page{
         padding: 3vh 1vh 0 1vh;
