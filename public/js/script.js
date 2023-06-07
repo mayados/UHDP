@@ -23,6 +23,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // console.log(CKEDITOR.instances)
     // Menu burger
+    
+    
+    let preDeleteButton = document.getElementById('delete-account');
+    if(preDeleteButton){
+        let dialog = document.getElementById('delete-account-dialog');
+        let annuler = document.getElementById('annuler')
+        // Le bouton "Mettre à jour les détails" ouvre le <dialogue> ; modulaire
+        preDeleteButton.addEventListener('click', function onOpen() {
+        if (typeof dialog.showModal === "function") {
+            dialog.showModal();
+        } else {
+            console.error("L'API <dialog> n'est pas prise en charge par ce navigateur.");
+        }
+        });        
+    }
+
 
     var shareCircles = document.querySelectorAll('.share-content')
     if(shareCircles){
