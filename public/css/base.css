@@ -406,6 +406,29 @@ nav{
 
 .share-content-inner{
     display: none;
+
+}
+
+.share-content-inner-open{
+    gap: 10px;
+    text-align: center;    
+    display: flex;
+    flex-direction: column;
+}
+
+.share-content-open{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 90px;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
 
 
@@ -972,12 +995,12 @@ nav{
     align-items: center;
     flex-wrap: wrap;
     padding: 20px 10px 20px 10px;
-    width: 350px;
+    width: 250px;
 }
 
 .memorial-month-card figure{
-    height: 300px;
-    width: 300px;
+    height: 200px;
+    width: 200px;
     border-radius: 50%;
     border: 2px solid rgb(194, 194, 194);
     overflow: hidden;
@@ -1009,8 +1032,12 @@ nav{
     margin-top: 50px;
 }
 
-.memorial-card a,
-.memorial-month-card a {
+.memorial-month-card a{
+    height: 100%;
+    width: 200px;
+}
+
+.memorial-card a{
     height: 100%;
     width: 300px;
 }
@@ -2150,7 +2177,7 @@ nav{
 }
 
 #delete-account-dialog{
-    background-color: orange;
+    background-color: white;
     margin: auto auto;
     height: 200px;
     width: 320px;
@@ -2161,6 +2188,43 @@ nav{
     text-align: center;
 }
 
+#form-delete-account{
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#supprimer-compte,
+#annuler{
+    padding: 5px 10px 5px 10px;
+    border-radius: 5px;
+    border: 1px solid white;
+}
+
+#supprimer-compte{
+    color: white;
+    background-color: red;
+}
+
+#annuler{
+    color: white;
+    background-color: var(--couleurPrincipale);
+}
+
+#supprimer-compte:hover{
+    color: red;
+    border: 1px solid red;
+    background-color: white;
+    cursor: pointer;
+}
+
+#annuler:hover{
+    border: 1px solid var(--couleurPrincipale);
+    color: var(--couleurPrincipale);
+    background-color: white;
+    cursor: pointer;
+}
 
 
                                                                 /******* VUES CONCERNANT LE MUR DE COMMEMORATION ********/
@@ -2465,7 +2529,6 @@ nav{
     
     #logo-link{
         height: 3rem;
-        border: 1px solid blue;
     }
 
         /* HEADER */
