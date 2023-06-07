@@ -32,9 +32,9 @@
                 <div class="comment-infos">
                     {# {{ dump(commentaire.id) }} #}
                     {% if commentaire.auteur != null %}
-                        <p>{{ commentaire.auteur }}</p></p>
+                        <a href="{{ path('show_profile', {'id': commentaire.auteur.id}) }}">{{ commentaire.auteur }}</a>
                     {% else %}
-                        <p>(Utilisateur supprimé)</p>
+                        <p>Utilisateur supprimé</p>
                     {% endif %}     
                     <p>{{ commentaire.dateCreation | date('d-m-Y') }}</p>              
                 </div>                 
