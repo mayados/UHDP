@@ -49,7 +49,9 @@ class UserEditPasswordType extends AbstractType
                 'second_options' => ['label' => 'Répéter le nouveau mot de passe'],
 
             ])
-            ->add('submit', SubmitType::class)
+            ->add('submit', SubmitType::class, [
+                'label' => 'Modifier',
+            ])
         ;
     }
 
