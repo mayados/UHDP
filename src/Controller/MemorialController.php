@@ -201,7 +201,7 @@ class MemorialController extends AbstractController
                 if($request->isXmlHttpRequest()){
                     // Si c'est le cas on renvoie du JSON
                     return new JsonResponse([
-                        'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial,'formCondoleance' => $condoleanceForm->createView(),'consultedInCategorie' => $consultedInCategorie, 'condoleances' => $cr->findCondoleances($memorial)]),
+                        'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial,'formCondoleance' => $condoleanceForm->createView(),'consultedInCategorie' => $consultedInCategorie, 'condoleances' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1))]),
                         // 'formCondoleance' => $this->renderView('_partials/_refreshForm.html.twig', ['formCondoleance' => $condoleanceForm->createView()])
                         // 'bloup'=> 'blou',
                     ]);
@@ -415,7 +415,7 @@ class MemorialController extends AbstractController
     #[ParamConverter("condoleance", options: ["mapping" => ["id" => "id"]])]
     #[ParamConverter("categorie", options: ["mapping" => ["idCategorie" => "id"]])]
     #[Security("is_granted('ROLE_USER') and user === condoleance.getAuteur()", message:"Accès non autorisé.")]
-    public function removeCondoleance(CondoleanceRepository $cr, CategorieAnimal $categorie = null, Condoleance $condoleance, AnimalMemorial $memorial, AnimalMemorialRepository $amr)
+    public function removeCondoleance(CondoleanceRepository $cr, CategorieAnimal $categorie = null, Condoleance $condoleance, AnimalMemorial $memorial, AnimalMemorialRepository $amr, Request $request)
     {
         $condoleance = $cr->find($condoleance->getId());
 
@@ -430,7 +430,7 @@ class MemorialController extends AbstractController
             //     ['id' => $memorial->getId()]
             // );           
             return new JsonResponse([
-                'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, "condoleances" => $cr->findCondoleances($memorial), 'consultedInCategorie' => false]),
+                'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, "condoleances" => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)), 'consultedInCategorie' => false]),
 
             ]);        
         }
