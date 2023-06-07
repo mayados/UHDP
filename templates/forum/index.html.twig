@@ -15,6 +15,14 @@
             </p>            
         </div>
     </section>
+    <section id="topic-search">
+        {{ form_start(form) }}
+            {{ form_row(form.mot) }}
+            {{ form_row(form.submit) }}
+        {{ form_end(form) }}
+        <a href="{{ path('app_forum') }}">supprimer la recherche</a>        
+    </section>
+
     <section class="creation">
         {% if app.user.isVerified %}
             <a href="{{ path('add_topic') }}">Créer un topic</a>
@@ -33,7 +41,7 @@
                             <div class="title-infos">
                                 <a class="topic-title" href="{{path('show_topic', {'slug': topic.slug}) }}">{{ topic.titre }}</a>
                                 {% if topic.auteur != null %}                              
-                                    <p class="infos-crea">Créé par <a href="#">{{ topic.auteur }}</a> le {{ topic.dateCreation | date('d-m-Y') }}</p> 
+                                    <p class="infos-crea">Créé par <a href="{{ path('show_profile', {'id': topic.auteur.id}) }}">{{ topic.auteur }}</a> le {{ topic.dateCreation | date('d-m-Y') }}</p> 
                                 {% else %}
                                 <p>Créé par utilisateur supprimé le {{ topic.dateCreation | date('d-m-Y') }}</p>
                                 {% endif %}    
