@@ -10,7 +10,7 @@
     </section>
     <section id="genres-histoires">
         {% for genre in genres %}
-            <a href="">{{ genre.nom }}</a>
+            <a href="{{ path('app_belles_histoires_genre', {'id': genre.id}) }}">{{ genre.nom }}</a>
         {% endfor %}
     </section>    
     <section class="creation">
@@ -45,7 +45,7 @@
                         </div>
                         <div class="hr-texte">
                             <h3><a href="{{path('show_histoire_genre', { 'idGenre': genre.id ,'slug': histoire.slug}) }}">{{ histoire.titre }}</a></h3>
-                            <p>{{ histoire.texte|slice(0, 80) }}...</p>
+                            <p>{{ histoire.texte|slice(0, 80)|raw }}...</p>
                         </div>
                         <div class="hr-auteur">
                             <figure>
