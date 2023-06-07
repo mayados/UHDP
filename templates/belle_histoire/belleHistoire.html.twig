@@ -147,6 +147,10 @@
                     </div>
                     <div class="share-content">
                         <i class="fa-solid fa-share-nodes"></i>
+                        <div class="share-content-inner">
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ absolute_url(path('show_histoire', {slug: histoire.slug})) }}" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                            <a href="https://www.twitter.com/intent/tweet?text={{ histoire.titre|url_encode }}%20{{ absolute_url(path('show_histoire', {slug: histoire.slug})) }}%20UneHistoireDePattes" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+                        </div>     
                     </div>
                 </article>
             {% endfor %}        

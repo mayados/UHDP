@@ -3,10 +3,11 @@
 {% block title %}Accueil{% endblock %}
 
 
-{% block javascripts %}
+{# {% block javascripts %} #}
 {# Ajouter defer pour éviter que le script ne s'éxecute avant le chargement du document #}
- <script src="{{ asset('js/home.js')}}" defer></script>
-{% endblock %}
+{# <script src="{{ asset('js/script.js')}}" defer type="module"></script> #}
+ {# <script src="{{ asset('js/home.js')}}" defer></script> #}
+{# {% endblock %} #}
 {# {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/base.css') }}">
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
@@ -61,16 +62,7 @@
             <i  id="nav-gauche" class="fa-solid fa-paw"></i>
             <i id="nav-droite" class="fa-solid fa-paw"></i>
     </div>
-    {# <div id="bienvenue-sides">
-        <article id="uhdp-description">
-            <p>Une Histoire De Pattes est Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sapien pellentesque habitant morbi tristique senectus et netus et. Amet consectetur adipiscing elit duis tristique sollicitudin. Pulvinar proin gravida hendrerit lectus a. Venenatis tellus in metus vulputate eu scelerisque felis imperdiet. Placerat duis ultricies lacus sed. Pharetra massa massa ultricies mi quis hendrerit dolor magna. Tortor id aliquet lectus proin nibh nisl condimentum id venenatis. Vitae elementum curabitur vitae nunc sed velit. Id aliquet risus feugiat in ante. Nisl condimentum id venenatis a condimentum vitae sapien. Enim praesent elementum facilisis leo. Neque volutpat ac tincidunt vitae semper quis lectus. Orci nulla pellentesque dignissim enim sit. Cras tincidunt lobortis feugiat vivamus. Elementum tempus egestas sed sed risus pretium quam vulputate dignissim. Posuere morbi leo urna molestie at elementum eu facilisis sed. Urna cursus eget nunc scelerisque viverra mauris in aliquam.</p>
-        </article>  
-        <figure>
-            <img src="{{ asset('img/dog-bg.png') }}" alt="">
-        </figure>      
-    </div> #}
     </section>
-         
     <section  id="texte-accueil-uhdp">
         <div class="texte">
             <p>
@@ -139,6 +131,10 @@
                         </div>
                         <div class="share-content">
                             <i class="fa-solid fa-share-nodes"></i>
+                            <div class="share-content-inner">
+                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ absolute_url(path('show_histoire', {slug: histoire.slug})) }}" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                                <a href="https://www.twitter.com/intent/tweet?text={{ histoire.titre|url_encode }}%20{{ absolute_url(path('show_histoire', {slug: histoire.slug})) }}%20UneHistoireDePattes" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+                            </div>     
                         </div>
                     </article>
                 {% endfor %}                
@@ -153,4 +149,5 @@
         </div>
     </section>   
 </div>
+ <script src="{{ asset('js/home.js')}}" defer></script>
 {% endblock %}
