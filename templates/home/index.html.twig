@@ -128,7 +128,7 @@
                                 <p>{{ histoire.howManyLikes}} <i class="fa-solid fa-paw"></i></p>                            </div>
                             <div class="hr-texte">
                                 <h3><a href="{{path('show_histoire', {'slug': histoire.slug}) }}">{{ histoire.titre }}</a></h3>
-                                <p>{{ histoire.texte|slice(0, 80) }}...</p>
+                                <p>{{ histoire.texte|slice(0, 80)|raw }}...</p>
                             </div>
                             <div class="hr-auteur">
                                 <figure>

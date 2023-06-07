@@ -29,11 +29,11 @@
                 <article class="belle-histoire-card">
                     <div class="hr-media">
                         <figure>
-                            {% if histoire.auteur.id != 416 %}
+                            {# {% if histoire.auteur.id != 416 %} #}
                             <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire"> 
-                            {% else %} 
+                            {# {% else %} 
                             <img src="{{histoire.photo}}" alt="photo de l'histoire"> 
-                            {% endif %}
+                            {% endif %} #}
                         </figure>
                     </div>
                     <div class="hr-content">
@@ -44,13 +44,17 @@
                         </div>
                         <div class="hr-texte">
                             <h3><a href="{{path('show_histoire', {'slug': histoire.slug}) }}">{{ histoire.titre }}</a></h3>
-                            <p>{{ histoire.texte|slice(0, 80) }}...</p>
+                            <p>{{ histoire.texte|slice(0, 80)|raw }}...</p>
                         </div>
                         <div class="hr-auteur">
                             <figure>
                                 <img src="" alt="">
                             </figure>
-                            <p>Auteur : {{ histoire.auteur }}</p>
+                            {% if histoire.auteur != null %}
+                                <p>Auteur : <a href="{{ path('show_profile', {'id': histoire.auteur.id}) }}">{{ histoire.auteur }}</a></p>
+                            {% else %}
+                                <p>Auteur : Utilisateur supprimé</p>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="share-content">
