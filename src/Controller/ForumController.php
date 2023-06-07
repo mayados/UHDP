@@ -6,6 +6,7 @@ use DateTimeZone;
 use App\Entity\Post;
 use App\Entity\Topic;
 use App\Form\PostType;
+use App\Form\SearchTopicType;
 use App\Form\TopicType;
 use App\Service\SluggerService;
 use App\Repository\PostRepository;
@@ -27,9 +28,17 @@ class ForumController extends AbstractController
 
         if($this->getUser()){
             $topics = $tr->findPaginatedTopics($request->query->getInt('page',1));
+
+            $form = $this->createForm(SearchTopicType::class);
+            $searchTopic = $form->handleRequest($request);   
+            if($form->isSubmitted() && $form->isValid()){
+                $mot = strtolower($searchTopic->get('mot')->getData());
+                $topics = $tr->searchTopic($mot,$request->query->getInt('page',1));
+            }
             
             return $this->render('forum/index.html.twig', [
                 'topics' => $topics,
+                'form' => $form->createView(),
             ]);            
         }
 
