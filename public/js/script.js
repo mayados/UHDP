@@ -10,46 +10,9 @@ import { addEventListenerToModifyBtn } from "./modules/ModifyButton.js";
 // import { postModifyForm } from "./modules/Modify.js";
 
 
-// On passe l'élément que l'on veut rendre AJAX
-new Filter(document.querySelector('.js-filter'))
-
-new Submit(document.querySelector('.js-refresh-page'))
-
-// new Modify(document.querySelector('.js-modify-page'))
-// console.log(document.querySelector('.js-modify-page'))
-
-
 document.addEventListener('DOMContentLoaded', () => {
 
-    // console.log(CKEDITOR.instances)
     // Menu burger
-    
-    
-    let preDeleteButton = document.getElementById('delete-account');
-    if(preDeleteButton){
-        let dialog = document.getElementById('delete-account-dialog');
-        let annuler = document.getElementById('annuler')
-        // Le bouton "Mettre à jour les détails" ouvre le <dialogue> ; modulaire
-        preDeleteButton.addEventListener('click', function onOpen() {
-        if (typeof dialog.showModal === "function") {
-            dialog.showModal();
-        } else {
-            console.error("L'API <dialog> n'est pas prise en charge par ce navigateur.");
-        }
-        });        
-    }
-
-
-    var shareCircles = document.querySelectorAll('.share-content')
-    if(shareCircles){
-        shareCircles.forEach(function(circle){
-            circle.addEventListener('click', function() {
-                console.log("je veux déplier les fonctions de partage")
-            })
-        })
-    }
-
-
     var toggleButton = document.querySelector('.toggle-menu');
     var navBar = document.querySelector('.nav-bar');
     var toggleLine = document.querySelector('.line');
@@ -57,6 +20,58 @@ document.addEventListener('DOMContentLoaded', () => {
         navBar.classList.toggle('toggle');
         toggleButton.classList.toggle('toggle');
     });
+
+        // On passe l'élément que l'on veut rendre AJAX
+    if(document.querySelector('.js-filter')){
+        new Filter(document.querySelector('.js-filter'))    
+    }
+
+
+    if(document.querySelector('.js-refresh-page')){
+        new Submit(document.querySelector('.js-refresh-page'))    
+    }
+    
+    let preDeleteButton = document.getElementById('delete-account');
+    if(preDeleteButton){
+        let dialog = document.getElementById('delete-account-dialog');
+        let annuler = document.querySelector('#annuler')
+        // Le bouton "Mettre à jour les détails" ouvre le <dialogue> ; modulaire
+        preDeleteButton.addEventListener('click', function onOpen() {
+        if (typeof dialog.showModal === "function") {
+            dialog.showModal();
+            // Le close peut être détecté car dans le formulaire l'attribut method est définit sur "dialog"
+            preDeleteButton.addEventListener('close', function onClose(){
+            })
+ 
+        } else {
+            console.error("L'API <dialog> n'est pas prise en charge par ce navigateur.");
+        }
+        });        
+    }
+
+    var shareCircles = document.querySelectorAll('.share-content')
+
+    if(shareCircles){
+        shareCircles.forEach(function(circle){
+            circle.addEventListener('click', function() {
+                if(circle.offsetHeight === 30){
+                    console.log("je fais 30cm")
+                    var innerContent = circle.querySelector('.share-content-inner')
+                    innerContent.classList.remove(".share-content-inner")
+                    innerContent.classList.add('share-content-inner-open')
+                    circle.classList.remove('share-content')
+                    circle.classList.add('share-content-open')                       
+                }else{
+                    console.log(circle.style.height)
+                    var innerContent = circle.querySelector('.share-content-inner-open')
+                    innerContent.classList.remove("share-content-inner-open")
+                    innerContent.classList.add('share-content-inner')
+                    circle.classList.remove('share-content-open')
+                    circle.classList.add('share-content')          
+                }
+            })
+        })
+    }
 
     const deleteElements = [].slice.call(document.querySelectorAll('.delete'));
     if(deleteElements){
@@ -218,9 +233,6 @@ document.addEventListener('DOMContentLoaded', () => {
         })        
     }
 
-
     addEventListenerToModifyBtn();
-    // postModifyForm();
-
 
 })
