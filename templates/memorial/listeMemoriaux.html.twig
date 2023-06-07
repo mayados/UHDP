@@ -52,7 +52,7 @@
                         {% endif %}
                         {# <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">    #}
                     </figure>       
-                    <p>{{ souvenir.nom }}</p>          
+                    <p>{{ souvenir.nom|slice(0, 20) }}...</p>          
                 </a>
             </div>
             {% endfor %}    
