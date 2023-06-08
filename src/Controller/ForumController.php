@@ -77,6 +77,7 @@ class ForumController extends AbstractController
                     // Si c'est le cas on renvoie du JSON
                     return new JsonResponse([
                         'content' => $this->renderView('_partials/_posts.html.twig', ['topic' => $topic,'formAddPost' => $form->createView(), 'posts' => $pr->findPaginatedPosts($request->query->getInt('page',1),$topic)]),
+                        'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $pr->findPaginatedPosts($request->query->getInt('page',1),$topic) ])
 
                     ]);
                 }

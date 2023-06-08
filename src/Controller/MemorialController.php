@@ -61,7 +61,7 @@ class MemorialController extends AbstractController
                 // Si c'est le cas on renvoie du JSON
                 return new JsonResponse([
                     'content' => $this->renderView('_partials/_memoriaux.html.twig', ['memoriaux' => $memoriaux]),
-                    'pagination' => $this->renderView('_partials/_pagination.html.twig', ['memoriaux' => $memoriaux])
+                    'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $memoriaux])
                 ]);
             }
 
@@ -78,6 +78,7 @@ class MemorialController extends AbstractController
             'categories' => $categories,
             'formSearch' => $form->createView(),
             'souvenirs' => $amr->findMemoriauxOfMonth($now),
+            'elementPagine' => $amr->findPaginatedMemoriaux($request->query->getInt('page',1))
         ]);
     }
 
@@ -104,7 +105,7 @@ class MemorialController extends AbstractController
                 // Si c'est le cas on renvoie du JSON
                 return new JsonResponse([
                     'content' => $this->renderView('_partials/_memoriaux.html.twig', ['memoriaux' => $memoriaux]),
-                    'pagination' => $this->renderView('_partials/_pagination.html.twig', ['memoriaux' => $memoriaux])
+                    'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $memoriaux])
                 ]);
             }
 
@@ -162,6 +163,7 @@ class MemorialController extends AbstractController
             'memoriaux' => $amr->findPaginatedMemoriauxByCategorie($request->query->getInt('page',1),$categorieMemorial),
             'categorie' => $categorieMemorial,
             'formSearch' => $form->createView(),
+            'elementPagine' => $amr->findPaginatedMemoriauxByCategorie($request->query->getInt('page',1),$categorieMemorial),
         ]);
     }
 
@@ -202,6 +204,7 @@ class MemorialController extends AbstractController
                     // Si c'est le cas on renvoie du JSON
                     return new JsonResponse([
                         'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial,'formCondoleance' => $condoleanceForm->createView(),'consultedInCategorie' => $consultedInCategorie, 'condoleances' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1))]),
+                        'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1))]),
                         // 'formCondoleance' => $this->renderView('_partials/_refreshForm.html.twig', ['formCondoleance' => $condoleanceForm->createView()])
                         // 'bloup'=> 'blou',
                     ]);
@@ -236,8 +239,10 @@ class MemorialController extends AbstractController
 
                     // Si c'est le cas on renvoie du JSON
                     return new JsonResponse([
-                        'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial,'consultedInCategorie' => $consultedInCategorie, 'formCondoleance' => $condoleanceForm->createView(),'condoleances' => $cr->findCondoleances($memorial)]),
+                        'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial,'consultedInCategorie' => $consultedInCategorie, 'formCondoleance' => $condoleanceForm->createView(),'condoleances' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1))]),
                         'error' => $errorMessage,
+                        'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $cr->findPaginatedCondoleances($request->query->getInt('page',1),$memorial) ])
+
                     ]);
                 }
 
@@ -289,6 +294,7 @@ class MemorialController extends AbstractController
                     'formCondoleance' => $condoleanceForm->createView(),
                     'consultedInCategorie' => $consultedInCategorie,
                     'condoleances' => $condoleances,
+                    'elementPagine' => $condoleances,
                     // 'editCondoleanceForm' => $editCondoleanceForm->createView(),
                 ]);            
             }
@@ -299,6 +305,7 @@ class MemorialController extends AbstractController
                 'formCondoleance' => $condoleanceForm->createView(),
                 'consultedInCategorie' => $consultedInCategorie,
                 'condoleances' => $condoleances,
+                'elementPagine' => $condoleances,
                 // 'editCondoleanceForm' => $editCondoleanceForm->createView(),
         ]);
 
@@ -431,13 +438,13 @@ class MemorialController extends AbstractController
             // );           
             return new JsonResponse([
                 'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, "condoleances" => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)), 'consultedInCategorie' => false]),
-
+                'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)) ])
             ]);        
         }
 
         return new JsonResponse([
-            'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, "condoleances" => $cr->findCondoleances($memorial), 'consultedInCategorie' => true]),
-
+            'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, "condoleances" => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)), 'consultedInCategorie' => true]),
+            'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)) ])
         ]);   
         // return $this->redirectToRoute(
         //     'show_memorial_categorie',
@@ -480,7 +487,7 @@ class MemorialController extends AbstractController
             if($request->isXmlHttpRequest()){
                 // Si c'est le cas on renvoie du JSON
                 return new JsonResponse([
-                    'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, 'condoleances' => $cr->findCondoleances($memorial),'consultedInCategorie'=> $consultedInCategorie]),
+                    'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, 'condoleances' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)),'consultedInCategorie'=> $consultedInCategorie]),
                     // 'content' => "bravo",
                 ]);
              }

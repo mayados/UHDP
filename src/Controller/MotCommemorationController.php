@@ -42,6 +42,7 @@ class MotCommemorationController extends AbstractController
                         // Si c'est le cas on renvoie du JSON
                         return new JsonResponse([
                             'content' => $this->renderView('_partials/_mots.html.twig', ['formAddMot' => $form->createView(), 'mots' => $mcr->findAllPaginated($request->query->getInt('page',1))]),
+                            'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $mcr->findAllPaginated($request->query->getInt('page',1)) ])
                         ]);
                     }
 
