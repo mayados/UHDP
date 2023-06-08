@@ -28,6 +28,9 @@
 
         <div  class="formulaire" id="form-infos-profil">
         {{ form_start(formEditCondoleance) }}
+            <div class="custom-errors">
+                {{ form_errors(formEditCondoleance.texte) }}
+            </div>
             <div class="form-element">
                 {{ form_row(formEditCondoleance.texte) }}
             </div>

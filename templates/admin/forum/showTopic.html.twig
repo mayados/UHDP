@@ -29,8 +29,14 @@
 
         <div class="formulaire" id="form-topic">
             {{ form_start(formEditTopic) }}
+                <div class="custom-errors">
+                    {{ form_errors(formEditTopic.titre) }}
+                </div>
                 <div class="form-element">
                     {{ form_row(formEditTopic.titre) }}
+                </div>
+                <div class="custom-errors">
+                    {{ form_errors(formEditTopic.firstComment) }}
                 </div>
                 <div class="form-element">
                     {{ form_row(formEditTopic.firstComment, { 'value': firstPost.0.texte  }) }}

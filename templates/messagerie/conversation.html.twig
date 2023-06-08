@@ -19,6 +19,9 @@
         {% include '_partials/_messages.html.twig' %} 
         <div id="form-conv-message-container">
             {{ form_start(form, {attr: {class: 'js-submit-form'}}) }}
+                <div class="custom-errors">
+                    {{ form_errors(form.texte) }}
+                </div>  
                 {{ form_row(form.texte) }}
                 {# On cache le champ ici car il est setté dans le controller. On ne l'enlève pas du form car on en a besoin dans la messagerie #}
                 {{ form_widget(form.destinataire, { 'attr': {'style': 'display:none'} }) }}

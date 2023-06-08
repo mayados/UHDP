@@ -13,6 +13,9 @@
 
                 <div class="formulaire" id="form-genre">
                     {{form_start(formAddGenre)}}
+                        <div class="custom-errors">
+                            {{ form_errors(formAddGenre.nom) }}
+                        </div>
                         <div class="form-element">
                             {{ form_row(formAddGenre.nom) }}
                         </div>

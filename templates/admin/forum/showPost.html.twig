@@ -28,6 +28,9 @@
 
         <div class="formulaire" id="form-infos-profil">
             {{ form_start(formEditPost) }}
+                <div class="custom-errors">
+                    {{ form_errors(formEditPost.texte) }}
+                </div>
                 <div class="form-element">
                     {{ form_row(formEditPost.texte) }}
                 </div>

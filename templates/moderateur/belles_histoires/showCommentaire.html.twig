@@ -25,12 +25,17 @@
         {% endif %}
 
         <div class="formulaire" id="form-commentaire">
-            <div class="form-element">
-                {{ form_start(formEditCommentaire) }}
-            </div>
-            <div class="form-element">
-                {{ form_end(formEditCommentaire) }}          
-            <div class="form-element">    
+            {{ form_start(formEditCommentaire) }} 
+                <div class="custom-errors">
+                    {{ form_errors(formEditCommentaire.texte) }}
+                </div>             
+                <div class="form-element">
+                    {{ form_row(formEditCommentaire.texte) }}
+                </div>
+                <div class="form-element">
+                    {{ form_row(formEditCommentaire.submit) }}
+                <div class="form-element">   
+            {{ form_end(formEditCommentaire) }}                      
         </div>
 
     </main>

@@ -28,12 +28,21 @@
 
         <div class="formulaire" id="form-infos-profil">
             {{ form_start(formAddUser) }}
+                <div class="custom-errors">
+                    {{ form_errors(formAddUser.email) }}
+                </div>
                 <div class="form-element">
                     {{ form_row(formAddUser.email) }}         
                 </div>
+                <div class="custom-errors">
+                    {{ form_errors(formAddUser.pseudo) }}
+                </div>
                 <div class="form-element">
                     {{ form_row(formAddUser.pseudo) }}
-                </div>        
+                </div>     
+                <div class="custom-errors">
+                    {{ form_errors(formAddUser.roles) }}
+                </div>   
                 <div class="form-element">
                     {{ form_row(formAddUser.roles) }}
                 </div>

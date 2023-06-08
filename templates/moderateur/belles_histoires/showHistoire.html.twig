@@ -53,6 +53,33 @@
         {% endif %}
 
         {{ form_start(formEditHistoire) }}
+            <div class="custom-errors">
+                {{ form_errors(formEditHistoire.titre) }}
+            </div>
+            <div class="form-element">
+                {{ form_row(formEditHistoire.titre) }} 
+            </div>
+            <div class="custom-errors">
+                {{ form_errors(formEditHistoire.texte) }}
+            </div>       
+            <div class="form-element">
+                {{ form_row(formEditHistoire.texte) }} 
+            </div>
+            <div class="custom-errors">
+                {{ form_errors(formEditHistoire.imgHistoire) }}
+            </div>
+            <div class="form-element">
+                {{ form_row(formEditHistoire.imgHistoire) }} 
+            </div>
+            <div class="custom-errors">
+                {{ form_errors(formEditHistoire.genre) }}
+            </div>
+            <div class="form-element">
+                {{ form_row(formEditHistoire.genre) }} 
+            </div>
+            <div class="form-element">
+                {{ form_row(formEditHistoire.submit) }} 
+            </div>
         {{ form_end(formEditHistoire) }}  
     </main>
 

@@ -27,6 +27,9 @@
 
         <div class="formulaire" id="form-mot">
         {{ form_start(formEditMot) }}
+            <div class="custom-errors">
+                {{ form_errors(formEditMot.mot) }}
+            </div>
             <div class="form-element">
                 {{ form_row(formEditMot.mot) }}
             </div>

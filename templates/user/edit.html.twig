@@ -20,11 +20,20 @@
             <h2>Modifier les informations du profil</h2>
 
         {{ form_start(formEditProfile) }}
+            <div class="custom-errors">
+                {{ form_errors(formEditProfile.email) }}
+            </div>
             <div class="form-element">
                 {{ form_row(formEditProfile.email) }}
             </div>
+            <div class="custom-errors">
+                {{ form_errors(formEditProfile.pseudo) }}
+            </div>
             <div class="form-element">
                 {{ form_row(formEditProfile.pseudo) }}
+            </div>
+            <div class="custom-errors">
+                {{ form_errors(formEditProfile.imgUser) }}
             </div>
             <div class="form-element">
                 {{ form_row(formEditProfile.imgUser) }}
@@ -40,8 +49,14 @@
             <h2>Modifier le mot de passe</h2>
 
             {{ form_start(formEditPassword) }}
+            <div class="custom-errors">
+                {{ form_errors(formEditPassword.currentPassword) }}
+            </div>
             <div class="form-element">
                 {{ form_row(formEditPassword.currentPassword) }}
+            </div>
+            <div class="custom-errors">
+                {{ form_errors(formEditPassword.newPassword) }}
             </div>
             <div class="form-element">
                 {{ form_row(formEditPassword.newPassword) }}
