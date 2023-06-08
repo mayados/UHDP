@@ -20,7 +20,7 @@ class MessageType extends AbstractType
             ->add('texte', CKEditorType::class, [
                 'label' => false,
                 'constraints' => [
-                    new Assert\NotBlank(['message' => 'Le commentaire ne peut pas être nul']),
+                    new Assert\NotBlank(['message' => 'Le message ne peut pas être nul']),
                 ]
             ])
             // ->add('is_read')

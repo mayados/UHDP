@@ -18,8 +18,8 @@ class GenreHistoireType extends AbstractType
         $builder
             ->add('nom',TextType::class, [
                 'constraints' => [
-                    new NotBlank(['message' => 'La catégorie doit avoir un nom']),
-                    new Assert\Length(['min' => 2, 'max' => 50, 'minMessage' => 'Le nom de catégorie doit faire au moins {{ limit }} caractères', 'maxMessage' => 'Le nom de catégorie ne peut pas faire plus de {{ limit }} caractères'])
+                    new NotBlank(['message' => 'Le genre doit avoir un nom']),
+                    new Assert\Length(['min' => 2, 'max' => 50, 'minMessage' => 'Le genre doit faire au moins {{ limit }} caractères', 'maxMessage' => 'Le genre ne peut pas faire plus de {{ limit }} caractères'])
                 ]
             ])
             ->add('submit', SubmitType::class, [
