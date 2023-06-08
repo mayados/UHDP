@@ -37,7 +37,7 @@ class AddUserType extends AbstractType
                     'ROLE_MODERATEUR_MEMORIAUX' => 'ROLE_MODERATEUR_MEMORIAUX',
                     'ROLE_MODERATEUR_COMMEMORATION' => 'ROLE_MODERATEUR_COMMEMORATION',
                 ],
-                // La contrainte ne fonctionne pas car il faut donner chaque élément sous forme de tableau
+                //La contrainte ne fonctionne pas car il faut donner chaque élément sous forme de tableau
                 // 'constraints' => [
                 //     new Assert\Choice(['choices' => ['ROLE_USER','ROLE_MODERATEUR_HISTOIRES','ROLE_MODERATEUR_FORUM','ROLE_MODERATEUR_MEMORIAUX','ROLE_MODERATEUR_COMMEMORATION'], 'message' => 'Veuillez choisir un rôle valide']),                    
                 // ],
@@ -77,7 +77,9 @@ class AddUserType extends AbstractType
             // ->add('bannir')
             // ->add('isVerified')
             // ->add('dateInscription')
-            ->add('submit', SubmitType::class)
+            ->add('submit', SubmitType::class, [
+                'label' => 'Soumettre',
+            ])
         ;
 
         // Ici nous devons ajouter un dataTransformer car la propriété roles de l'entité User est un tableau, alors que dans le ChoiceType c'est considéré comme une string
