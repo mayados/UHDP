@@ -86,10 +86,7 @@
                                 <figure>
                                     <img src="{{ asset('uploads/imgGalerie/'~ image.photo) }}" alt="photo de l'animal">                        
                                 </figure>
-                                {% if memorial.auteur != null %}
-                                    {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
                                         <a href="{{path('app_moderateur_remove_photo', {'idMemorial': memorial.id, 'id': image.id}) }}">Supprimer la photo</a>
-                                    {% endif %}
                                 {% endif %}
                             </div>
                         {% endfor %} 
