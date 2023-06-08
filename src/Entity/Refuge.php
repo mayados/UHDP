@@ -34,7 +34,7 @@ class Refuge
     #[ORM\Column(length: 255)]
     private ?string $departement = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $site = null;
 
     #[ORM\Column(length: 255)]
