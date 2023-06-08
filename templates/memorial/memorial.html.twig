@@ -112,9 +112,11 @@
                     <div id="form-photo">
                         <a class="close-form" href="#"><i class="fa-solid fa-xmark"></i></a>
                         {{ form_start(formAddPhotoGalerie) }}  
-                            <div class="custom-errors">
+                            {# <div class="custom-errors">
                                 {{ form_errors(formAddPhotoGalerie.images) }}
                             </div>  
+                            {{ form_row(formAddPhotoGalerie.images) }}
+                            {{ form_row(formAddPhotoGalerie.submit) }} #}
                         {{ form_end(formAddPhotoGalerie) }}                    
                     </div>
                 {% endif %}
