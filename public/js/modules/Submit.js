@@ -5,6 +5,7 @@ import Report from './Report.js'
 
 
 /**
+ * @property {HTMLElement} pagination
  * @property {HTMLElement} content
  * @property {HTMLFormElement} form
  */
@@ -20,6 +21,7 @@ export default class Submit {
     this.content = element.querySelector('.js-auto-refresh-content')
     this.form = element.querySelector('.js-submit-form')
     this.erreurs = element.querySelector('.custom-errors')
+    this.pagination = element.querySelector('.pagination')
     // console.log(this.form)
 
     // this.h2 = element.querySelector('.js-refresh-like')
@@ -108,12 +110,15 @@ export default class Submit {
 
           this.content.innerHTML = data.content
 
+          this.pagination.innerHTML = data.pagination
+          console.log(data.pagination)
+
           // On ajoute à nouveau un eventListener aux boutons, puisque l'appel en ajax permet juste de retrouver les éléments avec leur structure naturelle (et non avec les actions etc)
             const modifyButtons = document.querySelectorAll('.modify-button');
             modifyButtons.forEach(function(button) {
                 button.addEventListener('click', function() {           
                     // console.log(this.id)
-                    console.log("je suis cliqué")
+                    // console.log("je suis cliqué")
                     const idButton = this.id;
                     CKEDITOR.replace( 'texte_edit'+idButton, {
                       toolbar: [
@@ -131,7 +136,7 @@ export default class Submit {
         
                     const idClose = document.querySelector("#close"+idButton);
         
-                    console.log(idClose)
+                    // console.log(idClose)
             
                     idClose.addEventListener('click', e =>{
                         e.preventDefault();
