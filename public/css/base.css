@@ -2090,6 +2090,14 @@ nav{
     padding: 3rem 0 3rem 0;    
 }
 
+#container-favoris{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 3%;    
+}
+
 .user-topics,
 #histoires-creees{
     display: flex;
