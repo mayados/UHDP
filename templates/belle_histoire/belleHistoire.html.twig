@@ -45,7 +45,11 @@
                 </figure>
                 {% else %}
                     <figure>
-                        <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">            
+                        {% if histoire.photo != null %}
+                            <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">          
+                        {% else %}            
+                            <img src="{{ asset('img/book_dog.jpg') }}" alt="photo de l'histoire">                                
+                        {% endif %}  
                     </figure>
                 {% endif %}
                 <p>Date de création {{ histoire.dateCreation | date('d-m-Y') }}</p>

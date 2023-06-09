@@ -15,7 +15,11 @@
     </section>
     <section class="messagerie-content">
         {% if messagesNonLus %}
-            <h2>Messages non lus de {{ messagesNonLus| length }} personnes:</h2>
+            {% if messagesNonLus| length > 1 %}
+                <h2>Messages non lus de {{ messagesNonLus| length }} personnes:</h2>
+            {% else %}
+                <h2>Message(s) non lus(s) de {{ messagesNonLus| length }} personne:</h2>
+            {% endif %}
             {# Voir si on ne fait pas un group By pour afficher les conversations ayant des nouveaux messages #}
             {% for message in messagesNonLus %}
                 <div class="message">
