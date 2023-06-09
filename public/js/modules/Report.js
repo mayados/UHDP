@@ -7,9 +7,6 @@ export default class Report {
      */
       constructor(reportElements){
         this.reportElements = reportElements;
-        // this.content = document.querySelector('.js-refresh-like');
-        // var contenu = this.content
-        // console.log(contenu)
 
           if(reportElements){
             this.init()
@@ -48,29 +45,6 @@ export default class Report {
                 console.log("je ne veux plus reporter")
                  icone.classList.replace('reported','unreported')
               }
-                // // console.log(this)
-                // const nb = response.nbLike;
-                // console.log(url)
-
-                // this.dataset.nb = nb;
-                // if(span.classList.contains('pensee')){
-
-                //   if(nb > 1){
-                //     span.innerHTML = nb + ' pensées envoyées'                    
-                //   }else{
-                //     span.innerHTML = nb + ' pensée envoyée'                    
-                //   }
-
-                // }else{
-                  
-                //   if(nb > 1){
-                //     span.innerHTML = nb + ' patounes'
-                //   }else{
-                //     span.innerHTML = nb + ' patoune'
-                //   }
-
-                // }
-
 
                 const deleteElements = [].slice.call(document.querySelectorAll('.delete'));
                 if(deleteElements){
