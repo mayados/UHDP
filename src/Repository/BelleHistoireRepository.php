@@ -69,9 +69,16 @@ class BelleHistoireRepository extends ServiceEntityRepository
 
     public function findPaginatedHistoiresByGenre($page,$genreId): PaginationInterface
     {
+
+        $parameters = [
+            'genreId' => $genreId,
+            'state' => '%STATE_APPROUVED%',
+        ];
+
         $data = $this->createQueryBuilder('h')
         ->where('h.genre = :genreId')
-        ->setParameter('genreId',$genreId)
+        ->andWhere('h.etat LIKE :state')
+        ->setParameters($parameters)
         ->addOrderBy('h.dateCreation', 'DESC')
         ->getQuery()
         ->getResult();
