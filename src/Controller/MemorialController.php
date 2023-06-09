@@ -170,6 +170,43 @@ class MemorialController extends AbstractController
         ]);
     }
 
+    #[Route('/memorial/remove/{id}', name: 'remove_memorial')]
+    #[Security("is_granted('ROLE_USER') and user === memorial.getAuteur()", message:"Accès non autorisé.")]
+    public function removeMemorial(AnimalMemorialRepository $amr, AnimalMemorial $memorial, UploaderService $uploaderService)
+    {
+
+        // Nous cherchons le mémorial ayant pour id l'id envoyé, puis nous l'enlevons de la base de données avec remove() (fonction intégrer de base au repository)
+        // $memorial = $amr->find($memorial->getId());        
+
+            // Comme la photo est nullable dans l'entité, on doit ajouter cette condition sinon ça fait unen erreur si l'image est vide
+            if($memorial->getPhoto()){
+                $photoMemo = $memorial->getPhoto();
+                $folder = 'imgMemorial';
+                $uploaderService->delete($photoMemo, $folder);            
+            }
+
+            // Si le mémorial a des photos dans sa galerie...
+            if($memorial->getPhotos()){
+                // On pense à récupérer les images de la galerie pour les effacer aussi dans le dossier imgGalerie et pas seulement en base de données
+                $photos = $memorial->getPhotos();
+                foreach($photos as $photo){
+                    // On récupère la string et non l'objet en lui même, car il faut connaître le nom du fichier à supprimer            
+                    $photo = $photo->getPhoto();
+                    $folder = 'imgGalerie';
+                    $uploaderService->delete($photo,$folder);            
+                }            
+            }
+
+            /*  Les photos de la galerie seront aussi supprimées de l'entity Photo (qui représente la galerie photo comme plusieurs photos 
+                peuvent être ajoutées),grâce au Orphean Removal*/
+            $amr->remove($memorial, $flush = true);
+
+            $this->addFlash('notice', 'Le mémorial a été supprimé');
+
+            return $this->redirectToRoute("app_memoriaux");            
+
+    }
+
     #[Route('/memorial/{id}', name: 'show_memorial')]
     #[Route('/memorial/{idCategorie}/{id}', name: 'show_memorial_categorie')]
     #[ParamConverter("memorial", options: ["mapping" => ["id" => "id"]])]
@@ -397,42 +434,6 @@ class MemorialController extends AbstractController
         ]);            
     }
 
-    #[Route('/memorial/remove/{id}', name: 'remove_memorial')]
-    #[Security("is_granted('ROLE_USER') and user === memorial.getAuteur()", message:"Accès non autorisé.")]
-    public function removeMemorial(AnimalMemorialRepository $amr, AnimalMemorial $memorial, UploaderService $uploaderService)
-    {
-
-        // Nous cherchons le mémorial ayant pour id l'id envoyé, puis nous l'enlevons de la base de données avec remove() (fonction intégrer de base au repository)
-        $memorial = $amr->find($memorial->getId());        
-
-            // Comme la photo est nullable dans l'entité, on doit ajouter cette condition sinon ça fait unen erreur si l'image est vide
-            if($memorial->getPhoto()){
-                $photoMemo = $memorial->getPhoto();
-                $folder = 'imgMemorial';
-                $uploaderService->delete($photoMemo, $folder);            
-            }
-
-            // Si le mémorial a des photos dans sa galerie...
-            if($memorial->getPhotos()){
-                // On pense à récupérer les images de la galerie pour les effacer aussi dans le dossier imgGalerie et pas seulement en base de données
-                $photos = $memorial->getPhotos();
-                foreach($photos as $photo){
-                    // On récupère la string et non l'objet en lui même, car il faut connaître le nom du fichier à supprimer            
-                    $photo = $photo->getPhoto();
-                    $folder = 'imgGalerie';
-                    $uploaderService->delete($photo,$folder);            
-                }            
-            }
-
-            /*  Les photos de la galerie seront aussi supprimées de l'entity Photo (qui représente la galerie photo comme plusieurs photos 
-                peuvent être ajoutées),grâce au Orphean Removal*/
-            $amr->remove($memorial, $flush = true);
-
-            $this->addFlash('notice', 'Le mémorial a été supprimé');
-
-            return $this->redirectToRoute("app_memoriaux");            
-
-    }
 
     #[Route('/condoleance/remove/{idMemorial}/{id}', name: 'remove_condoleance')]
     #[Route('/condoleance/remove/{idCategorie}/{idMemorial}/{id}', name: 'remove_condoleance_categorie')]
