@@ -1648,7 +1648,15 @@ nav{
 
 .forum-page{
     /* padding: 5vh 10vh 0 5vh; */
-    background-image: url('../img/spirales_sans_fond.png');
+    /* background-image: url('../img/spirales_sans_fond.png'); */
+    background-image: url('../img/forum_cat_girl.png');
+     background-repeat: no-repeat;
+     background-position: center;
+     background-size: cover;
+}
+
+.topic-page{
+    background-color: rgb(255, 242, 180);
 }
 
 #banniere-forum{
@@ -1662,9 +1670,9 @@ nav{
     background-size: cover;
     background-position: top; */
     /* filter: grayscale(1); */
-    background-image: url('../img/beige_shape.png');
+    /* background-image: url('../img/beige_shape.png');
     background-repeat: no-repeat;
-    background-size: 100% 98%;
+    background-size: 100% 98%; */
 }
 
 #topic-search{
@@ -1698,7 +1706,9 @@ nav{
 
 .topic{
     padding: 20px;
-    background-color: white;
+    /* background-color: white; */
+    background: rgba(255, 255, 255, 0.49);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     border: 1px solid rgb(197, 197, 197);
     min-height: 10vh;
     margin: 2vh 0 2vh 0;
@@ -2230,7 +2240,10 @@ nav{
                                                                 /******* VUES CONCERNANT LE MUR DE COMMEMORATION ********/
 
 .page-mur{
-    background-image: url('../img/clouds.png');
+    background-image: url('../img/landscape_commemoration.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 #banniere-mur-commemoration{
@@ -2238,8 +2251,8 @@ nav{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url("../img/banniere_blue.png");
-    background-size: 100% 98%;
+    /* background-image: url("../img/banniere_blue.png");
+    background-size: 100% 98%; */
     /* padding-bottom: 5%; */
     background-repeat: no-repeat;
 }
@@ -2247,8 +2260,12 @@ nav{
 #mur-content{
     width: 80%;
     margin: 0 auto;   
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;     
-    background-color: rgb(250, 250, 250);    
+    /* box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;     
+    background-color: rgb(250, 250, 250);     */
+    background: rgba(255, 255, 255, 0.43);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5.5px);
     padding: 1rem;    
 }
 
@@ -2281,7 +2298,8 @@ nav{
 
 #mur-commemoration .mot{
     padding: 1rem;
-    border: 1px solid green;
+    /* border: 1px solid green; */
+    border-top: 1px solid gray;
 }
 
 #mur-commemoration .mot-infos{
@@ -2498,6 +2516,7 @@ nav{
 .login-page{
     /* Mettre illustration ou image représentant animaux + personne */
     background: url('../img/login_back.jpg');
+    /* background: url('../img/pet_loss.png'); */
     background-size: cover;
     background-position: center;
 }
@@ -2943,10 +2962,6 @@ nav{
         margin-top: 2rem;
         margin-left: inherit;
     }
-
-    /* .forum-page{
-        padding: 3vh 1vh 0 1vh;
-    } */
 
     .topic{
         padding: 1rem 0.2rem 1rem 0.2rem;
