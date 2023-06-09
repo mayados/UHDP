@@ -8,8 +8,8 @@
     <div class="banniere-profil">
         <div class="profil-picture">
             <figure>
-                {% if not user.photo %}
-                    <img src="{{ asset('img/default_user.png') }}" alt="">
+                {% if user.photo == null %}
+                    <img src="{{ asset('img/bouquet_fleurs.jpg') }}" alt="">
                 {% else %}
                     <img src="{{ asset('uploads/imgUserProfil/'~ user.photo) }}" alt="">   
                 {% endif %} 

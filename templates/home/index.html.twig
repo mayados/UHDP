@@ -80,7 +80,11 @@
                 <div class="memorial-recent">
                     <a href="{{path('show_memorial', {'id': memorial.id}) }}">
                         <figure>
-                            <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">        
+                        {% if memorial.photo != null %}
+                            <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">     
+                        {% else %}   
+                            <img src="{{ asset('img/paw_heart.png') }}" alt="photo de l'animal">     
+                        {% endif %}
                         </figure>       
                         <p>{{ memorial.nom }}</p>          
                     </a>
@@ -102,16 +106,14 @@
             <div id="container-histoires-recentes">
                 {% for histoire in dernieresHistoires %}
                     <article class="histoire-recente">
-                        {# <a href="{{path('show_histoire', {'slug': histoire.slug}) }}">
-                            <figure>
-                                <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">                
-                            </figure>
-                            <p>{{ histoire.titre }}</p> 
-                        </a> #}
                         <div class="hr-media">
                             <figure>
-                                <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">                
-                            </figure>
+                            {% if histoire.photo != null %}                                
+                                <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">    
+                            {% else %}            
+                                <img src="{{ asset('img/book_dog.jpg') }}" alt="photo de l'histoire">                                
+                            {% endif %}
+                        </figure>
                         </div>
                         <div class="hr-content">
                             <div class="hr-infos">

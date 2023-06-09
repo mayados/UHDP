@@ -36,7 +36,11 @@
                     <div class="topic">
                         <div class="topic-infos">
                             <figure>
-                                <img src="{{ asset('img/default_user.png') }}" alt="">
+                            {% if (topic.auteur != null) and (topic.auteur.photo != null) %}
+                                <img src="{{ asset('uploads/imgUserProfil/'~ topic.auteur.photo) }}" alt="">
+                            {% else %}   
+                                <img src="{{ asset('img/bouquet_fleurs.jpg') }}" alt="photo de l'animal">     
+                            {% endif %}
                             </figure>
                             <div class="title-infos">
                                 <a class="topic-title" href="{{path('show_topic', {'slug': topic.slug}) }}">{{ topic.titre }}</a>

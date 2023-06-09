@@ -15,16 +15,18 @@
     {% else %}
         <p> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_memoriaux') }}">Mémoriaux</a> &lt; <a href="{{path('app_categorie', {'id' : memorial.categorieAnimal.id}) }}">{{ memorial.nom }}</a></p>
     {% endif %}
-    {% if app.user.reportedMemorials |length > 0 %}
-        {% for report in app.user.reportedMemorials %}  
-            {% if (report.memorial == memorial) and (app.user == report.signaleur) %}
-                <a class="report-flag corner-flag" href="{{ path('app_report_memorial', {'id': memorial.id}) }}"><i class="fa-solid fa-flag flag-report-icon reported"></i></a> 
-            {% else %}
-                <a class="report-flag corner-flag" href="{{ path('app_report_memorial', {'id': memorial.id}) }}"><i class="fa-solid fa-flag flag-report-icon unreported"></i></a> 
-            {% endif %}
-        {% endfor %}
-    {% else %}
-        <a class="report-flag corner-flag" href="{{ path('app_report_memorial', {'id': memorial.id}) }}"><i class="fa-solid fa-flag flag-report-icon unreported"></i></a> 
+    {% if app.user != memorial.auteur %}
+        {% if app.user.reportedMemorials |length > 0 %}
+            {% for report in app.user.reportedMemorials %}  
+                {% if (report.memorial == memorial) and (app.user == report.signaleur) %}
+                    <a class="report-flag corner-flag" href="{{ path('app_report_memorial', {'id': memorial.id}) }}"><i class="fa-solid fa-flag flag-report-icon reported"></i></a> 
+                {% else %}
+                    <a class="report-flag corner-flag" href="{{ path('app_report_memorial', {'id': memorial.id}) }}"><i class="fa-solid fa-flag flag-report-icon unreported"></i></a> 
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <a class="report-flag corner-flag" href="{{ path('app_report_memorial', {'id': memorial.id}) }}"><i class="fa-solid fa-flag flag-report-icon unreported"></i></a> 
+        {% endif %}
     {% endif %}
     <h1 id="memorial-title">En mémoire de {{ memorial.nom }}</h1>     
     <section id="header-memorial">
@@ -33,11 +35,18 @@
         </figure>     
         <div id="memorial-infos">
                 <h2>Informations</h2>
+                {% if memorial.dateNaissance == null %}
                 <p>
-                    Date de naissance : {{ memorial.dateNaissance | date('d-m-Y') }}                
+                    Date de naissance : non renseignée              
                 </p>
+                {% else %}
+                    <p>
+                        Date de naissance : {{ memorial.dateNaissance | date('d-m-Y') }}                
+                    </p>
+                {% endif %}
+
                 <p>
-                    A rejoint les étoiles le {{ memorial.dateNaissance | date('d-m-Y') }}                
+                    A rejoint les étoiles le {{ memorial.dateDeces | date('d-m-Y') }}                
                 </p>
                 <p>
                     {% if memorial.lieu != null %}
