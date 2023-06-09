@@ -2,6 +2,7 @@ import Like from './Like.js'
 import Modify from './Modify.js'
 import Delete from './Delete.js'
 import Report from './Report.js'
+import { addEventListenerToModifyBtn } from "./ModifyButton.js";
 
 
 /**
@@ -114,39 +115,7 @@ export default class Submit {
           console.log(data.pagination)
 
           // On ajoute à nouveau un eventListener aux boutons, puisque l'appel en ajax permet juste de retrouver les éléments avec leur structure naturelle (et non avec les actions etc)
-            const modifyButtons = document.querySelectorAll('.modify-button');
-            modifyButtons.forEach(function(button) {
-                button.addEventListener('click', function() {           
-                    // console.log(this.id)
-                    // console.log("je suis cliqué")
-                    const idButton = this.id;
-                    CKEDITOR.replace( 'texte_edit'+idButton, {
-                      toolbar: [
-                          { name:'styles', items:[ 'Bold' , 'Italic' , 'Underline' , 'Strike' , '-' , '-' , '-'  , '-' , '-' , '-' , '-' , 'TextColor' , '/' , 'FontSize' , 'Smiley', ]}
-                      ]
-                  } );
-                    CKEDITOR.add 
-                    const formulaire = document.querySelector("#form"+idButton);
-                    const condoleanceTexte = document.querySelector("#condoleance"+idButton)
-                    const formulaireClass = formulaire.className;
-                    formulaire.classList.remove('modify-form');
-                    formulaire.classList.add('modify-form-visible');
-                    condoleanceTexte.style.display='none';
-                    // console.log(formulaire)
-        
-                    const idClose = document.querySelector("#close"+idButton);
-        
-                    // console.log(idClose)
-            
-                    idClose.addEventListener('click', e =>{
-                        e.preventDefault();
-                        console.log(this.href)
-                        formulaire.classList.add('modify-form');
-                        formulaire.classList.remove('modify-form-visible')
-                        condoleanceTexte.style.display='block';
-                    })  
-                })
-            })
+          addEventListenerToModifyBtn();
 
           const likeElements = [].slice.call(document.querySelectorAll('.like-button'));
           if(likeElements){
