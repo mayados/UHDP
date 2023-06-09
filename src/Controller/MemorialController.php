@@ -14,6 +14,7 @@ use App\Entity\CategorieAnimal;
 use App\Service\UploaderService;
 use App\Form\EditCondoleanceType;
 use App\Repository\PhotoRepository;
+use Symfony\Component\Form\FormError;
 use App\Repository\CondoleanceRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
@@ -22,18 +23,20 @@ use App\Repository\CategorieAnimalRepository;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
 use App\HttpClient\GEOHttpClient as GEOHttpClient;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\Form\FormError;
+
 
 class MemorialController extends AbstractController
 {
@@ -344,8 +347,23 @@ class MemorialController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $memorial = $form->getData();            
-            $imgMemorial = $form->get('imgMemorial')->getData();
+            $memorial = $form->getData();    
+            // dd($memorial)        ;
+            if($form->get('imgMemorial')->getData() != null){
+                $imgMemorial = $form->get('imgMemorial')->getData();                
+            }else{
+                $imageParDefaut = __DIR__.'../../../public/img/paw_heart.png';
+
+                $tempImageFile = new File($imageParDefaut);
+                $imgMemorial = new UploadedFile(
+                    $tempImageFile->getPathname(),
+                    $tempImageFile->getFilename(),
+                    $tempImageFile->getMimeType(),
+                    null,
+                    true
+                );
+            }
+
             if($imgMemorial){
                 // Si on est dans le cas d'un edit et qu'une nouvelle image est uploadée (car lors d'un ajout on ne va pas supprimer le fichier qu'on crée..)
                 if($memorial->getPhoto() != null){
