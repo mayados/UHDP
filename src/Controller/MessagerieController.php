@@ -123,28 +123,33 @@ class MessagerieController extends AbstractController
             $form = $this->createForm(MessageType::class, $message);
             $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $message = $form->getData();
-                $message->setExpediteur($this->getUser());
-                $message->setDestinataire($user);
-                $message->setIsRead(false);
-                $entityManager = $doctrine->getManager();
-                $entityManager->persist($message);
-                $entityManager->flush();
+            if(!$me->isBlockedByUser($user) && (!$user->isBlockedByUser($me))){
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $message = $form->getData();
+                    $message->setExpediteur($this->getUser());
+                    $message->setDestinataire($user);
+                    $message->setIsRead(false);
+                    $entityManager = $doctrine->getManager();
+                    $entityManager->persist($message);
+                    $entityManager->flush();
 
-                if($request->isXmlHttpRequest()){
-                    // Si c'est le cas on renvoie du JSON
-                    return new JsonResponse([
-                        'content' => $this->renderView('_partials/_messages.html.twig', ['form' => $form->createView(), 'messages' => $mr->findMessagesByConversation($me,$user)]),
+                    if($request->isXmlHttpRequest()){
+                        // Si c'est le cas on renvoie du JSON
+                        return new JsonResponse([
+                            'content' => $this->renderView('_partials/_messages.html.twig', ['form' => $form->createView(), 'messages' => $mr->findMessagesByConversation($me,$user)]),
 
-                    ]);
+                        ]);
+                    }
+
+                    return $this->redirectToRoute(
+                        'app_conversation',
+                        ['id' => $user->getId()]
+                    );
                 }
-
-                return $this->redirectToRoute(
-                    'app_conversation',
-                    ['id' => $user->getId()]
-                );
             }
+
+
+
 
             return $this->render('messagerie/conversation.html.twig', [
                 'form' => $form->createView(),
