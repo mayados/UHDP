@@ -11,8 +11,15 @@
     <p class="fil-ariane"> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_forum') }}"> Forum </a> &lt; <a href="{{path('show_histoire', {'slug' : topic.slug}) }}">{{ topic.titre }}</a></p>
     <section id="topic">
         {% if app.user == topic.auteur %}
-            <a href="{{path('remove_topic', {'slug': topic.slug}) }}">Supprimer le topic</a>
-            <a href="{{ path('edit_topic', {'slug': topic.slug}) }}">Edit</a>
+            <a id="open-dialog" href="{{path('remove_topic', {'slug': topic.slug}) }}"><i class="fa-solid fa-trash"></i></a>
+            <dialog id="delete-dialog">
+                <p><i class="fa-solid fa-triangle-exclamation"></i> Cette action est irréversible, êtes-vous sûr de vouloir supprimer le sujet ?</p>
+                <form method="dialog" id="dialog-form-delete">
+                    <button id="annuler">Non, je veux continuer à m'exprimer !</button>
+                    <a id="dialog-supprimer" href="{{ path('remove_topic', {'slug':topic.slug}) }}">Supprimer le sujet</a>
+                </form>
+            </dialog>  
+            <a href="{{ path('edit_topic', {'slug': topic.slug}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
             {% if topic.isVerrouillage %}
                 <a href="{{ path('verrouillage_topic', {'id': topic.id}) }}">Déverouiller le topic</a> 
             {% else %}

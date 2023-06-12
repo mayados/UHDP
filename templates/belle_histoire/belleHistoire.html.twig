@@ -18,17 +18,31 @@
     {% else %}
         <p class="fil-ariane"> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_belles_histoires') }}">Belles Histoires</a> &lt; {{ histoire.titre }}</p>
     {% endif %}
-    {% if app.user.reportedHistoires |length > 0 %}
-        {% for report in app.user.reportedHistoires %}  
-            {% if (report.histoire == histoire) and (app.user == report.signaleur) %}
-                <a class="report-flag corner-flag" href="{{ path('app_report_histoire', {'id': histoire.id}) }}"><i class="fa-solid fa-flag flag-report-icon reported"></i></a> 
-            {% else %}
-                <a class="report-flag corner-flag" href="{{ path('app_report_histoire', {'id': histoire.id}) }}"><i class="fa-solid fa-flag flag-report-icon unreported"></i></a> 
-            {% endif %}
-        {% endfor %}
+    {% if app.user != histoire.auteur %}
+        {% if app.user.reportedHistoires |length > 0 %}
+            {% for report in app.user.reportedHistoires %}  
+                {% if (report.histoire == histoire) and (app.user == report.signaleur) %}
+                    <a class="report-flag corner-flag" href="{{ path('app_report_histoire', {'id': histoire.id}) }}"><i class="fa-solid fa-flag flag-report-icon reported"></i></a> 
+                {% else %}
+                    <a class="report-flag corner-flag" href="{{ path('app_report_histoire', {'id': histoire.id}) }}"><i class="fa-solid fa-flag flag-report-icon unreported"></i></a> 
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <a class="report-flag corner-flag" href="{{ path('app_report_histoire', {'id': histoire.id}) }}"><i class="fa-solid fa-flag flag-report-icon unreported"></i></a> 
+        {% endif %}
     {% else %}
-        <a class="report-flag corner-flag" href="{{ path('app_report_histoire', {'id': histoire.id}) }}"><i class="fa-solid fa-flag flag-report-icon unreported"></i></a> 
-    {% endif %}
+    <div class="corner-flag">
+        <a href="{{ path('edit_histoire', {'slug': histoire.slug}) }}"><i class="fa-solid fa-pen-to-square"></i></a>             
+        <a id="open-dialog" href="#"><i class="fa-solid fa-trash"></i></a>
+        <dialog id="delete-dialog">
+            <p><i class="fa-solid fa-triangle-exclamation"></i> Cette action est irréversible, êtes-vous sûr de vouloir supprimer l'histoire ?</p>
+            <form method="dialog" id="dialog-form-delete">
+                <button id="annuler">Non, je veux continuer à partager mes écrits !</button>
+                <a id="dialog-supprimer" href="{{ path('remove_histoire', {'id':histoire.id}) }}">Supprimer l'histoire'</a>
+            </form>
+        </dialog>               
+        </div>
+    {% endif %}        
     <article id="histoire">
         <section id="histoire-content">
             <div id="histoire-content-header">
@@ -56,12 +70,6 @@
                 </div>
             <div id="histoire-texte">
                 <p>{{ histoire.texte|raw }}</p>
-                {% if histoire.auteur != null %}
-                    {% if app.user == histoire.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-                        <a href="{{ path('remove_histoire', {'id': histoire.id}) }}">Supprimer l'histoire</a>
-                        <a href="{{ path('edit_histoire', {'slug': histoire.slug}) }}">Edit l'histoire</a>
-                    {% endif %}
-                {% endif %}
                 <div id="histoire-interraction">
                     {% include "_partials/_favorisHistoire.html.twig" %}            
                     {% include "_partials/_share.html.twig" %}
