@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use Assert\Regex;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -9,12 +10,12 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class RegistrationFormType extends AbstractType
 {
@@ -51,16 +52,17 @@ class RegistrationFormType extends AbstractType
                 'options' => ['attr' => ['class' => 'password-field']],
                 'required' => true,
                 'first_options' => [
-                    'label' => 'Mot de passe',
+                    'label' => 'Mot de passe (Au minimum 12 caractères et doit contenir au moins une majuscule, une minuscule, un chiffre, un caractère spécial)',
                     'constraints' => [
                         new NotBlank([
                             'message' => 'Veuillez renseigner un mot de passe',
                         ]),
                         new Length([
-                            'min' => 6,
+                            'min' => 12,
                             'minMessage' => 'Votre mot de passe doit faire un minimum {{ limit }} caractères',
                             'max' => 50,
                         ]),
+                        new Assert\Regex(pattern:"/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,}$/", message:"Le mot de passe doit inclure au moins une majusule, une minscule, un chiffre et un caractère spécial.")
                     ],                    
                 ],
                 'second_options' => ['label' => 'Répéter le mot de passe'],
