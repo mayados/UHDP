@@ -371,6 +371,7 @@ class MemorialController extends AbstractController
         if($memorial && ($this->getUser() == $memorial->getAuteur())){
             $edit = true;
             $date = $memorial->getDateCreation();
+            // $imgMemorial = $memorial->getPhoto();
         // CREATION 
         }elseif(!$memorial){
             $memorial = new AnimalMemorial();
@@ -388,7 +389,7 @@ class MemorialController extends AbstractController
             // dd($memorial)        ;
             if($form->get('imgMemorial')->getData() != null){
                 $imgMemorial = $form->get('imgMemorial')->getData();                
-            }else{
+            }else if(($form->get('imgMemorial')->getData()==null) && $edit==false){
                 $imageParDefaut = __DIR__.'../../../public/img/paw_heart.png';
 
                 $tempImageFile = new File($imageParDefaut);
@@ -399,6 +400,8 @@ class MemorialController extends AbstractController
                     null,
                     true
                 );
+            }else if(($form->get('imgMemorial')->getData()==null && $edit==true)){
+                $imgMemorial = $form->get('imgMemorial')->getData();
             }
 
             if($imgMemorial){
