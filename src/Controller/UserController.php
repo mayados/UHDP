@@ -9,6 +9,7 @@ use App\Service\UploaderService;
 use App\Form\UserEditPasswordType;
 use App\Repository\UserRepository;
 use App\Repository\TopicRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\BelleHistoireRepository;
 use App\Repository\AnimalMemorialRepository;
@@ -202,6 +203,41 @@ class UserController extends AbstractController
         $this->addFlash('notice','Votre compte a été supprimé');
 
         return $this->redirectToRoute('app_logout');
+    }
+
+
+    #[Route('/user/block/{id}', name: 'block_user', requirements: ['id' => '\d+'])]
+    #[Security("is_granted('ROLE_USER')")]
+    public function blockUser(UserRepository $ur, User $user, EntityManagerInterface $manager): Response
+    {
+
+        $userBlock = $ur->find($user->getId());
+        $me = $this->getUser();
+
+        if($me->isBlockedByUser($userBlock))
+        {
+
+            $me->removeBlockedUser($userBlock);
+            $manager->flush();
+
+            $this->addFlash('notice',"L'utilisateur a été débloqué");
+
+
+            return $this->redirectToRoute('show_profile', [
+                'id' => $userBlock->getId(),
+            ]);  
+        }
+
+        $me->addBlockedUser($userBlock);
+        $manager->flush();
+
+        $this->addFlash('notice',"L'utilisateur a été bloqué");
+
+            
+        return $this->redirectToRoute('show_profile', [
+            'id' => $userBlock->getId(),
+        ]);   
+        
     }
 
 }
