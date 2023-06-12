@@ -31,9 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
         new Submit(document.querySelector('.js-refresh-page'))    
     }
     
-    let preDeleteButton = document.getElementById('delete-account');
+    let preDeleteButton = document.getElementById('open-dialog');
     if(preDeleteButton){
-        let dialog = document.getElementById('delete-account-dialog');
+        let dialog = document.getElementById('delete-dialog');
         let annuler = document.querySelector('#annuler')
         // Le bouton "Mettre à jour les détails" ouvre le <dialogue> ; modulaire
         preDeleteButton.addEventListener('click', function onOpen() {
@@ -48,6 +48,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         });        
     }
+
+    // let preDeleteButton = document.getElementById('delete-account');
+    // if(preDeleteButton){
+    //     let dialog = document.getElementById('delete-account-dialog');
+    //     let annuler = document.querySelector('#annuler')
+    //     // Le bouton "Mettre à jour les détails" ouvre le <dialogue> ; modulaire
+    //     preDeleteButton.addEventListener('click', function onOpen() {
+    //     if (typeof dialog.showModal === "function") {
+    //         dialog.showModal();
+    //         // Le close peut être détecté car dans le formulaire l'attribut method est définit sur "dialog"
+    //         preDeleteButton.addEventListener('close', function onClose(){
+    //         })
+ 
+    //     } else {
+    //         console.error("L'API <dialog> n'est pas prise en charge par ce navigateur.");
+    //     }
+    //     });        
+    // }
 
     var shareCircles = document.querySelectorAll('.share-content')
 
