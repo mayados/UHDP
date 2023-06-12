@@ -13,21 +13,29 @@
                 <img src="{{ asset('uploads/imgUserProfil/'~ user.photo) }}" alt="">   
             {% endif %} 
         </figure>
-        <h1>{{ user.pseudo }}</h1>        
+        <h1><a href="{{ path('show_profile', {'id': user.id}) }}">{{ user.pseudo }}</a></h1>        
     </div>
     <section id="messages-conversation">
         {% include '_partials/_messages.html.twig' %} 
-        <div id="form-conv-message-container">
-            {{ form_start(form, {attr: {class: 'js-submit-form'}}) }}
-                <div class="custom-errors">
-                    {{ form_errors(form.texte) }}
-                </div>  
-                {{ form_row(form.texte) }}
-                {# On cache le champ ici car il est setté dans le controller. On ne l'enlève pas du form car on en a besoin dans la messagerie #}
-                {{ form_widget(form.destinataire, { 'attr': {'style': 'display:none'} }) }}
-                {{ form_row(form.submit) }}
-            {{ form_end(form) }}               
+        <div id="form-conv-message-container">        
+            {% if (user not in app.user.blockedUsers) and (app.user not in user.blockedUsers) %}
+                {{ form_start(form, {attr: {class: 'js-submit-form'}}) }}
+                    <div class="custom-errors">
+                        {{ form_errors(form.texte) }}
+                    </div>  
+                    {{ form_row(form.texte) }}
+                    {# On cache le champ ici car il est setté dans le controller. On ne l'enlève pas du form car on en a besoin dans la messagerie #}
+                    {{ form_widget(form.destinataire, { 'attr': {'style': 'display:none'} }) }}
+                    {{ form_row(form.submit) }}
+                {{ form_end(form) }}  
+            {% elseif user in app.user.blockedUsers %}
+                <p>Vous ne pouvez pas envoyer de message à un utilisateur bloqué</p>
+            {% elseif app.user in user.blockedUsers %}
+                <p>L'envoi de message est impossible car vous avez été bloqué</p>
+            {% endif %}                             
         </div>
+        
+
     </section>
 
 </div>
