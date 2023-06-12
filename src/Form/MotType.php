@@ -16,7 +16,7 @@ class MotType extends AbstractType
     {
         $builder
             ->add('mot', CKEditorType::class, [
-                'label' => false,
+                'label' => "Que voulez-vous dire à ces animaux qui ont rejoint les étoiles ? (Au minimum 10 caractères)",
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'Le mot ne peut pas être nul']),
                     new Assert\Length(['min' => 10, 'minMessage' => 'Le mot doit faire au moins {{ limit }} caractères'])

@@ -21,14 +21,14 @@ class HistoireType extends AbstractType
     {
         $builder
             ->add('titre',TextType::class,[
-                'label' => "Titre",
+                'label' => "Titre *",
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'Le titre ne peut pas être vide']),
                     new Assert\Length(['min' => 2, 'max' => 255, 'minMessage' => 'Le nom titre faire au moins {{ limit }} caractères', 'maxMessage' => 'Le titre ne peut pas faire plus de {{ limit }} caractères'])
                 ]
             ])
             ->add('texte', CKEditorType::class, [
-                'label' => 'Texte',
+                'label' => 'Racontez votre histoire ici *',
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'Le texte ne peut pas être nul']),
                 ]
@@ -53,7 +53,7 @@ class HistoireType extends AbstractType
                 ]
             ])
             ->add('genre', EntityType::class, [
-                'label' => 'Genre',
+                'label' => "Indiquez le genre de l'histoire *",
                 'class' => GenreHistoire::class,
                 'constraints' => [
                     new Assert\NotNull(['message' => 'Le genre ne peut pas être nul']),

@@ -21,7 +21,7 @@ class CondoleanceType extends AbstractType
             'constraints' => [
                 new Assert\NotBlank(['message' => 'Le message de condoléance ne peut pas être vide']),
             ],
-            'required' => false,
+            // 'required' => false,
         ])
         // ->add('texte', TextareaType::class, [
         //     'constraints' => [
@@ -29,7 +29,7 @@ class CondoleanceType extends AbstractType
         //     ]
         // ])
         ->add('submit', SubmitType::class, [
-            'label' => 'Envoyer',
+            'label' => 'Soumettre',
         ])
         ;
     }
