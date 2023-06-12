@@ -115,6 +115,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'signaleur', targetEntity: ReportMot::class, orphanRemoval: true)]
     private Collection $reportedMots;
 
+    #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'blockedUsers')]
+    #[ORM\JoinTable(name: 'blocked_users')]
+    private Collection $usersBlocked;
+
+    #[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'usersBlocked')]
+    private Collection $blockedUsers;
+
     public function __construct()
     {
         $this->memoriaux = new ArrayCollection();
@@ -138,6 +145,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->reportedPosts = new ArrayCollection();
         $this->reportedTopics = new ArrayCollection();
         $this->reportedMots = new ArrayCollection();
+        $this->usersBlocked = new ArrayCollection();
+        $this->blockedUsers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -859,6 +868,61 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getUsersBlocked(): Collection
+    {
+        return $this->usersBlocked;
+    }
+
+    public function addUsersBlocked(self $usersBlocked): self
+    {
+        if (!$this->usersBlocked->contains($usersBlocked)) {
+            $this->usersBlocked->add($usersBlocked);
+        }
+
+        return $this;
+    }
+
+    public function removeUsersBlocked(self $usersBlocked): self
+    {
+        $this->usersBlocked->removeElement($usersBlocked);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getBlockedUsers(): Collection
+    {
+        return $this->blockedUsers;
+    }
+
+    public function addBlockedUser(self $blockedUser): self
+    {
+        if (!$this->blockedUsers->contains($blockedUser)) {
+            $this->blockedUsers->add($blockedUser);
+            $blockedUser->addUsersBlocked($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBlockedUser(self $blockedUser): self
+    {
+        if ($this->blockedUsers->removeElement($blockedUser)) {
+            $blockedUser->removeUsersBlocked($this);
+        }
+
+        return $this;
     }   
+
+    public function isBlockedByUser(User $user):  bool{
+        return $this->blockedUsers->contains($user);
+    }
 
 }
