@@ -1,11 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Upright:wght@300;400;500;600;700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Playfair:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap'); */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;0,500;1,200;1,400&display=swap');
 
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* font-family: 'Cormorant Upright';
-    font-weight: 400; */
+    /* font-family: 'Poppins';
+    font-weight: 200; */
+    font-family: 'Poppins';
+    font-weight: 200;
 }
 
 
@@ -24,6 +28,7 @@
 
 strong{
     font-weight: inherit;
+    font-size: inherit;
 }
 
 li{
@@ -131,6 +136,7 @@ h1{
 }
 
 
+
                                     /*************** LEAFLET ********************/
 
 #map{
@@ -150,8 +156,6 @@ h1{
     z-index: 999;
     top: 0;
     left: 0;
-    font-family: 'Cormorant Upright';
-    font-weight: 700;
 }
 
 nav{
@@ -164,12 +168,13 @@ nav{
     justify-content: space-evenly;
     align-items: center;
     height: 100%;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
 }
 
 #nav-menu li a{
     position: relative;
     color: var(--navLink);
+    font-weight: 300;
 }
 
 #nav-menu li {
@@ -269,7 +274,7 @@ nav{
   display: block;
   font-size: 20px;
   font-weight: 700;
-  font-family: 'Poppins', sans-serif;
+  /* font-family: 'Poppins', sans-serif; */
   margin-bottom: 20px;
 }
 .footer-social-icon a {
@@ -553,11 +558,17 @@ nav{
     padding-bottom: 5%;
 }
 
+#texte-accueil-uhdp .texte p{
+    line-height: 2;
+}
+
 #texte-accueil-uhdp .texte p,
 #explications-memoriaux,
 #explications-histoires{
-    font-family: 'Cormorant Upright';
-    font-weight: 600;
+    /* font-family: 'Playfair'; */
+    /* font-weight: 600; */
+    /* font-family: 'Poppins';
+    font-weight: 200; */
 }
 
 #bienvenue #carousel{
@@ -819,7 +830,7 @@ nav{
 /* SECTIONS EXPLICATIONS */
 #explications-memoriaux,
 #explications-histoires{
-    min-height: 30vh;
+    min-height: 40vh;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -833,7 +844,7 @@ nav{
 
 #explications-memoriaux .texte,
 #explications-histoires .texte{
-    width:50%;
+    width:80%;
     font-size: 1.4rem;
     text-align: justify;
 }
@@ -1597,6 +1608,10 @@ nav{
     align-items: center;
 }
 
+#comment-histoire .commentaire-header-right{
+    gap: 1rem;
+}
+
 #comment-histoire .commentaire figure{
     height: 50px;
     width: 50px;
@@ -1763,6 +1778,11 @@ nav{
 
 /* PAGE TOPIC */
 
+.topic-page{
+    background-image: url('../img/background_cat.png');
+    background-repeat: no-repeat;
+}
+
 #banniere-topic{
     height: 30vh;
     display: flex;
@@ -1809,6 +1829,13 @@ nav{
     align-items: center;
     gap: 10px;
     padding-bottom: 2rem;
+    position: relative;
+}
+
+.post .user-post-infos i{
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 .post .user-post-infos figure{
@@ -2194,19 +2221,25 @@ nav{
     border: 1px solid rgb(226, 52, 52);
 }
 
-#delete-account-dialog{
+#delete-account-dialog,
+#delete-memorial-dialog,
+#delete-dialog{
     background-color: white;
     margin: auto auto;
     height: 200px;
-    width: 320px;
+    width: 340px;
     padding: 10px;
 }
 
-#delete-account-dialog p{
+#delete-account-dialog p,
+#delete-memorial-dialog p,
+#delete-dialog p{
     text-align: center;
 }
 
-#form-delete-account{
+#form-delete-account,
+#form-delete-memorial,
+#dialog-form-delete{
     margin-top: 2rem;
     display: flex;
     align-items: center;
@@ -2308,6 +2341,13 @@ nav{
     padding: 1rem;
     /* border: 1px solid green; */
     border-top: 1px solid gray;
+    position: relative;
+}
+
+#mur-commemoration .mot i{
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
 }
 
 #mur-commemoration .mot-infos{
