@@ -17,7 +17,8 @@
     --nav: #FEFEFE;
     --navLink: #4B4B4B;
     --blanc: white;
-    --couleurPrincipale: #9deded;
+    /* --couleurPrincipale: #9deded; */
+    --couleurPrincipale: #adfafa;
     /* --couleurPrincipale: #71E2E2; */
     /* Créer variable pour taille de p */
     /* Créer variable pour couleurs bouttons / liens */
@@ -135,15 +136,14 @@ h1{
     background-color: var(--couleurPrincipale);
     padding: 10px;
     border-radius: 5px;
-    color: white;
+    color: black;
     font-weight: bolder;
 }
 
 .bouton-action:hover{
-    color: var(--couleurPrincipale);
-    border: 2px solid var(--couleurPrincipale);
+    border: 3px solid var(--couleurPrincipale);
     background-color: white;
-    font-weight: bold;
+    cursor: pointer;
 }
 
 .banniere{
@@ -154,6 +154,10 @@ h1{
     background-size: 100% 98%;
     background-repeat: no-repeat;
 }
+
+/* input{
+    border: 1px solid gray;
+} */
 
 
                                     /*************** LEAFLET ********************/
@@ -472,6 +476,8 @@ nav{
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 2rem 0 2rem 0;
+    background-color: #FAE5D3;
 }
 
 .edit-page{
@@ -500,6 +506,7 @@ nav{
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     width: 750px;
     padding: 30px 30px 50px 30px;
+    background-color: white;
 }
 
 #form-login .form-element,
@@ -535,7 +542,7 @@ nav{
 #form-infos-profil input,
 #form-infos-password input{
     height: 2.5rem;
-    border: none;
+    border: 1px solid gray;
     padding-left: 10px;
     border-radius: 5px;
 }
@@ -893,12 +900,14 @@ nav{
     position: relative;
     padding: 1rem;
     border-bottom: 1px dotted var(--couleurPrincipale);
+    text-align: center;
 }
 
 .recherche form{
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 2.5rem;
 }
 
 .recherche form .form-search{
@@ -1156,7 +1165,6 @@ nav{
 
 #ajout-photo,
 #condoleances #ajout-message{
-    color: white;
     min-width: 250px;
     max-width: 320px;
     margin: 0 auto;
@@ -1166,14 +1174,6 @@ nav{
 #condoleances #ajout-message p{
     display: flex;
     justify-content: space-evenly;
-}
-
-#ajout-photo:hover,
-#condoleances #ajout-message:hover{
-    background-color: white;
-    border: 2px solid var(--couleurPrincipale);
-    color: var(--couleurPrincipale);
-    cursor: pointer;
 }
 
 #container-condoleances{
@@ -1251,7 +1251,7 @@ nav{
     margin-top: 1rem;
     padding: 5px 10px 5px 10px;
     background-color: white;
-    color: var(--couleurPrincipale);
+    color: black;
     border: 2px solid var(--couleurPrincipale);
     font-weight: bolder;
 }
@@ -1259,9 +1259,7 @@ nav{
 .form-button:hover{
     cursor: pointer;
     background-color: var(--couleurPrincipale);
-    color: white;
     border: 2px solid white;
-    font-weight: bolder;
 }
 
 
@@ -1274,8 +1272,14 @@ nav{
 #form-memorial input,
 #form-memorial select{
     height: 2.5rem;
-    border: none;
+    border: 1px solid gray;
     border-radius: 5px;
+}
+
+#form-memorial #memorial_imgMemorial,
+#form-histoire #histoire_imgHistoire,
+#form-infos-profil #user_photo_imgUser{
+    border: none;
 }
 
 #form-memorial #memorial_nom{
@@ -1559,7 +1563,7 @@ nav{
 #form-histoire input,
 #form-histoire select{
     height: 2.5rem;
-    border: none;
+    border: 1px solid gray;
     border-radius: 5px;
 }
 
@@ -2060,7 +2064,7 @@ nav{
 
 
 /* PAGE DE PARAMETRES PROFIL */
-#delete-account{
+.delete-account{
     padding: 5px 10px 5px 10px;
     background-color: rgb(226, 52, 52);
     margin-bottom: 2rem;
@@ -2075,33 +2079,43 @@ nav{
     border: 1px solid rgb(226, 52, 52);
 }
 
-#delete-account-dialog,
-#delete-memorial-dialog,
 #delete-dialog{
     background-color: white;
     margin: auto auto;
-    height: 200px;
+    height: 270px;
     width: 340px;
     padding: 10px;
 }
 
-#delete-account-dialog p,
-#delete-memorial-dialog p,
 #delete-dialog p{
     text-align: center;
 }
 
-#form-delete-account,
-#form-delete-memorial,
+/* #form-delete-account,
+#form-delete-memorial, */
 #dialog-form-delete{
     margin-top: 2rem;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-#supprimer-compte,
-#annuler{
+#dialog-supprimer{
+    color: white;
+    background-color: red;
+    padding: 10px;
+}
+
+#dialog-supprimer:hover{
+    color: red;
+    border: 1px solid red;
+    background-color: white;
+    cursor: pointer;
+}
+
+#supprimer-compte{
     padding: 5px 10px 5px 10px;
     border-radius: 5px;
     border: 1px solid white;
@@ -2112,21 +2126,9 @@ nav{
     background-color: red;
 }
 
-#annuler{
-    color: white;
-    background-color: var(--couleurPrincipale);
-}
-
 #supprimer-compte:hover{
     color: red;
     border: 1px solid red;
-    background-color: white;
-    cursor: pointer;
-}
-
-#annuler:hover{
-    border: 1px solid var(--couleurPrincipale);
-    color: var(--couleurPrincipale);
     background-color: white;
     cursor: pointer;
 }
