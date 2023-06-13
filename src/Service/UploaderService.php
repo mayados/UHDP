@@ -43,7 +43,7 @@ class UploaderService
     public function delete(string $fichier, ?string $folder = '')
     {
         // Si le fichier est différent de l'image par défaut
-        if($fichier !== 'default.jpg'){
+        if(($fichier != 'default.jpg') && ($fichier != 'default.png')){
             $path = $this->params->get('images_directory') . $folder;
             $imageASupprimer = $path . '/' . $fichier;
             if(file_exists($imageASupprimer)){
