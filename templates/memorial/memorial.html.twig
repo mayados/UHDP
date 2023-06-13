@@ -128,7 +128,7 @@
         <div id="container-photos">
             {% if memorial.auteur != null %}
                 {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-                    <div id="ajout-photo">
+                    <div class="bouton-action" id="ajout-photo">
                         <p>Ajouter des photos à la galerie <i class="fa-solid fa-file-circle-plus"></i></p>                  
                     </div>
                     <div id="form-photo">
@@ -175,7 +175,7 @@
     <section id="condoleances">
         <h2>Condoléances</h2>
         {% if app.user %}
-            <div id="ajout-message">
+            <div class="bouton-action" id="ajout-message">
                 <p >Ajouter un message de condoléances <i class="fa-solid fa-pen"></i></p>
             </div>
             <div id="container-form-condoleances">

@@ -8,7 +8,7 @@
                         <div class="form-element">
                                 <textarea id="texte_edit{{ mot.id }}" name="texte" class="form-control">{{ mot.mot}}</textarea>  
                                 <input type="hidden" name="token" value="{{ csrf_token('modify-item') }}"/>
-                                <button type="submit" name="modify" value="submit" class="green">Modifier</button>         
+                                <button type="submit" name="modify" value="submit" class="green form-button">Modifier</button>         
                         </div>
                 </form>                                
             </div>    
@@ -17,7 +17,8 @@
                 <div class="mot-interractions">
                     {% if app.user == mot.auteur %}
                         <a class="delete" href="{{ path('remove_mot', {'id': mot.id}) }}"><i class="fa-solid fa-trash"></i></a>      
-                        <button id="{{ mot.id }}" class="modify-button" type="submit"> Modifier </button>  
+                        {# <button id="{{ mot.id }}" class="modify-button" type="submit"> Modifier </button>   #}
+                        <a id="{{ mot.id }}" class="modify-button" type="submit"><i class="fa-solid fa-file-pen"></i></a>  
                     {% else %}
                         {% if mot.reports |length > 0 %}
                             {% for report in app.user.reportedMots %}

@@ -21,10 +21,10 @@
     </section>
     <section class="rubriques">
         {% if user not in app.user.blockedUsers %}
-            <a  href="{{ path('app_conversation', {'id': user.id}) }}"><i class="fa-solid fa-envelope"></i> Envoyer un message</a>
-            <a  href="{{ path('block_user', {'id': user.id}) }}"><i class="fa-solid fa-user-minus"></i> Bloquer l'utilisateur</a>
+            <a class="bouton-action" href="{{ path('app_conversation', {'id': user.id}) }}"><i class="fa-solid fa-envelope"></i> Envoyer un message</a>
+            <a class="bouton-action" href="{{ path('block_user', {'id': user.id}) }}"><i class="fa-solid fa-user-minus"></i> Bloquer l'utilisateur</a>
         {% else %}
-            <a  href="{{ path('block_user', {'id': user.id}) }}"><i class="fa-solid fa-user-plus"></i> Débloquer l'utilisateur</a>
+            <a class="bouton-action" href="{{ path('block_user', {'id': user.id}) }}"><i class="fa-solid fa-user-plus"></i> Débloquer l'utilisateur</a>
         {% endif %}
     </section>
     {% if (user not in app.user.blockedUsers) and (app.user not in user.blockedUsers) %}

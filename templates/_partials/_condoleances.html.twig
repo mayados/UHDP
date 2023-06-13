@@ -22,7 +22,7 @@
                                                         <div class="form-element">
                                                                 <textarea id="texte_edit{{ condoleance.id }}" name="texte" class="form-control">{{ condoleance.texte}}</textarea>  
                                                                 <input type="hidden" name="token" value="{{ csrf_token('modify-item') }}"/>
-                                                                <button  type="submit" name="modify"  class="green">Modifier</button>         
+                                                                <button  type="submit" name="modify"  class="green form-button">Modifier</button>         
                                                         </div>
                                                 </form>                                
                                         </div>                                                                
@@ -37,7 +37,8 @@
                                                         <a class="delete" href="{{path('remove_condoleance', {'idMemorial': memorial.id, 'id': condoleance.id}) }}"><i class="fa-solid fa-trash"></i></a>
                                                         {# <button id="{{ condoleance.id }}" class="modify-button">Modifier</button>    #}
                                                 {% endif %}
-                                                <button id="{{ condoleance.id }}" class="modify-button" type="submit"> Modifier </button>   
+                                                {# <button id="{{ condoleance.id }}" class="modify-button" type="submit"> Modifier </button>    #}
+                                                <a id="{{ condoleance.id }}" class="modify-button" type="submit"><i class="fa-solid fa-file-pen"></i></a>   
                                                 
                                         {% else %}
                                                 {% if condoleance.reports |length > 0 %}

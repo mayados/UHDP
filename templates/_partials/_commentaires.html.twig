@@ -47,7 +47,8 @@
                     {% else %}
                         <a class="delete" href="{{ path('remove_comment', {'slug': histoire.slug, 'id': commentaire.id}) }}"><i class="fa-solid fa-trash"></i></a>
                     {% endif %}
-                    <button id="{{ commentaire.id }}" class="modify-button" type="submit"> Modifier </button>
+                    {# <button id="{{ commentaire.id }}" class="modify-button" type="submit"> Modifier </button> #}
+                    <a id="{{ commentaire.id }}" class="modify-button" type="submit"><i class="fa-solid fa-file-pen"></i></a>
                 {% else %}
                     {% if commentaire.reports |length > 0 %}
                         {% for report in app.user.reportedComments %}
@@ -71,7 +72,7 @@
                     <div class="form-element">
                             <textarea id="texte_edit{{ commentaire.id }}" name="texte" class="form-control">{{ commentaire.texte}}</textarea>  
                             <input type="hidden" name="token" value="{{ csrf_token('modify-item') }}"/>
-                            <button type="submit" name="modify" value="submit" class="green">Modifier</button>      
+                            <button type="submit" name="modify" value="submit" class="green form-button">Modifier</button>      
                     </div>
             </form>                                
         </div>    
