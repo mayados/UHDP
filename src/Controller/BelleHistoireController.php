@@ -105,7 +105,7 @@ class BelleHistoireController extends AbstractController
             $slug = $sluggerService->slugElement($titre);
             if($imgHistoire && $imgHistoire !='default.jpg'){
                 // Si on est dans le cas d'un edit et qu'une nouvelle image est uploadée (car lors d'un ajout on ne va pas supprimer le fichier qu'ion crée..)
-                if($histoire->getPhoto() != 'default.jpg'){
+                if($histoire->getPhoto() != 'default.jpg' && $edit == true){
                     // On cherche la photo stockée pour le mémorial correspondant
                     $previousPhoto = $histoire->getPhoto();
                     $folder = 'imgHistoire';
