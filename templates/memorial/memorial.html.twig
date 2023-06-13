@@ -16,7 +16,7 @@
         <p> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_memoriaux') }}">Mémoriaux</a> &lt; <a href="{{path('app_categorie', {'id' : memorial.categorieAnimal.id}) }}">{{ memorial.nom }}</a></p>
     {% endif %}
     {% if app.user != memorial.auteur %}
-        {% if app.user.reportedMemorials |length > 0 %}
+        {% if (app.user) and (app.user.reportedMemorials |length > 0) %}
             {% for report in app.user.reportedMemorials %}  
                 {% if (report.memorial == memorial) and (app.user == report.signaleur) %}
                     <a class="report-flag corner-flag" href="{{ path('app_report_memorial', {'id': memorial.id}) }}"><i class="fa-solid fa-flag flag-report-icon reported"></i></a> 
