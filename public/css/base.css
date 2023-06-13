@@ -6,8 +6,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* font-family: 'Poppins';
-    font-weight: 200; */
     font-family: 'Poppins';
     font-weight: 200;
 }
@@ -21,6 +19,8 @@
     --blanc: white;
     --couleurPrincipale: #9deded;
     /* --couleurPrincipale: #71E2E2; */
+    /* Créer variable pour taille de p */
+    /* Créer variable pour couleurs bouttons / liens */
     --h1: 1.7rem;
     --h2: 1.4rem;
     --figcaption: 1.2rem;
@@ -47,10 +47,7 @@ h1{
     padding-bottom: 50px;
 }
 
-/* h2{
-    font-size: var(--h2);
-    text-align: center;
-} */
+
 .custom-errors{
     background-color: red;
 }
@@ -59,7 +56,6 @@ h1{
     margin-top: 5vh;
     min-height: 100vh;
     position: relative;
-    /* background-color: #F3F3F3; */
     background-color: #F6FDFF;
 }
 
@@ -135,6 +131,29 @@ h1{
     height: 80%;
 }
 
+.bouton-action{
+    background-color: var(--couleurPrincipale);
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bolder;
+}
+
+.bouton-action:hover{
+    color: var(--couleurPrincipale);
+    border: 2px solid var(--couleurPrincipale);
+    background-color: white;
+    font-weight: bold;
+}
+
+.banniere{
+    height: 25vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size: 100% 98%;
+    background-repeat: no-repeat;
+}
 
 
                                     /*************** LEAFLET ********************/
@@ -447,7 +466,6 @@ nav{
 .modify-form-visible{
     display: block;
     position: relative;
-    border: 1px solid red;
 }
 
 .form-page{
@@ -544,6 +562,10 @@ nav{
     padding: 5px 10px 5px 10px;
 }
 
+.js-modify-form{
+    text-align: center;
+}
+
 
 
                                         /********************  HOME ********************/
@@ -579,7 +601,6 @@ nav{
 
 #bienvenue .carousel-elements{
     display: flex;
-    /* justify-content: center; */
 }
 
 #bienvenue #carousel .element{
@@ -609,7 +630,6 @@ nav{
     display: flex;
     justify-content: center;  
     flex: 1; 
-    /* max-height: 70vh;  */
 }
 
 #bienvenue #carousel figure img{
@@ -619,18 +639,10 @@ nav{
     
 } 
 
-/* #bienvenue .over-carousel{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-} */
-
 #nav-droite,
 #nav-gauche{
     position: absolute;
     top: 50%;
-    /* transform: translateY(-50%); */
     font-size: 3rem;
 }
 
@@ -648,17 +660,6 @@ nav{
 #nav-gauche:hover{
     cursor: pointer;
 }
-
-/* #bienvenue-sides figure{
-    height: 500px;
-    flex: 1;
-}
-
-#bienvenue-sides figure img{
-    height: 100%;
-    width: 100%;
-    object-fit: contain;
-} */
 
 .title-lines{
     position: relative;
@@ -750,7 +751,6 @@ nav{
 
 .memorial-recent:hover{
     filter: none;
-    /* transform: scale(1.05); */
 }
 
 /* SECTION HISTOIRES RECENTES */
@@ -786,7 +786,6 @@ nav{
     flex-direction: column;
     justify-content: space-evenly;
     align-items: flex-start;
-    /* border: 1px solid red; */
     height: 100%;
     padding: 10px;
 }
@@ -794,10 +793,8 @@ nav{
 .histoire-recente .hr-infos{
     flex:1;
     width: 100%;
-    /* border: 1px solid green; */
     display: flex;
     gap: 50px;
-    /* justify-content: space-evenly; */
 }
 
 .histoire-recente .hr-texte{
@@ -810,7 +807,6 @@ nav{
 
 .histoire-recente .hr-auteur{
     flex: 1;
-    /* border: 1px solid brown; */
 }
 
 .histoire-recente .share-content{
@@ -836,7 +832,6 @@ nav{
     justify-content: center;
     align-items: center; 
     position: relative;
-    /* border: 1px solid blue;       */
     background-image: url('../img/back2_blue2.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
@@ -865,18 +860,7 @@ nav{
 }
 
 .banniere-memoriaux{
-    height: 25vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background-image: url("../img/banniere_blue.png");
-    background-size: 100% 98%;
-    /* padding-bottom: 5%; */
-    /* background-attachment: fixed; */
-    background-repeat: no-repeat;
-    /* background-size: cover;
-    background-position: bottom; */
-    /* filter: grayscale(1); */
 }
 
 #banniere-memoriaux h1{
@@ -900,39 +884,28 @@ nav{
     padding: 20px 0;
 }
 
-.interraction .link-recherche{
-    background-color: var(--couleurPrincipale);
-    padding: 10px;
-    border-radius: 5px;
-}
-
 .interraction p{
     margin-bottom: 1rem;
 }
 
 /* VUE RECHERCHE */
 .recherche{
-    /* border: 1px solid green; */
-    /* display: none; */
     position: relative;
     padding: 1rem;
     border-bottom: 1px dotted var(--couleurPrincipale);
 }
 
 .recherche form{
-    /* border: 2px solid pink; */
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .recherche form .form-search{
-    /* border: 2px solid pink; */
     padding: 1rem 1rem 3rem 1rem;
 }
 
 .recherche form .form-search #search_q{
-    /* border: 2px solid pink; */
     height: 2rem;
     padding-left: 0.3rem;
 }
@@ -963,19 +936,6 @@ nav{
     width: 1.5rem;
 }
 
-/* #search_sexe input::before,
-#search_categories input::before{
-    content: '';
-    position: absolute;
-    height: 20px;
-    width: 25px;
-    background-color: white;
-    border: 1px solid gray;
-    top: -1px;
-    margin-right: 3rem;
-    border-radius: 3px;
-} */
-
 .close,
 .close-form{
     position: absolute;
@@ -991,10 +951,6 @@ nav{
 
 
 /* MEMORIAUX */
-
-/* .memoriaux{
-    border: 1px solid green;
-} */
 
 #nous-pensons-a-eux{
     margin-bottom: 2rem;
@@ -1019,8 +975,6 @@ nav{
 }
 
 .container-memoriaux{
-    /* border: 2px solid blue; */
-    /* min-height: 50vh; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1079,7 +1033,6 @@ nav{
 .memorial-card:hover,
 .memorial-month-card figure:hover{
     filter: grayscale();
-    /* transform: scale(1.05); */
 }
 
 
@@ -1122,7 +1075,6 @@ nav{
 } 
 
 #memorial-infos{
-    /* border: 2px solid black; */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -1204,9 +1156,6 @@ nav{
 
 #ajout-photo,
 #condoleances #ajout-message{
-    padding: 10px 20px 10px 20px;
-    border: 2px solid white;
-    background-color: var(--couleurPrincipale);
     color: white;
     min-width: 250px;
     max-width: 320px;
@@ -1240,6 +1189,11 @@ nav{
     padding: 20px 2rem 20px 2rem;  
 }
 
+#container-condoleances .modify-form-visible,
+.condoleance-body{
+    width: 100%;
+}
+
 .condoleance-body .condoleance-texte{
     /* Permet de couper un long mot */
     overflow-wrap: anywhere;
@@ -1266,6 +1220,8 @@ nav{
 
 .condoleance-action{
     margin-left: 1.5rem;
+    display: flex;
+    gap: 0.5rem;
 }
 
 .showSoutient-content .unlikedPaw{
@@ -1290,20 +1246,22 @@ nav{
     width: 100%;
 }
 
-#condoleance_submit{
+.form-button{
     border-radius: 3px;
     margin-top: 1rem;
     padding: 5px 10px 5px 10px;
     background-color: white;
     color: var(--couleurPrincipale);
-    border: 1px solid var(--couleurPrincipale);
+    border: 2px solid var(--couleurPrincipale);
+    font-weight: bolder;
 }
 
-#condoleance_submit:hover{
+.form-button:hover{
     cursor: pointer;
     background-color: var(--couleurPrincipale);
     color: white;
-    border: 1px solid white;
+    border: 2px solid white;
+    font-weight: bolder;
 }
 
 
@@ -1343,38 +1301,12 @@ nav{
     height: 5rem;
 }
 
-#genres-histoires a{
-    background-color: var(--couleurPrincipale);
-    padding: 10px;
-    border-radius: 5px;
-    color: white;
-}
-
-#genres-histoires a:hover{
-    color: var(--couleurPrincipale);
-    border: 1px solid var(--couleurPrincipale);
-    background-color: white;
-}
-
 .creation{
     text-align: center;
 }
 
 #banniere-belles-histoires{
-    height: 25vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background-image: url("../img/beige_shape.png");
-    background-size: 100% 98%;
-    /* padding-bottom: 5%; */
-    background-repeat: no-repeat;
-    /* filter: grayscale(1); */
-}
-
-#banniere-belles-histoires h1{
-    color: white;
-    text-shadow: 1px 2px black;
 }
 
 #container-histoires{
@@ -1419,7 +1351,6 @@ nav{
     flex-direction: column;
     justify-content: space-evenly;
     align-items: flex-start;
-    /* border: 1px solid red; */
     height: 100%;
     padding: 10px;
 }
@@ -1427,10 +1358,8 @@ nav{
 .belle-histoire-card .hr-infos{
     flex:1;
     width: 100%;
-    /* border: 1px solid green; */
     display: flex;
     gap: 50px;
-    /* justify-content: space-evenly; */
 }
 
 .belle-histoire-card .hr-texte{
@@ -1443,7 +1372,6 @@ nav{
 
 .belle-histoire-card .hr-auteur{
     flex: 1;
-    /* border: 1px solid brown; */
 }
 
 .belle-histoire-card .share-content{
@@ -1461,20 +1389,7 @@ nav{
 
                             /* BELLE HISTOIRE PAGE */
 #banniere-belle-histoire{
-    height: 25vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background-image: url("../img/banniere_blue.png");
-    background-size: 100% 98%;
-    /* padding-bottom: 5%; */
-    background-repeat: no-repeat;
-    /* background-image: url("../img/banniere_belle_histoire2.jpg");
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: top; */
-    /* filter: grayscale(1); */
 }
 
 #banniere-belle-histoire h1{
@@ -1487,7 +1402,6 @@ nav{
 }
 
 #histoire-content{
-    /* box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -3px, rgba(0, 0, 0, 0.3) 0px 1px 3px -3px; */
     box-shadow: rgba(0, 0, 0, 0.1) 0px 3px 5px -1px;
 }
 
@@ -1592,7 +1506,6 @@ nav{
 }
 
 #comment-histoire .commentaire{
-    /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
     padding: 2rem 1rem 2rem 1rem;
     border-bottom: 1px solid rgb(200, 200, 200);
 }
@@ -1662,8 +1575,6 @@ nav{
 /* PAGE PRINCIPALE (index.html.twig) */
 
 .forum-page{
-    /* padding: 5vh 10vh 0 5vh; */
-    /* background-image: url('../img/spirales_sans_fond.png'); */
     background-image: url('../img/forum_cat_girl.png');
      background-repeat: no-repeat;
      background-position: center;
@@ -1672,6 +1583,7 @@ nav{
 
 .topic-page{
     background-color: rgb(255, 242, 180);
+    padding-bottom: 2rem;
 }
 
 #banniere-forum{
@@ -1679,15 +1591,6 @@ nav{
     display: flex;
     justify-content: center;
     align-items: center;
-    /* background-image: url("../img/banniere_belle_histoire2.jpg");
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: top; */
-    /* filter: grayscale(1); */
-    /* background-image: url('../img/beige_shape.png');
-    background-repeat: no-repeat;
-    background-size: 100% 98%; */
 }
 
 #topic-search{
@@ -1709,10 +1612,9 @@ nav{
 
 #topic-search a{
     margin-left: 2rem;
-    background-color: red;
-    color: white;
+    background-color: white;
     border-radius: 5px;
-    border: 1px solid white;
+    border: 1px solid gray;
 }
 
 #topics{
@@ -1721,15 +1623,13 @@ nav{
 
 .topic{
     padding: 20px;
-    /* background-color: white; */
-    background: rgba(255, 255, 255, 0.49);
+    background: rgba(255, 255, 255, 0.70);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     border: 1px solid rgb(197, 197, 197);
     min-height: 10vh;
     margin: 2vh 0 2vh 0;
     display: flex;
     justify-content: space-between;
-    /* align-items: center; */
 }
 
 .topic-title{
@@ -1785,19 +1685,7 @@ nav{
 
 #banniere-topic{
     height: 30vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* background-image: url("../img/banniere_belle_histoire2.jpg");
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: top; */
-    /* filter: grayscale(1); */
     background-image: url('../img/beige_shape.png');
-    background-repeat: no-repeat;
-    background-size: 100% 98%;
-
 }
 
 #topic{
@@ -1811,7 +1699,7 @@ nav{
 .post{
     padding: 20px;
     border: 1px solid rgb(197, 197, 197);
-
+    box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset, rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
     min-height: 10vh;
     margin: 1vh 0 1vh 0;
 }
@@ -1841,7 +1729,6 @@ nav{
 .post .user-post-infos figure{
     width: 50px;
     height: 50px;
-    background-color: green;
 }
 
 .post .user-post-infos figure img{
@@ -1853,27 +1740,16 @@ nav{
 .ajout-posts{
     text-align: center;
     margin: 0 10vh 0 10vh;
+    background-color: white;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 
-#post_submit{
-    border-radius: 3px;
-    margin: 1rem 0 1rem 0;
-    padding: 5px 10px 5px 10px;
-    background-color: white;
-    color: var(--couleurPrincipale);
-    border: 1px solid var(--couleurPrincipale);
-}
 
                                                         /********* VUE CONCERNANT LA PAGE NOTRE HISTOIRE *************/
 #banniere-notre-histoire{
-    height: 25vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background-image: url("../img/beige_shape.png");
-    background-size: 100% 98%;
-    /* padding-bottom: 5%; */
-    background-repeat: no-repeat;
 }
 
 #notre-histoire-presentation{
@@ -1912,16 +1788,9 @@ nav{
 /* MESSAGERIE ACCUEIL */
 
 .banniere-messagerie{
-    height: 20vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-image: url("../img/banniere_belle_histoire2.jpg");
-    background-attachment: fixed;
-    background-repeat: no-repeat;
+    background-image: url("../img/banniere_blue.png");
     background-size: cover;
     background-position: top;
-    /* filter: grayscale(1); */
 }
 
 .messagerie-links{
@@ -1946,7 +1815,6 @@ nav{
 }
 
 .messagerie-content{
-    /* border: 1px solid green;     */
     text-align: center;
     padding: 1%;
 }
@@ -2049,7 +1917,6 @@ nav{
 
 .profil-page{
     background-color: #FAE5D3;
-    /* background-color: #D3FFF9; */
 }
 
 .banniere-profil{
@@ -2057,7 +1924,7 @@ nav{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url("../img/banniere_belle_histoire2.jpg");
+    background-image: url("../img/dots_ivoire.jpg");
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-size: cover;
@@ -2080,9 +1947,6 @@ nav{
     overflow: hidden;
     border: 2px solid rgb(243, 243, 243);
     background-color: gray;
-    /* position: absolute;
-    top: 10vh;
-    left: 50% */
 }
 
 .profil-picture img{
@@ -2098,15 +1962,7 @@ nav{
 }
 
 .rubriques{
-    /* display: flex;
-    justify-content: center; */
     text-align: center;
-}
-
-.rubriques a{
-    background-color: #D3FFF9;
-    border-radius: 5px;
-    padding: 5px 10px 5px 10px;
 }
 
 .user-memoriaux,
@@ -2141,7 +1997,6 @@ nav{
     display: flex;
     justify-content: space-between;
     margin: 0.2rem 0 0.2rem 0;
-    /* align-items: center; */
 }
 
 .topic-user .topic-infos{
@@ -2153,7 +2008,6 @@ nav{
 .topic-user .topic-infos figure{
     width: 50px;
     height: 50px;
-    background-color: green;
 }
 
 .topic-user .topic-infos figure img{
@@ -2292,18 +2146,14 @@ nav{
     display: flex;
     justify-content: center;
     align-items: center;
-    /* background-image: url("../img/banniere_blue.png");
-    background-size: 100% 98%; */
-    /* padding-bottom: 5%; */
     background-repeat: no-repeat;
+
 }
 
 #mur-content{
     width: 80%;
     margin: 0 auto;   
-    /* box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;     
-    background-color: rgb(250, 250, 250);     */
-    background: rgba(255, 255, 255, 0.43);
+    background: rgba(255, 255, 255, 0.65);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5.5px);
@@ -2332,6 +2182,11 @@ nav{
     cursor: pointer;
 }
 
+#commemoration-presentation p{
+    color: black;
+    font-weight: bolder;
+}
+
 #ajout-mot-form{
     display: none;
     padding: 1rem;
@@ -2344,12 +2199,6 @@ nav{
     position: relative;
 }
 
-#mur-commemoration .mot i{
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
-}
-
 #mur-commemoration .mot-infos{
     margin-top: 1rem;
     display: flex;
@@ -2359,6 +2208,14 @@ nav{
 #mot_submit{
     margin-top: 1rem;
 }
+
+.mot-interractions{
+    display: flex;
+    gap: 0.5rem;
+}
+
+
+
 
 
                                                     /****** VUES CONCERNANT L ADMINISTRATION ********/
@@ -2403,7 +2260,6 @@ nav{
 
 .main-administration{
     flex: 3;
-    /* border: 1px solid red; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -2416,7 +2272,6 @@ nav{
 
 .list table{
     width: 100%;
-    /* background-color: yellow; */
 }
 
 .list table tr{
@@ -2572,6 +2427,14 @@ nav{
 #form-login{
     background-color: rgb(255, 255, 255, 0.4);
 }
+
+
+                                                    /* PAGE REFUGES */
+
+#banniere-refuges{
+    background-image: url("../img/banniere_blue.png");
+}
+
 
                                                         /********** RESPONSIVE **********/
 
@@ -2769,9 +2632,6 @@ nav{
 
 
 
-
-
-
 /* Petits téléphones (min-width : 576px & max-width : 768px) */
 @media screen and (max-width: 768px) {
 
@@ -2867,16 +2727,14 @@ nav{
         text-align: justify;
     }
 
-    /* .condoleance-infos{
-        border: 1px solid red;
+    .condoleance-memorial{
+        position: relative;
     }
 
-    .condoleance-texte{
-        border: 1px solid blue;
-    } */
-
     .condoleance-action{
-        border: 1px solid green;
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
         margin-left: 1rem;
     }
 
