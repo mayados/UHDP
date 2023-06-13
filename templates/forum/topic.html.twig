@@ -5,7 +5,7 @@
 {% block body %}
 
 <div class="container-page js-refresh-page topic-page">
-    <section id="banniere-topic">
+    <section id="banniere-topic" class="banniere">
         <h1>{{ topic.titre }}</h1>        
     </section>
     <p class="fil-ariane"> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_forum') }}"> Forum </a> &lt; <a href="{{path('show_histoire', {'slug' : topic.slug}) }}">{{ topic.titre }}</a></p>
@@ -55,7 +55,7 @@
                             {{ form_row(formAddPost.texte) }}
                         </div>
                         <div class="form-element">
-                            {{ form_row(formAddPost.submit) }}
+                            {{ form_row(formAddPost.submit, {attr: {class: 'form-button'}}) }}
                         </div>
                     {{ form_end(formAddPost) }}                    
                     </div>
