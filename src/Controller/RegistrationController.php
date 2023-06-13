@@ -43,6 +43,7 @@ class RegistrationController extends AbstractController
                 ),
             $user->setBannir(false),
             $user->setRoles(['ROLE_USER']),
+            $user->setPhoto('default.jpg')
             );
 
             $entityManager->persist($user);
