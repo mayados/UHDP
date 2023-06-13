@@ -67,11 +67,11 @@
         {{ form_end(formEditPassword) }}   
         </div>
 
-        <a id="delete-account" href="#">Supprimer le compte</a>  
-        <dialog id="delete-account-dialog">
+        <a id="open-dialog" class="delete-account" href="#">Supprimer le compte</a>  
+        <dialog id="delete-dialog">
             <p><i class="fa-solid fa-triangle-exclamation"></i> Cette action est irréversible, êtes-vous sûr de vouloir mettre fin à notre histoire ?</p>
-            <form method="dialog" id="form-delete-account">
-                <button id="annuler">Non, je reste !</button>
+            <form method="dialog" id="dialog-form-delete">
+                <button class="bouton-action" id="annuler">Non, je reste !</button>
                 <a id="supprimer-compte" href="{{ path('suppr_account_user') }}">Supprimer le compte</a>
             </form>
         </dialog>      

@@ -34,7 +34,7 @@
         <dialog id="delete-dialog">
             <p><i class="fa-solid fa-triangle-exclamation"></i> Cette action est irréversible, êtes-vous sûr de vouloir supprimer le mémorial ?</p>
             <form method="dialog" id="dialog-form-delete">
-                <button id="annuler">Non, la mémoire de {{ memorial.nom }} sera honorée !</button>
+                <button class="bouton-action" id="annuler">Non, la mémoire de {{ memorial.nom }} sera honorée !</button>
                 <a id="dialog-supprimer" href="{{ path('remove_memorial', {'id':memorial.id}) }}">Supprimer le mémorial</a>
             </form>
         </dialog>           
