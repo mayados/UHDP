@@ -7,8 +7,8 @@
     <a id="conv-return" href="{{ path('app_messagerie') }}"><i class="fa-solid fa-arrow-left"></i></a>
     <div id="correspondant-infos">
         <figure>
-            {% if not user.photo %}
-                <img src="{{ asset('img/default_user.png') }}" alt="">
+            {% if user.photo == null %}
+                <img src="{{ asset('img/bouquet_fleurs.jpg') }}" alt="">
             {% else %}
                 <img src="{{ asset('uploads/imgUserProfil/'~ user.photo) }}" alt="">   
             {% endif %} 
