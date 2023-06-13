@@ -38,6 +38,14 @@
                        <p>{{ histoire.titre }}</p>
                        <a href="{{path('edit_histoire', {'slug': histoire.slug}) }}">Editer</a>                
                        <a href="{{path('publish_histoire', {'slug': histoire.slug}) }}">Publier</a>
+                       <a id="open-dialog" href="#">Supprimer</a>
+                       <dialog id="delete-dialog">
+                           <p><i class="fa-solid fa-triangle-exclamation"></i> Cette action est irréversible, êtes-vous sûr de vouloir supprimer l'histoire ?</p>
+                           <form method="dialog" id="dialog-form-delete">
+                               <button id="annuler">Non, je veux continuer à partager mes écrits !</button>
+                               <a id="dialog-supprimer" href="{{ path('remove_histoire', {'id':histoire.id}) }}">Supprimer l'histoire'</a>
+                           </form>
+                       </dialog> 
                    </div>
                    <br>
                {% endfor %}
