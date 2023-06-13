@@ -390,24 +390,15 @@ class MemorialController extends AbstractController
             if($form->get('imgMemorial')->getData() != null){
                 $imgMemorial = $form->get('imgMemorial')->getData();                
             }else if(($form->get('imgMemorial')->getData()==null) && $edit==false){
-                // $imageParDefaut = __DIR__.'../../../public/img/paw_heart.png';
 
-                // copy($imageParDefaut,$imageParDefaut);
-                // $tempImageFile = new File($imageParDefaut);
-                // $imgMemorial = new UploadedFile(
-                //     $tempImageFile->getPathname(),
-                //     $tempImageFile->getFilename(),
-                //     $tempImageFile->getMimeType(),
-                //     null,
-                //     true
-                // );
-                $imgMemorial = 'paw_heart.png';
+                $imgMemorial = 'default.png';
                 $memorial->setPhoto($imgMemorial);
+
             }else if(($form->get('imgMemorial')->getData()==null && $edit==true)){
                 $imgMemorial = $form->get('imgMemorial')->getData();
             }
 
-            if($imgMemorial and ($edit ==true)){
+            if($imgMemorial && $imgMemorial!= 'default.png'){
                 // Si on est dans le cas d'un edit et qu'une nouvelle image est uploadée (car lors d'un ajout on ne va pas supprimer le fichier qu'on crée..)
                 if($memorial->getPhoto() != null){
                     // On cherche la photo stockée pour le mémorial correspondant
