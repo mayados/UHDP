@@ -37,6 +37,27 @@ class BelleHistoireController extends AbstractController
 
     }
 
+    #[Route('/bellesHistoires/histoire/remove/{id}', name: 'remove_histoire')]
+    #[Security("is_granted('ROLE_USER') and user === histoire.getAuteur()", message:"Accès non autorisé.")]
+    public function removeHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire, UploaderService $uploaderService)
+    {
+        $histoire = $bhr->find($histoire->getId());  
+
+        // Comme la photo est nullable dans l'entité, on doit ajouter cette condition sinon ça fait unen erreur si l'image est vide
+        if($histoire->getPhoto()){
+            $photo = $histoire->getPhoto();
+            $folder = 'imgHistoire';
+            $uploaderService->delete($photo,$folder);             
+        }     
+    
+        $bhr->remove($histoire, $flush = true);
+
+        $this->addFlash('notice', "L'histoire a été supprimée");
+
+        return $this->redirectToRoute('app_belles_histoires');            
+
+    }
+
 
     #[Route('/bellesHistoires/add', name: 'add_histoire')]
     #[Route('/bellesHistoires/edit/{slug}', name: 'edit_histoire')]
@@ -70,12 +91,21 @@ class BelleHistoireController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $histoire = $form->getData();            
                 
-            $imgHistoire = $form->get('imgHistoire')->getData();
+            if($form->get('imgHistoire')->getData() != null){
+                $imgHistoire = $form->get('imgHistoire')->getData();                
+            }else if(($form->get('imgHistoire')->getData()==null) && $edit==false){
+
+                $imgHistoire = 'default.jpg';
+                $histoire->setPhoto($imgHistoire);
+            }else if(($form->get('imgHistoire')->getData()==null && $edit==true)){
+                $imgHistoire = $form->get('imgHistoire')->getData();
+            }
+
             $titre = $form->get('titre')->getData();
             $slug = $sluggerService->slugElement($titre);
-            if($imgHistoire){
+            if($imgHistoire && $imgHistoire !='default.jpg'){
                 // Si on est dans le cas d'un edit et qu'une nouvelle image est uploadée (car lors d'un ajout on ne va pas supprimer le fichier qu'ion crée..)
-                if($histoire->getPhoto() != null){
+                if($histoire->getPhoto() != 'default.jpg'){
                     // On cherche la photo stockée pour le mémorial correspondant
                     $previousPhoto = $histoire->getPhoto();
                     $folder = 'imgHistoire';
@@ -230,28 +260,6 @@ class BelleHistoireController extends AbstractController
         } else {
             return $this->redirectToRoute("app_belles_histoires");
         }
-    }
-
-
-    #[Route('/bellesHistoires/histoire/remove/{id}', name: 'remove_histoire')]
-    #[Security("is_granted('ROLE_USER') and user === histoire.getAuteur()", message:"Accès non autorisé.")]
-    public function removeHistoire(BelleHistoireRepository $bhr, BelleHistoire $histoire, UploaderService $uploaderService)
-    {
-        $histoire = $bhr->find($histoire->getId());  
-
-        // Comme la photo est nullable dans l'entité, on doit ajouter cette condition sinon ça fait unen erreur si l'image est vide
-        if($histoire->getPhoto()){
-            $photo = $histoire->getPhoto();
-            $folder = 'imgHistoire';
-            $uploaderService->delete($photo,$folder);             
-        }     
-    
-        $bhr->remove($histoire, $flush = true);
-
-        $this->addFlash('notice', "L'histoire a été supprimée");
-
-        return $this->redirectToRoute('app_belles_histoires');            
-
     }
 
     #[Route('/comment/remove/{slug}/{id}', name: 'remove_comment')]
