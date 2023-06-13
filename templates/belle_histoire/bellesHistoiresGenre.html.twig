@@ -8,6 +8,7 @@
     <section id="banniere-belles-histoires">
         <h1>{{ genre.nom }}</h1>        
     </section>
+    <p class="fil-ariane"> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_belles_histoires') }}">Belles Histoires</a> &lt; {{ genre.nom }}</p>    
     <section id="genres-histoires">
         {% for genre in genres %}
             <a class="bouton-action" href="{{ path('app_belles_histoires_genre', {'id': genre.id}) }}">{{ genre.nom }}</a>

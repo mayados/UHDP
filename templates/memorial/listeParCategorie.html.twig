@@ -11,17 +11,17 @@
         <h1>Les mémoriaux des {{ categorie.nom }}</h1>
     </section>
     {# Fil d'ariane #}
-    <p><a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_memoriaux') }}">Mémoriaux</a> &lt; <a href="{{path('app_categorie', {'id' : categorie.id}) }}">{{ categorie.nom }}</a></p>
+    <p class="fil-ariane"><a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_memoriaux') }}">Mémoriaux</a> &lt; <a href="{{path('app_categorie', {'id' : categorie.id}) }}">{{ categorie.nom }}</a></p>
     <section class="interraction">
         {% if app.user and app.user.isVerified %}
-            <a class="link-recherche" href="{{ path('add_memorial') }}">Créer un mémorial</a>
+            <a class="link-recherche bouton-action" href="{{ path('add_memorial') }}">Créer un mémorial</a>
         {% elseif app.user and not app.user.isVerified %}
             <p>Veuillez cliquer sur le lien envoyé à votre adresse mail pour pouvoir créer un mémorial</p>
         {% else %}
             <p>Veuillez vous <a href="{{ path('app_register') }}">inscrire</a> ou vous <a href="{{ path('app_login') }}">connecter</a> pour pouvoir créer un mémorial</p>
         {% endif %}
             {# <a class="search-link" href="#">Rechercher un mémorial <i class="fa-solid fa-magnifying-glass"></i></a> #}
-            <a class="link-recherche" href="{{ path('app_memoriaux_recherche') }}">Rechercher un mémorial <i class="fa-solid fa-magnifying-glass"></i></a>
+            <a class="link-recherche bouton-action" href="{{ path('app_memoriaux_recherche') }}">Rechercher un mémorial <i class="fa-solid fa-magnifying-glass"></i></a>
     </section>
     <section class="memoriaux js-filter-content">
         {% include '_partials/_memoriauxCategorie.html.twig'  %}
