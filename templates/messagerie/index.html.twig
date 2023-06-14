@@ -10,9 +10,9 @@
     <p class="fil-ariane"> <a href="{{ path('app_home') }}">Accueil</a> &lt; Messagerie</p>
     <section class="messagerie-links">
         {# <a href="{{ path('app_messagerie') }}">Accueil messagerie</a> #}
-        <a href="{{ path('app_correspondants') }}">Correspondants</a>
+        <a class="bouton-action" href="{{ path('app_correspondants') }}">Correspondants</a>
         {# Dans nos classés, nous auront les personnes dont nous avons lus les messages mais n'avons pas répondu = ils ne sont pas dans notre collection de destinataires #}
-        <a href="{{ path('app_nonClasses') }}">Invitations par message</a>        
+        <a class="bouton-action" href="{{ path('app_nonClasses') }}">Invitations par message</a>        
     </section>
     <section class="messagerie-content">
         {% if messagesNonLus %}
