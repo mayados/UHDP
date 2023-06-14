@@ -10,6 +10,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 class UserEditPasswordType extends AbstractType
 {
@@ -40,10 +42,11 @@ class UserEditPasswordType extends AbstractType
                             'message' => 'Veuillez renseigner un mot de passe',
                         ]),
                         new Length([
-                            'min' => 6,
-                            'minMessage' => 'Votre mot de passe doit faire un minimum {{ limit }} caractères',
+                            'min' => 12,
+                            'minMessage' => 'Votre mot de passe doit faire au minimum {{ limit }} caractères',
                             'max' => 50,
                         ]),
+                        new Assert\Regex(pattern:"/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,}$/", message:"Le mot de passe doit inclure au moins une majusule, une minscule, un chiffre et un caractère spécial."),
                     ],                    
                 ],
                 'second_options' => ['label' => 'Répéter le nouveau mot de passe'],
