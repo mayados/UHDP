@@ -155,6 +155,10 @@ h1{
     background-repeat: no-repeat;
 }
 
+a:focus-visible{
+    font-style: italic;
+}
+
 /* input{
     border: 1px solid gray;
 } */
@@ -1589,11 +1593,6 @@ nav{
      background-size: cover;
 }
 
-.topic-page{
-    background-color: rgb(255, 242, 180);
-    padding-bottom: 2rem;
-}
-
 #banniere-forum{
     height: 25vh;
     display: flex;
@@ -1689,6 +1688,9 @@ nav{
 .topic-page{
     background-image: url('../img/background_cat.png');
     background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding-bottom: 2rem;
 }
 
 #banniere-topic{
@@ -1807,19 +1809,6 @@ nav{
     flex-wrap: wrap;
     gap: 3rem;
     padding: 10px;
-}
-
-.messagerie-links a{
-    background-color: var(--couleurPrincipale);
-    padding: 10px;
-    border-radius: 5px;
-    color: white;
-}
-
-.messagerie-links a:hover{
-    color: var(--couleurPrincipale);
-    border: 1px solid var(--couleurPrincipale);
-    background-color: white;
 }
 
 .messagerie-content{
