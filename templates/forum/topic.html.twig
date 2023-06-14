@@ -11,7 +11,7 @@
     <p class="fil-ariane"> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_forum') }}"> Forum </a> &lt; <a href="{{path('show_histoire', {'slug' : topic.slug}) }}">{{ topic.titre }}</a></p>
     <section id="topic">
         {% if app.user == topic.auteur %}
-            <a id="open-dialog" href="{{path('remove_topic', {'slug': topic.slug}) }}"><i class="fa-solid fa-trash"></i></a>
+            <a id="open-dialog" href="#"><i class="fa-solid fa-trash"></i></a>
             <dialog id="delete-dialog">
                 <p><i class="fa-solid fa-triangle-exclamation"></i> Cette action est irréversible, êtes-vous sûr de vouloir supprimer le sujet ?</p>
                 <form method="dialog" id="dialog-form-delete">
