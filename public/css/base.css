@@ -420,6 +420,10 @@ nav{
     position: relative;    
 }
 
+#forum-presentation .texte p{
+    font-weight: bolder;
+}
+
 #texte-accueil-uhdp .texte,
 #forum-presentation .texte,
 #commemoration-presentation .texte{
@@ -1627,7 +1631,7 @@ nav{
 
 .topic{
     padding: 20px;
-    background: rgba(255, 255, 255, 0.70);
+    background: rgba(255, 255, 255, 0.90);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     border: 1px solid rgb(197, 197, 197);
     min-height: 10vh;
