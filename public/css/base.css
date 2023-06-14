@@ -159,6 +159,10 @@ a:focus-visible{
     font-style: italic;
 }
 
+.hiddenFormField{
+    display: none;
+}
+
 /* input{
     border: 1px solid gray;
 } */
@@ -498,10 +502,12 @@ nav{
 #form-register,
 #form-post,
 #form-send-mail,
-#form-reset{
+#form-reset,
+#form-contact{
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     width: 400px;
     padding: 30px 30px 50px 30px;
+    background-color: rgb(255, 255, 255, 0.6);
 }
 
 #form-histoire,
@@ -528,7 +534,8 @@ nav{
 #form-commentaire .form-element div,
 #form-mot .form-element div
 #form-send-mail .form-element div,
-#form-reset .form-element div{
+#form-reset .form-element div,
+#form-contact .form-element div{
     display: flex;
     flex-direction: column;
     padding-top: 20px;
@@ -571,7 +578,8 @@ nav{
 #form-memorial #memorial_submit,
 #form_post #post_submit,
 #form-commentaire #form_comment_submit,
-#form_mot #mot_submit{
+#form_mot #mot_submit,
+#form-contact #contact_submit{
     width: 100px;
     margin: 0 auto;
     padding: 5px 10px 5px 10px;
@@ -2419,9 +2427,6 @@ nav{
     background-position: center;
 }
 
-#form-login{
-    background-color: rgb(255, 255, 255, 0.4);
-}
 
 
                                                     /* PAGE REFUGES */
