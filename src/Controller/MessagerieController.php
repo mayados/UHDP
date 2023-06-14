@@ -76,90 +76,101 @@ class MessagerieController extends AbstractController
     }
 
     #[Route('/messagerie/signal/{id}', name: 'message_signal', requirements:['id' => '\d+'])]
-    public function signalMessage(ManagerRegistry $doctrine, Request $request, MessageRepository $mr, Message $message): Response
+    public function signalMessage(ManagerRegistry $doctrine, Request $request, MessageRepository $mr, Message $message = null): Response
     {
-        // Il faudra faire en sorte que l'utilisateur ne puisse pas signaler son propre message
 
-        $message->setIsSignaled(true);
-        $entityManager = $doctrine->getManager();
-        $entityManager->persist($message);
-        $entityManager->flush();   
+        if($message){
+            // Il faudra faire en sorte que l'utilisateur ne puisse pas signaler son propre message
 
-        $expediteur =$message->getExpediteur()->getId();
+            $message->setIsSignaled(true);
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($message);
+            $entityManager->flush();   
 
-        return new JsonResponse([
-            'content' => 'signalement effectué',
+            $expediteur =$message->getExpediteur()->getId();
 
-        ]); 
+            return new JsonResponse([
+                'content' => 'signalement effectué',
 
-        $this->addFlash('success', 'Le message a été signalé');
-        return $this->redirectToRoute('app_conversation',
-        ['id' => $expediteur]); 
+            ]); 
+
+            $this->addFlash('success', 'Le message a été signalé');
+            return $this->redirectToRoute('app_conversation',
+            ['id' => $expediteur]);             
+        }
+
+        return $this->redirectToRoute('app_messagerie');
+
     }
 
     // Requirements pour spécifier que l'on attend un digit
     #[Route('/messagerie/conversation/{id}', name: 'app_conversation', requirements:['id' => '\d+'])]
-    public function showConversation(ManagerRegistry $doctrine, Request $request, MessageRepository $mr, User $user, UserRepository $ur): Response
+    public function showConversation(ManagerRegistry $doctrine, Request $request, MessageRepository $mr, User $user = null, UserRepository $ur): Response
     {
 
-        // Gérer le cas de redirection quand le User essaie d'aller à une conversation avec lui-même = pour qu'il ne s'écrive pas
+        if($user){
+
+            // Gérer le cas de redirection quand le User essaie d'aller à une conversation avec lui-même = pour qu'il ne s'écrive pas
 
 
-        if($this->getUser()){
-            $user = $ur->find($user->getId());
-            $me = $this->getUser();
-            $messages = $mr->findMessagesByConversation($me,$user);
-            // Lorsque l'on va sur la conversation, on note tous les messages en lu
-            foreach($messages as $message){
-                if($message->getDestinataire() === $me){
-                    $message->setIsRead(1);
-                    $entityManager = $doctrine->getManager();
-                    $entityManager->persist($message);
-                    $entityManager->flush();                
-                }
-            }
-
-            $message = new Message();
-            $form = $this->createForm(MessageType::class, $message);
-            $form->handleRequest($request);
-
-            if(!$me->isBlockedByUser($user) && (!$user->isBlockedByUser($me))){
-                if ($form->isSubmitted() && $form->isValid()) {
-                    $message = $form->getData();
-                    $message->setExpediteur($this->getUser());
-                    $message->setDestinataire($user);
-                    $message->setIsRead(false);
-                    $entityManager = $doctrine->getManager();
-                    $entityManager->persist($message);
-                    $entityManager->flush();
-
-                    if($request->isXmlHttpRequest()){
-                        // Si c'est le cas on renvoie du JSON
-                        return new JsonResponse([
-                            'content' => $this->renderView('_partials/_messages.html.twig', ['form' => $form->createView(), 'messages' => $mr->findMessagesByConversation($me,$user)]),
-
-                        ]);
+            if($this->getUser()){
+                $user = $ur->find($user->getId());
+                $me = $this->getUser();
+                $messages = $mr->findMessagesByConversation($me,$user);
+                // Lorsque l'on va sur la conversation, on note tous les messages en lu
+                foreach($messages as $message){
+                    if($message->getDestinataire() === $me){
+                        $message->setIsRead(1);
+                        $entityManager = $doctrine->getManager();
+                        $entityManager->persist($message);
+                        $entityManager->flush();                
                     }
-
-                    return $this->redirectToRoute(
-                        'app_conversation',
-                        ['id' => $user->getId()]
-                    );
                 }
+
+                $message = new Message();
+                $form = $this->createForm(MessageType::class, $message);
+                $form->handleRequest($request);
+
+                if(!$me->isBlockedByUser($user) && (!$user->isBlockedByUser($me))){
+                    if ($form->isSubmitted() && $form->isValid()) {
+                        $message = $form->getData();
+                        $message->setExpediteur($this->getUser());
+                        $message->setDestinataire($user);
+                        $message->setIsRead(false);
+                        $entityManager = $doctrine->getManager();
+                        $entityManager->persist($message);
+                        $entityManager->flush();
+
+                        if($request->isXmlHttpRequest()){
+                            // Si c'est le cas on renvoie du JSON
+                            return new JsonResponse([
+                                'content' => $this->renderView('_partials/_messages.html.twig', ['form' => $form->createView(), 'messages' => $mr->findMessagesByConversation($me,$user)]),
+
+                            ]);
+                        }
+
+                        return $this->redirectToRoute(
+                            'app_conversation',
+                            ['id' => $user->getId()]
+                        );
+                    }
+                }
+
+
+
+
+                return $this->render('messagerie/conversation.html.twig', [
+                    'form' => $form->createView(),
+                    'messages' => $messages,
+                    'user' => $user,
+                ]);
             }
 
-
-
-
-            return $this->render('messagerie/conversation.html.twig', [
-                'form' => $form->createView(),
-                'messages' => $messages,
-                'user' => $user,
-            ]);
+            $this->addFlash('warning', 'Il faut être connecté pour accéder à la messagerie');
+            return $this->redirectToRoute('app_login');             
         }
 
-        $this->addFlash('warning', 'Il faut être connecté pour accéder à la messagerie');
-        return $this->redirectToRoute('app_login'); 
+        return $this->redirectToRoute('app_messagerie');
 
     }
 
@@ -167,11 +178,10 @@ class MessagerieController extends AbstractController
     #[Route('/messagerie/remove/{idConversation}/{id}', name: 'remove_message', requirements:['id' => '\d+'])]
     #[ParamConverter("user", options: ["mapping" => ["idConversation" => "id"]])]
     #[ParamConverter("message", options: ["mapping" => ["id" => "id"]])]
-    public function deleteMessage(ManagerRegistry $doctrine, Request $request, User $user, MessageRepository $mr,Message $message, UserRepository $ur): Response
+    public function deleteMessage(ManagerRegistry $doctrine, Request $request, User $user = null, MessageRepository $mr,Message $message = null, UserRepository $ur): Response
     {
 
-        if($this->getUser() && ($this->getUser() == $message->getExpediteur()))
-        {
+        if($user && $message && ($this->getUser()===$message->getExpediteur())){
             $user = $ur->find($user->getId());
             $me = $this->getUser();
             
@@ -199,7 +209,7 @@ class MessagerieController extends AbstractController
             ]);    
         }
 
-        $this->addFlash('warning', 'Il faut être connecté pour accéder à la messagerie');
-        return $this->redirectToRoute('app_login'); 
+        return $this->redirectToRoute('app_messagerie');
+
     }
 }

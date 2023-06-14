@@ -85,64 +85,72 @@ class MotCommemorationController extends AbstractController
     }
 
     #[Route('/mot/commemoration/remove/mot/{id}', name: 'remove_mot')]
-    #[Security("is_granted('ROLE_USER') and user === mot.getAuteur()", message:"Accès non autorisé.")]
-    public function removeMot(MotCommemorationRepository $mcr, MotCommemoration $mot, Request $request)
+    #[Security("is_granted('ROLE_USER')", message:"Accès non autorisé.")]
+    public function removeMot(MotCommemorationRepository $mcr, MotCommemoration $mot = null, Request $request)
     {
 
-        $mot = $mcr->find($mot->getId());        
-        $mcr->remove($mot, $flush = true);
+        if($mot && ($this->getUser()===$mot->getAuteur())){
+            $mot = $mcr->find($mot->getId());        
+            $mcr->remove($mot, $flush = true);
 
-        return new JsonResponse([
-            'content' => $this->renderView('_partials/_mots.html.twig', ['mots' => $mcr->findAllPaginated($request->query->getInt('page',1))]),
+            return new JsonResponse([
+                'content' => $this->renderView('_partials/_mots.html.twig', ['mots' => $mcr->findAllPaginated($request->query->getInt('page',1))]),
 
-        ]);     
-        // return $this->redirectToRoute('app_mot_commemoration');            
+            ]);     
+            // return $this->redirectToRoute('app_mot_commemoration');     
+        }
+
+       return $this->redirectToRoute('app_mot_commemoration');
 
     }
 
     #[Route('/mot/commemoration/edit/mot/{id}', name: 'edit_mot')]
-    #[Security("is_granted('ROLE_USER') and user === mot.getAuteur()", message:"Accès non autorisé.")]
-    public function editMot(MotCommemoration $mot, MotCommemorationRepository $mcr ,ManagerRegistry $doctrine,Request $request){
+    #[Security("is_granted('ROLE_USER')", message:"Accès non autorisé.")]
+    public function editMot(MotCommemoration $mot = null, MotCommemorationRepository $mcr ,ManagerRegistry $doctrine,Request $request){
 
-        // On récupère le token généré dans le formulaire
-        $submittedToken = $request->request->get('token');
-        $texteTest = $request->request->get('texte');
 
-        if (isset($_POST) && $this->isCsrfTokenValid('modify-item', $submittedToken)) {
-            $entityManager = $doctrine->getManager();
-            $texte = $request->request->get('texte');
-            $date = $mot->getDateCreation();
-            $auteur = $mot->getAuteur();
-            $mot->setDateCreation($date);
-            $mot->setAuteur($auteur);
-            $mot->setMot($texte);
-            $entityManager->persist($mot);
-            $entityManager->flush();
+        if($mot && ($this->getUser()===$mot->getAuteur())){
+            // On récupère le token généré dans le formulaire
+            $submittedToken = $request->request->get('token');
+            $texteTest = $request->request->get('texte');
 
-            if($request->isXmlHttpRequest()){
-                // Si c'est le cas on renvoie du JSON
-                return new JsonResponse([
-                    'content' => $this->renderView('_partials/_mots.html.twig', ['mots' => $mcr->findAllPaginated($request->query->getInt('page',1))]),
-                    // 'content' => "bravo",
-                ]);
-             }
-            
-            // $this->addFlash("success","Le mot a bien été modifié");
+            if (isset($_POST) && $this->isCsrfTokenValid('modify-item', $submittedToken)) {
+                $entityManager = $doctrine->getManager();
+                $texte = $request->request->get('texte');
+                $date = $mot->getDateCreation();
+                $auteur = $mot->getAuteur();
+                $mot->setDateCreation($date);
+                $mot->setAuteur($auteur);
+                $mot->setMot($texte);
+                $entityManager->persist($mot);
+                $entityManager->flush();
 
-            
-            // return $this->redirectToRoute(
-            //     'app_mot_commemoration'
-            // );  
-        }else{
-            // if($request->isXmlHttpRequest()){
-                // Si c'est le cas on renvoie du JSON
-                return new JsonResponse([
-                    'content' => "ca n'a pas fonctionné"
+                if($request->isXmlHttpRequest()){
+                    // Si c'est le cas on renvoie du JSON
+                    return new JsonResponse([
+                        'content' => $this->renderView('_partials/_mots.html.twig', ['mots' => $mcr->findAllPaginated($request->query->getInt('page',1))]),
+                        // 'content' => "bravo",
+                    ]);
+                }
+                
+                // $this->addFlash("success","Le mot a bien été modifié");
 
-                ]);
-            // }            
+                
+                // return $this->redirectToRoute(
+                //     'app_mot_commemoration'
+                // );  
+            }else{
+                // if($request->isXmlHttpRequest()){
+                    // Si c'est le cas on renvoie du JSON
+                    return new JsonResponse([
+                        'content' => "ca n'a pas fonctionné"
+
+                    ]);
+                // }            
+            }
         }
 
+        return $this->redirectToRoute('app_mot_commemoration');
 
     }
 

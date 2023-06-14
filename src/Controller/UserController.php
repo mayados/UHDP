@@ -34,20 +34,25 @@ class UserController extends AbstractController
     // Requirements ici sert à ce que le paramètre entré soit obligatoirement un digit
     #[Route('/user/{id}', name: 'show_profile', requirements: ['id' => '\d+'])]
     #[Security("is_granted('ROLE_USER')")]
-    public function showProfile(UserRepository $ur, User $user, AnimalMemorialRepository $amr, BelleHistoireRepository $bhr, TopicRepository $tr): Response
+    public function showProfile(UserRepository $ur, User $user = null, AnimalMemorialRepository $amr, BelleHistoireRepository $bhr, TopicRepository $tr): Response
     {
 
-        $user = $ur->find($user->getId());
-        $memoriaux = $amr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);               
-        $histoires = $bhr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);               
-        $topics = $tr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);               
-              
-        return $this->render('user/profil.html.twig', [
-            'user' => $user,
-            'memoriaux' => $memoriaux,
-            'histoires' => $histoires,
-            'topics' => $topics,
-        ]);            
+        if($user){
+            $user = $ur->find($user->getId());
+            $memoriaux = $amr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);               
+            $histoires = $bhr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);               
+            $topics = $tr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);               
+                
+            return $this->render('user/profil.html.twig', [
+                'user' => $user,
+                'memoriaux' => $memoriaux,
+                'histoires' => $histoires,
+                'topics' => $topics,
+            ]);              
+        }
+
+        return $this->redirectToRoute('my_profile');  
+
     }
 
     #[Route('/monProfil', name: 'my_profile')]
@@ -208,35 +213,39 @@ class UserController extends AbstractController
 
     #[Route('/user/block/{id}', name: 'block_user', requirements: ['id' => '\d+'])]
     #[Security("is_granted('ROLE_USER')")]
-    public function blockUser(UserRepository $ur, User $user, EntityManagerInterface $manager): Response
+    public function blockUser(UserRepository $ur, User $user = null, EntityManagerInterface $manager): Response
     {
 
-        $userBlock = $ur->find($user->getId());
-        $me = $this->getUser();
+        if($user){
+            $userBlock = $ur->find($user->getId());
+            $me = $this->getUser();
 
-        if($me->isBlockedByUser($userBlock))
-        {
+            if($me->isBlockedByUser($userBlock))
+            {
 
-            $me->removeBlockedUser($userBlock);
+                $me->removeBlockedUser($userBlock);
+                $manager->flush();
+
+                $this->addFlash('notice',"L'utilisateur a été débloqué");
+
+
+                return $this->redirectToRoute('show_profile', [
+                    'id' => $userBlock->getId(),
+                ]);  
+            }
+
+            $me->addBlockedUser($userBlock);
             $manager->flush();
 
-            $this->addFlash('notice',"L'utilisateur a été débloqué");
+            $this->addFlash('notice',"L'utilisateur a été bloqué");
 
-
+                
             return $this->redirectToRoute('show_profile', [
                 'id' => $userBlock->getId(),
-            ]);  
+            ]);               
         }
 
-        $me->addBlockedUser($userBlock);
-        $manager->flush();
-
-        $this->addFlash('notice',"L'utilisateur a été bloqué");
-
-            
-        return $this->redirectToRoute('show_profile', [
-            'id' => $userBlock->getId(),
-        ]);   
+        return $this->redirectToRoute('my_profile');
         
     }
 

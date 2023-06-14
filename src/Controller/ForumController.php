@@ -48,74 +48,78 @@ class ForumController extends AbstractController
 
     #[Route('/topic/{slug}', name: 'show_topic')]
     #[Security("is_granted('ROLE_USER')")]
-    public function showTopic(ManagerRegistry $doctrine, TopicRepository $tr, Topic $topic, PostRepository $pr, Request $request): Response
+    public function showTopic(ManagerRegistry $doctrine, TopicRepository $tr, Topic $topic = null, PostRepository $pr, Request $request): Response
     {
 
-        $topic = $tr->find($topic->getId());
-        $posts = $pr->findPaginatedPosts($request->query->getInt('page',1),$topic);    
+        if($topic){
+            $topic = $tr->find($topic->getId());
+            $posts = $pr->findPaginatedPosts($request->query->getInt('page',1),$topic);    
 
-        // Si l'utilisateur est connecté et vérifié
-        if ($this->getUser()->isVerified()) {
-            
-            $post = new Post();
-            $date = date_timezone_set(new \DateTime(),new DateTimeZone('Europe/Paris'));
-            // $date = new \DateTime();
-            $form = $this->createForm(PostType::class, $post);
-            $form->handleRequest($request);
+            // Si l'utilisateur est connecté et vérifié
+            if ($this->getUser()->isVerified()) {
+                
+                $post = new Post();
+                $date = date_timezone_set(new \DateTime(),new DateTimeZone('Europe/Paris'));
+                // $date = new \DateTime();
+                $form = $this->createForm(PostType::class, $post);
+                $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $post = $form->getData();
-                $post->setAuteur($this->getUser());
-                $post->setTopic($topic);
-                $post->setDateCreation($date);
-                $topic->addPost($post);
-                $entityManager = $doctrine->getManager();
-                $entityManager->persist($post);
-                $entityManager->flush();
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $post = $form->getData();
+                    $post->setAuteur($this->getUser());
+                    $post->setTopic($topic);
+                    $post->setDateCreation($date);
+                    $topic->addPost($post);
+                    $entityManager = $doctrine->getManager();
+                    $entityManager->persist($post);
+                    $entityManager->flush();
 
-                if($request->isXmlHttpRequest()){
-                    // Si c'est le cas on renvoie du JSON
-                    return new JsonResponse([
-                        'content' => $this->renderView('_partials/_posts.html.twig', ['topic' => $topic,'formAddPost' => $form->createView(), 'posts' => $pr->findPaginatedPosts($request->query->getInt('page',1),$topic)]),
-                        'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $pr->findPaginatedPosts($request->query->getInt('page',1),$topic) ])
+                    if($request->isXmlHttpRequest()){
+                        // Si c'est le cas on renvoie du JSON
+                        return new JsonResponse([
+                            'content' => $this->renderView('_partials/_posts.html.twig', ['topic' => $topic,'formAddPost' => $form->createView(), 'posts' => $pr->findPaginatedPosts($request->query->getInt('page',1),$topic)]),
+                            'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $pr->findPaginatedPosts($request->query->getInt('page',1),$topic) ])
 
-                    ]);
+                        ]);
+                    }
+
+                    return $this->redirectToRoute(
+                        'show_topic',
+                        ['slug' => $topic->getSlug()]
+                    );
+                }else{
+                                    // Si le formulaire n'est pas valide et qu'il s'agit d'une requête AJAX
+                    if($request->isXmlHttpRequest()){
+                        $errorMessage ="";
+                        // la fonction getErrors() permet d'obtenir une instance de l'objet FormErrorIterator, pour obtenir le message il faut donc faire appel, pour chaque erreur qu'il pourrait y avoir, à la fonction getMessage()
+                        $errors = $form['texte']->getErrors();
+                        foreach ($errors as $error) {
+                            $errorMessage = $error->getMessage();
+                        };
+
+                        // Si c'est le cas on renvoie du JSON
+                        return new JsonResponse([
+                            'content' => $this->renderView('_partials/_posts.html.twig', ['topic' => $topic,'formAddPost' => $form->createView(), 'posts' => $pr->findPaginatedPosts($request->query->getInt('page',1),$topic)]),
+                            'error' => $errorMessage,
+                        ]);
+                    }
                 }
 
-                return $this->redirectToRoute(
-                    'show_topic',
-                    ['slug' => $topic->getSlug()]
-                );
-            }else{
-                                // Si le formulaire n'est pas valide et qu'il s'agit d'une requête AJAX
-                if($request->isXmlHttpRequest()){
-                    $errorMessage ="";
-                    // la fonction getErrors() permet d'obtenir une instance de l'objet FormErrorIterator, pour obtenir le message il faut donc faire appel, pour chaque erreur qu'il pourrait y avoir, à la fonction getMessage()
-                    $errors = $form['texte']->getErrors();
-                    foreach ($errors as $error) {
-                        $errorMessage = $error->getMessage();
-                    };
-
-                    // Si c'est le cas on renvoie du JSON
-                    return new JsonResponse([
-                        'content' => $this->renderView('_partials/_posts.html.twig', ['topic' => $topic,'formAddPost' => $form->createView(), 'posts' => $pr->findPaginatedPosts($request->query->getInt('page',1),$topic)]),
-                        'error' => $errorMessage,
-                    ]);
-                }
+                return $this->render('forum/topic.html.twig', [
+                    'topic' => $topic,
+                    'formAddPost' => $form->createView(),
+                    'posts' => $posts,
+                ]);
             }
 
+            // S'il y a un utilisateur et qu'il n'est pas vérifié on renvoie à la vue sans le form du post
             return $this->render('forum/topic.html.twig', [
                 'topic' => $topic,
-                'formAddPost' => $form->createView(),
                 'posts' => $posts,
-            ]);
+            ]);              
         }
 
-        // S'il y a un utilisateur et qu'il n'est pas vérifié on renvoie à la vue sans le form du post
-        return $this->render('forum/topic.html.twig', [
-            'topic' => $topic,
-            'posts' => $posts,
-        ]);            
+          return $this->redirectToRoute('app_forum');
 
     }
 
@@ -182,23 +186,30 @@ class ForumController extends AbstractController
 
     #[Route('/topic/remove/{slug}', name: 'remove_topic')]
     #[Security("is_granted('ROLE_USER') and user === topic.getAuteur()", message:"Accès non autorisé.")]
-    public function removeTopic(TopicRepository $tr, Topic $topic)
+    public function removeTopic(TopicRepository $tr, Topic $topic = null)
     {
 
+        if($topic){
             $topic = $tr->find($topic->getId());
             $tr->remove($topic, $flush = true);
 
             $this->addFlash('notice', 'Le topic a été supprimé');
 
-            return $this->redirectToRoute('app_forum');            
+            return $this->redirectToRoute('app_forum');                  
+        }
+
+        return $this->redirectToRoute('app_forum');
+      
     }
 
     #[Route('/post/remove/{slug}/{id}', name: 'remove_post', requirements: ['id' => '\d+'])]
     #[ParamConverter("topic", options: ["mapping" => ["slug" => "slug"]])]
     #[ParamConverter("post", options: ["mapping" => ["id" => "id"]])]
-    #[Security("is_granted('ROLE_USER') and user === post.getAuteur()", message:"Accès non autorisé.")]
-    public function removePost(PostRepository $pr, Post $post, Topic $topic, TopicRepository $tr, Request $request)
+    #[Security("is_granted('ROLE_USER')", message:"Accès non autorisé.")]
+    public function removePost(PostRepository $pr, Post $post = null, Topic $topic = null, TopicRepository $tr, Request $request)
     {
+
+        if($topic && $post && ($this->getUser()===$post->getAuteur())){
             $post = $pr->find($post->getId());
 
             $pr->remove($post, $flush = true);
@@ -215,84 +226,97 @@ class ForumController extends AbstractController
             // return $this->redirectToRoute(
             //     'show_topic',
             //     ['slug' => $topic->getSlug()]
-            // );
+            // );            
+        }
+
+        return $this->redirectToRoute('app_forum');
+
     }    
 
     #[Route('/topic/post/edit/{id}/{slugTopic}', name: 'edit_post')]
     #[ParamConverter("commentaire", options: ["mapping" => ["id" => "id"]])]
     #[ParamConverter("topic", options: ["mapping" => ["slugTopic" => "slug"]])]
-    #[Security("is_granted('ROLE_USER') and user === post.getAuteur()", message:"Accès non autorisé.")]
-    public function editPost(Post $post, Topic $topic, PostRepository $pr ,ManagerRegistry $doctrine,Request $request){
+    #[Security("is_granted('ROLE_USER')", message:"Accès non autorisé.")]
+    public function editPost(Post $post = null, Topic $topic = null, PostRepository $pr ,ManagerRegistry $doctrine,Request $request){
 
-        // On récupère le token généré dans le formulaire
-        $submittedToken = $request->request->get('token');
-        $texteTest = $request->request->get('texte');
+        if($post && $topic && ($this->getUser()===$post->getAuteur())){
+            // On récupère le token généré dans le formulaire
+            $submittedToken = $request->request->get('token');
+            $texteTest = $request->request->get('texte');
 
-        if (isset($_POST) && $this->isCsrfTokenValid('modify-item', $submittedToken)) {
-            $entityManager = $doctrine->getManager();
-            $texte = $request->request->get('texte');
-            $post->setTopic($topic);
-            $date = $post->getDateCreation();
-            $auteur = $post->getAuteur();
-            $post->setDateCreation($date);
-            $post->setAuteur($auteur);
-            $post->setTexte($texte);
-            $entityManager->persist($post);
-            $entityManager->flush();
+            if (isset($_POST) && $this->isCsrfTokenValid('modify-item', $submittedToken)) {
+                $entityManager = $doctrine->getManager();
+                $texte = $request->request->get('texte');
+                $post->setTopic($topic);
+                $date = $post->getDateCreation();
+                $auteur = $post->getAuteur();
+                $post->setDateCreation($date);
+                $post->setAuteur($auteur);
+                $post->setTexte($texte);
+                $entityManager->persist($post);
+                $entityManager->flush();
 
-            if($request->isXmlHttpRequest()){
-                // Si c'est le cas on renvoie du JSON
-                return new JsonResponse([
-                    'content' => $this->renderView('_partials/_posts.html.twig', ['topic' => $topic, 'posts' => $pr->findPaginatedPosts($request->query->getInt('page',1),$topic)]),
-                ]);
-             }
+                if($request->isXmlHttpRequest()){
+                    // Si c'est le cas on renvoie du JSON
+                    return new JsonResponse([
+                        'content' => $this->renderView('_partials/_posts.html.twig', ['topic' => $topic, 'posts' => $pr->findPaginatedPosts($request->query->getInt('page',1),$topic)]),
+                    ]);
+                }
 
 
-            // $this->addFlash("success","Le post a bien été modifié");
+                // $this->addFlash("success","Le post a bien été modifié");
 
-            
-            // return $this->redirectToRoute(
-            //     'show_topic',
-            //     ['slug' => $topic->getSlug()]
-            // );  
+                
+                // return $this->redirectToRoute(
+                //     'show_topic',
+                //     ['slug' => $topic->getSlug()]
+                // );  
+            }
+            else{
+                // if($request->isXmlHttpRequest()){
+                    // Si c'est le cas on renvoie du JSON
+                    return new JsonResponse([
+                        'content' => "ca n'a pas fonctionné"
+
+                    ]);
+                // }            
+            }            
         }
-        else{
-            // if($request->isXmlHttpRequest()){
-                // Si c'est le cas on renvoie du JSON
-                return new JsonResponse([
-                    'content' => "ca n'a pas fonctionné"
 
-                ]);
-            // }            
-        }
+        return $this->redirectToRoute('app_forum');
 
 
     }
 
     #[Route('/topic/verrouillage/{id}', name: 'verrouillage_topic')]
-    #[Security("is_granted('ROLE_USER') and user === topic.getAuteur()", message:"Accès non autorisé.")]
-    public function verrouillageTopic(Topic $topic, TopicRepository $tr, ManagerRegistry $doctrine)
+    #[Security("is_granted('ROLE_USER')", message:"Accès non autorisé.")]
+    public function verrouillageTopic(Topic $topic = null, TopicRepository $tr, ManagerRegistry $doctrine)
     {
 
-        $entityManager = $doctrine->getManager();
-        $topic = $tr->find($topic->getId());
-        // On vérifie s'il s'agit d'un verrouillage ou dévérouillage
-        if($topic->isVerrouillage() == false){
-            // On vérrouille le topic
-            $topic->setVerrouillage(true);
-        }else{
-            // On déverouille
-            $topic->setVerrouillage(false);
+        if($topic && ($this->getUser()===$topic->getAuteur())){
+            $entityManager = $doctrine->getManager();
+            $topic = $tr->find($topic->getId());
+            // On vérifie s'il s'agit d'un verrouillage ou dévérouillage
+            if($topic->isVerrouillage() == false){
+                // On vérrouille le topic
+                $topic->setVerrouillage(true);
+            }else{
+                // On déverouille
+                $topic->setVerrouillage(false);
+            }
+
+            $entityManager->flush();
+
+            $this->addFlash('notice' ,'Le topic est verrouillé');
+
+            return $this->redirectToRoute(
+                'show_topic',
+                ['id' => $topic->getId()]
+            );                  
         }
 
-        $entityManager->flush();
-
-        $this->addFlash('notice' ,'Le topic est verrouillé');
-
-         return $this->redirectToRoute(
-            'show_topic',
-            ['id' => $topic->getId()]
-        );            
+        return $this->redirectToRoute('app_forum');
+      
     }
 
 }

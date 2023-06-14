@@ -131,79 +131,90 @@ class MemorialController extends AbstractController
     }
 
     #[Route('/categorie/{id}', name: 'app_categorie')]
-    public function memoriauxParCategorie(AnimalMemorialRepository $amr, CategorieAnimalRepository $car, CategorieAnimal $categorie, Request $request): Response
+    public function memoriauxParCategorie(AnimalMemorialRepository $amr, CategorieAnimalRepository $car, CategorieAnimal $categorie = null, Request $request): Response
     {
 
-        $categorieMemorial = $car->find($categorie->getId()); 
+        if($categorie){
+            $categorieMemorial = $car->find($categorie->getId()); 
 
-        // On veut également mettre un système de recherche dans la vue 
-        $searchData = new SearchData();
-        // On veut également mettre un système de recherche dans la vue 
-        $form = $this->createForm(SearchType::class,$searchData);
+            // On veut également mettre un système de recherche dans la vue 
+            $searchData = new SearchData();
+            // On veut également mettre un système de recherche dans la vue 
+            $form = $this->createForm(SearchType::class,$searchData);
 
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
-            $page = $request->query->getInt('page',1);
-        // dd($searchData);            
-            $memoriaux = $amr->findSearchByCategorie($searchData,$categorieMemorial,$page);
-            // On vérifie si on est en AJAX
-            if($request->isXmlHttpRequest()){
-                // Si c'est le cas on renvoie du JSON
-                return new JsonResponse([
-                    'content' => $this->renderView('_partials/_memoriauxCategorie.html.twig', ['memoriaux' => $memoriaux, 'categorie'=>$categorieMemorial]),
-                    'pagination' => $this->renderView('_partials/_pagination.html.twig', ['memoriaux' => $memoriaux, 'categorie'=>$categorieMemorial])
+            $form->handleRequest($request);
+            if($form->isSubmitted() && $form->isValid()){
+                $page = $request->query->getInt('page',1);
+            // dd($searchData);            
+                $memoriaux = $amr->findSearchByCategorie($searchData,$categorieMemorial,$page);
+                // On vérifie si on est en AJAX
+                if($request->isXmlHttpRequest()){
+                    // Si c'est le cas on renvoie du JSON
+                    return new JsonResponse([
+                        'content' => $this->renderView('_partials/_memoriauxCategorie.html.twig', ['memoriaux' => $memoriaux, 'categorie'=>$categorieMemorial]),
+                        'pagination' => $this->renderView('_partials/_pagination.html.twig', ['memoriaux' => $memoriaux, 'categorie'=>$categorieMemorial])
+                    ]);
+                }
+                return $this->render('memorial/listeParCategorie.html.twig',[
+                'categorie' => $categorieMemorial,   
+                'memoriaux' => $memoriaux,   
+                'formSearch' => $form->createView(),
                 ]);
-            }
-            return $this->render('memorial/listeParCategorie.html.twig',[
-            'categorie' => $categorieMemorial,   
-             'memoriaux' => $memoriaux,   
-             'formSearch' => $form->createView(),
-            ]);
 
+            }
+
+            return $this->render('memorial/listeParCategorie.html.twig', [
+                'memoriaux' => $amr->findPaginatedMemoriauxByCategorie($request->query->getInt('page',1),$categorieMemorial),
+                'categorie' => $categorieMemorial,
+                'formSearch' => $form->createView(),
+                'elementPagine' => $amr->findPaginatedMemoriauxByCategorie($request->query->getInt('page',1),$categorieMemorial),
+            ]);            
         }
 
-        return $this->render('memorial/listeParCategorie.html.twig', [
-            'memoriaux' => $amr->findPaginatedMemoriauxByCategorie($request->query->getInt('page',1),$categorieMemorial),
-            'categorie' => $categorieMemorial,
-            'formSearch' => $form->createView(),
-            'elementPagine' => $amr->findPaginatedMemoriauxByCategorie($request->query->getInt('page',1),$categorieMemorial),
-        ]);
+        return $this->redirectToRoute("app_memoriaux");
+
+
     }
 
     #[Route('/memorial/remove/{id}', name: 'remove_memorial')]
-    #[Security("is_granted('ROLE_USER') and user === memorial.getAuteur()", message:"Accès non autorisé.")]
-    public function removeMemorial(AnimalMemorialRepository $amr, AnimalMemorial $memorial, UploaderService $uploaderService)
+    // #[Security("is_granted('ROLE_USER') and user === memorial.getAuteur()", message:"Accès non autorisé.")]
+    #[Security("is_granted('ROLE_USER')", message:"Accès non autorisé.")]
+    public function removeMemorial(AnimalMemorialRepository $amr, AnimalMemorial $memorial = null, UploaderService $uploaderService)
     {
 
-        // Nous cherchons le mémorial ayant pour id l'id envoyé, puis nous l'enlevons de la base de données avec remove() (fonction intégrer de base au repository)
-        // $memorial = $amr->find($memorial->getId());        
+        if($memorial && $this->getUser()=== $memorial->getAuteur()){
+            // Nous cherchons le mémorial ayant pour id l'id envoyé, puis nous l'enlevons de la base de données avec remove() (fonction intégrer de base au repository)
+            // $memorial = $amr->find($memorial->getId());        
 
-            // Comme la photo est nullable dans l'entité, on doit ajouter cette condition sinon ça fait unen erreur si l'image est vide
-            if($memorial->getPhoto()){
-                $photoMemo = $memorial->getPhoto();
-                $folder = 'imgMemorial';
-                $uploaderService->delete($photoMemo, $folder);            
-            }
+                // Comme la photo est nullable dans l'entité, on doit ajouter cette condition sinon ça fait unen erreur si l'image est vide
+                if($memorial->getPhoto()){
+                    $photoMemo = $memorial->getPhoto();
+                    $folder = 'imgMemorial';
+                    $uploaderService->delete($photoMemo, $folder);            
+                }
 
-            // Si le mémorial a des photos dans sa galerie...
-            if($memorial->getPhotos()){
-                // On pense à récupérer les images de la galerie pour les effacer aussi dans le dossier imgGalerie et pas seulement en base de données
-                $photos = $memorial->getPhotos();
-                foreach($photos as $photo){
-                    // On récupère la string et non l'objet en lui même, car il faut connaître le nom du fichier à supprimer            
-                    $photo = $photo->getPhoto();
-                    $folder = 'imgGalerie';
-                    $uploaderService->delete($photo,$folder);            
-                }            
-            }
+                // Si le mémorial a des photos dans sa galerie...
+                if($memorial->getPhotos()){
+                    // On pense à récupérer les images de la galerie pour les effacer aussi dans le dossier imgGalerie et pas seulement en base de données
+                    $photos = $memorial->getPhotos();
+                    foreach($photos as $photo){
+                        // On récupère la string et non l'objet en lui même, car il faut connaître le nom du fichier à supprimer            
+                        $photo = $photo->getPhoto();
+                        $folder = 'imgGalerie';
+                        $uploaderService->delete($photo,$folder);            
+                    }            
+                }
 
-            /*  Les photos de la galerie seront aussi supprimées de l'entity Photo (qui représente la galerie photo comme plusieurs photos 
-                peuvent être ajoutées),grâce au Orphean Removal*/
-            $amr->remove($memorial, $flush = true);
+                /*  Les photos de la galerie seront aussi supprimées de l'entity Photo (qui représente la galerie photo comme plusieurs photos 
+                    peuvent être ajoutées),grâce au Orphean Removal*/
+                $amr->remove($memorial, $flush = true);
 
-            $this->addFlash('notice', 'Le mémorial a été supprimé');
+                $this->addFlash('notice', 'Le mémorial a été supprimé');
 
-            return $this->redirectToRoute("app_memoriaux");            
+                return $this->redirectToRoute("app_memoriaux");              
+        }
+
+        return $this->redirectToRoute("app_memoriaux");   
 
     }
 
@@ -211,113 +222,54 @@ class MemorialController extends AbstractController
     #[Route('/memorial/{idCategorie}/{id}', name: 'show_memorial_categorie')]
     #[ParamConverter("memorial", options: ["mapping" => ["id" => "id"]])]
     #[ParamConverter("categorie", options: ["mapping" => ["idCategorie" => "id"]])]
-    public function showMemorial(ManagerRegistry $doctrine, AnimalMemorialRepository $amr, CondoleanceRepository $cr, UploaderService $uploaderService, AnimalMemorial $memorial, Request $request, CategorieAnimal $categorie = null, SluggerInterface $slugger): Response
+    public function showMemorial(ManagerRegistry $doctrine, AnimalMemorialRepository $amr, CondoleanceRepository $cr, UploaderService $uploaderService, AnimalMemorial $memorial = null, Request $request, CategorieAnimal $categorie = null, SluggerInterface $slugger): Response
     {
 
-        if($categorie){
-            $consultedInCategorie = true;
-        }elseif(!$categorie){
-            $consultedInCategorie = false;            
-        }
-
-
-        $memorial = $amr->find($memorial->getId());
-        $galerie = new Photo();
-        $form = $this->createForm(GaleriePhotoType::class, $galerie);    
-        $condoleance = new Condoleance();
-        $condoleanceForm = $this->createForm(CondoleanceType::class,$condoleance);
-            // $editCondoleanceForm = $this->createForm(CondoleanceType::class,$condoleance);       
-        $condoleances = $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1));
-        // $editCondoleanceForm = $this->createForm(CondoleanceType::class,$condoleance); 
-
-        if($this->getUser()){
-            $condoleanceForm->handleRequest($request); 
-            if ($condoleanceForm->isSubmitted() && $condoleanceForm->isValid()) {
-                $condoleance = $condoleanceForm->getData();
-                $condoleance->setMemorial($memorial);
-                $condoleance->setAuteur($this->getUser());
-                $entityManager = $doctrine->getManager();
-                $entityManager->persist($condoleance);
-                $entityManager->flush();   
-
-                if($request->isXmlHttpRequest()){
-                    // Si c'est le cas on renvoie du JSON
-                    return new JsonResponse([
-                        'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial,'formCondoleance' => $condoleanceForm->createView(),'consultedInCategorie' => $consultedInCategorie, 'condoleances' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1))]),
-                        'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1))]),
-                        // 'formCondoleance' => $this->renderView('_partials/_refreshForm.html.twig', ['formCondoleance' => $condoleanceForm->createView()])
-                        // 'bloup'=> 'blou',
-                    ]);
-                }
-                // return $this->json([
-                //     'message' => 'ca fonctioenne.',
-                // ]);
-
-                if(!$categorie){
-                    return $this->redirectToRoute(
-                        'show_memorial',
-                        ['id' => $memorial->getId()]
-                    );                    
-                }
-
-                return $this->redirectToRoute(
-                    'show_memorial_categorie',
-                    ['id' => $memorial->getId(),
-                    'idCategorie' => $categorie->getId()]
-                );     
-
-            }else{
-
-                // Si le formulaire n'est pas valide et qu'il s'agit d'une requête AJAX
-                if($request->isXmlHttpRequest()){
-                    $errorMessage ="";
-                    // la fonction getErrors() permet d'obtenir une instance de l'objet FormErrorIterator, pour obtenir le message il faut donc faire appel, pour chaque erreur qu'il pourrait y avoir, à la fonction getMessage()
-                    $errors = $condoleanceForm['texte']->getErrors();
-                    foreach ($errors as $error) {
-                        $errorMessage = $error->getMessage();
-                    };
-
-                    // Si c'est le cas on renvoie du JSON
-                    return new JsonResponse([
-                        'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial,'consultedInCategorie' => $consultedInCategorie, 'formCondoleance' => $condoleanceForm->createView(),'condoleances' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1))]),
-                        'error' => $errorMessage,
-                        'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $cr->findPaginatedCondoleances($request->query->getInt('page',1),$memorial) ])
-
-                    ]);
-                }
-
+        if($memorial){
+            if($categorie && $memorial){
+                $consultedInCategorie = true;
+            }elseif(!$categorie && $memorial){
+                $consultedInCategorie = false;            
             }
 
-            // On vérifie que le user courant est le créateur du mémorial, sinon on ne peut pas accéder au formulaire d'ajout de photo
-            if($this->getUser()== $memorial->getAuteur()){
-                // On souhaite insérer le formulaire d'ajout d'image à la galerie photo directement dans la page du mémorial
-                // Dans un premier temps on persist dans la bdd de Photos le nom des fichiers
-                // Puis on add chaque image grâce à la méthode de l'entity AnimalMemorial (qui contient un collectionType)
 
-                $form->handleRequest($request); 
-                if ($form->isSubmitted() && $form->isValid()) {
-                    $galerie = $form->getData();  
-                    $galerie->setMemorial($memorial);
-                    $images = $form->get('images')->getData();
+            $memorial = $amr->find($memorial->getId());
+            $galerie = new Photo();
+            $form = $this->createForm(GaleriePhotoType::class, $galerie);    
+            $condoleance = new Condoleance();
+            $condoleanceForm = $this->createForm(CondoleanceType::class,$condoleance);
+                // $editCondoleanceForm = $this->createForm(CondoleanceType::class,$condoleance);       
+            $condoleances = $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1));
+            // $editCondoleanceForm = $this->createForm(CondoleanceType::class,$condoleance); 
 
-                    foreach($images as $image){
-                        $folder = "imgGalerie";
-                        $fichier = $uploaderService->add($image,$folder);
-                        $photo= new Photo();
-                        $photo->setPhoto($fichier);
-                        $memorial->addPhoto($photo);  
-                        $entityManager = $doctrine->getManager();
-                        $entityManager->persist($photo);
-                        $entityManager->flush();                                  
+            if($this->getUser()){
+                $condoleanceForm->handleRequest($request); 
+                if ($condoleanceForm->isSubmitted() && $condoleanceForm->isValid()) {
+                    $condoleance = $condoleanceForm->getData();
+                    $condoleance->setMemorial($memorial);
+                    $condoleance->setAuteur($this->getUser());
+                    $entityManager = $doctrine->getManager();
+                    $entityManager->persist($condoleance);
+                    $entityManager->flush();   
+
+                    if($request->isXmlHttpRequest()){
+                        // Si c'est le cas on renvoie du JSON
+                        return new JsonResponse([
+                            'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial,'formCondoleance' => $condoleanceForm->createView(),'consultedInCategorie' => $consultedInCategorie, 'condoleances' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1))]),
+                            'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1))]),
+                            // 'formCondoleance' => $this->renderView('_partials/_refreshForm.html.twig', ['formCondoleance' => $condoleanceForm->createView()])
+                            // 'bloup'=> 'blou',
+                        ]);
                     }
-
-                    $this->addFlash('success', 'La galerie a été alimentée avec succès');
+                    // return $this->json([
+                    //     'message' => 'ca fonctioenne.',
+                    // ]);
 
                     if(!$categorie){
                         return $this->redirectToRoute(
                             'show_memorial',
                             ['id' => $memorial->getId()]
-                        );                        
+                        );                    
                     }
 
                     return $this->redirectToRoute(
@@ -326,9 +278,80 @@ class MemorialController extends AbstractController
                         'idCategorie' => $categorie->getId()]
                     );     
 
+                }else{
+
+                    // Si le formulaire n'est pas valide et qu'il s'agit d'une requête AJAX
+                    if($request->isXmlHttpRequest()){
+                        $errorMessage ="";
+                        // la fonction getErrors() permet d'obtenir une instance de l'objet FormErrorIterator, pour obtenir le message il faut donc faire appel, pour chaque erreur qu'il pourrait y avoir, à la fonction getMessage()
+                        $errors = $condoleanceForm['texte']->getErrors();
+                        foreach ($errors as $error) {
+                            $errorMessage = $error->getMessage();
+                        };
+
+                        // Si c'est le cas on renvoie du JSON
+                        return new JsonResponse([
+                            'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial,'consultedInCategorie' => $consultedInCategorie, 'formCondoleance' => $condoleanceForm->createView(),'condoleances' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1))]),
+                            'error' => $errorMessage,
+                            'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $cr->findPaginatedCondoleances($request->query->getInt('page',1),$memorial) ])
+
+                        ]);
+                    }
+
                 }
 
-                return $this->render('memorial/memorial.html.twig', [
+                // On vérifie que le user courant est le créateur du mémorial, sinon on ne peut pas accéder au formulaire d'ajout de photo
+                if($this->getUser()== $memorial->getAuteur()){
+                    // On souhaite insérer le formulaire d'ajout d'image à la galerie photo directement dans la page du mémorial
+                    // Dans un premier temps on persist dans la bdd de Photos le nom des fichiers
+                    // Puis on add chaque image grâce à la méthode de l'entity AnimalMemorial (qui contient un collectionType)
+
+                    $form->handleRequest($request); 
+                    if ($form->isSubmitted() && $form->isValid()) {
+                        $galerie = $form->getData();  
+                        $galerie->setMemorial($memorial);
+                        $images = $form->get('images')->getData();
+
+                        foreach($images as $image){
+                            $folder = "imgGalerie";
+                            $fichier = $uploaderService->add($image,$folder);
+                            $photo= new Photo();
+                            $photo->setPhoto($fichier);
+                            $memorial->addPhoto($photo);  
+                            $entityManager = $doctrine->getManager();
+                            $entityManager->persist($photo);
+                            $entityManager->flush();                                  
+                        }
+
+                        $this->addFlash('success', 'La galerie a été alimentée avec succès');
+
+                        if(!$categorie){
+                            return $this->redirectToRoute(
+                                'show_memorial',
+                                ['id' => $memorial->getId()]
+                            );                        
+                        }
+
+                        return $this->redirectToRoute(
+                            'show_memorial_categorie',
+                            ['id' => $memorial->getId(),
+                            'idCategorie' => $categorie->getId()]
+                        );     
+
+                    }
+
+                    return $this->render('memorial/memorial.html.twig', [
+                        'memorial' => $memorial,
+                        'formAddPhotoGalerie' => $form->createView(),
+                        'formCondoleance' => $condoleanceForm->createView(),
+                        'consultedInCategorie' => $consultedInCategorie,
+                        'condoleances' => $condoleances,
+                        'elementPagine' => $condoleances,
+                        // 'editCondoleanceForm' => $editCondoleanceForm->createView(),
+                    ]);            
+                }
+            }
+            return $this->render('memorial/memorial.html.twig',[
                     'memorial' => $memorial,
                     'formAddPhotoGalerie' => $form->createView(),
                     'formCondoleance' => $condoleanceForm->createView(),
@@ -336,18 +359,10 @@ class MemorialController extends AbstractController
                     'condoleances' => $condoleances,
                     'elementPagine' => $condoleances,
                     // 'editCondoleanceForm' => $editCondoleanceForm->createView(),
-                ]);            
-            }
+            ]);            
         }
-        return $this->render('memorial/memorial.html.twig',[
-                'memorial' => $memorial,
-                'formAddPhotoGalerie' => $form->createView(),
-                'formCondoleance' => $condoleanceForm->createView(),
-                'consultedInCategorie' => $consultedInCategorie,
-                'condoleances' => $condoleances,
-                'elementPagine' => $condoleances,
-                // 'editCondoleanceForm' => $editCondoleanceForm->createView(),
-        ]);
+
+            return $this->redirectToRoute('app_memoriaux');
 
     }
 
@@ -437,96 +452,104 @@ class MemorialController extends AbstractController
     #[ParamConverter("memorial", options: ["mapping" => ["idMemorial" => "id"]])]
     #[ParamConverter("condoleance", options: ["mapping" => ["id" => "id"]])]
     #[ParamConverter("categorie", options: ["mapping" => ["idCategorie" => "id"]])]
-    #[Security("is_granted('ROLE_USER') and user === condoleance.getAuteur()", message:"Accès non autorisé.")]
-    public function removeCondoleance(CondoleanceRepository $cr, CategorieAnimal $categorie = null, Condoleance $condoleance, AnimalMemorial $memorial, AnimalMemorialRepository $amr, Request $request)
+    // #[Security("is_granted('ROLE_USER') and user === condoleance.getAuteur()", message:"Accès non autorisé.")]
+    #[Security("is_granted('ROLE_USER')", message:"Accès non autorisé.")]
+    public function removeCondoleance(CondoleanceRepository $cr, CategorieAnimal $categorie = null, Condoleance $condoleance = null, AnimalMemorial $memorial = null, AnimalMemorialRepository $amr, Request $request)
     {
-        $condoleance = $cr->find($condoleance->getId());
 
-        $cr->remove($condoleance, $flush = true);
-        $memorial = $amr->find($memorial->getId());
+        if($condoleance && $memorial &&($this->getUser()===$condoleance->getAuteur())){
+            $condoleance = $cr->find($condoleance->getId());
 
-        // $this->addFlash('notice', "La condoléance a été supprimée");
+            $cr->remove($condoleance, $flush = true);
+            $memorial = $amr->find($memorial->getId());
 
-        if(!$categorie){
-            // return $this->redirectToRoute(
-            //     'show_memorial',
-            //     ['id' => $memorial->getId()]
-            // );           
+            // $this->addFlash('notice', "La condoléance a été supprimée");
+
+            if(!$categorie){
+                // return $this->redirectToRoute(
+                //     'show_memorial',
+                //     ['id' => $memorial->getId()]
+                // );           
+                return new JsonResponse([
+                    'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, "condoleances" => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)), 'consultedInCategorie' => false]),
+                    'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)) ])
+                ]);        
+            }
+
             return new JsonResponse([
-                'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, "condoleances" => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)), 'consultedInCategorie' => false]),
+                'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, "condoleances" => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)), 'consultedInCategorie' => true]),
                 'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)) ])
-            ]);        
+            ]);   
+            // return $this->redirectToRoute(
+            //     'show_memorial_categorie',
+            //     ['id' => $memorial->getId(),
+            //     'idCategorie' => $categorie->getId()]
+            // );              
         }
 
-        return new JsonResponse([
-            'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, "condoleances" => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)), 'consultedInCategorie' => true]),
-            'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)) ])
-        ]);   
-        // return $this->redirectToRoute(
-        //     'show_memorial_categorie',
-        //     ['id' => $memorial->getId(),
-        //     'idCategorie' => $categorie->getId()]
-        // );  
+        return $this->redirectToRoute("app_memoriaux");
          
     }
 
     #[Route('/memorial/condoleance/edit/{id}/{idMemorial}', name: 'edit_condoleance')]
     #[ParamConverter("condoleance", options: ["mapping" => ["id" => "id"]])]
     #[ParamConverter("memorial", options: ["mapping" => ["idMemorial" => "id"]])]
-    #[Security("is_granted('ROLE_USER') and user === condoleance.getAuteur()", message:"Accès non autorisé.")]
-    public function editCondoleance(Condoleance $condoleance, AnimalMemorial $memorial, CondoleanceRepository $cr , CategorieAnimal $categorie = null , ManagerRegistry $doctrine,Request $request)
+    // #[Security("is_granted('ROLE_USER') and user === condoleance.getAuteur()", message:"Accès non autorisé.")]
+    #[Security("is_granted('ROLE_USER')", message:"Accès non autorisé.")]
+    public function editCondoleance(Condoleance $condoleance = null, AnimalMemorial $memorial = null, CondoleanceRepository $cr , CategorieAnimal $categorie = null , ManagerRegistry $doctrine,Request $request)
     {
 
-        if($categorie){
-            $consultedInCategorie = true;
-        }elseif(!$categorie){
-            $consultedInCategorie = false;            
+        if($condoleance && $this->getUser() === $condoleance->getAuteur()){
+            if($categorie){
+                $consultedInCategorie = true;
+            }elseif(!$categorie){
+                $consultedInCategorie = false;            
+            }
+
+            // On récupère le token généré dans le formulaire
+            $submittedToken = $request->request->get('token');
+            // $texteTest = $request->request->get('texte');
+
+
+            if (isset($_POST) && $this->isCsrfTokenValid('modify-item', $submittedToken)) {
+                $entityManager = $doctrine->getManager();
+                $texte = $request->request->get('texte');
+                $condoleance->setMemorial($memorial);
+                $date = $condoleance->getDateCreation();
+                $auteur = $condoleance->getAuteur();
+                $condoleance->setDateCreation($date);
+                $condoleance->setAuteur($auteur);
+                $condoleance->setTexte($texte);
+                $entityManager->persist($condoleance);
+                $entityManager->flush();
+
+                if($request->isXmlHttpRequest()){
+                    // Si c'est le cas on renvoie du JSON
+                    return new JsonResponse([
+                        'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, 'condoleances' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)),'consultedInCategorie'=> $consultedInCategorie]),
+                        // 'content' => "bravo",
+                    ]);
+                }
+
+                $this->addFlash("success","La condoléance a bien été modifiée");
+
+                
+                return $this->redirectToRoute(
+                    'show_memorial',
+                    ['id' => $memorial->getId()]
+                );  
+            }else{
+                // if($request->isXmlHttpRequest()){
+                    // Si c'est le cas on renvoie du JSON
+                    return new JsonResponse([
+                        'content' => "ca n'a pas fonctionné"
+
+                    ]);
+                // }            
+            }            
         }
 
-        // On récupère le token généré dans le formulaire
-        $submittedToken = $request->request->get('token');
-        // $texteTest = $request->request->get('texte');
-
-
-        if (isset($_POST) && $this->isCsrfTokenValid('modify-item', $submittedToken)) {
-            $entityManager = $doctrine->getManager();
-            $texte = $request->request->get('texte');
-            $condoleance->setMemorial($memorial);
-            $date = $condoleance->getDateCreation();
-            $auteur = $condoleance->getAuteur();
-            $condoleance->setDateCreation($date);
-            $condoleance->setAuteur($auteur);
-            $condoleance->setTexte($texte);
-            $entityManager->persist($condoleance);
-            $entityManager->flush();
-
-            if($request->isXmlHttpRequest()){
-                // Si c'est le cas on renvoie du JSON
-                return new JsonResponse([
-                    'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, 'condoleances' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)),'consultedInCategorie'=> $consultedInCategorie]),
-                    // 'content' => "bravo",
-                ]);
-             }
-
-            $this->addFlash("success","La condoléance a bien été modifiée");
-
-            
-            return $this->redirectToRoute(
-                'show_memorial',
-                ['id' => $memorial->getId()]
-            );  
-        }else{
-            // if($request->isXmlHttpRequest()){
-                // Si c'est le cas on renvoie du JSON
-                return new JsonResponse([
-                    'content' => "ca n'a pas fonctionné"
-
-                ]);
-            // }            
-        }
-
-
-
+        return $this->redirectToRoute('app_memoriaux');
 
 
     }
@@ -537,29 +560,35 @@ class MemorialController extends AbstractController
     #[ParamConverter("memorial", options: ["mapping" => ["idMemorial" => "id"]])]
     #[ParamConverter("image", options: ["mapping" => ["id" => "id"]])]
     #[ParamConverter("categorie", options: ["mapping" => ["idCategorie" => "id"]])]
-    #[Security("is_granted('ROLE_USER') and user === memorial.getAuteur()", message:"Accès non autorisé.")]
-    public function removePhotoGalerie(PhotoRepository $pr, Photo $photo, AnimalMemorial $memorial, CategorieAnimal $categorie = null, UploaderService $uploaderService)
+    // #[Security("is_granted('ROLE_USER') and user === memorial.getAuteur()", message:"Accès non autorisé.")]
+    #[Security("is_granted('ROLE_USER')", message:"Accès non autorisé.")]
+    public function removePhotoGalerie(PhotoRepository $pr, Photo $photo = null, AnimalMemorial $memorial = null, CategorieAnimal $categorie = null, UploaderService $uploaderService)
     {
 
-        $photo = $pr->find($photo->getId());
-        $folder = 'imgGalerie';
-        $uploaderService->delete($photo->getPhoto(),$folder);
-        $pr->remove($photo, $flush = true);
+        if($photo && $memorial && ($this->getUser()===$memorial->getAuteur())){
+            $photo = $pr->find($photo->getId());
+            $folder = 'imgGalerie';
+            $uploaderService->delete($photo->getPhoto(),$folder);
+            $pr->remove($photo, $flush = true);
 
-        $this->addFlash('notice', 'La photo a été supprimée de la galerie');
+            $this->addFlash('notice', 'La photo a été supprimée de la galerie');
 
-        if(!$categorie){
+            if(!$categorie){
+                return $this->redirectToRoute(
+                    'show_memorial',
+                    ['id' => $memorial->getId()],
+                );            
+            }
+
             return $this->redirectToRoute(
-                'show_memorial',
-                ['id' => $memorial->getId()],
-            );            
+                'show_memorial_categorie',
+                ['id' => $memorial->getId(),
+                'idCategorie' => $categorie->getId()]
+            );              
         }
 
-        return $this->redirectToRoute(
-            'show_memorial_categorie',
-            ['id' => $memorial->getId(),
-            'idCategorie' => $categorie->getId()]
-        );  
+        return $this->redirectToRoute("app_memoriaux");
+
     }
 
 }
