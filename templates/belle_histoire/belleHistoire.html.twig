@@ -46,27 +46,14 @@
     <article id="histoire">
         <section id="histoire-content">
             <div id="histoire-content-header">
-                {# {% if histoire.photo == null %}
-                    <p>Pas de photo</p>
-                {% else %}
                 <figure>
-                    <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">            
+                    {% if histoire.photo != null %}
+                        <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">          
+                    {% else %}            
+                        <img src="{{ asset('img/book_dog.jpg') }}" alt="photo de l'histoire">                                
+                    {% endif %}  
                 </figure>
-                {% endif %} #}
-                {% if histoire.auteur == 'Antoine' %}
-                <figure>
-                    <img src="{{histoire.photo}}" alt="photo de l'histoire">            
-                </figure>
-                {% else %}
-                    <figure>
-                        {% if histoire.photo != null %}
-                            <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">          
-                        {% else %}            
-                            <img src="{{ asset('img/book_dog.jpg') }}" alt="photo de l'histoire">                                
-                        {% endif %}  
-                    </figure>
-                {% endif %}
-                <p>Date de création {{ histoire.dateCreation | date('d-m-Y') }}</p>
+                <p>Publié le : {{ histoire.datePublication | date('d-m-Y') }}</p>
                 </div>
             <div id="histoire-texte">
                 <p>{{ histoire.texte|raw }}</p>
