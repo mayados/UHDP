@@ -68,6 +68,9 @@ class BelleHistoire
     #[ORM\OneToMany(mappedBy: 'histoire', targetEntity: ReportHistoire::class, orphanRemoval: true)]
     private Collection $reports;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $datePublication = null;
+
     public function __construct()
     {
         $this->dateCreation = new \DateTimeImmutable();
@@ -293,6 +296,18 @@ class BelleHistoire
 
     public function howManyReports():  int{
         return count($this->reports);
+    }
+
+    public function getDatePublication(): ?\DateTimeImmutable
+    {
+        return $this->datePublication;
+    }
+
+    public function setDatePublication(?\DateTimeImmutable $datePublication): self
+    {
+        $this->datePublication = $datePublication;
+
+        return $this;
     }
 
 }
