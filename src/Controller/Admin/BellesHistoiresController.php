@@ -3,9 +3,11 @@
 namespace App\Controller\Admin;
 
 
+use DateTimeZone;
 use App\Form\HistoireType;
 use App\Entity\BelleHistoire;
 use App\Entity\GenreHistoire;
+use DateTimeImmutable;
 use App\Form\GenreHistoireType;
 use App\Service\SluggerService;
 use App\Service\UploaderService;
@@ -241,9 +243,11 @@ class BellesHistoiresController extends AbstractController
     public function approuvedHistoire(BelleHistoire $histoire,BelleHistoireRepository $bhr, Request $request, ManagerRegistry $doctrine): Response
     {
 
+        $now = new DateTimeImmutable(null, new DateTimeZone('Europe/Paris'));
         $entityManager = $doctrine->getManager();
         $histoire = $bhr->find($histoire->getId());
         $histoire->setEtat('STATE_APPROUVED');
+        $histoire->setDatePublication($now);
         $entityManager->persist($histoire);        
         $entityManager->flush();
 
