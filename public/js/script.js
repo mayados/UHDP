@@ -21,6 +21,15 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleButton.classList.toggle('toggle');
     });
 
+    if(document.querySelector('.close-alert')){
+        var closeAlert = document.querySelector('.close-alert')
+        closeAlert.addEventListener('click', e =>{
+            e.preventDefault();
+        let alertMessage = document.querySelector('.alert-message')
+            alertMessage.style.display="none";
+        })
+    }
+
         // On passe l'élément que l'on veut rendre AJAX
     if(document.querySelector('.js-filter')){
         new Filter(document.querySelector('.js-filter'))    
