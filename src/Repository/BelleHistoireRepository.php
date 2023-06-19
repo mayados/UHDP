@@ -47,7 +47,7 @@ class BelleHistoireRepository extends ServiceEntityRepository
         // ->select('h.slug','h.titre','h.photo','h.genre','h.dateCreation')
         ->where('h.etat LIKE :state')
         ->setParameter('state','%STATE_APPROUVED%')
-        ->addOrderBy('h.dateCreation', 'DESC')
+        ->addOrderBy('h.datePublication', 'DESC')
         ->setMaxResults(4)
         ->getQuery()
         ->getResult();
@@ -58,7 +58,7 @@ class BelleHistoireRepository extends ServiceEntityRepository
         $data = $this->createQueryBuilder('h')
         ->where('h.etat LIKE :state')
         ->setParameter('state','%STATE_APPROUVED%')
-        ->addOrderBy('h.dateCreation', 'DESC')
+        ->addOrderBy('h.datePublication', 'DESC')
         ->getQuery()
         ->getResult();
 
@@ -79,7 +79,7 @@ class BelleHistoireRepository extends ServiceEntityRepository
         ->where('h.genre = :genreId')
         ->andWhere('h.etat LIKE :state')
         ->setParameters($parameters)
-        ->addOrderBy('h.dateCreation', 'DESC')
+        ->addOrderBy('h.datePublication', 'DESC')
         ->getQuery()
         ->getResult();
 
@@ -95,7 +95,7 @@ class BelleHistoireRepository extends ServiceEntityRepository
         ->select('h.titre','h.slug','h.dateCreation','a.id','a.pseudo')
         ->where('h.etat LIKE :state')
         ->setParameter('state','%STATE_APPROUVED%')
-        ->addOrderBy('h.dateCreation', 'DESC')
+        ->addOrderBy('h.datePublication', 'DESC')
         ->getQuery()
         ->getResult();
 
@@ -138,7 +138,7 @@ class BelleHistoireRepository extends ServiceEntityRepository
         ->where($sub->expr()->notIn('h.id', $qb->getDQL()))
         ->andWhere('h.etat LIKE :state')
         ->setParameter('state','%STATE_APPROUVED%')
-        ->addOrderBy('h.dateCreation', 'DESC')
+        ->addOrderBy('h.datePublication', 'DESC')
         ->getQuery()
         ->getResult();
 
@@ -231,7 +231,7 @@ class BelleHistoireRepository extends ServiceEntityRepository
         ->where('h.etat LIKE :state')
         ->andWhere('h.auteur = :user')
         ->setParameters($parameters)
-        ->addOrderBy('h.dateCreation', 'DESC')
+        ->addOrderBy('h.datePublication', 'DESC')
         ->getQuery()
         ->getResult();
     }
