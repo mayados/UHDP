@@ -27,6 +27,31 @@
     --figcaption: 1.2rem;
 }
 
+.alert-message{
+    text-align: center;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 2rem 1rem 1rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: 999;
+}
+
+.alert-success{
+    background-color: green;
+}
+
+.alert-error{
+    background-color: red;
+}
+
+.alert-notice{
+    background-color: orangered;
+}
+
 strong{
     font-weight: inherit;
     font-size: inherit;
@@ -2525,9 +2550,9 @@ nav{
         position: absolute;
     }
     
-    nav #nav-menu li i{
+    /* nav #nav-menu li i{
         display: none;
-    }
+    } */
 
     /* COMMUN */
     .container-page{
