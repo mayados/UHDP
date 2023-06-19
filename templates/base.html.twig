@@ -76,21 +76,22 @@
         <header id="header-main" class="header-bar">
             {% if app.session.flashBag.has('success') %}
                 {% for msg in app.flashes('success') %}        
-                    <div class="alert-success">
-                        {{ msg }}
+                    <div class="alert-success alert-message">
+                        <p>{{ msg }}</p>
+                        <a href="#"><i class="close-alert fa-solid fa-xmark" style="color: #ffffff;"></i></a>
                     </div>
                 {% endfor %}             
             {% endif %}
             {% if app.session.flashBag.has('notice') %}
                 {% for msg in app.flashes('notice') %}        
-                    <div class="alert-notice">
+                    <div class="alert-notice alert-message">
                         {{ msg }}
                     </div>
                 {% endfor %}             
             {% endif %}
             {% if app.session.flashBag.has('warning') %}
                 {% for msg in app.flashes('warning') %}        
-                    <div class="alert-warning">
+                    <div class="alert-warning alert-message">
                         {{ msg }}
                     </div>
                 {% endfor %}             
