@@ -185,9 +185,11 @@ class BellesHistoiresController extends AbstractController
     public function approuvedHistoire(BelleHistoire $histoire,BelleHistoireRepository $bhr, Request $request, ManagerRegistry $doctrine): Response
     {
 
+        $now = new DateTimeImmutable(null, new DateTimeZone('Europe/Paris'));
         $entityManager = $doctrine->getManager();
         $histoire = $bhr->find($histoire->getId());
         $histoire->setEtat('STATE_APPROUVED');
+        $histoire->setDatePublication($now);
         $entityManager->persist($histoire);        
         $entityManager->flush();
 
