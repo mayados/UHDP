@@ -52,7 +52,7 @@ class RegistrationFormType extends AbstractType
                 'options' => ['attr' => ['class' => 'password-field']],
                 'required' => true,
                 'first_options' => [
-                    'label' => 'Mot de passe (Au minimum 12 caractères et doit contenir au moins une majuscule, une minuscule, un chiffre, un caractère spécial)',
+                    'label' => 'Mot de passe (Au minimum 12 caractères dont une majuscule, une minuscule, un chiffre, un caractère spécial)',
                     'constraints' => [
                         new NotBlank([
                             'message' => 'Veuillez renseigner un mot de passe',
