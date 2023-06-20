@@ -3,6 +3,8 @@
 namespace App\Controller\Moderateur;
 
 
+use DateTimeZone;
+use DateTimeImmutable;
 use App\Form\HistoireType;
 use App\Entity\BelleHistoire;
 use App\Entity\GenreHistoire;
@@ -20,11 +22,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CommentBelleHistoireRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
-#[IsGranted('ROLE_MODERATEUR_HISTOIRES', statusCode: 403, message: 'Il faut être modérateur pour accéder à la messagerie')]
+#[IsGranted('ROLE_MODERATEUR_HISTOIRES', statusCode: 403, message: 'Il faut être modérateur pour accéder à cette page')]
 class BellesHistoiresController extends AbstractController
 {
 
