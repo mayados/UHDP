@@ -18,7 +18,8 @@
     --navLink: #4B4B4B;
     --blanc: white;
     /* --couleurPrincipale: #9deded; */
-    --couleurPrincipale: #adfafa;
+    /* --couleurPrincipale: #adfafa; */
+    --couleurPrincipale: #BBF2F2;
     /* --couleurPrincipale: #71E2E2; */
     /* Créer variable pour taille de p */
     /* Créer variable pour couleurs bouttons / liens */
@@ -76,6 +77,7 @@ h1{
 
 .custom-errors{
     background-color: red;
+    margin-top: 1rem;
 }
 
 .container-page{
@@ -113,8 +115,7 @@ h1{
 }
 
 .underlined_link{
-    text-decoration: wavy underline;
-    text-decoration-thickness: 2px;
+    font-weight: bolder;
 }
 
 .message-non-connecte{
@@ -909,11 +910,6 @@ nav{
 
 .banniere-memoriaux{
     background-image: url("../img/banniere_blue.png");
-}
-
-#banniere-memoriaux h1{
-    color: white;
-    text-shadow: 1px 2px black;
 }
 
 
