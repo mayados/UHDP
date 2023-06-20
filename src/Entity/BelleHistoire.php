@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class BelleHistoire
 {
 
-    const STATES = ['STATE_DRAFT', 'STATE_WAINTING', 'STATE_APPROUVED', 'STATE_DISAPPROUVED'];
+    const STATES = ['STATE_DRAFT', 'STATE_WAITING', 'STATE_APPROUVED', 'STATE_DISAPPROUVED'];
 
     use DateCreationTrait;
 
@@ -26,15 +26,17 @@ class BelleHistoire
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique:true)]
-    #[Assert\NotBlank()]
-    #[Assert\Length(
-        min: 2,
-        max: 255,
-    )]
+    // #[Assert\NotBlank(message: 'Le titre ne peut pas être vide')]
+    // #[Assert\Length(
+    //     min: 2,
+    //     max: 255,
+    //     minMessage : 'Le titre faire au moins {{ limit }} caractères',
+    //     maxMessage : 'Le titre ne peut pas faire plus de {{ limit }} caractères',
+    // )]
     private ?string $titre = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Assert\NotBlank()]
+    // #[Assert\NotBlank()]
     private ?string $texte = null;
 
     #[ORM\Column(length: 255, nullable: true)]
