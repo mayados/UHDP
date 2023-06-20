@@ -64,7 +64,6 @@
             
             var refugePoint = L.marker([refuge.latitude, refuge.longitude], {icon : myIcon}).addTo(map);
             bounds.extend([refuge.latitude, refuge.longitude])
-           // refugePoint.bindPopup("<b>"+refuge.nom+"</b><br>"+numero+" "+refuge.rue+"<br>"+refuge.codePostal+" "+refuge.ville+"<br>Site: <a href='"+refuge.site+"' target='_blank'>"+refuge.site+"</a>");
             markers.addLayer(refugePoint.bindPopup("<b>"+refuge.nom+"</b><br>"+numero+" "+refuge.rue+"<br>"+refuge.codePostal+" "+refuge.ville+"<br>Site: <a href='"+refuge.site+"' target='_blank'>"+refuge.site+"</a>"))
         })
 
