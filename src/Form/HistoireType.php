@@ -24,13 +24,13 @@ class HistoireType extends AbstractType
                 'label' => "Titre *",
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'Le titre ne peut pas être vide']),
-                    new Assert\Length(['min' => 2, 'max' => 255, 'minMessage' => 'Le nom titre faire au moins {{ limit }} caractères', 'maxMessage' => 'Le titre ne peut pas faire plus de {{ limit }} caractères'])
+                    new Assert\Length(['min' => 2, 'max' => 255, 'minMessage' => 'Le titre faire au moins {{ limit }} caractères', 'maxMessage' => 'Le titre ne peut pas faire plus de {{ limit }} caractères'])
                 ]
             ])
             ->add('texte', CKEditorType::class, [
                 'label' => 'Racontez votre histoire ici *',
                 'constraints' => [
-                    new Assert\NotBlank(['message' => 'Le texte ne peut pas être nul']),
+                    new Assert\NotBlank(['message' => 'Le texte ne peut pas être vide']),
                 ]
             ])
             ->add('imgHistoire', FileType::class, [
