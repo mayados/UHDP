@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ genre.nom }}{% endblock %}
+{% block title %}{{ genre.nom }} - Histoire d'animaux - Une histoire de pattes{% endblock %}
 
 {% block body %}
 
@@ -31,11 +31,11 @@
                 <article class="belle-histoire-card">
                     <div class="hr-media">
                         <figure>
-                            {% if histoire.photo != null %}
-                                <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire"> 
-                            {% else %}            
+                            {# {% if histoire.photo != null %} #}
+                                <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="{{ histoire.titre }}"> 
+                            {# {% else %}            
                                 <img src="{{ asset('img/book_dog.jpg') }}" alt="photo de l'histoire">                                
-                            {% endif %}
+                            {% endif %} #}
                         </figure>
                     </div>
                     <div class="hr-content">

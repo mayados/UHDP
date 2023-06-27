@@ -8,11 +8,11 @@
     <div class="banniere-profil">
         <div class="profil-picture">
             <figure>
-                {% if user.photo == null %}
+                {# {% if user.photo == null %}
                     <img src="{{ asset('img/bouquet_fleurs.jpg') }}" alt="">
-                {% else %}
-                    <img src="{{ asset('uploads/imgUserProfil/'~ user.photo) }}" alt="">   
-                {% endif %} 
+                {% else %} #}
+                    <img src="{{ asset('uploads/imgUserProfil/'~ user.photo) }}" alt="Profil de {{ user.pseudo }}">   
+                {# {% endif %}  #}
             </figure>                 
         </div>
     </div>
