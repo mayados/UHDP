@@ -20,7 +20,7 @@
     <section id="topic-search">
         {{ form_start(form) }}
             {{ form_row(form.mot) }}
-            {{ form_row(form.submit) }}
+            {{ form_row(form.submit, { 'attr': {'class': 'bouton-action'} }) }}
         {{ form_end(form) }}
         <a href="{{ path('app_forum') }}">supprimer la recherche</a>        
     </section>
@@ -38,11 +38,11 @@
                     <div class="topic">
                         <div class="topic-infos">
                             <figure>
-                            {% if (topic.auteur != null) and (topic.auteur.photo != null) %}
+                            {# {% if (topic.auteur != null) and (topic.auteur.photo != null) %} #}
                                 <img src="{{ asset('uploads/imgUserProfil/'~ topic.auteur.photo) }}" alt="">
-                            {% else %}   
+                            {# {% else %}   
                                 <img src="{{ asset('img/bouquet_fleurs.jpg') }}" alt="photo de l'animal">     
-                            {% endif %}
+                            {% endif %} #}
                             </figure>
                             <div class="title-infos">
                                 <a class="topic-title" href="{{path('show_topic', {'slug': topic.slug}) }}">{{ topic.titre }}</a>
