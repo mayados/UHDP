@@ -94,13 +94,13 @@ h1{
 
 .pagination .current,
 .pagination span a{
-    padding: 10px;
+    padding: 20px;
     margin: 0 2px;
 
 }
 
 .pagination .current{
-    background-color: beige;
+    background-color: #E6CAB6;
 }
 
 .pagination span a{
@@ -574,7 +574,8 @@ nav{
     gap: 10px;
 }
 
-#form-login input,
+#form-login #inputEmail,
+#form-login #inputPassword,
 #form-register input,
 #form-topic input,
 #form-post input
@@ -586,6 +587,21 @@ nav{
     border: 1px solid gray;
     padding-left: 10px;
     border-radius: 5px;
+}
+
+#form-login .container_remember{
+    flex-direction: row;
+    gap: 1rem;
+    padding-top: 30px;
+}
+
+#form-login .container_remember .rm{
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
+#form-login .container_remember label{
+    width: auto;
 }
 
 #form-login button,
@@ -920,6 +936,10 @@ nav{
     align-items: center;
     gap: 50px;
     padding: 20px 0;
+}
+
+.categorie-link:hover{
+    border-bottom: 3px solid #E6CAB6;
 }
 
 /* SECTION INTERRACTION */
@@ -1268,7 +1288,7 @@ nav{
 
 .showSoutient-content .likedPaw{
     font-size: 1rem;
-    color: blue;
+    color: #338A8A;
 }
 
 #form-photo,
