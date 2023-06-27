@@ -20,7 +20,8 @@
             <h1>Création d'un mémorial</h1>
         {% else %}
             <h1>Edition du mémorial</h1>
-        {% endif %}        
+        {% endif %}     
+        <p class="champs-obligatoires">Les champs comportant * sont obligatoires</p>   
     {{ form_start(formAddMemorial) }}    
         <div class="custom-errors">
             {{ form_errors(formAddMemorial.nom) }}

@@ -19,7 +19,8 @@
             <h1>Création d'une belle histoire</h1>
         {% else %}
             <h1>Edition de l'histoire</h1>
-        {% endif %}        
+        {% endif %}      
+        <p class="champs-obligatoires">Les champs comportant * sont obligatoires</p>     
         {{ form_start(formAddHistoire) }}  
             <div class="custom-errors">
                 {{ form_errors(formAddHistoire.titre) }}

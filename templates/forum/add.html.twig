@@ -17,6 +17,7 @@
         {% else %}
             <h1>Edition du topic</h1>
         {% endif %}        
+        <p class="champs-obligatoires">Les champs comportant * sont obligatoires</p>   
         {{ form_start(formAddTopic) }}   
             <div class="custom-errors">
                 {{ form_errors(formAddTopic.titre) }}
@@ -40,7 +41,7 @@
                 </div>
             {% endif %}
             <div class="form-element">
-                {{ form_row(formAddTopic.submit) }}                 
+                {{ form_row(formAddTopic.submit, {'attr': {'class': 'form-button'}}) }}                 
             </div>
         {{ form_end(formAddTopic) }}        
     </div>
