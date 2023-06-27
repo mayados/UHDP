@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
@@ -17,52 +17,81 @@
         {% endblock %}
 
         {% block javascripts %}
-        <script src="{{ asset('tarteaucitron/tarteaucitron.js')}}"></script>
 
-        <script type="text/javascript">
-        tarteaucitron.init({
-    	  "privacyUrl": "", /* Privacy policy url */
-          "bodyPosition": "bottom", /* or top to bring it as first element for accessibility */
+            <script src="{{ asset('tarteaucitron/tarteaucitron.js')}}"></script>
 
-    	  "hashtag": "#tarteaucitron", /* Open the panel with this hashtag */
-    	  "cookieName": "tarteaucitron", /* Cookie name */
-    
-    	  "orientation": "middle", /* Banner position (top - bottom) */
-       
-          "groupServices": false, /* Group services by category */
-          "serviceDefaultState": "wait", /* Default state (true - wait - false) */
-                           
-    	  "showAlertSmall": true, /* Show the small banner on bottom right */
-    	  "cookieslist": true, /* Show the cookie list */
-                           
-          "closePopup": false, /* Show a close X on the banner */
+            <script type="text/javascript">
+            tarteaucitron.init({
+            "privacyUrl": "", /* Privacy policy url */
+            "bodyPosition": "bottom", /* or top to bring it as first element for accessibility */
 
-          "showIcon": true, /* Show cookie icon to manage cookies */
-          //"iconSrc": "", /* Optionnal: URL or base64 encoded image */
-          "iconPosition": "BottomRight", /* BottomRight, BottomLeft, TopRight and TopLeft */
+            "hashtag": "#tarteaucitron", /* Open the panel with this hashtag */
+            "cookieName": "tarteaucitron", /* Cookie name */
+        
+            "orientation": "middle", /* Banner position (top - bottom) */
+        
+            "groupServices": false, /* Group services by category */
+            "serviceDefaultState": "wait", /* Default state (true - wait - false) */
+                            
+            "showAlertSmall": false, /* Show the small banner on bottom right */
+            "cookieslist": true, /* Show the cookie list */
+                            
+            "closePopup": false, /* Show a close X on the banner */
 
-    	  "adblocker": false, /* Show a Warning if an adblocker is detected */
-                           
-          "DenyAllCta" : true, /* Show the deny all button */
-          "AcceptAllCta" : true, /* Show the accept all button when highPrivacy on */
-          "highPrivacy": true, /* HIGHLY RECOMMANDED Disable auto consent */
-                           
-    	  "handleBrowserDNTRequest": false, /* If Do Not Track == 1, disallow all */
+            "showIcon": true, /* Show cookie icon to manage cookies */
+            //"iconSrc": "", /* Optionnal: URL or base64 encoded image */
+            "iconPosition": "BottomRight", /* BottomRight, BottomLeft, TopRight and TopLeft */
 
-    	  "removeCredit": false, /* Remove credit link */
-    	  "moreInfoLink": true, /* Show more info link */
+            "adblocker": false, /* Show a Warning if an adblocker is detected */
+                            
+            "DenyAllCta" : true, /* Show the deny all button */
+            "AcceptAllCta" : true, /* Show the accept all button when highPrivacy on */
+            "highPrivacy": true, /* HIGHLY RECOMMANDED Disable auto consent */
+                            
+            "handleBrowserDNTRequest": false, /* If Do Not Track == 1, disallow all */
 
-          "useExternalCss": false, /* If false, the tarteaucitron.css file will be loaded */
-          "useExternalJs": false, /* If false, the tarteaucitron.js file will be loaded */
+            "removeCredit": false, /* Remove credit link */
+            "moreInfoLink": true, /* Show more info link */
 
-    	  //"cookieDomain": ".my-multisite-domaine.fr", /* Shared cookie for multisite */
-                          
-          "readmoreLink": "", /* Change the default readmore link */
+            "useExternalCss": false, /* If false, the tarteaucitron.css file will be loaded */
+            "useExternalJs": false, /* If false, the tarteaucitron.js file will be loaded */
 
-          "mandatory": true, /* Show a message about mandatory cookies */
-          "mandatoryCta": true /* Show the disabled accept button when mandatory on */
-        });
-        </script>
+            //"cookieDomain": ".my-multisite-domaine.fr", /* Shared cookie for multisite */
+                            
+            "readmoreLink": "", /* Change the default readmore link */
+
+            "mandatory": true, /* Show a message about mandatory cookies */
+            "mandatoryCta": true /* Show the disabled accept button when mandatory on */
+            });
+/*
+           (tarteaucitron.job = tarteaucitron.job || []).push('serviceperso');
+           let getting = document.cookies.get(
+            details 
+          )      
+console.log(getting); */
+
+function getCookie(name) {
+    var cookies = document.cookie.split(';');
+
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.startsWith(name + '=')) {
+            return cookie.substring(name.length + 1);
+        }
+    }
+
+    return null;
+}
+
+// Utilisation de la fonction pour récupérer la valeur du cookie "REMEMBERME"
+var rememberMeToken = getCookie('REMEMBERME');
+if (rememberMeToken !== null) {
+    // Faire quelque chose avec la valeur du cookie "REMEMBERME"
+    console.log(rememberMeToken);
+}else{
+    console.log('pas de cookie')
+}
+            </script>
         {# Ajouter defer pour éviter que le script ne s'éxecute avant le chargement du document #}
             <script src="{{ asset('js/script.js')}}" type='module' defer></script>
             <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
@@ -252,7 +281,7 @@
                                     <li><a href="{{ path('app_home') }}">Accueil</a></li>
                                     <li><a href="#">Mentions légales</a></li>
                                     <li><a href="#">CGU</a></li>
-                                    <li><a href="#">Contact</a></li>
+                                    <li><a href="{{ path('app_contact') }}">Contact</a></li>
                                     <li><a href="#">Politique de confidentialité</a></li>
                                 </ul>
                             </div>
