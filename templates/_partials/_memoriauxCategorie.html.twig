@@ -9,12 +9,7 @@
             <div class="memorial-card">
                 <a href="{{path('show_memorial_categorie', {'id': memorial.id, 'idCategorie': categorie.id}) }}">
                     <figure>
-                        {% if memorial.photo != null %}
-                            <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">   
-                        {% else %}
-                            <img src="{{ asset('img/paw_heart') }}" alt="photo de l'animal">
-                        {% endif %}
-                        {# <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">    #}
+                            <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="Mémorial de {{ memorial.nom }}">   
                     </figure>       
                     <p>{{ memorial.nom }}</p>          
                 </a>
