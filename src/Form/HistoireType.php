@@ -47,7 +47,7 @@ class HistoireType extends AbstractType
                             'image/png',
                         ],
                         'mimeTypesMessage' => 'Veuillez choisir un format valide (jpeg, jpg, png)',
-                        'maxSize' => '300k',
+                        'maxSize' => '500k',
                         'maxSizeMessage' => "Image trop lourde, veuillez en sélectionner une autre.",
                     ])
                 ]

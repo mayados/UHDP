@@ -88,7 +88,7 @@ class MemorialType extends AbstractType
                             'image/png',
                         ],
                         'mimeTypesMessage' => 'Veuillez choisir un format valide (jpeg, jpg, png)',
-                        'maxSize' => '300k',
+                        'maxSize' => '500k',
                         'maxSizeMessage' => "Image trop lourde, veuillez en sélectionner une autre.",
                     ])
                 ]
@@ -124,7 +124,9 @@ class MemorialType extends AbstractType
                     new Assert\NotNull(['message' => 'La catégorie ne peut pas être nulle']),
                 ]
             ])
-            ->add('submit', SubmitType::class)
+            ->add('submit', SubmitType::class, [
+                'label' => 'Soumettre',
+            ])
         ;
     }
 
