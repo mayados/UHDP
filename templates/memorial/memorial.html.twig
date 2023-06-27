@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ memorial.nom }}{% endblock %}
+{% block title %}Mémorial de {{ memorial.nom }} - Cimetière virtuel pour animaux Une Histoire de pattes{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/base.css') }}">
@@ -44,7 +44,7 @@
     <h1 id="memorial-title">En mémoire de {{ memorial.nom }}</h1>     
     <section id="header-memorial">
         <figure>
-            <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">       
+            <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="Photo de mémorial de {{ memorial.nom }}">       
         </figure>     
         <div id="memorial-infos">
                 <h2>Informations</h2>
@@ -151,7 +151,7 @@
                 {% for image in memorial.photos %}
                     <div class="image-galerie">
                         <figure>
-                            <img src="{{ asset('uploads/imgGalerie/'~ image.photo) }}" alt="photo de l'animal">     
+                            <img src="{{ asset('uploads/imgGalerie/'~ image.photo) }}" alt="{{ memorial.nom }}">     
                             {% if memorial.auteur != null %}
                                 {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
                                     {% if consultedInCategorie == true %}

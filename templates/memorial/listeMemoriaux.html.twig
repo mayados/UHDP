@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mémoriaux{% endblock %}
+{% block title %}Mémoriaux des animaux - Une histoire de pattes{% endblock %}
 
 {# {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/base.css') }}">
@@ -19,7 +19,7 @@
         <ul class="categorie-elements"></ul>        
             {% for categorie in categories %}
                 <li>
-                    <a href="{{path('app_categorie', {'id' : categorie.id}) }}">{{ categorie.nom }}</a>                    
+                    <a class="categorie-link" href="{{path('app_categorie', {'id' : categorie.id}) }}">{{ categorie.nom }}</a>                    
                 </li>
             {% endfor %}
         </ul>        
@@ -46,12 +46,7 @@
             <div class="memorial-month-card">
                 <a href="{{path('show_memorial', {'id': souvenir.id}) }}">
                     <figure>
-                        {% if souvenir.photo != null %}
-                            <img src="{{ asset('uploads/imgMemorial/'~ souvenir.photo) }}" alt="photo de l'animal">   
-                        {% else %}
-                            <img src="{{ asset('img/angel_dog.jpg') }}" alt="photo de l'animal">
-                        {% endif %}
-                        {# <img src="{{ asset('uploads/imgMemorial/'~ memorial.photo) }}" alt="photo de l'animal">    #}
+                            <img src="{{ asset('uploads/imgMemorial/'~ souvenir.photo) }}" alt="Mémorial de {{ souvenir.nom }}, décédé le {{ souvenir.dateDeces | date('d-m-Y') }}">   
                     </figure>       
                     <p>{{ souvenir.nom|slice(0, 20) }}...</p>          
                 </a>

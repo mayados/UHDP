@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{histoire.titre}}{% endblock %}
+{% block title %}{{histoire.titre}} - histoire d'animaux Une histoire de pattes{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('css/base.css') }}">
@@ -47,11 +47,11 @@
         <section id="histoire-content">
             <div id="histoire-content-header">
                 <figure>
-                    {% if histoire.photo != null %}
-                        <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">          
-                    {% else %}            
+                    {# {% if histoire.photo != null %} #}
+                        <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="{{ histoire.titre }}, image d'illustration">          
+                    {# {% else %}            
                         <img src="{{ asset('img/book_dog.jpg') }}" alt="photo de l'histoire">                                
-                    {% endif %}  
+                    {% endif %}   #}
                 </figure>
                 <p>Publié le : {{ histoire.datePublication | date('d-m-Y') }}</p>
                 </div>
