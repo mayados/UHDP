@@ -17,7 +17,7 @@ class TopicType extends AbstractType
     {
         $builder
             ->add('titre', TextType::class, [
-                'label' => 'Titre du sujet * (ne doit pas excéder 255 caractères)',
+                'label' => 'Titre du sujet * (maximum 255 caractères)',
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'Le titre ne peut pas être vide']),
                     new Assert\Length(['min' => 2, 'max' => 255, 'minMessage' => 'Le titre doit faire au moins {{ limit }} caractères', 'maxMessage' => 'Le titre ne peut pas faire plus de {{ limit }} caractères'])
@@ -30,7 +30,9 @@ class TopicType extends AbstractType
                     new Assert\NotBlank(['message' => 'Le commentaire ne peut pas être nul']),
                 ]
             ])
-            ->add('submit', SubmitType::class)
+            ->add('submit', SubmitType::class, [
+                'label' => 'Soumettre',
+            ])
         ;
     }
 
