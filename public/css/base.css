@@ -1,4 +1,3 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Playfair:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap'); */
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,300;0,400;0,500;1,200;1,400&display=swap');
 
@@ -17,12 +16,7 @@
     --nav: #FEFEFE;
     --navLink: #4B4B4B;
     --blanc: white;
-    /* --couleurPrincipale: #9deded; */
-    /* --couleurPrincipale: #adfafa; */
     --couleurPrincipale: #BBF2F2;
-    /* --couleurPrincipale: #71E2E2; */
-    /* Créer variable pour taille de p */
-    /* Créer variable pour couleurs bouttons / liens */
     --h1: 1.7rem;
     --h2: 1.4rem;
     --figcaption: 1.2rem;
@@ -189,9 +183,6 @@ a:focus-visible{
     display: none;
 }
 
-/* input{
-    border: 1px solid gray;
-} */
 
 
                                     /*************** LEAFLET ********************/
@@ -499,7 +490,7 @@ nav{
 
 
 
-                                        /*************  COMMUN FORMULAIRES & LOGIN FORM & REGISTER FORM **************/
+                                        /*************  COMMUN FORMULAIRES  **************/
 
 .modify-form{
     display: none;
@@ -633,7 +624,7 @@ nav{
 
 
 
-                                        /********************  HOME ********************/
+                                        /********************  ACCUEIL ********************/
 
 
 #bienvenue{
@@ -910,7 +901,7 @@ nav{
 }
 
 
-                                                                /*************  VUES CONCERNANT LES MEMORIAUX **************/
+                                                                /*************  MEMORIAUX **************/
 
                                 /* PAGE LISTE MEMORIAUX */
 
@@ -943,12 +934,12 @@ nav{
 }
 
 /* SECTION INTERRACTION */
-.interraction{
+.page-memoriaux .interraction{
     text-align: center;
     padding: 20px 0;
 }
 
-.interraction p{
+.page-memoriaux .interraction p{
     margin-bottom: 1rem;
 }
 
@@ -1155,7 +1146,6 @@ nav{
 
 #memorial{
     margin-top: 3rem;
-    /* border: 2px solid pink; */
     display: flex;
     flex-direction: column;
     gap: 3rem;
@@ -1345,7 +1335,7 @@ nav{
 
 
 
-                                                            /************  VUES CONCERNANT LES BELLES HISTOIRES *************/
+                                                            /************ BELLES HISTOIRES *************/
                                                     
                     /****  PAGE BELLES HISTOIRES *****/
 
@@ -1631,7 +1621,7 @@ nav{
 
 
 
-                                                                /******* VUES CONCERNANT LE FORUM ********/
+                                                                /******* FORUM ********/
 
 /* PAGE PRINCIPALE (index.html.twig) */
 
@@ -1697,7 +1687,6 @@ nav{
 }
 
 .topic .title-infos{
-    /* height: 48px; */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -1713,7 +1702,6 @@ nav{
     width: 50px;
     height: 50px;
     background-color: green;
-    /* margin-right: 0.5rem; */
 }
 
 #topics .topic-infos figure img{
@@ -1807,7 +1795,7 @@ nav{
 }
 
 
-                                                        /********* VUE CONCERNANT LA PAGE NOTRE HISTOIRE *************/
+                                                        /********* A PROPOS *************/
 #banniere-notre-histoire{
     background-image: url("../img/beige_shape.png");
 }
@@ -1843,7 +1831,7 @@ nav{
 
 
 
-                                                            /****** VUES CONCERNANT LA MESSAGERIE ******/
+                                                            /****** MESSAGERIE ******/
 
 /* MESSAGERIE ACCUEIL */
 
@@ -1958,7 +1946,7 @@ nav{
     margin-top: 1rem;
 }
 
-                                                                /****** VUES CONCERNANT LES USER ******/
+                                                                /****** PROFIL ******/
 
         /*** PAGE MON PROFIL ET PROFIL USER *****/
 
@@ -1976,7 +1964,6 @@ nav{
     background-repeat: no-repeat;
     background-size: cover;
     background-position: top;
-    /* filter: grayscale(1); */
     position: relative;
     margin-bottom: 70px;
 }
@@ -2122,7 +2109,7 @@ nav{
     border: 1px solid rgb(226, 52, 52);
 }
 
-#delete-dialog{
+.dialog-delete-style{
     background-color: white;
     margin: auto auto;
     height: 270px;
@@ -2130,13 +2117,11 @@ nav{
     padding: 10px;
 }
 
-#delete-dialog p{
+.dialog-delete-style p{
     text-align: center;
 }
 
-/* #form-delete-account,
-#form-delete-memorial, */
-#dialog-form-delete{
+.form-dialog-delete-style{
     margin-top: 2rem;
     display: flex;
     align-items: center;
@@ -2145,13 +2130,13 @@ nav{
     gap: 1rem;
 }
 
-#dialog-supprimer{
+.supprimer-dialog-style{
     color: white;
     background-color: red;
     padding: 10px;
 }
 
-#dialog-supprimer:hover{
+.supprimer-dialog-style:hover{
     color: red;
     border: 1px solid red;
     background-color: white;
@@ -2177,7 +2162,7 @@ nav{
 }
 
 
-                                                                /******* VUES CONCERNANT LE MUR DE COMMEMORATION ********/
+                                                                /******* MUR DE COMMEMORATION ********/
 
 .page-mur{
     background-image: url('../img/landscape_commemoration.png');
@@ -2239,7 +2224,6 @@ nav{
 
 #mur-commemoration .mot{
     padding: 1rem;
-    /* border: 1px solid green; */
     border-top: 1px solid gray;
     position: relative;
 }
@@ -2263,7 +2247,7 @@ nav{
 
 
 
-                                                    /****** VUES CONCERNANT L ADMINISTRATION ********/
+                                                    /****** ADMINISTRATION ET MODERATION********/
 
 /* PARTIAL ADMIN NAV ET MODERATEUR NAV */
 
@@ -2392,12 +2376,10 @@ nav{
 }
 
 .manage-page-memorial #memorial-infos{
-    /* border: 2px solid black; */
     display: flex;
     flex-direction: column;
     justify-content: inherit;
     gap: 0.5rem;
-    /* align-items: center; */
     flex:1;
     padding: 20px;
 }
@@ -2459,19 +2441,17 @@ nav{
 }
 
 
-                                                    /* PAGE LOGIN */
+                                                    /* LOGIN */
 
 .login-page{
-    /* Mettre illustration ou image représentant animaux + personne */
     background: url('../img/login_back.jpg');
-    /* background: url('../img/pet_loss.png'); */
     background-size: cover;
     background-position: center;
 }
 
 
 
-                                                    /* PAGE REFUGES */
+                                                    /* REFUGES */
 
 #banniere-refuges{
     background-image: url("../img/banniere_blue.png");
@@ -2550,7 +2530,6 @@ nav{
         width: 70vw;
         height: 100vh;
         justify-content: center;
-        /* align-items: flex-end; */
         align-items: center;
         flex-direction: column;
         background-color: var(--nav);    
@@ -2565,15 +2544,11 @@ nav{
         flex-direction: column;
         position: absolute;
     }
-    
-    /* nav #nav-menu li i{
-        display: none;
-    } */
 
     /* COMMUN */
-    .container-page{
+    /* .container-page{
         background-color: red;
-    }
+    } */
     
     /* HOME */
 
@@ -2603,7 +2578,6 @@ nav{
         align-items: inherit;
         gap: 10px;
         width: 90%;
-        /* border: 1px solid red; */
     }
 
 }
@@ -2616,9 +2590,9 @@ nav{
 
     /* PAGE GLOBALE */
 
-    .container-page{
+    /* .container-page{
         background-color: orange;
-    }
+    } */
 
     /* HOME */
 
@@ -2685,15 +2659,15 @@ nav{
 /* Petits téléphones (min-width : 576px & max-width : 768px) */
 @media screen and (max-width: 768px) {
 
-    .container-page{
+    /* .container-page{
         background-color: yellow;
-    }
+    } */
 
     /* HOME */
 
     #explications-memoriaux,
     #explications-histoires{
-        min-height: 50vh;
+        min-height: 70vh;
     }
 
     #explications-memoriaux .texte,
@@ -2710,9 +2684,9 @@ nav{
 /* Très petits téléphones (max-width : 576px) */
 @media screen and (max-width: 576px) {
 
-    .container-page{
+    /* .container-page{
         background-color: green;
-    }
+    } */
 
     /* HOME */
 
@@ -2752,6 +2726,13 @@ nav{
         flex-direction: column;
         align-items: center;
         gap: 2rem;
+    }
+
+    .page-memoriaux .interraction{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
     }
 
     /* PAGE MEMORIAL */
@@ -2919,20 +2900,6 @@ nav{
         margin-left: inherit;
     }
 
-    /* .topic{
-        padding: 1rem 0.2rem 1rem 0.2rem;
-        justify-content: space-between;
-        gap: 1rem;
-        flex-direction: column;
-    }
-    
-    .topic .topic-infos{
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }*/
-
     #topics{
         margin: 0 1rem 0 1rem;
     } 
@@ -2974,6 +2941,15 @@ nav{
         margin-right: 10%;
         width: 90%;
         background-color: white;
+    }
+
+    .pagination span a, 
+    .pagination .current{
+        padding: 15px;
+    }
+
+    .bouton-action{
+        padding: 5px;
     }
 
 }
