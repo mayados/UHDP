@@ -114,14 +114,16 @@ if (rememberMeToken !== null) {
             {% if app.session.flashBag.has('notice') %}
                 {% for msg in app.flashes('notice') %}        
                     <div class="alert-notice alert-message">
-                        {{ msg }}
+                        <p>{{ msg }}</p>
+                        <a href="#"><i class="close-alert fa-solid fa-xmark" style="color: #ffffff;"></i></a>
                     </div>
                 {% endfor %}             
             {% endif %}
             {% if app.session.flashBag.has('warning') %}
                 {% for msg in app.flashes('warning') %}        
                     <div class="alert-warning alert-message">
-                        {{ msg }}
+                        <p>{{ msg }}</p>
+                        <a href="#"><i class="close-alert fa-solid fa-xmark" style="color: #ffffff;"></i></a>
                     </div>
                 {% endfor %}             
             {% endif %}
