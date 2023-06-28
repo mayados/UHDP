@@ -1,6 +1,6 @@
 import Like from './Like.js'
 import Modify from './Modify.js'
-import Delete from './Delete.js'
+import {openDialogToDeleteElements} from './Delete.js'
 import Report from './Report.js'
 import { addEventListenerToModifyBtn } from "./ModifyButton.js";
 
@@ -127,17 +127,13 @@ export default class Submit {
           if(modifyFormsElements){
               new Modify(modifyFormsElements);
           }
-
-          const deleteElements = [].slice.call(document.querySelectorAll('.delete'));
-          if(deleteElements){
-              new Delete(deleteElements);
-          }
-
           
           const reportElements = [].slice.call(document.querySelectorAll('.report-flag'));
           if(reportElements){
               new Report(reportElements);
           }
+
+          openDialogToDeleteElements();
 
           // S'il y a des erreurs
           if (data.error != undefined) {

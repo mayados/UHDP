@@ -1,4 +1,4 @@
-import Delete from './Delete.js'
+import {openDialogToDeleteElements} from './Delete.js'
 
 export default class Report {
 
@@ -46,10 +46,7 @@ export default class Report {
                  icone.classList.replace('reported','unreported')
               }
 
-                const deleteElements = [].slice.call(document.querySelectorAll('.delete'));
-                if(deleteElements){
-                    new Delete(deleteElements);
-                }
+                openDialogToDeleteElements()
 
                 console.log(response)
                 // Reste à catch les exceptions

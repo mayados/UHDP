@@ -1,18 +1,7 @@
 //  Ce module servira pour tous les formulaires de modification (condoléance, post, commentaire, mot)
-
-/*
-    A prendre pour créer le module : les pages ayant une certaine classe pour dire ce qu'on cible
-    Les éléments : le formulaire de modification (qui devra envoyer les infos au serveur et se recharger)
-    La zone de commentaires, posts, condoléances ou mots, qui devront s'actualiser pour afficher la modification ainsi que remettre à 0 les actions js
-*/
-
-/* Le clic retourne une page en json car ca n'arrive pas à détecter l'évènment sur le bouton, du coup le js n'est pas pris en compte, 
-donc la requête ajax non plus, c'est le click direct qui est pris en compte */
-
-
 import Like from './Like.js'
 import Submit from './Submit.js'
-import Delete from './Delete.js'
+import {openDialogToDeleteElements} from './Delete.js'
 import Report from './Report.js'
 import { addEventListenerToModifyBtn } from "./ModifyButton.js";
 
@@ -109,10 +98,8 @@ export default class Modify {
                   //  CKEDITOR.instances['condoleance_texte'].updateElement()
                   // new Submit(document.querySelector('.js-refresh-page'))
 
-                  const deleteElements = [].slice.call(document.querySelectorAll('.delete'));
-                  if(deleteElements){
-                      new Delete(deleteElements);
-                  }
+
+                  openDialogToDeleteElements()
 
                   const reportElements = [].slice.call(document.querySelectorAll('.report-flag'));
                   if(reportElements){

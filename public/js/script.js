@@ -1,7 +1,7 @@
 
 import Filter from './modules/Filter.js'
 import Like from './modules/Like.js'
-import Delete from './modules/Delete.js'
+import {openDialogToDeleteElements} from './modules/Delete.js'
 import Favoris from './modules/Favoris.js'
 import Submit from './modules/Submit.js'
 import Modify from './modules/Modify.js'
@@ -35,11 +35,30 @@ document.addEventListener('DOMContentLoaded', () => {
         new Filter(document.querySelector('.js-filter'))    
     }
 
+    const likeElements = [].slice.call(document.querySelectorAll('.like-button'));
+    if(likeElements){
+        new Like(likeElements);
+    }
+
+    const favorisElements = [].slice.call(document.querySelectorAll('.favoris-button'));
+    if(favorisElements){
+        new Favoris(favorisElements);
+    }
+
+    const reportElements = [].slice.call(document.querySelectorAll('.report-flag'));
+    if(reportElements){
+        new Report(reportElements);
+    }
+    
+
+    openDialogToDeleteElements();
+    
 
     if(document.querySelector('.js-refresh-page')){
         new Submit(document.querySelector('.js-refresh-page'))    
     }
     
+    // suppression d'un élement (compte, histoire, mémorial, topic...)
     let preDeleteButton = document.getElementById('open-dialog');
     if(preDeleteButton){
         let dialog = document.getElementById('delete-dialog');
@@ -57,24 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         });        
     }
-
-    // let preDeleteButton = document.getElementById('delete-account');
-    // if(preDeleteButton){
-    //     let dialog = document.getElementById('delete-account-dialog');
-    //     let annuler = document.querySelector('#annuler')
-    //     // Le bouton "Mettre à jour les détails" ouvre le <dialogue> ; modulaire
-    //     preDeleteButton.addEventListener('click', function onOpen() {
-    //     if (typeof dialog.showModal === "function") {
-    //         dialog.showModal();
-    //         // Le close peut être détecté car dans le formulaire l'attribut method est définit sur "dialog"
-    //         preDeleteButton.addEventListener('close', function onClose(){
-    //         })
- 
-    //     } else {
-    //         console.error("L'API <dialog> n'est pas prise en charge par ce navigateur.");
-    //     }
-    //     });        
-    // }
+    
 
     var shareCircles = document.querySelectorAll('.share-content')
 
@@ -100,30 +102,9 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }
 
-    const deleteElements = [].slice.call(document.querySelectorAll('.delete'));
-    if(deleteElements){
-        new Delete(deleteElements);
-    }
-
-    const likeElements = [].slice.call(document.querySelectorAll('.like-button'));
-    if(likeElements){
-        new Like(likeElements);
-    }
-
-    const favorisElements = [].slice.call(document.querySelectorAll('.favoris-button'));
-    if(favorisElements){
-        new Favoris(favorisElements);
-    }
-
     const modifyFormsElements = [].slice.call(document.querySelectorAll('.js-modify-form'))
-    // console.log(modifyFormsElements)
     if(modifyFormsElements){
         new Modify(modifyFormsElements);
-    }
-
-    const reportElements = [].slice.call(document.querySelectorAll('.report-flag'));
-    if(reportElements){
-        new Report(reportElements);
     }
 
     const recherche = document.querySelector('.recherche');
@@ -226,7 +207,6 @@ document.addEventListener('DOMContentLoaded', () => {
         let mesAttentes = document.querySelector('#histoires-en-attente');        
         let mesPubliees = document.querySelector('#histoires-publiees');        
         let mesDesapprouvees = document.querySelector('#histoires_desapprouvees');        
-        // console.log('uhuh')
         mesBrouillonsLink.addEventListener('click',e =>{
             e.preventDefault();
             mesBrouillons.style.display='block';

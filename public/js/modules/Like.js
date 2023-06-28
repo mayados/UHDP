@@ -1,4 +1,4 @@
-import Delete from './Delete.js'
+import {openDialogToDeleteElements} from './Delete.js'
 
 export default class Like {
 
@@ -77,10 +77,12 @@ export default class Like {
                 }
 
 
-                const deleteElements = [].slice.call(document.querySelectorAll('.delete'));
-                if(deleteElements){
-                    new Delete(deleteElements);
-                }
+                // const deleteElements = [].slice.call(document.querySelectorAll('.delete'));
+                // if(deleteElements){
+                //     new Delete(deleteElements);
+                // }
+
+                openDialogToDeleteElements()
 
                 console.log(response)
                 // Reste à catch les exceptions
