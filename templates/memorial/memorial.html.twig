@@ -31,11 +31,11 @@
     <div class="corner-flag">
         <a href="{{ path('edit_memorial', {'id':memorial.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a> 
         <a id="open-dialog" href="#"><i class="fa-solid fa-trash"></i></a>
-        <dialog id="delete-dialog">
+        <dialog id="delete-dialog" class="dialog-delete-style">
             <p><i class="fa-solid fa-triangle-exclamation"></i> Cette action est irréversible, êtes-vous sûr de vouloir supprimer le mémorial ?</p>
-            <form method="dialog" id="dialog-form-delete">
+            <form method="dialog" id="dialog-form-delete" class="form-dialog-delete-style">
                 <button class="bouton-action" id="annuler">Non, la mémoire de {{ memorial.nom }} sera honorée !</button>
-                <a id="dialog-supprimer" href="{{ path('remove_memorial', {'id':memorial.id}) }}">Supprimer le mémorial</a>
+                <a id="dialog-supprimer" class="supprimer-dialog-style" href="{{ path('remove_memorial', {'id':memorial.id}) }}">Supprimer le mémorial</a>
             </form>
         </dialog>           
     </div>
