@@ -93,11 +93,14 @@ class MotCommemorationController extends AbstractController
             $mot = $mcr->find($mot->getId());        
             $mcr->remove($mot, $flush = true);
 
-            return new JsonResponse([
-                'content' => $this->renderView('_partials/_mots.html.twig', ['mots' => $mcr->findAllPaginated($request->query->getInt('page',1))]),
+            // return new JsonResponse([
+            //     'content' => $this->renderView('_partials/_mots.html.twig', ['mots' => $mcr->findAllPaginated($request->query->getInt('page',1))]),
 
-            ]);     
-            // return $this->redirectToRoute('app_mot_commemoration');     
+            // ]);   
+            
+            $this->addFlash('success', 'Le mot a été supprimé avec succès');
+
+            return $this->redirectToRoute('app_mot_commemoration');     
         }
 
        return $this->redirectToRoute('app_mot_commemoration');

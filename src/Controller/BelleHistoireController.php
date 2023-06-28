@@ -285,12 +285,12 @@ class BelleHistoireController extends AbstractController
     public function removeComment(CommentBelleHistoireRepository $cbhr, CommentBelleHistoire $comment = null, BelleHistoire $histoire = null, GenreHistoire $genre = null, BelleHistoireRepository $bhr, Request $request)
     {
 
-        if($comment && $histoire && ($this->getUser()===$histoire->getAuteur())){
-            if($genre){
-                $consultedInGenre = true;
-            }elseif(!$genre){
-                $consultedInGenre = false;            
-            }
+        if($comment && $histoire && ($this->getUser()===$comment->getAuteur())){
+            // if($genre){
+            //     $consultedInGenre = true;
+            // }elseif(!$genre){
+            //     $consultedInGenre = false;            
+            // }
             $comment = $cbhr->find($comment->getId());
 
             $cbhr->remove($comment, $flush = true);
@@ -300,26 +300,34 @@ class BelleHistoireController extends AbstractController
 
 
             if(!$genre){
-                // return $this->redirectToRoute(
-                //     'show_histoire',
-                //     ['slug' => $histoire->getSlug()]
-                // );         
-                return new JsonResponse([
-                    'content' => $this->renderView('_partials/_commentaires.html.twig', ['commentaires' => $cbhr->findCommentaires($histoire,$request->query->getInt('page',1)),'histoire' => $histoire, 'consultedInGenre' => $consultedInGenre]),
-        
-                ]);          
+
+                $this->addFlash('success', 'Le commentaire a été supprimé avec succès');
+
+                return $this->redirectToRoute(
+                    'show_histoire',
+                    ['slug' => $histoire->getSlug()]
+                );         
+                // return new JsonResponse([
+                //     // 'content' => $this->renderView('_partials/_commentaires.html.twig', ['histoire' => $histoire,'commentaires' => $cbhr->findCommentaires($histoire,$request->query->getInt('page',1)), 'consultedInGenre' => false]),
+                //     'content' => 'test',
+                //     // 'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $cbhr->findCommentaires($histoire,$request->query->getInt('page',1)) ]),
+                // ]);          
             }
             
 
-            return new JsonResponse([
-                'content' => $this->renderView('_partials/_commentaires.html.twig', ['commentaires' => $cbhr->findCommentaires($histoire,$request->query->getInt('page',1)), 'histoire' => $histoire, 'consultedInGenre' => $consultedInGenre]),
+            // return new JsonResponse([
+            //     // 'content' => $this->renderView('_partials/_commentaires.html.twig', ['commentaires' => $cbhr->findCommentaires($histoire,$request->query->getInt('page',1)), 'histoire' => $histoire, 'consultedInGenre' => true]),
+            //     // 'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $cbhr->findCommentaires($histoire,$request->query->getInt('page',1)) ]),
+            //     'content' => 'test',
+            // ]);     
 
-            ]);     
-            // return $this->redirectToRoute(
-            //     'show_histoire_genre',
-            //     ['slug' => $histoire->getSlug(),
-            //     'idGenre' => $genre->getId()]
-            // );                  
+            $this->addFlash('success', 'Le commentaire a été supprimé avec succès');
+
+            return $this->redirectToRoute(
+                'show_histoire_genre',
+                ['slug' => $histoire->getSlug(),
+                'idGenre' => $genre->getId()]
+            );                  
         }
 
         return $this->redirectToRoute('app_belles_histoires');

@@ -216,17 +216,17 @@ class ForumController extends AbstractController
             
             $topic = $tr->find($topic->getId());
 
-            return new JsonResponse([
-                'content' => $this->renderView('_partials/_posts.html.twig', ['posts' => $pr->findPaginatedPosts($request->query->getInt('page',1),$topic),'topic' => $topic]),
+            // return new JsonResponse([
+            //     'content' => $this->renderView('_partials/_posts.html.twig', ['posts' => $pr->findPaginatedPosts($request->query->getInt('page',1),$topic),'topic' => $topic]),
     
-            ]);       
+            // ]);       
 
-            // $this->addFlash('notice', 'Le commentaire a été supprimé');
+            $this->addFlash('notice', 'Le commentaire a été supprimé');
 
-            // return $this->redirectToRoute(
-            //     'show_topic',
-            //     ['slug' => $topic->getSlug()]
-            // );            
+            return $this->redirectToRoute(
+                'show_topic',
+                ['slug' => $topic->getSlug()]
+            );            
         }
 
         return $this->redirectToRoute('app_forum');

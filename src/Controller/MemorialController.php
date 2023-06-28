@@ -466,25 +466,28 @@ class MemorialController extends AbstractController
             // $this->addFlash('notice', "La condoléance a été supprimée");
 
             if(!$categorie){
-                // return $this->redirectToRoute(
-                //     'show_memorial',
-                //     ['id' => $memorial->getId()]
-                // );           
-                return new JsonResponse([
-                    'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, "condoleances" => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)), 'consultedInCategorie' => false]),
-                    'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)) ])
-                ]);        
+                return $this->redirectToRoute(
+                    'show_memorial',
+                    ['id' => $memorial->getId()]
+                );           
+                // return new JsonResponse([
+                //     'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, "condoleances" => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)), 'consultedInCategorie' => false]),
+                //     'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)) ])
+                // ]);        
             }
 
-            return new JsonResponse([
-                'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, "condoleances" => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)), 'consultedInCategorie' => true]),
-                'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)) ])
-            ]);   
-            // return $this->redirectToRoute(
-            //     'show_memorial_categorie',
-            //     ['id' => $memorial->getId(),
-            //     'idCategorie' => $categorie->getId()]
-            // );              
+            // return new JsonResponse([
+            //     'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, "condoleances" => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)), 'consultedInCategorie' => true]),
+            //     'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)) ])
+            // ]);   
+
+            $this->addFlash('success', 'La condoléance a été supprimée avec succès');
+
+            return $this->redirectToRoute(
+                'show_memorial_categorie',
+                ['id' => $memorial->getId(),
+                'idCategorie' => $categorie->getId()]
+            );              
         }
 
         return $this->redirectToRoute("app_memoriaux");
