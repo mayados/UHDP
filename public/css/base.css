@@ -108,7 +108,7 @@ h1{
     color: white;
 }
 
-.underlined_link{
+.visible_link{
     font-weight: bolder;
 }
 
@@ -460,6 +460,11 @@ nav{
 
 
                                     /********  SHARE  **********/
+
+.share-content,
+.share-content i{
+    cursor: pointer;
+}
 
 .share-content-inner{
     display: none;
@@ -931,6 +936,7 @@ nav{
 
 .categorie-link:hover{
     border-bottom: 3px solid #E6CAB6;
+    font-weight: bolder;
 }
 
 /* SECTION INTERRACTION */
@@ -1441,11 +1447,6 @@ nav{
                             /* BELLE HISTOIRE PAGE */
 #banniere-belle-histoire{
     background-image: url("../img/banniere_blue.png");
-}
-
-#banniere-belle-histoire h1{
-    color: white;
-    text-shadow: 1px 2px black;
 }
 
 #histoire{
@@ -2521,6 +2522,10 @@ nav{
     .toggle .line3 {
         background-color: #000000;
         transform: scale(0.9) rotateZ(45deg) translate(-6px, -4px);
+    }
+
+    .toggle-menu:hover{
+        cursor: pointer;
     }
     
     .nav-bar{
