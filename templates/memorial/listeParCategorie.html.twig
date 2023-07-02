@@ -4,14 +4,12 @@
 
 {% block body %}
 
-{# Vérifier le nom de catégorie, et, selon cela, applqiuer un fond / benniere différents #}
-
 <div class="container-page js-filter page-memoriaux">
     <section class="banniere-memoriaux banniere">
         <h1>Les mémoriaux des {{ categorie.nom }}</h1>
     </section>
     {# Fil d'ariane #}
-    <p class="fil-ariane"><a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_memoriaux') }}">Mémoriaux</a> &lt; <a href="{{path('app_categorie', {'id' : categorie.id}) }}">{{ categorie.nom }}</a></p>
+    <p class="fil-ariane"><a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_memoriaux') }}">Mémoriaux</a> &lt; {{ categorie.nom }}</p>
     <section class="interraction">
         {% if app.user and app.user.isVerified %}
             <a class="link-recherche bouton-action" href="{{ path('add_memorial') }}">Créer un mémorial</a>

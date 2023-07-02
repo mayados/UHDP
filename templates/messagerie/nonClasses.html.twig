@@ -17,10 +17,8 @@
         <h2>Invitations par message</h2>
         {% for contact in nonClasses %}
         <div>
-            {# {{dump(contact)}}<br> #}
             <a href="{{ path('app_conversation', {id:contact.id}) }}">{{ contact.pseudo }}</a>
         </div>
-        {# Vérifier if destinataire not in app.user.messagesRecus expediteur id #}
         {% endfor %}        
     </section>
 </div>

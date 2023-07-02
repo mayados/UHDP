@@ -8,7 +8,7 @@
     <section id="banniere-topic" class="banniere">
         <h1>{{ topic.titre }}</h1>        
     </section>
-    <p class="fil-ariane"> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_forum') }}"> Forum </a> &lt; <a href="{{path('show_histoire', {'slug' : topic.slug}) }}">{{ topic.titre }}</a></p>
+    <p class="fil-ariane"> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_forum') }}"> Forum </a> &lt; {{ topic.titre }}</p>
     <section id="topic">
         {% if app.user == topic.auteur %}
             <a id="open-dialog" href="#"><i class="fa-solid fa-trash"></i></a>

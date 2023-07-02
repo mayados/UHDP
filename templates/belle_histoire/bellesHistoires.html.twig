@@ -30,14 +30,7 @@
                 <article class="belle-histoire-card">
                     <div class="hr-media">
                         <figure>
-                            {# {% if histoire.photo != null %} #}
                                 <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="{{ histoire.titre }}, {{ histoire.genre }}"> 
-                            {# {% else %}            
-                                <img src="{{ asset('img/book_dog.jpg') }}" alt="photo de l'histoire">                                
-                            {% endif %} #}
-                            {# {% else %} 
-                            <img src="{{histoire.photo}}" alt="photo de l'histoire"> 
-                            {% endif %} #}
                         </figure>
                     </div>
                     <div class="hr-content">

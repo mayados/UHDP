@@ -1,9 +1,6 @@
-{#  mettre le form en partial pour pouvoir le renvoyer en ajax lors du clic sur le bouton #}
 <form method="POST" action="{{path('edit_condoleance',{'id':condoleance.id, 'idMemorial':memorial.id})}}">
     <div class="form-element">
             <textarea name="texte_edit" class="form-control">{{ condoleance.texte| striptags| raw}}</textarea>  
             <button type="submit" name="submit" value="submit" class="green">Modifier</button>         
     </div>
 </form>           
-{# {{ form_start(formEditCondoleance, {'action': path('display_modify_form_condoleance',{'id':condoleance.id, 'idMemorial':memorial.id})}) }}
-{{ form_end(formEditCondoleance) }} #}

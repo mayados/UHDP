@@ -2,17 +2,6 @@
 
 {% block title %}Une histoire de pattes - cimetière virtuel pour animaux{% endblock %}
 
-
-{# {% block javascripts %} #}
-{# Ajouter defer pour éviter que le script ne s'éxecute avant le chargement du document #}
-{# <script src="{{ asset('js/script.js')}}" defer type="module"></script> #}
- {# <script src="{{ asset('js/home.js')}}" defer></script> #}
-{# {% endblock %} #}
-{# {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/base.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
-{% endblock %} #}
-
 {% block body %}
 
 <div class="container-page">
@@ -22,13 +11,6 @@
         </div>
     {% endif %}   
     <section id="bienvenue">
-    {# {% if app.user and app.user.roles.0 == "ROLE_USER" %}
-        <h1>Contents de vous revoir {{ app.user.pseudo }} !</h1>
-    {% elseif app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-         <h1>Bon retour à notre cher(e) admin {{ app.user.pseudo }} ! </h1>
-    {% elseif not app.user %} 
-        <h1>Bienvenue sur Une histoire de pattes !</h1>     
-    {% endif %} #}
         <div id="carousel">
             <div class="carousel-elements">
                 <div class="element">
@@ -67,9 +49,9 @@
         <div class="texte">
             <p>
                 Bienvenue sur une histoire de pattes, votre <strong>cimetière virtuel pour animaux</strong>. Vous souhaitez <strong>faire le deuil de votre animal de compagnie</strong> et lui rendre un dernier hommage ? Ou vous souhaitez <strong>aider les personnes à faire leur deuil</strong> ? Vous êtes au bon endroit.<br>
-                Une histoire de Pattes n'est pas uniquement un cimetière virtuel, c'est aussi accompagnement face au deuil et un espace à l'aspect social où vous pourrez échanger avec les diverses personnes inscrites via messagerie privée et via le <a class="underlined_link" href="{{ path('app_forum') }}">forum</a>. Vous pouvez également lire et écrire des <a class="underlined_link" href="{{ path('app_belles_histoires') }}">histoires</a> en rapport avec les animaux. </br>
-                Envie de sortir ce qu'il y a au fond de votre coeur sans exposer votrer identité ? C'est possible avec le <a class="underlined_link" href="{{ path('app_mot_commemoration') }}">mur de commémoration</a>.
-                Ou peut-être voudriez-vous vous trouver un nouveau compagnon ? Alors n'hésitez pas, <a class="underlined_link" href="{{ path('app_refuge') }}">adoptez</a> !
+                Une histoire de Pattes n'est pas uniquement un cimetière virtuel, c'est aussi accompagnement face au deuil et un espace à l'aspect social où vous pourrez échanger avec les diverses personnes inscrites via messagerie privée et via le <a class="visible_link" href="{{ path('app_forum') }}">forum</a>. Vous pouvez également lire et écrire des <a class="visible_link" href="{{ path('app_belles_histoires') }}">histoires</a> en rapport avec les animaux. </br>
+                Envie de sortir ce qu'il y a au fond de votre coeur sans exposer votrer identité ? C'est possible avec le <a class="visible_link" href="{{ path('app_mot_commemoration') }}">mur de commémoration</a>.
+                Ou peut-être voudriez-vous vous trouver un nouveau compagnon ? Alors n'hésitez pas, <a class="visible_link" href="{{ path('app_refuge') }}">adoptez</a> !
             </p>            
         </div>
     </section>   
@@ -97,7 +79,7 @@
         <div class="texte">
             <p>Les mémoriaux permettent à votre animal d'avoir un espace à lui, afin qu'il ne soit pas oublié et pour faire connaître son petit bout de vie à d'autres personnes. Le mémorial permet également de raconter votre histoire, en tant qu'amis, pour rendre hommage à cette relation spéciale.
             Vous pouvez d'ailleurs en créer plusieurs.<br>
-            Prêt à <a class="underlined_link" href="{{path('add_memorial') }}">créer un mémorial</a> ?
+            Prêt à <a class="visible_link" href="{{path('add_memorial') }}">créer un mémorial</a> ?
             </p>            
         </div>
     </section>   
@@ -146,7 +128,7 @@
         <div class="texte">
             <p>
             Les belles histoires sont des histoires dont le héros est un animal, peu importe son espèce. Qu'il s'agisse d'une histoire vraie, d'une fiction ou d'un hommage pour votre animal ou un animal que vous avez connu, n'hésitez pas à écrire.<br>
-            Prêt à <a class="underlined_link" href="{{path('add_histoire') }}">raconter une belle histoire</a> ?
+            Prêt à <a class="visible_link" href="{{path('add_histoire') }}">raconter une belle histoire</a> ?
             </p>            
         </div>
     </section>   

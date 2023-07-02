@@ -13,7 +13,7 @@
     {% if consultedInCategorie == true %}
         <p> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_memoriaux') }}">Mémoriaux</a> &lt; <a href="{{path('app_categorie', {'id' : memorial.categorieAnimal.id}) }}">{{ memorial.categorieAnimal }}</a> &lt; {{ memorial.nom }}</p>
     {% else %}
-        <p> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_memoriaux') }}">Mémoriaux</a> &lt; <a href="{{path('app_categorie', {'id' : memorial.categorieAnimal.id}) }}">{{ memorial.nom }}</a></p>
+        <p> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('app_memoriaux') }}">Mémoriaux</a> &lt; {{ memorial.nom }}</p>
     {% endif %}
     {% if app.user != memorial.auteur %}
         {% if (app.user) and (app.user.reportedMemorials |length > 0) %}
@@ -115,12 +115,6 @@
                 {{ memorial.histoire|raw }}                   
             </p>
         </div>
-
-        {# {% if memorial.auteur != null %}
-            {% if app.user == memorial.auteur or app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-                <a href="{{path('remove_memorial', {'id': memorial.id}) }}">Supprimer le mémorial</a>
-            {% endif %}
-        {% endif %} #}
     </section>
 
 

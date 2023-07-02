@@ -1,29 +1,6 @@
 <div class="js-auto-refresh-content delete-report">
 {% if commentaires|length > 0 %}
     {% for commentaire in commentaires %}
-    {# <article class="commentaire">
-        <div class="commentaire-photo">
-            <figure>
-                <img src="{{ asset('img/angel_dog.jpg') }}" alt="photo de l'histoire">    
-            </figure>
-        </div>
-        <div class="commentaire-content">
-            <div class="comment-infos">
-                {% if commentaire.auteur != null %}
-                    <p>{{ commentaire.auteur }}</p></p>
-                {% else %}
-                    <p>(Utilisateur supprimé)</p>
-                {% endif %}     
-                <p>{{ commentaire.dateCreation | date('d-m-Y') }}</p>              
-            </div>
-            <p>{{ commentaire.texte|raw }}  
-        </div>
-            {% if app.user and app.user.roles.0 == "ROLE_ADMIN" %}
-                <a href="{{ path('remove_comment', {'slug': histoire.slug, 'id': commentaire.id}) }}">Delete</a>
-            {% endif %}
-        </footer>
-        {% include "_partials/_likeComment.html.twig" %}
-    </article> #}
     <article class="commentaire">
         <div class="commentaire-header">
             <div class="commentaire-header-left">
