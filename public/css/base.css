@@ -201,7 +201,7 @@ a:focus-visible{
     height: 5vh;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     position: fixed;
-    z-index: 999;
+    z-index: 998;
     top: 0;
     left: 0;
 }
@@ -1812,7 +1812,7 @@ nav{
 }
 
 #container-img-initiateurs figure{
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
     height: 300px;
     width: 300px;
     padding: 1rem;
