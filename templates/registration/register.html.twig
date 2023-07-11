@@ -39,10 +39,10 @@
                     {{ form_row(registrationForm.agreeTerms) }}                
                 </div>
                 <div class="form-element">
-                    <button type="submit" class="btn">S'inscrire</button>                
+                    <button type="submit" class="btn bouton-action">S'inscrire</button>                
                 </div>
             {{ form_end(registrationForm) }}   
-            <p>Déjà inscrit ? <a href="#">Connectez-vous</a></p>     
+            <p>Déjà inscrit ? <a href="{{ path('app_login') }}">Connectez-vous</a></p>     
         </div>     
     </div>
 {% endblock %}
