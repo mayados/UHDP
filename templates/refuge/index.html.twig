@@ -41,13 +41,15 @@
     .then( (response) => response.json())
         // On donne un nom de variable pour récupérer les données
     .then( (data)=> {
+        console.log("liste")
+        console.log(data)
        var datas = data["hydra:member"];
         let refuges = [];
         for(let i = 0; i < datas.length; i++){
             var refuge = datas[i]
             refuges.push(refuge)
         }
-        console.log(refuges)
+        //console.log(refuges)
 
         var markers = L.markerClusterGroup();
         var bounds = L.latLngBounds()
