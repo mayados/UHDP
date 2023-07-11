@@ -2,13 +2,21 @@
 
 namespace App\Entity;
 
-use App\Repository\RefugeRepository;
+use ApiPlatform\Metadata\Get;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\RefugeRepository;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 
 
 #[ORM\Entity(repositoryClass: RefugeRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    operations:[
+        new Get(normalizationContext:[ 'groups'=>'refuge:item' ]),
+        new GetCollection()
+    ],
+)
+]
 class Refuge
 {
     #[ORM\Id]
