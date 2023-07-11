@@ -15,7 +15,7 @@
             <div class="carousel-elements">
                 <div class="element">
                     <figure>
-                        <img src="{{ asset('img/dog-bg.png') }}" alt="">                    
+                        <img src="{{ asset('img/dog-bg.png') }}" alt="représentation d'un chien">                    
                     </figure>
                     <div class="over-carousel">
                         <h1>Une histoire de pattes</h1>
@@ -24,7 +24,7 @@
                 </div>
                 <div class="element">
                     <figure>
-                        <img src="{{ asset('img/cat_bg.png') }}" alt="">
+                        <img src="{{ asset('img/cat_bg.png') }}" alt="représentation d'un chat">
                     </figure>
                     <div class="over-carousel">
                         <h1>Une histoire de pattes</h1>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="element">
                     <figure>
-                        <img src="{{ asset('img/rabbit_bg.png') }}" alt="">
+                        <img src="{{ asset('img/rabbit_bg.png') }}" alt="représentation d'un lapin">
                     </figure>
                     <div class="over-carousel">
                         <h1>Une histoire de pattes</h1>
@@ -89,12 +89,8 @@
                 {% for histoire in dernieresHistoires %}
                     <article class="histoire-recente">
                         <div class="hr-media">
-                            <figure>
-                            {% if histoire.photo != null %}                                
-                                <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">    
-                            {% else %}            
-                                <img src="{{ asset('img/book_dog.jpg') }}" alt="photo de l'histoire">                                
-                            {% endif %}
+                            <figure>                        
+                                <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de présentation de l'histoire">    
                         </figure>
                         </div>
                         <div class="hr-content">
