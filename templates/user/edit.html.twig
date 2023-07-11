@@ -10,12 +10,11 @@
             {{ message }}
         </div>
     {% endfor %}
-
-    <p> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('my_profile') }}">Mon profil</a> &lt; Paramètres</p>
  
     <h1>Paramètres</h1>
 
     <section class="form-page edit-page">
+        <p> <a href="{{ path('app_home') }}">Accueil</a> &lt; <a href="{{ path('my_profile') }}">Mon profil</a> &lt; Paramètres</p>
         <div class="formulaire" id="form-infos-profil">
             <h2>Modifier les informations du profil</h2>
 
@@ -68,9 +67,9 @@
         </div>
 
         <a id="open-dialog" class="delete-account" href="#">Supprimer le compte</a>  
-        <dialog id="delete-dialog">
+        <dialog id="delete-dialog" class="dialog-delete-style">
             <p><i class="fa-solid fa-triangle-exclamation"></i> Cette action est irréversible, êtes-vous sûr de vouloir mettre fin à notre histoire ?</p>
-            <form method="dialog" id="dialog-form-delete">
+            <form method="dialog" id="dialog-form-delete" class="form-dialog-delete-style">
                 <button class="bouton-action" id="annuler">Non, je reste !</button>
                 <a id="supprimer-compte" href="{{ path('suppr_account_user') }}">Supprimer le compte</a>
             </form>
