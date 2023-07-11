@@ -10,15 +10,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route('/home', name: 'app_home')]
+    #[Route('/', name: 'app_home')]
     public function index(AnimalMemorialRepository $amr, BelleHistoireRepository $bhr): Response
     {
         $derniersMemoriaux = $amr->findBy([],['dateCreation' => 'DESC'],4);
         $dernieresHistoires = $bhr->findLastHistoires();
+        $description = "Une histoire de pattes, votre cimetière virtuel pour animaux et espace d'entraide face au deuil";
 
         return $this->render('home/index.html.twig', [
             'derniersMemoriaux' => $derniersMemoriaux,
             'dernieresHistoires' => $dernieresHistoires,
+            'description' => $description,
         ]);
     }
 
