@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -37,7 +38,7 @@ class ChangePasswordFormType extends AbstractType
                         ]),
                         new Assert\Regex(pattern:"/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,}$/", message:"Le mot de passe doit inclure au moins une majusule, une minscule, un chiffre et un caractère spécial."),
                     ],
-                    'label' => 'Nouveau mot de passe',
+                    'label' => 'Nouveau mot de passe (Au moins 12 caractères dont une majusule, une minscule, un chiffre et un caractère spécial)',
                 ],
                 'second_options' => [
                     'label' => 'Répéter le mot de passe',
