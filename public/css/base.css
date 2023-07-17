@@ -867,7 +867,7 @@ nav{
 }
 
 .histoire-recente .hr-auteur{
-    flex: 1;
+    padding-top: 1rem;
 }
 
 .histoire-recente .share-content{
@@ -1428,7 +1428,7 @@ nav{
 }
 
 .belle-histoire-card .hr-auteur{
-    flex: 1;
+    padding-top: 1rem;
 }
 
 .belle-histoire-card .share-content{
@@ -2724,6 +2724,11 @@ nav{
         font-size: 1.3rem;
     }
 
+    .histoire-recente .hr-infos{
+        justify-content: space-between;
+        gap: 0;
+    }
+
     /* PAGE LISTE MEMORIAUX */
     .form-container-flex-check #checks-container,
     .form-container-flex-check #selects-container{
@@ -2909,9 +2914,6 @@ nav{
         margin: 0 1rem 0 1rem;
     } 
 
-    /* .topic-posts{
-        margin: 0 auto;
-    } */
 
     /* PAGE TOPIC */
     #posts,
