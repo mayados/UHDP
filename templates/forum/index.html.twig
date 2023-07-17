@@ -38,7 +38,7 @@
                     <div class="topic">
                         <div class="topic-infos">
                             <figure>
-                                <img src="{{ asset('uploads/imgUserProfil/'~ topic.auteur.photo) }}" alt="">
+                                <img src="{{ asset('uploads/imgUserProfil/'~ topic.auteur.photo) }}" alt="profil de {{topic.auteur.pseudo}}">
                             </figure>
                             <div class="title-infos">
                                 <a class="topic-title" href="{{path('show_topic', {'slug': topic.slug}) }}">{{ topic.titre }}</a>

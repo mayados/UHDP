@@ -5,14 +5,13 @@
         <div class="commentaire-header">
             <div class="commentaire-header-left">
                 <figure>
-                    <img src="{{ asset('img/angel_dog.jpg') }}" alt="photo de l'histoire">    
+                    <img src="{{ asset('uploads/imgUserProfil/'~ commentaire.auteur.photo) }}" alt="image de profil de {{ commentaire.auteur }}">    
                 </figure>
                 <div class="comment-infos">
-                    {# {{ dump(commentaire.id) }} #}
                     {% if commentaire.auteur != null %}
                         <a href="{{ path('show_profile', {'id': commentaire.auteur.id}) }}">{{ commentaire.auteur }}</a>
                     {% else %}
-                        <p>Utilisateur supprimé</p>
+                        <p>Anonyme</p>
                     {% endif %}     
                     <p>{{ commentaire.dateCreation | date('d-m-Y') }}</p>              
                 </div>                 
@@ -21,7 +20,6 @@
                 {% include "_partials/_likeComment.html.twig" %}   
                 {% if app.user == commentaire.auteur %}
                     {% if consultedInGenre == true %}
-                        {# <a class="delete" href="{{ path('remove_comment_genre', {'slug': histoire.slug, 'id': commentaire.id, 'idGenre': histoire.genre.id}) }}"><i class="fa-solid fa-trash"></i></a> #}
                         <a id="{{ commentaire.id }}" class="open-dialog" href="#"><i class="fa-solid fa-trash"></i></a>  
                         <dialog id="dialog{{ commentaire.id }}" class="dialog-delete-style">
                             <p><i class="fa-solid fa-triangle-exclamation"></i> Cette action est irréversible, êtes-vous sûr de vouloir supprimer ce commentaire ?</p>
@@ -31,7 +29,6 @@
                             </form>
                         </dialog> 
                     {% else %}
-                        {# <a class="delete" href="{{ path('remove_comment', {'slug': histoire.slug, 'id': commentaire.id}) }}"><i class="fa-solid fa-trash"></i></a> #}
                         <a id="{{ commentaire.id }}" class="open-dialog" href="#"><i class="fa-solid fa-trash"></i></a>  
                         <dialog id="dialog{{ commentaire.id }}" class="dialog-delete-style">
                             <p><i class="fa-solid fa-triangle-exclamation"></i> Cette action est irréversible, êtes-vous sûr de vouloir supprimer ce commentaire ?</p>
@@ -41,7 +38,6 @@
                             </form>
                         </dialog> 
                     {% endif %}
-                    {# <button id="{{ commentaire.id }}" class="modify-button" type="submit"> Modifier </button> #}
                     <a id="{{ commentaire.id }}" class="modify-button" type="submit"><i class="fa-solid fa-file-pen"></i></a>
                 {% else %}
                     {% if commentaire.reports |length > 0 %}

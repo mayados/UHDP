@@ -7,11 +7,7 @@
     <a id="conv-return" href="{{ path('app_messagerie') }}"><i class="fa-solid fa-arrow-left"></i></a>
     <div id="correspondant-infos">
         <figure>
-            {% if user.photo == null %}
-                <img src="{{ asset('img/bouquet_fleurs.jpg') }}" alt="">
-            {% else %}
-                <img src="{{ asset('uploads/imgUserProfil/'~ user.photo) }}" alt="">   
-            {% endif %} 
+                <img src="{{ asset('uploads/imgUserProfil/'~ user.photo) }}" alt="image de profil de {{ user.pseudo }}">   
         </figure>
         <h1><a href="{{ path('show_profile', {'id': user.id}) }}">{{ user.pseudo }}</a></h1>        
     </div>
