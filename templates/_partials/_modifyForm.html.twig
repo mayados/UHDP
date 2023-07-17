@@ -1,6 +1,0 @@
-<form method="POST" action="{{path('edit_condoleance',{'id':condoleance.id, 'idMemorial':memorial.id})}}">
-    <div class="form-element">
-            <textarea name="texte_edit" class="form-control">{{ condoleance.texte| striptags| raw}}</textarea>  
-            <button type="submit" name="submit" value="submit" class="green">Modifier</button>         
-    </div>
-</form>           
