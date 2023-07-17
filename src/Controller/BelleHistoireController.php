@@ -168,7 +168,7 @@ class BelleHistoireController extends AbstractController
     {
 
         if($histoire && ($this->getUser()===$histoire->getAuteur())){
-                $histoire->setEtat('STATE_WAITING');
+                $histoire->setEtat($histoire::STATES[1]);
                 $entityManager = $doctrine->getManager();
                 $entityManager->persist($histoire);
                 $entityManager->flush();      
@@ -286,17 +286,11 @@ class BelleHistoireController extends AbstractController
     {
 
         if($comment && $histoire && ($this->getUser()===$comment->getAuteur())){
-            // if($genre){
-            //     $consultedInGenre = true;
-            // }elseif(!$genre){
-            //     $consultedInGenre = false;            
-            // }
+
             $comment = $cbhr->find($comment->getId());
 
             $cbhr->remove($comment, $flush = true);
             $histoire = $bhr->find($histoire->getId());
-
-            // $this->addFlash('notice', "Le commentaire a été supprimé");
 
 
             if(!$genre){
@@ -307,19 +301,9 @@ class BelleHistoireController extends AbstractController
                     'show_histoire',
                     ['slug' => $histoire->getSlug()]
                 );         
-                // return new JsonResponse([
-                //     // 'content' => $this->renderView('_partials/_commentaires.html.twig', ['histoire' => $histoire,'commentaires' => $cbhr->findCommentaires($histoire,$request->query->getInt('page',1)), 'consultedInGenre' => false]),
-                //     'content' => 'test',
-                //     // 'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $cbhr->findCommentaires($histoire,$request->query->getInt('page',1)) ]),
-                // ]);          
+ 
             }
             
-
-            // return new JsonResponse([
-            //     // 'content' => $this->renderView('_partials/_commentaires.html.twig', ['commentaires' => $cbhr->findCommentaires($histoire,$request->query->getInt('page',1)), 'histoire' => $histoire, 'consultedInGenre' => true]),
-            //     // 'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $cbhr->findCommentaires($histoire,$request->query->getInt('page',1)) ]),
-            //     'content' => 'test',
-            // ]);     
 
             $this->addFlash('success', 'Le commentaire a été supprimé avec succès');
 
@@ -371,13 +355,6 @@ class BelleHistoireController extends AbstractController
                     ]);
                 }
 
-                // $this->addFlash("success","Le commentaire a bien été modifié");
-
-                
-                // return $this->redirectToRoute(
-                //     'show_histoire',
-                //     ['slug' => $histoire->getSlug()]
-                // );  
             }
             else{
                 // if($request->isXmlHttpRequest()){
