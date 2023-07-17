@@ -9,7 +9,6 @@ export default class Like {
         this.likeElements = likeElements;
         this.content = document.querySelector('.js-refresh-like');
         var contenu = this.content
-        console.log(contenu)
 
           if(likeElements){
             this.init()
@@ -34,13 +33,9 @@ export default class Like {
         console.log(url)
         fetch(url.pathname + "?", {
             headers: {
-              // 'Sec-Fetch-Site': 'same-origin',
-            // 'Access-Control-Allow-Origin': '*',
             'X-Requested-With': 'XMLHttpRequest'
             },
-            // dataType: "json",
-            // mode: 'cors',
-            // method: 'GET'
+
         })
             .then(response => response.json())
             .then(response => {
@@ -53,7 +48,6 @@ export default class Like {
                 console.log("je n'aime plus")
                  icone.classList.replace('likedPaw','unlikedPaw')
               }
-                // console.log(this)
                 const nb = response.nbLike;
                 console.log(url)
 
@@ -76,11 +70,6 @@ export default class Like {
 
                 }
 
-
-                // const deleteElements = [].slice.call(document.querySelectorAll('.delete'));
-                // if(deleteElements){
-                //     new Delete(deleteElements);
-                // }
 
                 openDialogToDeleteElements()
 

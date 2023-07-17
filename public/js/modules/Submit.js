@@ -23,10 +23,7 @@ export default class Submit {
     this.form = element.querySelector('.js-submit-form')
     this.erreurs = element.querySelector('.custom-errors')
     this.pagination = element.querySelector('.pagination')
-    // console.log(this.form)
 
-    // this.h2 = element.querySelector('.js-refresh-like')
-    // console.log(this.likes)
     this.bindEvents()
   }
 
@@ -73,14 +70,11 @@ export default class Submit {
           instance.updateElement();
           instance.setData('')
         }
-          // instance.updateElement();
-          // instance.setData('')
+
 
       }
  
 
-      // instance.updateElement();
-      // CKEDITOR.replace('condoleance_texte')
       const data = new FormData(this.form)
       data.append(instanceName, textareaValue)
 
@@ -89,7 +83,7 @@ export default class Submit {
       const params = new URLSearchParams()
 
       data.forEach((value, key) => {
-        console.log(key, value)
+        // console.log(key, value)
         params.append(key, value)
       })
 
@@ -99,20 +93,17 @@ export default class Submit {
           'X-Requested-With': 'XMLHttpRequest',
 
         },
-        // data : data,
         body: data,
         method: 'POST',
       })
-        // .then(response => response.json())
         // Lorsque la promesse provenant de .json aboutit, on récupère ce qui a été traité par le JSON
         .then(async (response) => {
-          //  console.log(response)
+ 
           const data = await response.json();
 
           this.content.innerHTML = data.content
 
           this.pagination.innerHTML = data.pagination
-          console.log(data.pagination)
 
           // On ajoute à nouveau un eventListener aux boutons, puisque l'appel en ajax permet juste de retrouver les éléments avec leur structure naturelle (et non avec les actions etc)
           addEventListenerToModifyBtn();
@@ -123,7 +114,7 @@ export default class Submit {
           }
 
           const modifyFormsElements = [].slice.call(document.querySelectorAll('.js-modify-form'))
-          // console.log(modifyFormsElements)
+ 
           if(modifyFormsElements){
               new Modify(modifyFormsElements);
           }
