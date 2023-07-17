@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use DateTimeZone;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -128,15 +129,20 @@ class MessagerieController extends AbstractController
                 }
 
                 $message = new Message();
+                $date = date_timezone_set(new \DateTime(),new DateTimeZone('Europe/Paris'));
                 $form = $this->createForm(MessageType::class, $message);
                 $form->handleRequest($request);
 
                 if(!$me->isBlockedByUser($user) && (!$user->isBlockedByUser($me))){
                     if ($form->isSubmitted() && $form->isValid()) {
+                        // $date = date_timezone_set(new \DateTime(),new DateTimeZone('Europe/Paris'));
+                        // dd($message);
                         $message = $form->getData();
                         $message->setExpediteur($this->getUser());
                         $message->setDestinataire($user);
                         $message->setIsRead(false);
+                        $message->setDateCreation($date);
+                        // $message->setDateCreation($date);
                         $entityManager = $doctrine->getManager();
                         $entityManager->persist($message);
                         $entityManager->flush();
@@ -197,16 +203,13 @@ class MessagerieController extends AbstractController
             $current->removeMessagesEnvoye($message, $flush = true);
             $entityManager->flush();
 
-            // $this->addFlash('notice', 'Le message a été supprimé');
+            $this->addFlash('notice', 'Le message a été supprimé');
 
-            // return $this->redirectToRoute(
-            //     'app_conversation',
-            //     ['id' => $user->getId()]
-            // );        
-            return new JsonResponse([
-                'content' => $this->renderView('_partials/_messages.html.twig', ['messages' => $messages = $mr->findMessagesByConversation($me,$user)]),
-
-            ]);    
+            return $this->redirectToRoute(
+                'app_conversation',
+                ['id' => $user->getId()]
+            );        
+   
         }
 
         return $this->redirectToRoute('app_messagerie');
