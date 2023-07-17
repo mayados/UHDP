@@ -66,34 +66,8 @@
             "mandatory": true, /* Show a message about mandatory cookies */
             "mandatoryCta": true /* Show the disabled accept button when mandatory on */
             });
-/*
-           (tarteaucitron.job = tarteaucitron.job || []).push('serviceperso');
-           let getting = document.cookies.get(
-            details 
-          )      
-console.log(getting); */
 
-function getCookie(name) {
-    var cookies = document.cookie.split(';');
 
-    for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i].trim();
-        if (cookie.startsWith(name + '=')) {
-            return cookie.substring(name.length + 1);
-        }
-    }
-
-    return null;
-}
-
-// Utilisation de la fonction pour récupérer la valeur du cookie "REMEMBERME"
-var rememberMeToken = getCookie('REMEMBERME');
-if (rememberMeToken !== null) {
-    // Faire quelque chose avec la valeur du cookie "REMEMBERME"
-    console.log(rememberMeToken);
-}else{
-    console.log('pas de cookie')
-}
             </script>
         {# Ajouter defer pour éviter que le script ne s'éxecute avant le chargement du document #}
             <script src="{{ asset('js/script.js')}}" type='module' defer></script>
@@ -248,27 +222,9 @@ if (rememberMeToken !== null) {
                                     <li><a href="{{ path('app_mot_commemoration') }}">Commémoration</a></li>
                                     <li><a href="{{ path('app_forum') }}">Forum</a></li>
                                     <li><a href="{{ path('app_refuge') }}">Adoptez</a></li>
-                                    {# <li><a href="#">Contact us</a></li>
-                                    <li><a href="#">Latest News</a></li> #}
                                 </ul>
                             </div>
                         </div>
-                        {# <div class="col-xl-4 col-lg-4 col-md-6 mb-50">
-                            <div class="footer-widget">
-                                <div class="footer-widget-heading">
-                                    <h3>Subscribe</h3>
-                                </div>
-                                <div class="footer-text mb-25">
-                                    <p>Don’t miss to subscribe to our new feeds, kindly fill the form below.</p>
-                                </div>
-                                <div class="subscribe-form">
-                                    <form action="#">
-                                        <input type="text" placeholder="Email Address">
-                                        <button><i class="fab fa-telegram-plane"></i></button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div> #}
                     </div>
                 </div>
             </div>
@@ -284,10 +240,10 @@ if (rememberMeToken !== null) {
                             <div class="footer-menu">
                                 <ul>
                                     <li><a href="{{ path('app_home') }}">Accueil</a></li>
-                                    <li><a href="#">Mentions légales</a></li>
-                                    <li><a href="#">CGU</a></li>
+                                    <li><a href="{{ path('app_mentions_legales') }}">Mentions légales</a></li>
+                                    <li><a href="{{ path('app_cgu') }}">CGU</a></li>
                                     <li><a href="{{ path('app_contact') }}">Contact</a></li>
-                                    <li><a href="#">Politique de confidentialité</a></li>
+                                    <li><a href="{{ path('app_politique_confidentialite') }}">Politique de confidentialité</a></li>
                                 </ul>
                             </div>
                         </div>
