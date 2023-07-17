@@ -62,7 +62,6 @@ class UserController extends AbstractController
         $user = $this->getUser();
 
         $memoriaux = $amr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);               
-        // $histoires = $bhr->findBy(['auteur' => $user],['dateCreation' => 'DESC']);
         $histoiresWaiting = $bhr->findMyWaitings($user);               
         $histoiresDraft = $bhr->findMyDrafts($user);               
         $histoiresApprouved = $bhr->findMyApprouved($user);               
@@ -72,7 +71,6 @@ class UserController extends AbstractController
         return $this->render('user/monProfil.html.twig', [
             'user' => $user,
             'memoriaux' => $memoriaux,
-            // 'histoires' => $histoires,
             'histoiresWaiting' => $histoiresWaiting,
             'histoiresDraft' => $histoiresDraft,
             'histoiresApprouved' => $histoiresApprouved,
@@ -199,7 +197,6 @@ class UserController extends AbstractController
             $uploaderService->delete($photo, $folder);            
         }
 
-        // dd($user);
         // Il faut invalider la session et mettre le token à 0, comme ça Symfony ne cherche pas à rediriger l'utilisateur supprimé avec un id
         $request->getSession()->invalidate();
         $this->container->get('security.token_storage')->setToken(null);

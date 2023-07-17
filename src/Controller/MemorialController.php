@@ -52,12 +52,11 @@ class MemorialController extends AbstractController
         //  ON range les infos dans l'objet searchData
         $form = $this->createForm(SearchType::class, $searchData);
 
-        $form->handleRequest($request);
-            // dd($searchData);        
+        $form->handleRequest($request);       
         if($form->isSubmitted() && $form->isValid()){
 
             $page = $request->query->getInt('page',1);
-            // $searchData->page = $request->query->getInt('page',1);
+
             $memoriaux = $amr->findBySearch($searchData,$page);
             // On vérifie si on est en AJAX
             if($request->isXmlHttpRequest()){
@@ -88,15 +87,13 @@ class MemorialController extends AbstractController
     #[Route('/memoriaux/recherche', name: 'app_memoriaux_recherche')]
     public function findResearch(AnimalMemorialRepository $amr, CategorieAnimalRepository $car, Request $request): Response
     {
-        // $categories = $car->findAll();
 
         // On veut également mettre un système de recherche dans la vue 
         $searchData = new SearchData();
         //  ON range les infos dans l'objet searchData
         $form = $this->createForm(SearchType::class, $searchData);
 
-        $form->handleRequest($request);
-            // dd($searchData);        
+        $form->handleRequest($request);        
         if($form->isSubmitted() && $form->isValid()){
 
 
@@ -115,8 +112,7 @@ class MemorialController extends AbstractController
             $empty = [];
             
 
-            return $this->render('memorial/recherche.html.twig',[
-            // 'categories' => $categories,   
+            return $this->render('memorial/recherche.html.twig',[  
              'memoriaux' => $memoriaux,   
              'formSearch' => $form->createView(),
             ]);
@@ -125,7 +121,6 @@ class MemorialController extends AbstractController
 
         return $this->render('memorial/recherche.html.twig', [
             'memoriaux' => null,
-            // 'categories' => $categories,
             'formSearch' => $form->createView(),
         ]);
     }
@@ -144,8 +139,7 @@ class MemorialController extends AbstractController
 
             $form->handleRequest($request);
             if($form->isSubmitted() && $form->isValid()){
-                $page = $request->query->getInt('page',1);
-            // dd($searchData);            
+                $page = $request->query->getInt('page',1);           
                 $memoriaux = $amr->findSearchByCategorie($searchData,$categorieMemorial,$page);
                 // On vérifie si on est en AJAX
                 if($request->isXmlHttpRequest()){
@@ -177,7 +171,6 @@ class MemorialController extends AbstractController
     }
 
     #[Route('/memorial/remove/{id}', name: 'remove_memorial')]
-    // #[Security("is_granted('ROLE_USER') and user === memorial.getAuteur()", message:"Accès non autorisé.")]
     #[Security("is_granted('ROLE_USER')", message:"Accès non autorisé.")]
     public function removeMemorial(AnimalMemorialRepository $amr, AnimalMemorial $memorial = null, UploaderService $uploaderService)
     {
@@ -237,10 +230,8 @@ class MemorialController extends AbstractController
             $galerie = new Photo();
             $form = $this->createForm(GaleriePhotoType::class, $galerie);    
             $condoleance = new Condoleance();
-            $condoleanceForm = $this->createForm(CondoleanceType::class,$condoleance);
-                // $editCondoleanceForm = $this->createForm(CondoleanceType::class,$condoleance);       
+            $condoleanceForm = $this->createForm(CondoleanceType::class,$condoleance);    
             $condoleances = $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1));
-            // $editCondoleanceForm = $this->createForm(CondoleanceType::class,$condoleance); 
 
             if($this->getUser()){
                 $condoleanceForm->handleRequest($request); 
@@ -257,13 +248,8 @@ class MemorialController extends AbstractController
                         return new JsonResponse([
                             'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial,'formCondoleance' => $condoleanceForm->createView(),'consultedInCategorie' => $consultedInCategorie, 'condoleances' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1))]),
                             'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1))]),
-                            // 'formCondoleance' => $this->renderView('_partials/_refreshForm.html.twig', ['formCondoleance' => $condoleanceForm->createView()])
-                            // 'bloup'=> 'blou',
                         ]);
                     }
-                    // return $this->json([
-                    //     'message' => 'ca fonctioenne.',
-                    // ]);
 
                     if(!$categorie){
                         return $this->redirectToRoute(
@@ -347,7 +333,6 @@ class MemorialController extends AbstractController
                         'consultedInCategorie' => $consultedInCategorie,
                         'condoleances' => $condoleances,
                         'elementPagine' => $condoleances,
-                        // 'editCondoleanceForm' => $editCondoleanceForm->createView(),
                     ]);            
                 }
             }
@@ -358,7 +343,6 @@ class MemorialController extends AbstractController
                     'consultedInCategorie' => $consultedInCategorie,
                     'condoleances' => $condoleances,
                     'elementPagine' => $condoleances,
-                    // 'editCondoleanceForm' => $editCondoleanceForm->createView(),
             ]);            
         }
 
@@ -386,7 +370,6 @@ class MemorialController extends AbstractController
         if($memorial && ($this->getUser() == $memorial->getAuteur())){
             $edit = true;
             $date = $memorial->getDateCreation();
-            // $imgMemorial = $memorial->getPhoto();
         // CREATION 
         }elseif(!$memorial){
             $memorial = new AnimalMemorial();
@@ -400,8 +383,7 @@ class MemorialController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $memorial = $form->getData();    
-            // dd($memorial)        ;
+            $memorial = $form->getData();           ;
             if($form->get('imgMemorial')->getData() != null){
                 $imgMemorial = $form->get('imgMemorial')->getData();                
             }else if(($form->get('imgMemorial')->getData()==null) && $edit==false){
@@ -452,7 +434,6 @@ class MemorialController extends AbstractController
     #[ParamConverter("memorial", options: ["mapping" => ["idMemorial" => "id"]])]
     #[ParamConverter("condoleance", options: ["mapping" => ["id" => "id"]])]
     #[ParamConverter("categorie", options: ["mapping" => ["idCategorie" => "id"]])]
-    // #[Security("is_granted('ROLE_USER') and user === condoleance.getAuteur()", message:"Accès non autorisé.")]
     #[Security("is_granted('ROLE_USER')", message:"Accès non autorisé.")]
     public function removeCondoleance(CondoleanceRepository $cr, CategorieAnimal $categorie = null, Condoleance $condoleance = null, AnimalMemorial $memorial = null, AnimalMemorialRepository $amr, Request $request)
     {
@@ -463,23 +444,13 @@ class MemorialController extends AbstractController
             $cr->remove($condoleance, $flush = true);
             $memorial = $amr->find($memorial->getId());
 
-            // $this->addFlash('notice', "La condoléance a été supprimée");
 
             if(!$categorie){
                 return $this->redirectToRoute(
                     'show_memorial',
                     ['id' => $memorial->getId()]
-                );           
-                // return new JsonResponse([
-                //     'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, "condoleances" => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)), 'consultedInCategorie' => false]),
-                //     'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)) ])
-                // ]);        
+                );                 
             }
-
-            // return new JsonResponse([
-            //     'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, "condoleances" => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)), 'consultedInCategorie' => true]),
-            //     'pagination' => $this->renderView('_partials/_pagination.html.twig', ['elementPagine' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)) ])
-            // ]);   
 
             $this->addFlash('success', 'La condoléance a été supprimée avec succès');
 
@@ -497,7 +468,6 @@ class MemorialController extends AbstractController
     #[Route('/memorial/condoleance/edit/{id}/{idMemorial}', name: 'edit_condoleance')]
     #[ParamConverter("condoleance", options: ["mapping" => ["id" => "id"]])]
     #[ParamConverter("memorial", options: ["mapping" => ["idMemorial" => "id"]])]
-    // #[Security("is_granted('ROLE_USER') and user === condoleance.getAuteur()", message:"Accès non autorisé.")]
     #[Security("is_granted('ROLE_USER')", message:"Accès non autorisé.")]
     public function editCondoleance(Condoleance $condoleance = null, AnimalMemorial $memorial = null, CondoleanceRepository $cr , CategorieAnimal $categorie = null , ManagerRegistry $doctrine,Request $request)
     {
@@ -509,9 +479,8 @@ class MemorialController extends AbstractController
                 $consultedInCategorie = false;            
             }
 
-            // On récupère le token généré dans le formulaire
+            // On récupère le token du formulaire
             $submittedToken = $request->request->get('token');
-            // $texteTest = $request->request->get('texte');
 
 
             if (isset($_POST) && $this->isCsrfTokenValid('modify-item', $submittedToken)) {
@@ -530,7 +499,6 @@ class MemorialController extends AbstractController
                     // Si c'est le cas on renvoie du JSON
                     return new JsonResponse([
                         'content' => $this->renderView('_partials/_condoleances.html.twig', ['memorial' => $memorial, 'condoleances' => $cr->findPaginatedCondoleances($memorial,$request->query->getInt('page',1)),'consultedInCategorie'=> $consultedInCategorie]),
-                        // 'content' => "bravo",
                     ]);
                 }
 

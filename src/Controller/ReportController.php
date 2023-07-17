@@ -64,23 +64,7 @@ class ReportController extends AbstractController
                 $report->setMemorial($memorial);
                 $report->setDateCreation($now);
                 $rpm->save($report, $flush = true);
-                // dd("Je suis null");
-                // On crée un signalement
             }
-
-            // if($categorie){
-            //     return $this->redirectToRoute(
-            //         'show_memorial_categorie',
-            //         ['id' => $memorial->getId(),
-            //         'idCategorie' => $categorie->getId(),]
-            //     );               
-            // }elseif(!$categorie){
-            //     return $this->redirectToRoute(
-            //         'show_memorial',
-            //         ['id' => $memorial->getId()]
-            //     );  
-            // }
-
             
             return new JsonResponse([
                 'content' => 'signalement effectué',
@@ -141,7 +125,6 @@ class ReportController extends AbstractController
 
             $signaleur = $rhr->findSignaleurHistoire($user,$histoire);
 
-            // Met la mauvaise heure : deux heures de moins que l'heure actuelle
             $now = new \DateTimeImmutable();
 
             if($signaleur != null){
@@ -165,19 +148,6 @@ class ReportController extends AbstractController
        return $this->redirectToRoute('app_home');   
 
 
-        // if(!$genre){
-        //     return $this->redirectToRoute(
-        //         'show_histoire',
-        //         ['slug' => $histoire->getSlug()]
-        //     );               
-        // }elseif($genre){
-        //     return $this->redirectToRoute(
-        //         'show_histoire_genre',
-        //         ['slug' => $histoire->getSlug(),
-        //         'idGenre' => $genre->getId()]
-        //     );        
-        // }
-
     }
     
     #[Route('/report/comment/{id}', name: 'app_report_comment')]
@@ -189,7 +159,6 @@ class ReportController extends AbstractController
 
             $signaleur = $rcr->findSignaleurComment($user,$comment);
 
-            // Met la mauvaise heure : deux heures de moins que l'heure actuelle
             $now = new \DateTimeImmutable();
 
             if($signaleur != null){
@@ -208,11 +177,7 @@ class ReportController extends AbstractController
                 'content' => 'signalement effectué',
 
             ]); 
-
-            // return $this->redirectToRoute(
-            //     'show_histoire',
-            //     ['slug' => $comment->getBelleHistoire()->getSlug()]
-            // );   
+  
         }
 
         return $this->redirectToRoute('app_home');   
@@ -228,7 +193,6 @@ class ReportController extends AbstractController
 
             $signaleur = $rtr->findSignaleurTopic($user,$topic);
 
-            // Met la mauvaise heure : deux heures de moins que l'heure actuelle
             $now = new \DateTimeImmutable();
 
             if($signaleur != null){
@@ -248,10 +212,7 @@ class ReportController extends AbstractController
                 'content' => 'signalement effectué',
 
             ]); 
-            // return $this->redirectToRoute(
-            //     'show_topic',
-            //     ['slug' => $topic->getSlug()]
-            // );   
+    
         }
 
         return $this->redirectToRoute('app_home');  
@@ -267,7 +228,6 @@ class ReportController extends AbstractController
 
             $signaleur = $rpr->findSignaleurPost($user,$post);
 
-            // Met la mauvaise heure : deux heures de moins que l'heure actuelle
             $now = new \DateTimeImmutable();
 
             if($signaleur != null){
@@ -281,11 +241,7 @@ class ReportController extends AbstractController
                 $report->setDateCreation($now);
                 $rpr->save($report, $flush = true);
             }
-
-            // return $this->redirectToRoute(
-            //     'show_topic',
-            //     ['slug' => $post->getTopic()->getSlug()]
-            // );   
+ 
 
             return new JsonResponse([
                 'content' => 'signalement effectué',
@@ -306,7 +262,6 @@ class ReportController extends AbstractController
 
             $signaleur = $rmr->findSignaleurMot($user,$mot);
 
-            // Met la mauvaise heure : deux heures de moins que l'heure actuelle
             $now = new \DateTimeImmutable();
 
             if($signaleur != null){
@@ -325,10 +280,7 @@ class ReportController extends AbstractController
                 'content' => 'signalement effectué',
 
             ]); 
-
-            // return $this->redirectToRoute(
-            //     'app_mot_commemoration',
-            // );   
+  
         }
 
         return $this->redirectToRoute('app_home');  

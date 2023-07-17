@@ -62,7 +62,6 @@ class SearchType extends AbstractType
                 'required' => false,
                 'label' => 'Jour de décès ',
             ])
-            // ->add('submit', SubmitType::class)
         ;
     }
 
@@ -72,12 +71,6 @@ class SearchType extends AbstractType
         $yearsAfter = date('Y', mktime(0, 0, 0, date("m"), date("d"), date("Y")));
         return array_combine(range($yearsAfter, $yearsBefore), range($yearsAfter, $yearsBefore));
     }
-
-    // public function buildMonthChoices() {
-    //     $month = date('m', mktime(0, 0, 0, 1, 1, 2023));
-    //     // dd($month);
-    //     return array(range(date($month),12));
-    // }
 
     public function buildMonthChoices() {
 
@@ -95,24 +88,7 @@ class SearchType extends AbstractType
             'Novembre' => $this->monthToDate(11),
             'Decembre' => $this->monthToDate(12)
         ];
-        // $months = [
-        //     'Janvier' => date('m', mktime(0, 0, 0, 1, 1, 2023)),
-        //     'Février' => date('m', mktime(0, 0, 0, 2, 1, 2023)),
-        //     'Mars' => date('m', mktime(0, 0, 0, 3, 1, 2023)),
-        //     'Avril' => date('m', mktime(0, 0, 0, 4, 1, 2023)),
-        //     'Mai' => date('m', mktime(0, 0, 0, 5, 1, 2023)),
-        //     'Juin' => date('m', mktime(0, 0, 0, 6, 1, 2023)),
-        //     'Juillet' => date('m', mktime(0, 0, 0, 7, 1, 2023)),
-        //     'Aout' => date('m', mktime(0, 0, 0, 8, 1, 2023)),
-        //     'Septembre' => date('m', mktime(0, 0, 0, 9, 1, 2023)),
-        //     'Octobre' => date('m', mktime(0, 0, 0, 10, 1, 2023)),
-        //     'Novembre' => date('m', mktime(0, 0, 0, 11, 1, 2023)),
-        //     'Decembre' => date('m', mktime(0, 0, 0, 12, 1, 2023)),
-        // ];
-        
-        // A revoir, car avec mktime les valeurs attribuées aux mois mois vont changées au cours du temps, sauf avec valeur fixe ?
 
-        // dd($months);
        return $months;
     }
 

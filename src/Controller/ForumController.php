@@ -149,7 +149,6 @@ class ForumController extends AbstractController
             // Si l'utilisateur courant n'est pas l'auteur du topic et qu'il voulait le modifier'
             return $this->redirectToRoute('app_forum');
         }
-        // dd($topic->getPosts()[0]->getTexte());
 
         $form = $this->createForm(TopicType::class, $topic);
         $form->handleRequest($request);
@@ -215,11 +214,7 @@ class ForumController extends AbstractController
             $pr->remove($post, $flush = true);
             
             $topic = $tr->find($topic->getId());
-
-            // return new JsonResponse([
-            //     'content' => $this->renderView('_partials/_posts.html.twig', ['posts' => $pr->findPaginatedPosts($request->query->getInt('page',1),$topic),'topic' => $topic]),
-    
-            // ]);       
+     
 
             $this->addFlash('notice', 'Le commentaire a été supprimé');
 
@@ -263,14 +258,6 @@ class ForumController extends AbstractController
                     ]);
                 }
 
-
-                // $this->addFlash("success","Le post a bien été modifié");
-
-                
-                // return $this->redirectToRoute(
-                //     'show_topic',
-                //     ['slug' => $topic->getSlug()]
-                // );  
             }
             else{
                 // if($request->isXmlHttpRequest()){

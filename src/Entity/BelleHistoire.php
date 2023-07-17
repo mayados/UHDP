@@ -26,17 +26,9 @@ class BelleHistoire
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique:true)]
-    // #[Assert\NotBlank(message: 'Le titre ne peut pas être vide')]
-    // #[Assert\Length(
-    //     min: 2,
-    //     max: 255,
-    //     minMessage : 'Le titre faire au moins {{ limit }} caractères',
-    //     maxMessage : 'Le titre ne peut pas faire plus de {{ limit }} caractères',
-    // )]
     private ?string $titre = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    // #[Assert\NotBlank()]
     private ?string $texte = null;
 
     #[ORM\Column(length: 255, nullable: true)]

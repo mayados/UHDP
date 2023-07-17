@@ -64,8 +64,6 @@ class UsersController extends AbstractController
 
         $entityManager->flush();
 
-        // $this->addFlash('notice',"L'utilisateur a été banni");
-
         return $this->redirectToRoute(
             'app_moderateur_users_show',
             ['id' => $user->getId()]
