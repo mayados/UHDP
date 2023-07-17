@@ -23,8 +23,6 @@
         {% if post.reports| length > 0 %}
             <a class="manage-button" href="{{ path('app_moderateur_post_remove_reports', {'id': post.id}) }}">Supprimer les signalements</a>
         {% endif %}
-{# 
-        {{ dump(firstPost.0.texte) }} #}
 
     </main>
 

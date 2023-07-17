@@ -15,7 +15,6 @@
                 </div> 
                 {% if app.user == post.auteur %}
                     <button id="{{ post.id }}" class="modify-button" type="submit"> Modifier </button> 
-                    {# <a class="delete" href="{{ path('remove_post', {'slug': topic.slug, 'id': post.id}) }}"><i class="fa-solid fa-trash"></i></a> #}
                     <a id="{{ post.id }}" class="open-dialog" href="#"><i class="fa-solid fa-trash"></i></a>  
                     <dialog id="dialog{{ post.id }}" class="dialog-delete-style">
                         <p><i class="fa-solid fa-triangle-exclamation"></i> Cette action est irréversible, êtes-vous sûr de vouloir supprimer ce post ?</p>

@@ -1,12 +1,7 @@
-{# <h2>Condoléances</h2>
-{% if app.user %}
-    <h3>Ajouter un message de condoléances</h3>
-    {% include '_partials/_refreshForm.html.twig' %}  
-{% endif %} #}
+
 <div id="container-condoleances" class="js-auto-refresh-content modify-form-fragment delete-report">
         {% if condoleances| length > 0 %}
                 {% for condoleance in condoleances %}
-                        {# Laisser cette partie en visible de base puis la cachée lorsque le bouton est cliqué #}
                         <div class="condoleance-memorial modify-part">
                                 <div class="condoleance-body">
                                         <div class="condoleance-infos">
@@ -31,7 +26,6 @@
                                 <div class="condoleance-action">
                                         {% if app.user == condoleance.auteur %}
                                                 {% if consultedInCategorie == true %}
-                                                        {# <a class="delete" href="{{path('remove_condoleance_categorie', {'idMemorial': memorial.id, 'id': condoleance.id, 'idCategorie': memorial.categorieAnimal.id}) }}"><i class="fa-solid fa-trash"></i></a> #}
                                                         <a id="{{ condoleance.id }}" class="open-dialog" href="#"><i class="fa-solid fa-trash"></i></a>  
                                                         <dialog id="dialog{{ condoleance.id }}" class="dialog-delete-style">
                                                             <p><i class="fa-solid fa-triangle-exclamation"></i> Cette action est irréversible, êtes-vous sûr de vouloir supprimer cette condoléance ?</p>
@@ -40,9 +34,7 @@
                                                                 <a class="supprimer-dialog-style" href="{{ path('remove_condoleance_categorie', {'idMemorial': memorial.id, 'id': condoleance.id, 'idCategorie': memorial.categorieAnimal.id }) }}">Supprimer la condoléance</a>
                                                             </form>
                                                         </dialog>   
-                                                        {# <button id="{{ condoleance.id }}" class="modify-button">Modifier</button>    #}
                                                 {% else %}
-                                                        {# <a class="delete" href="{{path('remove_condoleance', {'idMemorial': memorial.id, 'id': condoleance.id}) }}"><i class="fa-solid fa-trash"></i></a> #}
                                                         <a id="{{ condoleance.id }}" class="open-dialog" href="#"><i class="fa-solid fa-trash"></i></a>  
                                                         <dialog id="dialog{{ condoleance.id }}" class="dialog-delete-style">
                                                             <p><i class="fa-solid fa-triangle-exclamation"></i> Cette action est irréversible, êtes-vous sûr de vouloir supprimer cette condoléance ?</p>
@@ -52,7 +44,6 @@
                                                             </form>
                                                         </dialog> 
                                                 {% endif %}
-                                                {# <button id="{{ condoleance.id }}" class="modify-button" type="submit"> Modifier </button>    #}
                                                 <a id="{{ condoleance.id }}" class="modify-button" type="submit"><i class="fa-solid fa-file-pen"></i></a>   
                                                 
                                         {% else %}

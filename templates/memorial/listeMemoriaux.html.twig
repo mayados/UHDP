@@ -10,7 +10,6 @@
     </section>
     <p class="fil-ariane"> <a href="{{ path('app_home') }}">Accueil</a> &lt; Mémoriaux</p>
     <section id="categories">
-        {# Voir pour mettre juste les 3 catégories et les mettre en sous-menu pour enlever cette section #}
         <ul class="categorie-elements"></ul>        
             {% for categorie in categories %}
                 <li>
@@ -27,7 +26,6 @@
         {% else %}
             <p>Veuillez vous <a href="{{ path('app_register') }}">inscrire</a> ou vous <a href="{{ path('app_login') }}">connecter</a> pour pouvoir créer un mémorial</p>
         {% endif %}
-            {# <a class="search-link" href="#">Rechercher un mémorial <i class="fa-solid fa-magnifying-glass"></i></a> #}
             <a class="link-recherche bouton-action" href="{{ path('app_memoriaux_recherche') }}">Rechercher un mémorial <i class="fa-solid fa-magnifying-glass"></i></a>
     </section>
     <section id="nous-pensons-a-eux">

@@ -18,7 +18,6 @@
         {% else %}
             <p>Veuillez vous <a href="{{ path('app_register') }}">inscrire</a> ou vous <a href="{{ path('app_login') }}">connecter</a> pour pouvoir créer un mémorial</p>
         {% endif %}
-            {# <a class="search-link" href="#">Rechercher un mémorial <i class="fa-solid fa-magnifying-glass"></i></a> #}
             <a class="link-recherche bouton-action" href="{{ path('app_memoriaux_recherche') }}">Rechercher un mémorial <i class="fa-solid fa-magnifying-glass"></i></a>
     </section>
     <section class="memoriaux js-filter-content">

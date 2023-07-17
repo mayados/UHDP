@@ -9,9 +9,7 @@
     </section>
     <p class="fil-ariane"> <a href="{{ path('app_home') }}">Accueil</a> &lt; Messagerie</p>
     <section class="messagerie-links">
-        {# <a href="{{ path('app_messagerie') }}">Accueil messagerie</a> #}
         <a class="bouton-action" href="{{ path('app_correspondants') }}">Correspondants</a>
-        {# Dans nos classés, nous auront les personnes dont nous avons lus les messages mais n'avons pas répondu = ils ne sont pas dans notre collection de destinataires #}
         <a class="bouton-action" href="{{ path('app_nonClasses') }}">Invitations par message</a>        
     </section>
     <section class="messagerie-content">
@@ -21,7 +19,6 @@
             {% else %}
                 <h2>Message(s) non lus(s) de {{ messagesNonLus| length }} personne:</h2>
             {% endif %}
-            {# Voir si on ne fait pas un group By pour afficher les conversations ayant des nouveaux messages #}
             {% for message in messagesNonLus %}
                 <div class="message">
                     <a href="{{ path('app_conversation', {id:message.idExp}) }}">{{ message.expediteur }}</a>            

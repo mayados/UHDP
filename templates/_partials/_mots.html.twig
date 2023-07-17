@@ -16,7 +16,6 @@
                 <p>{{ mot.dateCreation | date('d-m-Y') }} {{ mot.dateCreation | date('H:i:s') }}</p>
                 <div class="mot-interractions">
                     {% if app.user == mot.auteur %}
-                        {# <a class="delete" href="{{ path('remove_mot', {'id': mot.id}) }}"><i class="fa-solid fa-trash"></i></a>   #}
                         <a id="{{ mot.id }}" class="open-dialog" href="#"><i class="fa-solid fa-trash"></i></a>  
                         <dialog id="dialog{{ mot.id }}" class="dialog-delete-style">
                             <p><i class="fa-solid fa-triangle-exclamation"></i> Cette action est irréversible, êtes-vous sûr de vouloir supprimer ce mot ?</p>
@@ -25,7 +24,6 @@
                                 <a class="supprimer-dialog-style" href="{{ path('remove_mot', {'id': mot.id }) }}">Supprimer le mot</a>
                             </form>
                         </dialog>     
-                        {# <button id="{{ mot.id }}" class="modify-button" type="submit"> Modifier </button>   #}
                         <a id="{{ mot.id }}" class="modify-button" type="submit"><i class="fa-solid fa-file-pen"></i></a>  
                     {% else %}
                         {% if mot.reports |length > 0 %}

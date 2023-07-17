@@ -16,22 +16,9 @@
 
         <section id="histoire-content">
             <div id="histoire-content-header">
-                {# {% if histoire.photo == null %}
-                    <p>Pas de photo</p>
-                {% else %}
                 <figure>
                     <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">            
                 </figure>
-                {% endif %} #}
-                {% if histoire.auteur == 'Antoine' %}
-                <figure>
-                    <img src="{{histoire.photo}}" alt="photo de l'histoire">            
-                </figure>
-                {% else %}
-                    <figure>
-                        <img src="{{ asset('uploads/imgHistoire/'~ histoire.photo) }}" alt="photo de l'histoire">            
-                    </figure>
-                {% endif %}
                 <p>Date de création {{ histoire.dateCreation | date('d-m-Y') }}</p>
                 </div>
             <div id="histoire-texte">

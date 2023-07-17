@@ -23,8 +23,6 @@
         {% if topic.reports| length > 0 %}
             <a href="{{ path('app_moderateur_topic_remove_reports', {'id': topic.id}) }}">Supprimer les signalements</a>
         {% endif %}
-{# 
-        {{ dump(firstPost.0.texte) }} #}
 
     </main>
 
