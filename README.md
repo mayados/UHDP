@@ -23,6 +23,7 @@ This was my exam project for the Web Developer professional title
 - sort belles histoires by type 
 - see memorials based on the current month
 - search memorials by multi-filters
+- forum : create a topic, comment a topic
 
 ## Launch the project
 
