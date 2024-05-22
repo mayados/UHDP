@@ -545,6 +545,10 @@ nav{
     background-color: white;
 }
 
+#form-memorial .form-element div ul{
+    display: none;
+}
+
 #form-login .form-element,
 #form-register .form-element div,
 #form-histoire .form-element div,
@@ -643,15 +647,6 @@ nav{
 
 #texte-accueil-uhdp .texte p{
     line-height: 2;
-}
-
-#texte-accueil-uhdp .texte p,
-#explications-memoriaux,
-#explications-histoires{
-    /* font-family: 'Playfair'; */
-    /* font-weight: 600; */
-    /* font-family: 'Poppins';
-    font-weight: 200; */
 }
 
 #bienvenue #carousel{
@@ -2498,7 +2493,7 @@ nav{
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        z-index: 99999;
+        z-index: 998;
         margin-left: 1rem;
     }
     
@@ -2550,10 +2545,6 @@ nav{
         position: absolute;
     }
 
-    /* COMMUN */
-    /* .container-page{
-        background-color: red;
-    } */
     
     /* HOME */
 
@@ -2592,12 +2583,6 @@ nav{
 /* Medium  (min-width : 768px & max-width : 992px) */
 @media screen and (max-width: 992px) {
 
-
-    /* PAGE GLOBALE */
-
-    /* .container-page{
-        background-color: orange;
-    } */
 
     /* HOME */
 
@@ -2664,9 +2649,6 @@ nav{
 /* Petits téléphones (min-width : 576px & max-width : 768px) */
 @media screen and (max-width: 768px) {
 
-    /* .container-page{
-        background-color: yellow;
-    } */
 
     /* HOME */
 
@@ -2689,9 +2671,6 @@ nav{
 /* Très petits téléphones (max-width : 576px) */
 @media screen and (max-width: 576px) {
 
-    /* .container-page{
-        background-color: green;
-    } */
 
     /* HOME */
 
